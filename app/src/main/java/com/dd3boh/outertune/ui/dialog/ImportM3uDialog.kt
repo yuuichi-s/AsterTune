@@ -87,7 +87,7 @@ fun ImportM3uDialog(
         mutableStateOf(ScannerM3uMatchCriteria.LEVEL_1)
     }
 
-    var remoteLookup by remember { mutableStateOf(false) }
+    var remoteLookup by remember { mutableStateOf(true) }
     var isLoading by remember { mutableStateOf(false) }
     var showChoosePlaylistDialog by rememberSaveable {
         mutableStateOf(false)
@@ -193,7 +193,7 @@ fun ImportM3uDialog(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Box() {
+            Box(modifier = Modifier.heightIn(max = 150.dp)) {
                 LazyColumn(
                     state = lazyListState,
                     modifier = Modifier
@@ -202,7 +202,7 @@ fun ImportM3uDialog(
                 ) {
                     itemsIndexed(
                         items = importedSongs.map { it.title },
-                        key = { _, song -> song.hashCode() }
+                        key = { index, _ -> index }
                     ) { index, item ->
                         Text(
                             text = item,
@@ -228,7 +228,7 @@ fun ImportM3uDialog(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Box() {
+            Box(modifier = Modifier.heightIn(max = 150.dp)) {
                 LazyColumn(
                     state = lazyListState,
                     modifier = Modifier
@@ -237,7 +237,7 @@ fun ImportM3uDialog(
                 ) {
                     itemsIndexed(
                         items = rejectedSongs,
-                        key = { _, song -> song.hashCode() }
+                        key = { index, _ -> index }
                     ) { index, item ->
                         Text(
                             text = item,
@@ -350,20 +350,25 @@ suspend fun loadM3u(
 
                         // now find the best match
                         // first, search for songs in the database. Supplement with remote songs if no results are found
+                        // A YouTube/YTM url uniquely identifies the exact video, so we can trust it
+                        // instead of fuzzy-matching. Local entries use "<id>, <path>" (contain a comma).
+                        val isYtUrl = source?.startsWith("http") == true
+                        val ytId = if (isYtUrl) source!!.substringAfter("watch?v=").substringBefore("&") else null
+
                         val matches = if (source == null) {
                             database.searchSongsInDb(title).first().toMutableList()
                         } else {
-                            // local songs have a source format of "<id>, <path>", YTM songs have "<url>
-                            var id = source.substringBefore(',')
-                            if (id.isEmpty()) {
-                                id = source.substringAfter("watch?").substringAfter("=").substringBefore('?')
-                            }
+                            // local songs have a source format of "<id>, <path>", YTM songs have "<url>"
+                            val id = ytId ?: source.substringBefore(',')
                             val dbResult = mutableListOf(database.song(id).first())
                             dbResult.addAll(database.searchSongsInDb(title).first())
                             dbResult.filterNotNull().toMutableList()
                         }
-                        // do not search for local songs
-                        if (searchOnline && matches.isEmpty() && source?.contains(',') == false) {
+                        // supplement with a remote lookup unless we already have the exact song.
+                        // (skip local file entries, whose source contains a comma)
+                        if (searchOnline && source?.contains(',') == false &&
+                            matches.none { ytId != null && it.id == ytId }
+                        ) {
                             val onlineResult =
                                 LocalMediaScanner.youtubeSongLookup("$title ${artists.joinToString(" ")}", source)
                             onlineResult.forEach { result ->
@@ -382,8 +387,12 @@ suspend fun loadM3u(
                         val oldSize = songs.size
                         // TODO: Eventually the user can pick from matches... eventually...
 
-                        // take first song when searching on YTM
-                        if (matchStrength == ScannerM3uMatchCriteria.LEVEL_0 && searchOnline && matches.isNotEmpty()) {
+                        // The m3u url points at one exact song: import it as-is, no fuzzy check.
+                        val exactMatch = if (ytId != null) matches.firstOrNull { it.id == ytId } else null
+                        if (exactMatch != null) {
+                            songs.add(exactMatch)
+                        } else if (matchStrength == ScannerM3uMatchCriteria.LEVEL_0 && searchOnline && matches.isNotEmpty()) {
+                            // take first song when searching on YTM
                             songs.add(matches.first())
                         } else {
                             for (s in matches) {
