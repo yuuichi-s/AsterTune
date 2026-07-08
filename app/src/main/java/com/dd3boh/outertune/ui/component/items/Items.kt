@@ -64,13 +64,13 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.media3.exoplayer.offline.Download.STATE_COMPLETED
 import androidx.media3.exoplayer.offline.Download.STATE_DOWNLOADING
@@ -572,19 +572,17 @@ fun YouTubeGridItem(
 @Composable
 fun YouTubeCardItem(
     item: RecentActivityEntity,
+    width: Dp,
     modifier: Modifier = Modifier,
     isActive: Boolean,
     isPlaying: Boolean,
     onClick: () -> Unit,
 ) {
-    val configuration = LocalConfiguration.current
-    val screenWidthDp = configuration.screenWidthDp
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .height(60.dp)
-            .width((screenWidthDp.dp - 12.dp) / 2)
+            .width(width)
             .padding(6.dp)
             .clip(RoundedCornerShape(6.dp))
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp))

@@ -352,6 +352,7 @@ fun HomeScreen(
 
         val horizontalLazyGridItemWidthFactor = if (maxWidth * 0.475f >= 320.dp) 0.475f else 0.9f
         val horizontalLazyGridItemWidth = maxWidth * horizontalLazyGridItemWidthFactor
+        val recentActivityItemWidth = (maxWidth - 12.dp) / 2
         val quickPicksSnapLayoutInfoProvider = remember(quickPicksLazyGridState) {
             SnapLayoutInfoProvider(
                 lazyGridState = quickPicksLazyGridState,
@@ -419,6 +420,7 @@ fun HomeScreen(
                         ) { item ->
                             YouTubeCardItem(
                                 item = item,
+                                width = recentActivityItemWidth,
                                 isActive = when (item.type) {
                                     RecentActivityType.PLAYLIST -> queuePlaylistId == item.id
                                     RecentActivityType.ALBUM -> queuePlaylistId == item.playlistId
