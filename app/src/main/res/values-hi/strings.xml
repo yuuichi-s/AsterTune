@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="songs">गाने</string>
+    <string name="songs">गीत</string>
     <string name="home">मुख्य स्थान</string>
     <string name="artists">कलाकार</string>
     <string name="albums">एलबम</string>
@@ -9,9 +9,9 @@
         <item quantity="other">%d चुने गए</item>
     </plurals>
     <string name="account">खाता</string>
-    <string name="quick_picks">झटपट चलाने हेतु चुनिंदा गाने</string>
-    <string name="quick_picks_empty">झटपट सूची बनाने के लिए कुछ गाने सुनें</string>
-    <string name="forgotten_favorites">भूले-बिछड़े पसंदीदा गाने</string>
+    <string name="quick_picks">झटपट चलाने हेतु चुनिंदा गीत</string>
+    <string name="quick_picks_empty">झटपट सूची बनाने के लिए कुछ गीत सुनें</string>
+    <string name="forgotten_favorites">भूले-बिछड़े पसंदीदा गीत</string>
     <string name="history">इतिहास</string>
     <string name="stats">आंकड़े</string>
     <string name="mood_and_genres">मूड और शैलियां</string>
@@ -21,7 +21,7 @@
     <string name="similar_to">इसके जैसे</string>
     <string name="today">आज</string>
     <string name="yesterday">कल</string>
-    <string name="most_played_songs">अधिकतम सुने गए गाने</string>
+    <string name="most_played_songs">अधिकतम सुने गए गीत</string>
     <string name="most_played_artists">अधिकतम सुने गए कलाकार</string>
     <string name="search">खोजें</string>
     <string name="search_library">संग्रह में खोजें…</string>
@@ -29,7 +29,7 @@
     <string name="filter_liked">पसंद किए गए</string>
     <string name="filter_downloaded">डाउनलोड किए गए</string>
     <string name="filter_all">सब</string>
-    <string name="filter_songs">गाने</string>
+    <string name="filter_songs">गीत</string>
     <string name="filter_videos">वीडिओ</string>
     <string name="filter_albums">एलबम</string>
     <string name="filter_artists">कलाकार</string>
@@ -39,8 +39,8 @@
     <string name="library_artist_empty">संग्रह के कलाकार यहाँ दिखेंगे</string>
     <string name="from_your_library">आपके संग्रह से</string>
     <string name="other_versions">अन्य संस्करण</string>
-    <string name="liked_songs">पसंद किए गए गाने</string>
-    <string name="downloaded_songs">डाउनलोड किए गए गाने</string>
+    <string name="liked_songs">पसंद किए गीत</string>
+    <string name="downloaded_songs">डाउनलोड किए गए गीत</string>
     <string name="playlist_is_empty">चाल सूची खाली है</string>
     <string name="delete_playlist_confirm">क्या आप वाकई “%s” चाल सूची को हटाना चाहते हैं ?</string>
     <string name="retry">पुनः करें</string>
@@ -64,7 +64,7 @@
     <string name="search_yt_music">यूट्यूब म्यूजिक में खोजें…</string>
     <string name="filter_playlists">चाल सूचियां</string>
     <string name="filter_bookmarked">चिह्नित</string>
-    <string name="library_song_empty">संग्रह के गाने यहाँ दिखेंगे</string>
+    <string name="library_song_empty">संग्रह के गीत यहाँ दिखेंगे</string>
     <string name="library_playlist_empty">आपकी चाल सूचियां यहाँ दिखेंगीं</string>
     <string name="library_album_empty">संग्रह की एलबमें यहाँ दिखेंगीं</string>
     <string name="remove_download_playlist_confirm">क्या आप वाकई “%s” चाल सूची के सभी गानों को डाउनलोड किए गए गानों के भंडार से हटाना चाहते हैं ?</string>
@@ -100,12 +100,12 @@
     <string name="unknown">अज्ञात</string>
     <string name="copied">क्लिपबोर्ड मे लिया गया</string>
     <string name="edit_lyrics">गीतिकाव्य बदलें</string>
-    <string name="edit_song">गाने मे बदलाव करें</string>
-    <string name="song_title">गाने का नाम</string>
-    <string name="error_song_artist_empty">गाने के कलाकार के नाम को खाली नहीं छोड़ा जा सकता ।</string>
+    <string name="edit_song">गीत एडिट करें</string>
+    <string name="song_title">गीत का नाम</string>
+    <string name="error_song_artist_empty">गीत कलाकार के नाम को खाली नहीं छोड़ा जा सकता ।</string>
     <string name="choose_playlist">चाल सूची चुनें</string>
     <string name="add_anyway">तब भी जोड़ें</string>
-    <string name="duplicates_description_multiple">%d गाने पहले से आपकी चाल सूची में हैं</string>
+    <string name="duplicates_description_multiple">%d गीत पहले से आपकी प्लेलिस्ट में हैं</string>
     <string name="playlist_imported">चाल सूची आयात की गई</string>
     <string name="removed_song_from_playlist">\"%s\" चाल सूची से हटाया गया</string>
     <string name="playlist_synced">चाल सूची समकालिक की गई</string>
@@ -123,8 +123,8 @@
     <string name="sort_by_song_count">गीत संख्या</string>
     <string name="media_id">मीडिया आइडी</string>
     <string name="search_lyrics">गीतिकाव्य ढूंढें</string>
-    <string name="song_artists">गाने के कलाकार</string>
-    <string name="error_song_title_empty">गाने के नाम को खाली नहीं छोड़ा जा सकता ।</string>
+    <string name="song_artists">गीत कलाकार</string>
+    <string name="error_song_title_empty">गीत का टाइटल खाली नहीं छोडा जा सकता ।</string>
     <string name="create_playlist">चाल सूची बनाएं</string>
     <string name="save">सहेजें</string>
     <string name="edit_playlist">चाल सूची मे बदलाव करें</string>
@@ -141,8 +141,8 @@
         <item quantity="other">%d हफ्ते</item>
     </plurals>
     <plurals name="n_song">
-        <item quantity="one">%d गाना</item>
-        <item quantity="other">%d गाने</item>
+        <item quantity="one">%d गीत</item>
+        <item quantity="other">%d गीत</item>
     </plurals>
     <plurals name="n_month">
         <item quantity="one">%d महीना</item>
@@ -154,7 +154,7 @@
         <item quantity="one">%d साल</item>
         <item quantity="other">%d साल</item>
     </plurals>
-    <string name="queue_all_songs">सभी गाने</string>
+    <string name="queue_all_songs">सभी गीत</string>
     <string name="settings">सेटिंग्स</string>
     <string name="theme">थीम</string>
     <string name="dark_theme_off">बंद</string>
@@ -166,7 +166,7 @@
     <string name="error_no_internet">कोई नेटवर्क कनेक्शन नहीं</string>
     <string name="dark_theme_on">चालू</string>
     <string name="sleep_timer">स्लीप टाइमर</string>
-    <string name="end_of_song">गाने का अंत</string>
+    <string name="end_of_song">गीत समाप्त हुआ</string>
     <plurals name="minute">
         <item quantity="one">%d मिनट</item>
         <item quantity="other">%d मिनट</item>
