@@ -95,7 +95,7 @@
     <string name="token_hidden">Premi per mostrare il token</string>
     <string name="playlist_add_local_to_synced_note">Nota: L\'aggiunta di brani locali alle playlist sincronizzate/remote non è supportata. Qualsiasi altra combinazione è valida</string>
     <string name="audio_offload_description">Utilizza il percorso audio di offload per la riproduzione audio. Abilitare questa opzione può ridurre il consumo energetico, ma può causare problemi con la riproduzione audio o la post-elaborazione. Questa preferenza non ha effetto su codec o dispositivi non supportati</string>
-    <string name="keep_alive_description">Utilizzare un servizio persistente in primo piano per evitare che OuterTune venga chiuso in background</string>
+    <string name="keep_alive_description">Utilizzare un servizio persistente in primo piano per evitare che AsterTune venga chiuso in background</string>
     <string name="local_player_settings_title">Media locali</string>
     <string name="tab_arrangement_home_required">La scheda Home è obbligatoria.</string>
     <string name="grp_extra_scanner_settings">Impostazioni aggiuntive dello scanner</string>
@@ -114,11 +114,11 @@
     <string name="scanner_sensitivity_title">Configura la sensibilità dello scanner</string>
     <string name="scanner_type_taglib">Usa l\'estrattore di metadati integrato TagLib</string>
     <string name="sort_by_like_date">Data di gradimento</string>
-    <string name="oobe_complete">OuterTune è impostato e pronto per l\'uso. Esplora la tua musica, scopri nuovi brani e goditi l\'esperienza!</string>
+    <string name="oobe_complete">AsterTune è impostato e pronto per l\'uso. Esplora la tua musica, scopri nuovi brani e goditi l\'esperienza!</string>
     <string name="scanner_online_artist_linking">Prova a collegare gli artisti dei file locali con quelli su YouTube Music</string>
     <string name="dev_settings_title">Abilita impostazioni sviluppatore</string>
     <string name="dev_settings_description">Rivela impostazioni avanzate aggiuntive destinate all\'uso in fase di sviluppo</string>
-    <string name="oobe_welcome_message">Benvenuto in OuterTune</string>
+    <string name="oobe_welcome_message">Benvenuto in AsterTune</string>
     <string name="info">Informazione</string>
     <string name="oobe_use_backup">Ho un backup</string>
     <string name="action_back">Indietro</string>
@@ -173,7 +173,7 @@
     <string name="oobe_cross_platform_sync">Sincronizzazione Multi piattaforma</string>
     <string name="oobe_local_music_support">Ampio Supporto Musicale Locale</string>
     <string name="oobe_ytm_logon_subtitle">Accedi al tuo account musicale YouTube Music per sincronizzare e accedere al contenuto dell\'account privato. Questo è facoltativo.</string>
-    <string name="oobe_interface_subtitle">Personalizza l\'aspetto di OuterTune e quale contenuto ti mostra.</string>
+    <string name="oobe_interface_subtitle">Personalizza l\'aspetto di AsterTune e quale contenuto ti mostra.</string>
     <string name="oobe_ytm_logon_title">Account</string>
     <string name="import_success_songs">Importato con successo</string>
     <string name="speed_very_slow">Molto lento</string>
@@ -205,7 +205,7 @@
     <string name="oss_licenses_title">Licenze open source</string>
     <string name="lyrics_karaoke_hz_title">Regola la velocità di aggiornamento dei testi del karaoke</string>
     <string name="dl_calculate_size">Tocca per calcolare la dimensione del download</string>
-    <string name="dl_storage_tooltip">I download interni vengono salvati nell\'archiviazione privata dell\'app e non sono accessibili senza root.\n\nI download esterni vengono salvati nell\'archiviazione esterna del tuo dispositivo (ad es. /SDCARD o Micro SD Cards) e sono accessibili o modificati direttamente con un esploratore di file. Per la cartella dei download esterni, ti consigliamo di scegliere una cartella vuota appositamente per i download di canzoni, poiché OuterTune può modificare o eliminare i file in quella cartella.\n\nLe cartelle di importazione extra sono di sola lettura e utilizzate per il caricamento di canzoni aggiuntive. OuterTune non cambierà o eliminerà mai i file in queste cartelle. È possibile selezionare queste cartelle nella sezione avanzata.\n\nQuando si cancellano i download, vengono eliminati solo i brani interni. I download esterni e le canzoni di importazione extra devono essere rimossi manualmente, tramite il menu della canzone o manualmente tramite un esploratore di file.\n\nCartelle per il download di Rescan: I download dei brani nei download esterni e nelle cartelle extra importati non vengono aggiornate automaticamente. Se si aggiungono, rimuovi manualmente o modificare i file utilizzando un Explorer di file, potrebbe essere necessario salvare le cartelle di download per aggiornare il database dell\'app. Questa opzione è disponibile nella sezione avanzata.</string>
+    <string name="dl_storage_tooltip">I download interni vengono salvati nell\'archiviazione privata dell\'app e non sono accessibili senza root.\n\nI download esterni vengono salvati nell\'archiviazione esterna del tuo dispositivo (ad es. /SDCARD o Micro SD Cards) e sono accessibili o modificati direttamente con un esploratore di file. Per la cartella dei download esterni, ti consigliamo di scegliere una cartella vuota appositamente per i download di canzoni, poiché AsterTune può modificare o eliminare i file in quella cartella.\n\nLe cartelle di importazione extra sono di sola lettura e utilizzate per il caricamento di canzoni aggiuntive. AsterTune non cambierà o eliminerà mai i file in queste cartelle. È possibile selezionare queste cartelle nella sezione avanzata.\n\nQuando si cancellano i download, vengono eliminati solo i brani interni. I download esterni e le canzoni di importazione extra devono essere rimossi manualmente, tramite il menu della canzone o manualmente tramite un esploratore di file.\n\nCartelle per il download di Rescan: I download dei brani nei download esterni e nelle cartelle extra importati non vengono aggiornate automaticamente. Se si aggiungono, rimuovi manualmente o modificare i file utilizzando un Explorer di file, potrebbe essere necessario salvare le cartelle di download per aggiornare il database dell\'app. Questa opzione è disponibile nella sezione avanzata.</string>
     <string name="scanner_rejected_dir">Selezione non valida. Una cartella di scansione non può essere una sottodirectory della cartella di download o la cartella di download stessa</string>
     <string name="lyrics_karaoke_title">Testi in stile karaoke.</string>
     <string name="scan_paths_description">Seleziona le cartelle sull\'archiviazione locale per scansionare i brani</string>

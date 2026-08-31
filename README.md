@@ -1,10 +1,10 @@
 # OuterTune
 
-[![OuterTune app icon](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/outertune.webp)](https://github.com/yuuichi-s/OuterTune/blob/dev/assets/outertune.webp)
+[![OuterTune app icon](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png)](https://github.com/yuuichi-s/AsterTune/blob/dev/assets/astertune.png)
 
 
-[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/OuterTune?include_prereleases)](https://github.com/yuuichi-s/OuterTune/releases)
-[![License](https://img.shields.io/github/license/yuuichi-s/OuterTune)](https://www.gnu.org/licenses/gpl-3.0)
+[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
+[![License](https://img.shields.io/github/license/yuuichi-s/AsterTune)](https://www.gnu.org/licenses/gpl-3.0)
 
 [English](README.md) | [日本語](README_ja.md)
 
@@ -22,7 +22,7 @@ A Material 3 YouTube Music client & local music player for Android
 > ./gradlew assembleCoreDebug
 > ```
 >
-> For step-by-step instructions, see [CONTRIBUTING.md](https://github.com/yuuichi-s/OuterTune/blob/dev/CONTRIBUTING.md).
+> For step-by-step instructions, see [CONTRIBUTING.md](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md).
 
 ## What This Fork Improves
 
@@ -101,13 +101,13 @@ OuterTune is a supercharged fork of [InnerTune](https://github.com/z-huang/Inner
 
 ## Screenshots
 
-[![Main player interface](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)
+[![Main player interface](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/main-interface.jpg)](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/main-interface.jpg)
 
-[![Player interface](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)
+[![Player interface](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/player.jpg)](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/player.jpg)
 
-[![Sync with YouTube Music](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)
+[![Sync with YouTube Music](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/ytm-sync.jpg)](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/ytm-sync.jpg)
 
-[Full image gallery](https://github.com/yuuichi-s/OuterTune/tree/dev/assets/gallery)
+[Full image gallery](https://github.com/yuuichi-s/AsterTune/tree/dev/assets/gallery)
 
 > [!WARNING]
 > If you're in a region where YouTube Music is not supported, you won't be able to use this app ***unless*** you have a proxy or VPN to connect to a YTM supported region.
@@ -126,7 +126,7 @@ Thank you very much for helping to make OuterTune accessible to many people worl
 
 ## Help & Support
 
-- For bugs **specific to this fork**, please open an [Issue in this repository](https://github.com/yuuichi-s/OuterTune/issues).
+- For bugs **specific to this fork**, please open an [Issue in this repository](https://github.com/yuuichi-s/AsterTune/issues).
 
 ## Attribution
 

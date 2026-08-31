@@ -1,4 +1,4 @@
-<p>O <i>OuterTune</i> é uma modificação supercarregada de recursos do <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. Este app é tanto um reprodutor de mídia local, quanto um cliente do YouTube Music.</p>
+<p>O <i>AsterTune</i> é uma modificação supercarregada de recursos do <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. Este app é tanto um reprodutor de mídia local, quanto um cliente do YouTube Music.</p>
 
 <p><br><b>Recursos:</b></p>
 <ul>
@@ -16,6 +16,6 @@
 <p><br><b>Atenção:</b></p>
 <ul>
 <li>Android 8 (Oreo) e versões superiores são suportadas. O app pode até funcionar no Android 7, mas não o suportamos oficialmente</li>
-<li>O OuterTune está em uma fase de "beta estável". Mesmo que este app com certeza pode ser usado como seu reprodutor de música principal, saiba que há possibilidade de bugs, recursos incompletos, ou outros compartamentos inesperados. Por favor, reporte seus problemas na nossa página no GitHub!</li>
-<li>Por favor, visite a nossa wiki para mais informações como perguntas frequentes, tutoriais, e manuais: <a href="https://github.com/OuterTune/OuterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/OuterTune/OuterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
+<li>O AsterTune está em uma fase de "beta estável". Mesmo que este app com certeza pode ser usado como seu reprodutor de música principal, saiba que há possibilidade de bugs, recursos incompletos, ou outros compartamentos inesperados. Por favor, reporte seus problemas na nossa página no GitHub!</li>
+<li>Por favor, visite a nossa wiki para mais informações como perguntas frequentes, tutoriais, e manuais: <a href="https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
 </ul>

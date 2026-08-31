@@ -96,7 +96,7 @@
     <string name="dev_settings_description">חושף הגדרות מתקדמות נוספות המיועדות לשימוש בפיתוח</string>
     <string name="swipe_to_skip_title">החלק אופקית כדי לשנות שיר</string>
     <string name="swipe_to_skip_description">הפעל החלקה אופקית בנגן כדי להחליף שירים</string>
-    <string name="oobe_welcome_message">ברוכים הבאים ל-OuterTune</string>
+    <string name="oobe_welcome_message">ברוכים הבאים ל-AsterTune</string>
     <string name="oobe_ytm_integration">שילוב YouTube Music</string>
     <string name="oobe_ytm_integration_description">גש בצורה חלקה לרצועות האהובות עליך</string>
     <string name="oobe_ad_free_exp">ללא פרסומות יוטיוב</string>
@@ -106,7 +106,7 @@
     <string name="oobe_cross_platform_sync">סנכרון בין פלטפורמות</string>
     <string name="oobe_cross_platform_sync_description">שמרו על הרמוניה במוזיקה שלכם בין מכשירים שונים</string>
     <string name="oobe_use_backup">יש לי גיבוי</string>
-    <string name="oobe_interface_subtitle">התאם אישית את מראה OuterTune ואת התוכן שהוא מציג לך.</string>
+    <string name="oobe_interface_subtitle">התאם אישית את מראה AsterTune ואת התוכן שהוא מציג לך.</string>
     <string name="oobe_ytm_logon_title">חשבון</string>
     <string name="oobe_ytm_logon_subtitle">היכנס לחשבון YouTube Music שלך כדי לסנכרן ולגשת לתוכן חשבון פרטי (אופציונלי).</string>
     <string name="oobe_local_media_title">מדיה מקומית</string>
@@ -114,7 +114,7 @@
     <string name="oobe_downloads_title">הורדות שירים</string>
     <string name="oobe_downloads_subtitle">בחר תיקייה שבה יישמרו השירים שהורדו.</string>
     <string name="oobe_complete_title">אתה מוכן!</string>
-    <string name="oobe_complete">OuterTune מותקן ומוכן לשימוש. גלו את המוזיקה שלכם, גלו שירים חדשים ותיהנו מהחוויה!</string>
+    <string name="oobe_complete">AsterTune מותקן ומוכן לשימוש. גלו את המוזיקה שלכם, גלו שירים חדשים ותיהנו מהחוויה!</string>
     <string name="import_failed_songs">לא ניתן היה לייבא</string>
     <string name="import_success_songs">יובא בהצלחה</string>
     <string name="m3u_export">ייצוא כקובץ M3U</string>
@@ -153,7 +153,7 @@
     <string name="tablet_ui_title">כפיית ממשק משתמש של טאבלט</string>
     <string name="tablet_ui_title_description">הפעל ממשק תצוגה לרוחב המותאם למסכים גדולים יותר ללא קשר לגודל המסך הנוכחי</string>
     <string name="keep_alive_title">מניעת הריגת מערכת של אפליקציה</string>
-    <string name="keep_alive_description">השתמש בשירות קדמי מתמשך כדי למנוע סגירה של OuterTune ברקע.</string>
+    <string name="keep_alive_description">השתמש בשירות קדמי מתמשך כדי למנוע סגירה של AsterTune ברקע.</string>
     <string name="min_playback_duration">משך השמעה מינימלי</string>
     <string name="min_playback_duration_description">הכמות המינימלית של שיר שחייבת להיות מושמעת לפני שהוא נחשב \"מנוגן\"</string>
     <string name="swipe2Queue">החלק לתור</string>
@@ -224,7 +224,7 @@
     <string name="dl_migrate_title">מעביר הורדות לאחסון חיצוני…</string>
     <string name="dl_migrate_description">העבר הורדות מאחסון פנימי של האפליקציה לאחסון חיצוני</string>
     <string name="dl_rescan_description">עדכן את מסד הנתונים ורענן את רישום ההורדות אם קבצים או תיקיות שונו</string>
-    <string name="dl_storage_tooltip">הורדות פנימיות נשמרות באחסון הפרטי של האפליקציה ואינן נגישות ללא root.\n\nהורדות חיצוניות נשמרות באחסון החיצוני של המכשיר שלך (למשל, כרטיסי /sdcard או micro SD) וניתן לגשת אליהן או לערוך אותן ישירות באמצעות סייר קבצים. עבור תיקיית ההורדות החיצוניות, אנו ממליצים לבחור תיקייה ריקה במיוחד עבור הורדות שירים, מכיוון ש-OuterTune עשוי לשנות או למחוק קבצים בתיקייה זו.\n\nתיקיות ייבוא נוספות הן לקריאה בלבד ומשמשות לטעינת שירים נוספים. OuterTune לעולם לא ישנה או ימחק קבצים בתיקיות אלה. ניתן לבחור תיקיות אלה במקטע המתקדם.\n\nכאשר אתה מנקה הורדות, רק שירים פנימיים נמחקים. יש להסיר הורדות חיצוניות ושירים ייבוא נוספים באופן ידני, דרך תפריט השיר או ידנית באמצעות סייר קבצים.\n\nסרוק מחדש את תיקיות ההורדה: הורדות שירים בתיקיות ההורדות החיצוניות והייבוא נוסף אינן מתעדכנות אוטומטית. אם אתה מוסיף, מסיר או משנה קבצים באופן ידני באמצעות סייר קבצים, ייתכן שתצטרך לסרוק מחדש את תיקיות ההורדה כדי לעדכן את מסד הנתונים של האפליקציה. אפשרות זו זמינה במקטע המתקדם.</string>
+    <string name="dl_storage_tooltip">הורדות פנימיות נשמרות באחסון הפרטי של האפליקציה ואינן נגישות ללא root.\n\nהורדות חיצוניות נשמרות באחסון החיצוני של המכשיר שלך (למשל, כרטיסי /sdcard או micro SD) וניתן לגשת אליהן או לערוך אותן ישירות באמצעות סייר קבצים. עבור תיקיית ההורדות החיצוניות, אנו ממליצים לבחור תיקייה ריקה במיוחד עבור הורדות שירים, מכיוון ש-AsterTune עשוי לשנות או למחוק קבצים בתיקייה זו.\n\nתיקיות ייבוא נוספות הן לקריאה בלבד ומשמשות לטעינת שירים נוספים. AsterTune לעולם לא ישנה או ימחק קבצים בתיקיות אלה. ניתן לבחור תיקיות אלה במקטע המתקדם.\n\nכאשר אתה מנקה הורדות, רק שירים פנימיים נמחקים. יש להסיר הורדות חיצוניות ושירים ייבוא נוספים באופן ידני, דרך תפריט השיר או ידנית באמצעות סייר קבצים.\n\nסרוק מחדש את תיקיות ההורדה: הורדות שירים בתיקיות ההורדות החיצוניות והייבוא נוסף אינן מתעדכנות אוטומטית. אם אתה מוסיף, מסיר או משנה קבצים באופן ידני באמצעות סייר קבצים, ייתכן שתצטרך לסרוק מחדש את תיקיות ההורדה כדי לעדכן את מסד הנתונים של האפליקציה. אפשרות זו זמינה במקטע המתקדם.</string>
     <string name="attribution_title">שיוך</string>
     <string name="toggle_lyrics">הפעל/כבה את מילות השיר</string>
     <string name="ffmpeg_lgpl">תוכנה זו עושה שימוש בספריות מפרויקט FFmpeg תחת רישיון LGPLv2.1</string>

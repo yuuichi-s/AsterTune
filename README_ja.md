@@ -1,10 +1,10 @@
 # OuterTune
 
-[![OuterTune app icon](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/outertune.webp)](https://github.com/yuuichi-s/OuterTune/blob/dev/assets/outertune.webp)
+[![OuterTune app icon](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png)](https://github.com/yuuichi-s/AsterTune/blob/dev/assets/astertune.png)
 
 
-[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/OuterTune?include_prereleases)](https://github.com/yuuichi-s/OuterTune/releases)
-[![License](https://img.shields.io/github/license/yuuichi-s/OuterTune)](https://www.gnu.org/licenses/gpl-3.0)
+[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
+[![License](https://img.shields.io/github/license/yuuichi-s/AsterTune)](https://www.gnu.org/licenses/gpl-3.0)
 
 [English](README.md) | [日本語](README_ja.md)
 
@@ -22,7 +22,7 @@ Android向け Material 3 YouTube Music クライアント & ローカル音楽�
 > ./gradlew assembleCoreDebug
 > ```
 >
-> 詳しい手順は [CONTRIBUTING.md](https://github.com/yuuichi-s/OuterTune/blob/dev/CONTRIBUTING.md) をご覧ください。
+> 詳しい手順は [CONTRIBUTING.md](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md) をご覧ください。
 
 ## このフォークで改善していること
 
@@ -101,13 +101,13 @@ OuterTune は [InnerTune](https://github.com/z-huang/InnerTune) を強化した�
 
 ## スクリーンショット
 
-[![メインプレイヤー画面](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)
+[![メインプレイヤー画面](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/main-interface.jpg)](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/main-interface.jpg)
 
-[![プレイヤー画面](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)
+[![プレイヤー画面](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/player.jpg)](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/player.jpg)
 
-[![YouTube Music との同期](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)
+[![YouTube Music との同期](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/ytm-sync.jpg)](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/ytm-sync.jpg)
 
-[全画像ギャラリー](https://github.com/yuuichi-s/OuterTune/tree/dev/assets/gallery)
+[全画像ギャラリー](https://github.com/yuuichi-s/AsterTune/tree/dev/assets/gallery)
 
 > [!WARNING]
 > YouTube Music が利用できない地域では、プロキシまたは VPN を使用しない限りこのアプリは使用できません。
@@ -126,7 +126,7 @@ OuterTune の翻訳には Weblate を使用しています。詳細や翻訳の�
 
 ## ヘルプ & サポート
 
-- **このフォーク固有のバグ**については、[このリポジトリの Issue](https://github.com/yuuichi-s/OuterTune/issues) を作成してください。
+- **このフォーク固有のバグ**については、[このリポジトリの Issue](https://github.com/yuuichi-s/AsterTune/issues) を作成してください。
 
 ## クレジット
 

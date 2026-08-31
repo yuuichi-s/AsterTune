@@ -1,0 +1,511 @@
+package io.github.yuuichi_s.astertune.ui.screens
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastAny
+import androidx.compose.ui.util.fastForEachReversed
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavController
+import io.github.yuuichi_s.astertune.LocalDatabase
+import io.github.yuuichi_s.astertune.LocalMenuState
+import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
+import io.github.yuuichi_s.astertune.LocalPlayerConnection
+import io.github.yuuichi_s.astertune.LocalSnackbarHostState
+import io.github.yuuichi_s.astertune.R
+import io.github.yuuichi_s.astertune.constants.HistorySource
+import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
+import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
+import io.github.yuuichi_s.astertune.constants.SwipeToQueueKey
+import io.github.yuuichi_s.astertune.constants.TopBarInsets
+import io.github.yuuichi_s.astertune.db.entities.EventWithSong
+import io.github.yuuichi_s.astertune.extensions.toMediaItem
+import io.github.yuuichi_s.astertune.extensions.togglePlayPause
+import io.github.yuuichi_s.astertune.models.toMediaMetadata
+import io.github.yuuichi_s.astertune.playback.queues.ListQueue
+import io.github.yuuichi_s.astertune.ui.component.ChipsRow
+import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
+import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
+import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
+import io.github.yuuichi_s.astertune.ui.component.SelectHeader
+import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
+import io.github.yuuichi_s.astertune.ui.component.button.IconButton
+import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
+import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
+import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
+import io.github.yuuichi_s.astertune.ui.utils.backToMain
+import io.github.yuuichi_s.astertune.utils.rememberPreference
+import io.github.yuuichi_s.astertune.viewmodels.DateAgo
+import io.github.yuuichi_s.astertune.viewmodels.HistoryViewModel
+import com.zionhuang.innertube.utils.parseCookieString
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import java.time.format.DateTimeFormatter
+import kotlin.math.roundToInt
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, FlowPreview::class)
+@Composable
+fun HistoryScreen(
+    navController: NavController,
+    viewModel: HistoryViewModel = hiltViewModel(),
+) {
+    val database = LocalDatabase.current
+    val density = LocalDensity.current
+    val resources = LocalResources.current
+    val menuState = LocalMenuState.current
+    val playerConnection = LocalPlayerConnection.current ?: return
+    val isPlaying by playerConnection.isPlaying.collectAsState()
+    val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
+
+    val swipeEnabled by rememberPreference(SwipeToQueueKey, true)
+
+    val snackbarHostState = LocalSnackbarHostState.current
+
+    val historySource by viewModel.historySource.collectAsState()
+    var isSearching by rememberSaveable { mutableStateOf(false) }
+    var query by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(isSearching) {
+        if (isSearching) {
+            focusRequester.requestFocus()
+        }
+    }
+    if (isSearching) {
+        BackHandler {
+            isSearching = false
+            query = TextFieldValue()
+        }
+    }
+
+    LaunchedEffect(query) {
+        snapshotFlow { searchQuery }.debounce { 300L }.collectLatest {
+            searchQuery = query
+        }
+    }
+
+    var inSelectMode by rememberSaveable { mutableStateOf(false) }
+    val selection = rememberSaveable(
+        saver = listSaver<MutableList<Long>, Long>(
+            save = { it.toList() },
+            restore = { it.toMutableStateList() }
+        )
+    ) { mutableStateListOf() }
+    val onExitSelectionMode = {
+        inSelectMode = false
+        selection.clear()
+    }
+    if (inSelectMode) {
+        BackHandler(onBack = onExitSelectionMode)
+    }
+
+    // no multiselect for remote hisory (yet)
+    val historyPage by viewModel.historyPage
+
+    val innerTubeCookie by rememberPreference(InnerTubeCookieKey, "")
+    val isLoggedIn = remember(innerTubeCookie) {
+        "SAPISID" in parseCookieString(innerTubeCookie)
+    }
+
+    val todayText = stringResource(R.string.today)
+    val yesterdayText = stringResource(R.string.yesterday)
+    val thisWeekText = stringResource(R.string.this_week)
+    val lastWeekText = stringResource(R.string.last_week)
+
+    fun dateAgoToString(dateAgo: DateAgo): String {
+        return when (dateAgo) {
+            DateAgo.Today -> todayText
+            DateAgo.Yesterday -> yesterdayText
+            DateAgo.ThisWeek -> thisWeekText
+            DateAgo.LastWeek -> lastWeekText
+            is DateAgo.Other -> dateAgo.date.format(DateTimeFormatter.ofPattern("yyyy/MM"))
+        }
+    }
+
+    val eventsMap by viewModel.events.collectAsState()
+    val filteredEventsMap = remember(eventsMap, searchQuery) {
+        if (searchQuery.text.isEmpty()) eventsMap
+        else eventsMap
+            .mapValues { (_, songs) ->
+                songs.filter { song ->
+                    song.song.title.contains(searchQuery.text, ignoreCase = true) ||
+                            song.song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
+                }
+            }
+            .filterValues { it.isNotEmpty() }
+    }
+    val filteredEventIndex: Map<Long, EventWithSong> by remember(filteredEventsMap) {
+        derivedStateOf {
+            filteredEventsMap.flatMap { it.value }.associateBy { it.event.id }
+        }
+    }
+    LaunchedEffect(filteredEventsMap) {
+        selection.fastForEachReversed { eventId ->
+            if (filteredEventIndex[eventId] == null) {
+                selection.remove(eventId)
+            }
+        }
+    }
+
+    val lazyListState = rememberLazyListState()
+
+    Box(Modifier.fillMaxSize()) {
+        ScrollToTopManager(navController, lazyListState)
+        LazyColumn(
+            state = lazyListState,
+            contentPadding = LocalPlayerAwareWindowInsets.current
+                .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+                .union(WindowInsets.ime)
+                .asPaddingValues(),
+            modifier = Modifier
+                .windowInsetsPadding(
+                    LocalPlayerAwareWindowInsets.current
+                        .only(WindowInsetsSides.Top)
+                )
+                .padding(bottom = if (inSelectMode) 64.dp else 0.dp)
+        ) {
+            stickyHeader(
+                key = "searchbar"
+            ) {
+                if (isSearching) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                    ) {
+                        IconButton(
+                            onClick = { isSearching = true }
+                        ) {
+                            Icon(
+                                Icons.Rounded.Search,
+                                contentDescription = null
+                            )
+                        }
+                        TextField(
+                            value = query,
+                            onValueChange = { query = it },
+                            placeholder = {
+                                Text(
+                                    text = stringResource(R.string.search),
+                                    style = MaterialTheme.typography.titleLarge
+                                )
+                            },
+                            singleLine = true,
+                            textStyle = MaterialTheme.typography.titleLarge,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                disabledIndicatorColor = Color.Transparent,
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(1.dp)) // for Compose ui 1.8
+            }
+
+            item {
+                ChipsRow(
+                    chips = if (isLoggedIn) listOf(
+                        HistorySource.LOCAL to stringResource(R.string.local_history),
+                        HistorySource.REMOTE to stringResource(R.string.remote_history),
+                    ) else {
+                        listOf(HistorySource.LOCAL to stringResource(R.string.local_history))
+                    },
+                    currentValue = historySource,
+                    onValueUpdate = {
+                        viewModel.historySource.value = it
+                        if (it == HistorySource.REMOTE) {
+                            viewModel.fetchRemoteHistory()
+                        }
+                    }
+                )
+            }
+
+            if (historySource == HistorySource.REMOTE && isLoggedIn) {
+                historyPage?.sections?.forEach { section ->
+                    stickyHeader {
+                        NavigationTitle(
+                            title = section.title,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.background)
+                        )
+                    }
+
+                    items(
+                        items = section.songs,
+                        key = { it.id }
+                    ) { song ->
+                        val content: @Composable () -> Unit = {
+                            YouTubeListItem(
+                                item = song,
+                                isActive = song.id == mediaMetadata?.id,
+                                isPlaying = isPlaying,
+                                trailingContent = {
+                                    IconButton(
+                                        onClick = {
+                                            menuState.show {
+                                                YouTubeSongMenu(
+                                                    song = song,
+                                                    navController = navController,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
+                                        }
+                                    ) {
+                                        Icon(
+                                            Icons.Rounded.MoreVert,
+                                            contentDescription = null
+                                        )
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable(
+                                        onClick = {
+                                            if (song.id == mediaMetadata?.id) {
+                                                playerConnection.player.togglePlayPause()
+                                            } else {
+                                                playerConnection.playQueue(
+                                                    ListQueue(
+                                                        title = resources.getString(R.string.queue_remote_history),
+                                                        items = section.songs.map { it.toMediaMetadata() }
+                                                    )
+                                                )
+                                            }
+                                        },
+                                        onLongClick = {
+
+                                            menuState.show {
+                                                YouTubeSongMenu(
+                                                    song = song,
+                                                    navController = navController,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
+
+                                        }
+                                    )
+                                    .animateItem()
+                            )
+                        }
+
+
+
+                        SwipeToQueueBox(
+                            item = song.toMediaItem(),
+                            swipeEnabled = swipeEnabled,
+                            snackbarHostState = snackbarHostState,
+                            content = { content() },
+                        )
+
+                    }
+                }
+            } else {
+                filteredEventsMap.forEach { (dateAgo, eventsGroup) ->
+                    stickyHeader {
+                        NavigationTitle(
+                            title = dateAgoToString(dateAgo),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.surface)
+                        )
+                    }
+
+                    val thumbnailSize = (ListThumbnailSize.value * density.density).roundToInt()
+                    itemsIndexed(
+                        items = eventsGroup,
+                    ) { index, event ->
+                        SongListItem(
+                            song = event.song,
+                            navController = navController,
+                            snackbarHostState = snackbarHostState,
+
+                            isActive = event.song.id == mediaMetadata?.id,
+                            isPlaying = isPlaying,
+                            inSelectMode = inSelectMode,
+                            isSelected = selection.contains(event.event.id),
+                            onSelectedChange = {
+                                inSelectMode = true
+                                if (it) {
+                                    selection.add(event.event.id)
+                                } else {
+                                    selection.remove(event.event.id)
+                                }
+                            },
+                            swipeEnabled = swipeEnabled,
+
+                            thumbnailSize = thumbnailSize,
+                            onPlay = {
+                                if (event.song.id == mediaMetadata?.id) {
+                                    playerConnection.player.togglePlayPause()
+                                } else {
+                                    playerConnection.playQueue(
+                                        ListQueue(
+                                            title = "${resources.getString(R.string.queue_local_history)}: ${
+                                                dateAgoToString(
+                                                    dateAgo
+                                                )
+                                            }",
+                                            items = eventsGroup.map { it.song.toMediaMetadata() },
+                                            startIndex = index
+                                        )
+                                    )
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItem()
+                        )
+                    }
+                }
+            }
+        }
+        LazyColumnScrollbar(
+            state = lazyListState,
+        )
+
+        FloatingFooter(
+            visible = inSelectMode
+        ) {
+            SelectHeader(
+                navController = navController,
+                selectedItems = eventsMap.flatMap { group ->
+                    group.value.filter { it.event.id in selection }
+                }.map { it.song.toMediaMetadata() },
+                totalItemCount = eventsMap.flatMap { group -> group.value.map { it.song } }.size,
+                onSelectAll = {
+                    selection.clear()
+                    selection.addAll(eventsMap.flatMap { group ->
+                        group.value.map { it.event.id }
+                    })
+                },
+                onDeselectAll = { selection.clear() },
+                menuState = menuState,
+                onDismiss = onExitSelectionMode,
+                onRemoveFromHistory = {
+                    val sel = selection.mapNotNull { eventId ->
+                        filteredEventIndex[eventId]?.event
+                    }
+                    database.query {
+                        sel.forEach {
+                            delete(it)
+                        }
+                    }
+                },
+            )
+        }
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .windowInsetsPadding(LocalPlayerAwareWindowInsets.current)
+                .align(Alignment.BottomCenter)
+        )
+    }
+
+    TopAppBar(
+        title = { Text(stringResource(R.string.history)) },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    if (isSearching) {
+                        isSearching = false
+                        query = TextFieldValue()
+                    } else {
+                        navController.navigateUp()
+                    }
+                },
+                onLongClick = {
+                    if (!isSearching) {
+                        navController.backToMain()
+                    }
+                }
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Rounded.ArrowBack,
+                    contentDescription = null
+                )
+            }
+        },
+        actions = {
+            if (!isSearching) {
+                IconButton(
+                    onClick = { isSearching = true }
+                ) {
+                    Icon(
+                        Icons.Rounded.Search,
+                        contentDescription = null
+                    )
+                }
+            }
+        },
+        windowInsets = TopBarInsets,
+    )
+}

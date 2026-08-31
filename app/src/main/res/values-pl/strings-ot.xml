@@ -45,7 +45,7 @@
     <string name="scan_paths_tooltip">Wszystkie podkatalogi również zostaną dotknięte</string>
     <string name="scan_paths_excl">Ścieżki wyłączone z skanowania</string>
     <string name="scanner_sensitivity_L1">Dopasuj tytuł</string>
-    <string name="oobe_welcome_message">Witaj w OuterTune</string>
+    <string name="oobe_welcome_message">Witaj w AsterTune</string>
     <string name="action_skip">Pomiń</string>
     <string name="folders">Foldery</string>
     <string name="create_queue">Nowa kolejka</string>
@@ -111,7 +111,7 @@
     <string name="scanner_ytm_link_start">Rozpoczynanie linkowania artysty YouTube…</string>
     <string name="import_failed_songs">Nie udało się zaimportować</string>
     <string name="scanner_ytm_link_success">Ukończono próbę linkowania artysty YouTube</string>
-    <string name="keep_alive_description">Użyj trwałej usługi w tle, aby powstrzymać zamknięcie OuterTune w tle</string>
+    <string name="keep_alive_description">Użyj trwałej usługi w tle, aby powstrzymać zamknięcie AsterTune w tle</string>
     <string name="scanner_variant_rescan">Przeskanuj całą bibliotekę ponownie i załaduj ponownie metadane wszystkich utworów</string>
     <string name="scanner_online_artist_linking">Spróbuj nie łączyć artystów z lokalnych plików do tych z YouTube Music</string>
     <string name="scanner_progress_complete">Skanowanie ukończone</string>
@@ -163,7 +163,7 @@
     <string name="oobe_ytm_integration">Integracja z YouTube Music</string>
     <string name="oobe_ytm_integration_description">Miej dostęp do swoich ulubionych utworów bez żadnych ograniczeń</string>
     <string name="oobe_cross_platform_sync">Międzyplatformowa synchonizacja</string>
-    <string name="oobe_interface_subtitle">Dostosuj wygląd OuterTune oraz pokazywane treści.</string>
+    <string name="oobe_interface_subtitle">Dostosuj wygląd AsterTune oraz pokazywane treści.</string>
     <string name="oobe_downloads_title">Pobrane piosenki</string>
     <string name="oobe_complete_title">Wszystko gotowe!</string>
     <string name="dl_migrate_description">Przenieś pobrania z wewnętrznej pamięci aplikacji do zewnętrznej pamięci urządzenia</string>
@@ -216,7 +216,7 @@
     <string name="dl_extra_path_description">Piosenki z tych folderów zostaną pokazane w aplikacji tylko, gdy zostały zagrane przedtem lub dodane do playlisty</string>
     <string name="dl_main_path_description">Wybierz lokalizację pamięci pobrań</string>
     <string name="clear_image_cache_confirm">Czy chcesz na peron usunąć pamięć zdjęć? Wszystkie istniejące miniaturki albumów zostaną usunięte.</string>
-    <string name="dl_storage_tooltip">Pobrania wewnętrzne są zapisywane w pamięci wewnętrznej aplikacji i nie są dostępne bez zrootowania urządzenia..\n\nPobrania zewnętrzne są zapisywane do pamięci zewnętrznej urządzenia (np. /SD card lub mikro kart SD) I mogą zostać edytowane bezpośrednio poprzez eksplorator plików. Dla folderu pobrań zewnętrznych, rekomendujemy wybranie pustego folderu specyficznie dla piosenek, jako że OuterTune będzie mieć możliwość modyfikowania i usuwania plików w tym folderze.\n\nFoldery extra import so to foldery tylko to odczytu i służą do ładowania dodatkowych piosenek. OuterTune night nie zmieni lub usunie plików w tym folderze . Możesz wybrać te foldery w sekcji ustawienia zaawansowane.\n\nKiedy usuwasz pobrania,tylko wewnętrzne piosenki są usuwane. Piosenki znajdujące się w pobraniach zewnętrznych oraz Extra Import muszą być usuwane własnoręcznie, poprzez menu piosenek albo eksplorator plików.\n\nPonownie zeskanuj foldery: Pobrane piosenki znajdujące się w pobraniach zewnętrznych oraz w folderach Extra Import nie są aktualizowane automatycznie. Jeżeli własnoręcznie dodasz, usuniesz lub edytujesz plik używając eksploratora plików, być może będziesz musieć ponownie zeskanować folder pobrań by zaktualizować bazę danych aplikacji. Ta opcja jest dostępna w ustawieniach zaawansowanych.</string>
+    <string name="dl_storage_tooltip">Pobrania wewnętrzne są zapisywane w pamięci wewnętrznej aplikacji i nie są dostępne bez zrootowania urządzenia..\n\nPobrania zewnętrzne są zapisywane do pamięci zewnętrznej urządzenia (np. /SD card lub mikro kart SD) I mogą zostać edytowane bezpośrednio poprzez eksplorator plików. Dla folderu pobrań zewnętrznych, rekomendujemy wybranie pustego folderu specyficznie dla piosenek, jako że AsterTune będzie mieć możliwość modyfikowania i usuwania plików w tym folderze.\n\nFoldery extra import so to foldery tylko to odczytu i służą do ładowania dodatkowych piosenek. AsterTune night nie zmieni lub usunie plików w tym folderze . Możesz wybrać te foldery w sekcji ustawienia zaawansowane.\n\nKiedy usuwasz pobrania,tylko wewnętrzne piosenki są usuwane. Piosenki znajdujące się w pobraniach zewnętrznych oraz Extra Import muszą być usuwane własnoręcznie, poprzez menu piosenek albo eksplorator plików.\n\nPonownie zeskanuj foldery: Pobrane piosenki znajdujące się w pobraniach zewnętrznych oraz w folderach Extra Import nie są aktualizowane automatycznie. Jeżeli własnoręcznie dodasz, usuniesz lub edytujesz plik używając eksploratora plików, być może będziesz musieć ponownie zeskanować folder pobrań by zaktualizować bazę danych aplikacji. Ta opcja jest dostępna w ustawieniach zaawansowanych.</string>
     <string name="oobe_ytm_logon_subtitle">Zaloguj się do swojego konta YouTube Music by dokonać synchronizacji oraz otrzymać dostęp do prywatnych treści z tego konta. Ta opcja jest opcjonalna.</string>
     <string name="att_translator">Tłumacz (%s)</string>
     <string name="lyrics_synced_clickable">Klikalny tekst</string>

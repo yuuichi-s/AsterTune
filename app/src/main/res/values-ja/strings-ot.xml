@@ -103,7 +103,7 @@
     <string name="token_shown">再度タップすると、コピーまたは編集</string>
     <string name="audio_offload">オフロードを有効にする</string>
     <string name="audio_offload_description">オーディオ再生にはオフロードオーディオパスを使用します。これを有効にすると消費電力は削減できますが、オーディオ再生や後処理に問題が発生する可能性があります。この設定は、未対応のコーデックや機器には影響しません</string>
-    <string name="keep_alive_description">OuterTuneがバックグラウンドで終了されないよう、永続的なフォアグラウンドサービスを使用します</string>
+    <string name="keep_alive_description">AsterTuneがバックグラウンドで終了されないよう、永続的なフォアグラウンドサービスを使用します</string>
     <string name="min_playback_duration">最小の再生時間</string>
     <string name="min_playback_duration_description">曲を「再生済み」と判断するための、最低限の再生時間</string>
     <string name="sleep_timer_fade">フェードアウト</string>
@@ -141,8 +141,8 @@
     <string name="import_failed_songs">インポートできませんでした:</string>
     <string name="dev_settings_title">開発者向け設定を有効にする</string>
     <string name="dev_settings_description">開発用途向けの追加の詳細設定を表示します</string>
-    <string name="oobe_welcome_message">ようこそ、OuterTuneへ</string>
-    <string name="oobe_complete">OuterTuneのセットアップは完了し、利用可能です。好きな音楽にアクセスし、新しい曲を見つけお楽しみください！</string>
+    <string name="oobe_welcome_message">ようこそ、AsterTuneへ</string>
+    <string name="oobe_complete">AsterTuneのセットアップは完了し、利用可能です。好きな音楽にアクセスし、新しい曲を見つけお楽しみください！</string>
     <string name="action_back">戻る</string>
     <string name="action_next">次へ</string>
     <string name="action_skip">スキップ</string>
@@ -224,7 +224,7 @@
     <string name="oobe_cross_platform_sync">クロスプラットフォーム同期</string>
     <string name="oobe_cross_platform_sync_description">デバイス間で気に入った音楽を同期</string>
     <string name="oobe_ad_free_exp_description">途切れない音楽再生を楽しもう</string>
-    <string name="oobe_interface_subtitle">OuterTuneの外観と表示されるコンテンツをカスタマイズします。</string>
+    <string name="oobe_interface_subtitle">AsterTuneの外観と表示されるコンテンツをカスタマイズします。</string>
     <string name="oobe_ytm_logon_title">アカウント</string>
     <string name="oobe_ytm_logon_subtitle">YouTube Music アカウントにログインすると、アカウントの非公開のコンテンツを同期できます。これは任意です。</string>
     <string name="oobe_local_media_title">端末内メディア</string>

@@ -139,7 +139,7 @@
     <string name="audio_offload">Activa la descàrrega de processament</string>
     <string name="audio_offload_description">Utilitza la ruta de descàrrega d’àudio per a la reproducció. Activar aquesta opció pot reduir el consum d’energia, però pot provocar problemes en la reproducció d’àudio o en el postprocessament. Aquesta preferència no té efecte en còdecs o dispositius no compatibles</string>
     <string name="keep_alive_title">Evita que el sistema tanqui l’aplicació</string>
-    <string name="keep_alive_description">Utilitza un servei en primer pla persistent per evitar que OuterTune es tanqui en segon pla</string>
+    <string name="keep_alive_description">Utilitza un servei en primer pla persistent per evitar que AsterTune es tanqui en segon pla</string>
     <string name="persistent_queue_desc_ot">Restaura les cues obertes prèviament en iniciar l’aplicació</string>
     <string name="min_playback_duration">Durada mínima de reproducció</string>
     <string name="min_playback_duration_description">Quantitat mínima d’una cançó que s’ha de reproduir perquè es consideri “reproduïda”</string>
@@ -200,7 +200,7 @@
     <string name="dl_size_used_cache">Intern: %s utilitzat</string>
     <string name="dl_size_used_main">Extern: %s utilitzat</string>
     <string name="dl_size_used_extra">Imports extra: %s utilitzat</string>
-    <string name="dl_storage_tooltip">Descàrregues internes: es desen a l’emmagatzematge privat de l’aplicació i no són accessibles sense root.\n\nDescàrregues externes: es desen a l’emmagatzematge extern del dispositiu (per exemple, /sdcard o targetes micro SD) i es poden accedir o modificar directament amb un gestor de fitxers. Per a la carpeta de descàrregues externes, es recomana triar una carpeta buida dedicada exclusivament a les descàrregues de cançons, ja que OuterTune pot modificar o eliminar fitxers d’aquesta carpeta.\n\nCarpetes d’importació addicionals: són de només lectura i s’utilitzen per carregar cançons addicionals. OuterTune no modificarà ni eliminarà mai els fitxers d’aquestes carpetes. Pots seleccionar aquestes carpetes a la secció avançada.\n\nQuan esborres les descàrregues, només s’eliminen les cançons internes. Les descàrregues externes i les cançons de les carpetes d’importació addicionals s’han d’eliminar manualment, ja sigui des del menú de la cançó o amb un gestor de fitxers.\n\nTornar a escanejar carpetes de descàrregues: les descàrregues a les carpetes de descàrregues externes i d’importació addicional NO s’actualitzen automàticament. Si afegeixes, elimines o modifiques fitxers manualment amb un gestor de fitxers, pot ser necessari tornar a escanejar les carpetes de descàrregues per actualitzar la base de dades de l’aplicació. Aquesta opció està disponible a la secció avançada.</string>
+    <string name="dl_storage_tooltip">Descàrregues internes: es desen a l’emmagatzematge privat de l’aplicació i no són accessibles sense root.\n\nDescàrregues externes: es desen a l’emmagatzematge extern del dispositiu (per exemple, /sdcard o targetes micro SD) i es poden accedir o modificar directament amb un gestor de fitxers. Per a la carpeta de descàrregues externes, es recomana triar una carpeta buida dedicada exclusivament a les descàrregues de cançons, ja que AsterTune pot modificar o eliminar fitxers d’aquesta carpeta.\n\nCarpetes d’importació addicionals: són de només lectura i s’utilitzen per carregar cançons addicionals. AsterTune no modificarà ni eliminarà mai els fitxers d’aquestes carpetes. Pots seleccionar aquestes carpetes a la secció avançada.\n\nQuan esborres les descàrregues, només s’eliminen les cançons internes. Les descàrregues externes i les cançons de les carpetes d’importació addicionals s’han d’eliminar manualment, ja sigui des del menú de la cançó o amb un gestor de fitxers.\n\nTornar a escanejar carpetes de descàrregues: les descàrregues a les carpetes de descàrregues externes i d’importació addicional NO s’actualitzen automàticament. Si afegeixes, elimines o modifiques fitxers manualment amb un gestor de fitxers, pot ser necessari tornar a escanejar les carpetes de descàrregues per actualitzar la base de dades de l’aplicació. Aquesta opció està disponible a la secció avançada.</string>
     <string name="restart_to_apply_changes">Cal reiniciar l’aplicació perquè els canvis tinguin efecte</string>
     <string name="pause_remote_listen_history">Posa en pausa la compartició de l’historial d’escolta amb YouTube Music</string>
     <string name="err_restore_incompatible_database">No s’ha pogut restaurar la base de dades perquè és incompatible</string>
@@ -212,7 +212,7 @@
     <string name="swipe_to_skip_title">Fes lliscar horitzontalment per canviar de cançó</string>
     <string name="swipe_to_skip_description">Activa el lliscament horitzontal al reproductor per canviar de cançó</string>
     <string name="max_queues_title">Nombre màxim de cues</string>
-    <string name="oobe_welcome_message">Benvingut a OuterTune</string>
+    <string name="oobe_welcome_message">Benvingut a AsterTune</string>
     <string name="oobe_welcome_tip">Per a una millor experiència, et recomanem completar una configuració ràpida per personalitzar els ajustos principals com el tema, el compte de YouTube, els mitjans locals i les descàrregues.</string>
     <string name="oobe_ytm_integration">Integració amb YouTube Music</string>
     <string name="oobe_ytm_integration_description">Accedeix a les teves cançons preferides sense interrupcions</string>
@@ -223,7 +223,7 @@
     <string name="oobe_cross_platform_sync">Sincronització multiplataforma</string>
     <string name="oobe_cross_platform_sync_description">Mantén la teva música sincronitzada entre dispositius</string>
     <string name="oobe_use_backup">Tinc una còpia de seguretat</string>
-    <string name="oobe_interface_subtitle">Personalitza com es veu OuterTune i quin contingut et mostra.</string>
+    <string name="oobe_interface_subtitle">Personalitza com es veu AsterTune i quin contingut et mostra.</string>
     <string name="oobe_ytm_logon_title">Compte</string>
     <string name="oobe_ytm_logon_subtitle">Inicia sessió al teu compte de YouTube Music per sincronitzar i accedir al contingut privat del compte. Això és opcional.</string>
     <string name="oobe_local_media_title">Fitxers locals</string>

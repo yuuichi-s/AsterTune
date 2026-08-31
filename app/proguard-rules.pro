@@ -84,9 +84,9 @@
     #public static int e(...);
 }
 
-## OuterTune required modules
+## AsterTune required modules
 -keep class wah.mikooomich.ffMetadataEx.** { *; }
 
 ## Quality of life for logs
--keepclasseswithmembernames class com.dd3boh.outertune.playback.**
--keepclasseswithmembernames class com.dd3boh.outertune.utils.scanners.**
+-keepclasseswithmembernames class io.github.yuuichi_s.astertune.playback.**
+-keepclasseswithmembernames class io.github.yuuichi_s.astertune.utils.scanners.**

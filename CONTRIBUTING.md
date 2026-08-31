@@ -48,19 +48,19 @@ playback of extended codecs (e.g. ALAC/APE/WavPack/DSD). No extra setup is requi
 
 <br/><br/>
 
-# Contributing to OuterTune
+# Contributing to AsterTune
 
 ## Translations
 
-We use Weblate to translate OuterTune. For more details or to get started,
-visit [our Weblate page](https://hosted.weblate.org/projects/outertune/).
+We use Weblate to translate AsterTune. For more details or to get started,
+visit [our Weblate page](https://hosted.weblate.org/projects/yuuichi-s-outertune/).
 Thanks to Weblate for offering free hosting to open-source projects!
 
 ### Important
 
 - Translators should submit strings through Weblate, however if there are changes that cannot be accomplished via
   Weblate, you may submit a pull request manually
-- Make sure new strings are in the right place, which is `strings-ot.xml` for OuterTune strings
+- Make sure new strings are in the right place, which is `strings-ot.xml` for AsterTune strings
 - If they are ported from upstream InnerTune (ex. when syncing upstream), they go into `strings.xml`
 
 ## Submitting a pull request
@@ -136,7 +136,7 @@ To make everyone's life easier, there are a set of guidelines that are to be fol
 |---------------|-------------------------------------------------------------------------------------------------|
 | `<file name>` | Changes for a single file that do not fit into any other tag                                    |
 | app           | General changes, or anything that does not fit any other tags. (For within the app module only) |
-| outertune     | General changes that span across multiple modules                                               |
+| astertune     | General changes that span across multiple modules                                               |
 | fastlane      | Fastlane components                                                                             |
 | translations  | General changes to translation components                                                       |
 

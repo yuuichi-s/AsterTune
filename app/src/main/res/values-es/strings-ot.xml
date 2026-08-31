@@ -55,7 +55,7 @@
     <string name="token_shown">Pulse de nuevo para copiar o editar</string>
     <string name="wifi_only">Solo Wi-Fi</string>
     <string name="keep_alive_title">Evitar que el sistema cierre la aplicación</string>
-    <string name="keep_alive_description">Utilice un servicio en primer plano persistente para evitar que OuterTune se cierre en segundo plano</string>
+    <string name="keep_alive_description">Utilice un servicio en primer plano persistente para evitar que AsterTune se cierre en segundo plano</string>
     <string name="persistent_queue_desc_ot">Restaurar la(s) cola(s) abiertas anteriormente al iniciar la aplicación</string>
     <string name="swipe2Queue">Arrastre para añadir a la cola</string>
     <string name="swipe2Queue_description">Desliza el dedo sobre una canción para agregarla a la cola inmediatamente después de la canción que se reproduce actualmente</string>
@@ -97,7 +97,7 @@
     <string name="pause_remote_listen_history">Compartir historial de escucha con YouTube Music</string>
     <string name="import_failed_songs">No se pudo importar</string>
     <string name="dev_settings_title">Habilitar ajustes de desarrollador</string>
-    <string name="oobe_welcome_message">Bienvenido a OuterTune</string>
+    <string name="oobe_welcome_message">Bienvenido a AsterTune</string>
     <string name="oobe_use_backup">Tengo una copia de seguridad</string>
     <string name="action_back">Atrás</string>
     <string name="action_skip">Saltar</string>
@@ -125,7 +125,7 @@
     <string name="scanner_type_title">Extractor de metadatos</string>
     <string name="scanner_online_artist_linking">Intenta vincular los artistas de los archivos locales con los de YouTube Music</string>
     <string name="dev_settings_description">Revela ajustes avanzadas adicionales destinadas al uso en desarrollo</string>
-    <string name="oobe_complete">OuterTune está configurado y listo para usar. ¡Explora tu música, descubre nuevas pistas y disfruta de la experiencia!</string>
+    <string name="oobe_complete">AsterTune está configurado y listo para usar. ¡Explora tu música, descubre nuevas pistas y disfruta de la experiencia!</string>
     <string name="action_next">Siguiente</string>
     <string name="grp_proxy">Proxy</string>
     <string name="player_background_blur">Desenfoque</string>
@@ -171,7 +171,7 @@
     <string name="oobe_ytm_logon_title">Cuenta</string>
     <string name="import_success_songs">Importado correctamente</string>
     <string name="m3u_export">Exportar como archivo M3U</string>
-    <string name="oobe_interface_subtitle">Personaliza la apariencia de OuterTune y el contenido que te muestra.</string>
+    <string name="oobe_interface_subtitle">Personaliza la apariencia de AsterTune y el contenido que te muestra.</string>
     <string name="oobe_ad_free_exp">YouTube libre de anuncios</string>
     <string name="oobe_complete_title">¡Ya está todo listo!</string>
     <string name="dl_migrate_title">Migrar descargas a almacenamiento externo…</string>
@@ -215,7 +215,7 @@
     <string name="dl_migrate_confirm">Esto migrará TODAS las descargas internas a \"%s\", y esta acción no se puede deshacer. ¿Continuar?</string>
     <string name="dl_rescan_title">Volver a escanear carpetas de descarga.…</string>
     <string name="dl_calculate_size">Pulsa para calcular el tamaño de descarga</string>
-    <string name="dl_storage_tooltip">Las descargas internas se guardan en el almacenamiento privado de la aplicación y no son accesibles sin root.\n\nLas descargas externas se guardan en el almacenamiento externo de tu dispositivo (por ejemplo, /sdcard o tarjetas micro SD) y puedes acceder a ellas o editarlas directamente con un explorador de archivos. Para la carpeta \"Descargas externas\", recomendamos elegir una carpeta vacía específicamente para descargas de canciones, ya que OuterTune podría modificar o eliminar archivos de esa carpeta.\n\nLas carpetas de importación adicionales son de solo lectura y se usan para cargar canciones adicionales. OuterTune nunca modificará ni eliminará los archivos de estas carpetas. Puede seleccionarlas en la sección avanzada.\n\nAl borrar las descargas, solo se eliminan las canciones internas. Las descargas externas y las canciones de importación adicional deben eliminarse manualmente, ya sea desde el menú de la canción o con un explorador de archivos.\n\nVolver a escanear las carpetas de descarga: Las descargas de canciones en las carpetas Descargas externas e Importaciones adicionales no se actualizan automáticamente. Si añades, eliminas o modificas archivos manualmente con un explorador de archivos, es posible que tengas que volver a escanear las carpetas de descarga para actualizar la base de datos de la aplicación. Esta opción está disponible en la sección avanzada.</string>
+    <string name="dl_storage_tooltip">Las descargas internas se guardan en el almacenamiento privado de la aplicación y no son accesibles sin root.\n\nLas descargas externas se guardan en el almacenamiento externo de tu dispositivo (por ejemplo, /sdcard o tarjetas micro SD) y puedes acceder a ellas o editarlas directamente con un explorador de archivos. Para la carpeta \"Descargas externas\", recomendamos elegir una carpeta vacía específicamente para descargas de canciones, ya que AsterTune podría modificar o eliminar archivos de esa carpeta.\n\nLas carpetas de importación adicionales son de solo lectura y se usan para cargar canciones adicionales. AsterTune nunca modificará ni eliminará los archivos de estas carpetas. Puede seleccionarlas en la sección avanzada.\n\nAl borrar las descargas, solo se eliminan las canciones internas. Las descargas externas y las canciones de importación adicional deben eliminarse manualmente, ya sea desde el menú de la canción o con un explorador de archivos.\n\nVolver a escanear las carpetas de descarga: Las descargas de canciones en las carpetas Descargas externas e Importaciones adicionales no se actualizan automáticamente. Si añades, eliminas o modificas archivos manualmente con un explorador de archivos, es posible que tengas que volver a escanear las carpetas de descarga para actualizar la base de datos de la aplicación. Esta opción está disponible en la sección avanzada.</string>
     <string name="err_invalid_ytm_song">No se pudo reproducir la canción. Solo se puede reproducir el contenido accesible en YouTube Music</string>
     <string name="app_info_title">Información de la aplicación</string>
     <string name="device_info_title">Información del dispositivo</string>

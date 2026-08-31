@@ -1,4 +1,4 @@
-<p><i>OuterTune</i> – це потужний форк <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. Цей додаток є одночасно локальним медіаплеєром та клієнтом YouTube Music.</p>
+<p><i>AsterTune</i> – це потужний форк <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. Цей додаток є одночасно локальним медіаплеєром та клієнтом YouTube Music.</p>
 
 <p><br><b>Функції:</b></p>
 <ul>
@@ -15,6 +15,6 @@
 <p><br><b>Примітка:</b></p>
 <ul>
 <li>Підтримується Android 8 (Oreo) та новіші версії. Хоча додаток може працювати на Android 7.x, ми офіційно не підтримуємо цю версію</li>
-<li>OuterTune перебуває у фазі «стабільної бета-версії». Хоча цей додаток, безумовно, можна використовувати як основний музичний плеєр, майте на увазі, що існує ймовірність помилок, неповних функцій або будь-якої іншої неочікуваної поведінки. Будь ласка, повідомляйте про проблеми на нашій сторінці GitHub!</li>
-<li>Будь ласка, відвідайте нашу вікі-сторінку для отримання додаткової інформації, включаючи поширені запитання, посібники та інструкції: <a href="https://github.com/OuterTune/OuterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/OuterTune/OuterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
+<li>AsterTune перебуває у фазі «стабільної бета-версії». Хоча цей додаток, безумовно, можна використовувати як основний музичний плеєр, майте на увазі, що існує ймовірність помилок, неповних функцій або будь-якої іншої неочікуваної поведінки. Будь ласка, повідомляйте про проблеми на нашій сторінці GitHub!</li>
+<li>Будь ласка, відвідайте нашу вікі-сторінку для отримання додаткової інформації, включаючи поширені запитання, посібники та інструкції: <a href="https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
 </ul>'
