@@ -107,7 +107,7 @@
     <string name="audio_offload">Aktifkan offload</string>
     <string name="audio_offload_description">Gunakan jalur audio offload untuk pemutaran audio. Menonaktifkan ini dapat meningkatkan penggunaan daya, tetapi bisa berguna jika Anda mengalami masalah dengan pemutaran audio atau pasca-pemrosesan</string>
     <string name="keep_alive_title">Cegah sistem mematikan aplikasi</string>
-    <string name="keep_alive_description">Gunakan layanan latar depan persisten untuk mencegah OuterTune ditutup di latar belakang.</string>
+    <string name="keep_alive_description">Gunakan layanan latar depan persisten untuk mencegah AsterTune ditutup di latar belakang.</string>
     <string name="persistent_queue_desc_ot">Pulihkan antrean yang terakhir dibuka saat aplikasi dimulai</string>
     <string name="min_playback_duration">Durasi pemutaran minimal</string>
     <string name="min_playback_duration_description">Durasi minimal sebuah lagu yang harus diputar agar terhitung sebagai \'diputar\'</string>
@@ -188,7 +188,7 @@
     <string name="dl_size_used_cache">Internal: %s digunakan</string>
     <string name="dl_size_used_main">External: %s digunakan</string>
     <string name="dl_size_used_extra">Impor tambahan: %s digunakan</string>
-    <string name="dl_storage_tooltip">Unduhan Internal disimpan di penyimpanan privat aplikasi dan tidak dapat diakses tanpa root. \n\nUnduhan Eksternal disimpan ke penyimpanan eksternal perangkat Anda (misalnya, /sdcard atau kartu micro SD) dan dapat diakses atau diedit secara langsung dengan penjelajah file. Untuk folder Unduhan Eksternal, kami merekomendasikan untuk memilih folder kosong khusus untuk unduhan lagu, karena OuterTune mungkin akan memodifikasi atau menghapus file di folder tersebut. \n\nFolder Impor Tambahan bersifat hanya-baca dan digunakan untuk memuat lagu tambahan. OuterTune tidak akan pernah mengubah atau menghapus file di folder ini. Anda dapat memilih folder ini di bagian lanjutan. \n\nKetika Anda membersihkan unduhan, hanya lagu-lagu internal yang dihapus. Lagu-lagu Unduhan Eksternal dan Impor Tambahan harus dihapus secara manual, baik melalui menu lagu atau secara manual melalui penjelajah file. \n\nPindai ulang folder unduhan: Unduhan lagu di folder Unduhan Eksternal dan Impor Tambahan TIDAK diperbarui secara otomatis. Jika Anda menambahkan, menghapus, atau mengubah file secara manual menggunakan penjelajah file, Anda mungkin perlu memindai ulang folder unduhan untuk memperbarui basis data aplikasi. Opsi ini tersedia di bagian lanjutan.</string>
+    <string name="dl_storage_tooltip">Unduhan Internal disimpan di penyimpanan privat aplikasi dan tidak dapat diakses tanpa root. \n\nUnduhan Eksternal disimpan ke penyimpanan eksternal perangkat Anda (misalnya, /sdcard atau kartu micro SD) dan dapat diakses atau diedit secara langsung dengan penjelajah file. Untuk folder Unduhan Eksternal, kami merekomendasikan untuk memilih folder kosong khusus untuk unduhan lagu, karena AsterTune mungkin akan memodifikasi atau menghapus file di folder tersebut. \n\nFolder Impor Tambahan bersifat hanya-baca dan digunakan untuk memuat lagu tambahan. AsterTune tidak akan pernah mengubah atau menghapus file di folder ini. Anda dapat memilih folder ini di bagian lanjutan. \n\nKetika Anda membersihkan unduhan, hanya lagu-lagu internal yang dihapus. Lagu-lagu Unduhan Eksternal dan Impor Tambahan harus dihapus secara manual, baik melalui menu lagu atau secara manual melalui penjelajah file. \n\nPindai ulang folder unduhan: Unduhan lagu di folder Unduhan Eksternal dan Impor Tambahan TIDAK diperbarui secara otomatis. Jika Anda menambahkan, menghapus, atau mengubah file secara manual menggunakan penjelajah file, Anda mungkin perlu memindai ulang folder unduhan untuk memperbarui basis data aplikasi. Opsi ini tersedia di bagian lanjutan.</string>
     <string name="restart_to_apply_changes">Mulai ulang aplikasi agar perubahan diterapkan</string>
     <string name="pause_remote_listen_history">Jeda berbagi riwayat mendengarkan dengan YouTube Music</string>
     <string name="err_restore_incompatible_database">Basis data tidak kompatibel, tidak dapat dipulihkan</string>
@@ -198,7 +198,7 @@
     <string name="dev_settings_description">Menampilkan pengaturan lanjutan tambahan yang ditujukan untuk penggunaan pengembangan</string>
     <string name="swipe_to_skip_title">Geser horizontal untuk mengganti lagu</string>
     <string name="swipe_to_skip_description">Aktifkan menggeser secara horizontal di pemutar untuk mengganti lagu</string>
-    <string name="oobe_welcome_message">Selamat datang di OuterTune</string>
+    <string name="oobe_welcome_message">Selamat datang di AsterTune</string>
     <string name="oobe_ytm_integration">Integrasi YouTube Music</string>
     <string name="oobe_ytm_integration_description">Akses trek favoritmu dengan mulus</string>
     <string name="oobe_ad_free_exp">Tanpa iklan YouTube</string>
@@ -208,7 +208,7 @@
     <string name="oobe_cross_platform_sync">Sinkronisasi Lintas Platform</string>
     <string name="oobe_cross_platform_sync_description">Musik Anda tetap sinkron di semua perangkat</string>
     <string name="oobe_use_backup">Saya punya cadangan</string>
-    <string name="oobe_interface_subtitle">Sesuaikan tampilan OuterTune dan konten apa yang ingin Anda lihat.</string>
+    <string name="oobe_interface_subtitle">Sesuaikan tampilan AsterTune dan konten apa yang ingin Anda lihat.</string>
     <string name="oobe_ytm_logon_title">Akun</string>
     <string name="oobe_ytm_logon_subtitle">Masuk ke akun YouTube Music Anda untuk menyinkronkan dan mengakses konten privat akun. Ini bersifat opsional.</string>
     <string name="oobe_local_media_title">Media lokal</string>
@@ -216,7 +216,7 @@
     <string name="oobe_downloads_title">Unduhan Lagu</string>
     <string name="oobe_downloads_subtitle">Pilih folder untuk menyimpan lagu yang sudah diunduh.</string>
     <string name="oobe_complete_title">Semua sudah siap!</string>
-    <string name="oobe_complete">OuterTune siap dipakai. Jelajahi musik, temukan lagu baru, dan rasakan pengalaman serunya!</string>
+    <string name="oobe_complete">AsterTune siap dipakai. Jelajahi musik, temukan lagu baru, dan rasakan pengalaman serunya!</string>
     <string name="import_failed_songs">Gagal mengimpor</string>
     <string name="import_success_songs">Berhasil diimpor</string>
     <string name="m3u_export">Ekspor sebagai file M3U</string>
@@ -234,7 +234,7 @@
     <string name="speed_medium">Sedang</string>
     <string name="speed_fast">Cepat</string>
     <string name="speed_very_fast">Sangat cepat</string>
-    <string name="attrib_zhuang">Zion Huang untuk OuterTune</string>
+    <string name="attrib_zhuang">Zion Huang untuk AsterTune</string>
     <string name="special_thanks">Ucapan terima kasih</string>
     <string name="ffmpeg_lgpl">Perangkat lunak ini menggunakan pustaka dari proyek FFmpeg di bawah lisensi LGPLv2.1</string>
     <string name="seek_increment">Loncat waktu</string>

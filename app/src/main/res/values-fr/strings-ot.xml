@@ -55,8 +55,8 @@
     <string name="import_failed_songs">Impossible d\'importer :</string>
     <string name="experimental_settings_title">Expérimental</string>
     <string name="dev_settings_title">Activer les paramètres du développeur</string>
-    <string name="oobe_welcome_message">Bienvenue sur OuterTune</string>
-    <string name="oobe_complete">OuterTune est configuré et prêt à l\'emploi. Explorez votre musique, découvrez de nouveaux morceaux et profitez pleinement de l\'expérience !</string>
+    <string name="oobe_welcome_message">Bienvenue sur AsterTune</string>
+    <string name="oobe_complete">AsterTune est configuré et prêt à l\'emploi. Explorez votre musique, découvrez de nouveaux morceaux et profitez pleinement de l\'expérience !</string>
     <string name="action_next">Suivant</string>
     <string name="action_skip">Passer</string>
     <string name="info">Information</string>
@@ -81,7 +81,7 @@
     <string name="persistent_queue_desc_ot">Restaurer les précédentes files d\'attente ouvertes au démarrage de l\'application</string>
     <string name="lyrics_multiline_title">Lire les paroles sur plusieurs lignes</string>
     <string name="m3u_import_playlist">Importer une playlist (m3u)</string>
-    <string name="keep_alive_description">Utilisez un service de premier plan persistant pour empêcher la fermeture d\'OuterTune en arrière-plan</string>
+    <string name="keep_alive_description">Utilisez un service de premier plan persistant pour empêcher la fermeture d\'AsterTune en arrière-plan</string>
     <string name="lyrics_multiline_description">Traitez toutes les lignes entre les points de synchronisation comme un seul texte lyrique</string>
     <string name="lyrics_trim_title">Supprimer les espaces autour des paroles</string>
     <string name="local_library_enable_description">La désactivation masquera la bibliothèque locale de l\'application</string>
@@ -198,7 +198,7 @@
     <string name="oobe_downloads_subtitle">Choisissez un dossier dans lequel les titres téléchargés seront enregistrés.</string>
     <string name="oobe_complete_title">Vous êtes prêt !</string>
     <string name="scan_paths_description">Sélectionnez les dossiers sur votre stockage local pour rechercher des titres</string>
-    <string name="oobe_interface_subtitle">Personnalisez l\'apparence d\'OuterTune et le contenu qu\'il vous montre.</string>
+    <string name="oobe_interface_subtitle">Personnalisez l\'apparence d\'AsterTune et le contenu qu\'il vous montre.</string>
     <string name="scanner_rejected_dir">Sélection non valide. Un dossier d\'analyse ne peut pas être un sous-répertoire du dossier de téléchargement, ni le dossier de téléchargement lui-même.</string>
     <string name="clear_downloads_confirm">Voulez-vous vraiment supprimer tous les téléchargements ? Seuls les téléchargements du dossier principal seront supprimés.</string>
     <string name="oobe_ad_free_exp_description">Profitez d\'une lecture de musique ininterrompue</string>
@@ -215,7 +215,7 @@
     <string name="dl_size_used_cache">Interne : %s utilisés</string>
     <string name="dl_size_used_main">Externe : %s utilisés</string>
     <string name="dl_size_used_extra">Importations supplémentaires : %s utilisés</string>
-    <string name="dl_storage_tooltip">"Les téléchargements internes sont enregistrés dans le stockage privé de l\'application et ne sont pas accessibles sans root.\n\nLes téléchargements externes sont enregistrés sur le stockage externe de votre appareil (par exemple, une carte SD ou une carte micro SD) et sont accessibles et modifiables directement via un explorateur de fichiers. Pour le dossier « Téléchargements externes », nous vous recommandons de choisir un dossier vide spécifiquement destiné aux téléchargements de chansons, car OuterTune peut modifier ou supprimer des fichiers de ce dossier.\n\nLes dossiers « Importation supplémentaire » sont en lecture seule et servent au chargement de chansons supplémentaires. OuterTune ne modifiera ni ne supprimera jamais les fichiers de ces dossiers. Vous pouvez sélectionner ces dossiers dans la section avancée.\n\nLorsque vous effacez les téléchargements, seules les chansons internes sont supprimées. Les téléchargements externes et les chansons « Importation supplémentaire » doivent être supprimés manuellement, soit via le menu de la chanson, soit via un explorateur de fichiers.\n\nRéanalyser les dossiers de téléchargement : Les téléchargements de chansons dans les dossiers « Téléchargements externes » et « Importation supplémentaire » ne sont PAS mis à jour automatiquement. Si vous ajoutez, supprimez ou modifiez manuellement des fichiers à l\'aide d\'un explorateur de fichiers, vous devrez peut-être réanalyser les dossiers de téléchargement pour mettre à jour la base de données de l\'application.  Cette option est disponible dans la section avancée."</string>
+    <string name="dl_storage_tooltip">"Les téléchargements internes sont enregistrés dans le stockage privé de l\'application et ne sont pas accessibles sans root.\n\nLes téléchargements externes sont enregistrés sur le stockage externe de votre appareil (par exemple, une carte SD ou une carte micro SD) et sont accessibles et modifiables directement via un explorateur de fichiers. Pour le dossier « Téléchargements externes », nous vous recommandons de choisir un dossier vide spécifiquement destiné aux téléchargements de chansons, car AsterTune peut modifier ou supprimer des fichiers de ce dossier.\n\nLes dossiers « Importation supplémentaire » sont en lecture seule et servent au chargement de chansons supplémentaires. AsterTune ne modifiera ni ne supprimera jamais les fichiers de ces dossiers. Vous pouvez sélectionner ces dossiers dans la section avancée.\n\nLorsque vous effacez les téléchargements, seules les chansons internes sont supprimées. Les téléchargements externes et les chansons « Importation supplémentaire » doivent être supprimés manuellement, soit via le menu de la chanson, soit via un explorateur de fichiers.\n\nRéanalyser les dossiers de téléchargement : Les téléchargements de chansons dans les dossiers « Téléchargements externes » et « Importation supplémentaire » ne sont PAS mis à jour automatiquement. Si vous ajoutez, supprimez ou modifiez manuellement des fichiers à l\'aide d\'un explorateur de fichiers, vous devrez peut-être réanalyser les dossiers de téléchargement pour mettre à jour la base de données de l\'application.  Cette option est disponible dans la section avancée."</string>
     <string name="scanner_sensitivity_L0">Prendre le premier résultat fourni par YouTube lorsque la recherche sur YouTube est activée, sinon faire correspondre le titre.</string>
     <string name="app_info_title">Informations sur l\'application</string>
     <string name="device_info_title">Informations sur l\'appareil</string>

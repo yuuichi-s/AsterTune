@@ -18,7 +18,7 @@
     <string name="import_failed_songs">Não foi possível importar</string>
     <string name="scanner_sensitivity_L3">Corresponder título, artistas, e álbuns</string>
     <string name="scanner_type_taglib">Usar o extrator de metadados TagLib integrado</string>
-    <string name="oobe_welcome_message">Boas vindas ao OuterTune</string>
+    <string name="oobe_welcome_message">Boas vindas ao AsterTune</string>
     <string name="folders">Pastas</string>
     <string name="local_history">Local</string>
     <string name="remote_history">Remoto</string>
@@ -53,7 +53,7 @@
     <string name="wifi_only">Somente no Wi-Fi</string>
     <string name="grp_audio">Áudio</string>
     <string name="keep_alive_title">Evitar encerramento pelo sistema</string>
-    <string name="keep_alive_description">Usar um serviço de primeiro plano persistente para evitar que o OuterTune seja encerrado em segundo plano</string>
+    <string name="keep_alive_description">Usar um serviço de primeiro plano persistente para evitar que o AsterTune seja encerrado em segundo plano</string>
     <string name="persistent_queue_desc_ot">Restaurar fila(s) aberta(s) previamente ao iniciar o app</string>
     <string name="min_playback_duration">Duração mínima de reprodução</string>
     <string name="grp_proxy">Proxy</string>
@@ -83,7 +83,7 @@
     <string name="experimental_settings_title">Experimentais</string>
     <string name="dev_settings_title">Ativar configurações de desenvolvedor</string>
     <string name="dev_settings_description">Revela configurações avançadas adicionais utilizadas no desenvolvimento</string>
-    <string name="oobe_complete">O OuterTune está configurado e pronto pra ser usado. Explore suas músicas, descubra novas faixas, e aproveite a experiência!</string>
+    <string name="oobe_complete">O AsterTune está configurado e pronto pra ser usado. Explore suas músicas, descubra novas faixas, e aproveite a experiência!</string>
     <string name="oobe_use_backup">Eu tenho um backup</string>
     <string name="action_back">Voltar</string>
     <string name="action_next">Avançar</string>
@@ -207,13 +207,13 @@
     <string name="dl_oobe_tooltip">As músicas são baixadas para o armazenamento interno do app. Para baixar músicas para o armazenamento externo, você precisa selecionar uma pasta primeiro. Você pode adicionar, alterar, e remover pastas, ou migrar os downloads internos para downloads externos mais tarde nas configurações.</string>
     <string name="oobe_ytm_integration">Integração com o YouTube Music</string>
     <string name="oobe_ytm_integration_description">Acesse as suas músicas favoritas</string>
-    <string name="oobe_interface_subtitle">Customize como o OuterTune parece e que conteúdo ele te mostra.</string>
+    <string name="oobe_interface_subtitle">Customize como o AsterTune parece e que conteúdo ele te mostra.</string>
     <string name="oobe_local_music_support_description">Toque seus arquivos de música (ex: MP3, OGG, FLAC, etc.)</string>
     <string name="oobe_ytm_logon_title">Conta</string>
     <string name="oobe_downloads_title">Downloads de músicas</string>
     <string name="dl_size_used_cache">Interno: %s usados</string>
     <string name="dl_size_used_extra">Importados extra: %s usados</string>
-    <string name="dl_storage_tooltip">Os downloads internos são salvos no armazenamento privado do app, e não são acessíveis sem root.\n\nOs downloads externos são salvos no armazenamento externo do seu dispositivo (ex: /sdcard ou em cartões micro SD) e podem serem acessados e editados diretamente com um explorador de arquivos. Para a pasta de downloads externos, recomendamos selecionar uma pasta vazia especificamente para baixar músicas, já que o OuterTune pode modificar ou apagar arquivos nesta pasta.\n\nPastas de importações extra são somente de leitura, e são usadas para carregar músicas adicionais. O OuterTune nunca alterará ou apagará arquivos nestas pastas. Pode selecionar uma dessas pastas na seção avançada.\n\nAo apagar downloads, somente as músicas internas serão apagadas. Os downloads externos e as importações extra devem serem apagados manualmente, ou pelo menu da música ou manualmente usando um explorador de arquivos.\n\nPastas de busca de downloads: Downloads de músicas externos e importações extra NÃO são atualizados automaticamente. Se você adicionar, remover, ou alterar arquivos manualmente usando um explorador de arquivos, você precisará buscar as pastas de downloads novamente para atualizar o banco de dados do app. Esta opção está disponível na seção avançada.</string>
+    <string name="dl_storage_tooltip">Os downloads internos são salvos no armazenamento privado do app, e não são acessíveis sem root.\n\nOs downloads externos são salvos no armazenamento externo do seu dispositivo (ex: /sdcard ou em cartões micro SD) e podem serem acessados e editados diretamente com um explorador de arquivos. Para a pasta de downloads externos, recomendamos selecionar uma pasta vazia especificamente para baixar músicas, já que o AsterTune pode modificar ou apagar arquivos nesta pasta.\n\nPastas de importações extra são somente de leitura, e são usadas para carregar músicas adicionais. O AsterTune nunca alterará ou apagará arquivos nestas pastas. Pode selecionar uma dessas pastas na seção avançada.\n\nAo apagar downloads, somente as músicas internas serão apagadas. Os downloads externos e as importações extra devem serem apagados manualmente, ou pelo menu da música ou manualmente usando um explorador de arquivos.\n\nPastas de busca de downloads: Downloads de músicas externos e importações extra NÃO são atualizados automaticamente. Se você adicionar, remover, ou alterar arquivos manualmente usando um explorador de arquivos, você precisará buscar as pastas de downloads novamente para atualizar o banco de dados do app. Esta opção está disponível na seção avançada.</string>
     <string name="dl_calculate_size">Toque para calcular o tamanho dos downloads</string>
     <string name="dl_size_used_main">Externo: %s usados</string>
     <string name="scanner_sensitivity_L0">Usar o primeiro resultado fornecido pelo YouTube quando a pesquisa no YouTube está ativada, caso contrário corresponder o título</string>

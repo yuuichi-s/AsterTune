@@ -102,7 +102,7 @@
     <string name="audio_offload">Kasuta põhiprotsessorivälist töötlust</string>
     <string name="audio_offload_description">Kasuta heli taasesitamiseks põhiprotsessorivälist töötlust. Selle funktsiooni aktiveerimine võib vähendada energiatarbimist, kuid võib põhjustada probleeme heli taasesitamisel või järeltöötlemisel. See eelistus ei toimi mittetoetatud koodekite ja seadmete puhul</string>
     <string name="keep_alive_title">Keela operatsioonisüsteemil rakenduse sulgemine</string>
-    <string name="keep_alive_description">Vältimaks OuterTune\'i sulgemist taustal kasuta püsivat esiplaaniteenust</string>
+    <string name="keep_alive_description">Vältimaks AsterTune\'i sulgemist taustal kasuta püsivat esiplaaniteenust</string>
     <string name="persistent_queue_desc_ot">Rakenduse käivitamisel taasta eelmised avatud esitusjärjekorrad</string>
     <string name="min_playback_duration">Minimaalne taasesitusaeg</string>
     <string name="min_playback_duration_description">Minimaalne arv loost mis peab olema esitatud, et see saaks märgitud kui „esitatud“</string>

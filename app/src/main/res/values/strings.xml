@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- These strings are the upstream InnerTune strings. Do not add strings from OuterTune features here. InnerTune wording is replaced with OuterTune.
+<!-- These strings are the upstream InnerTune strings. Do not add strings from AsterTune features here. InnerTune wording is replaced with AsterTune.
 We recycle translations from upstream, they are pulled periodically. -->
 
 <resources>
@@ -332,7 +332,7 @@ We recycle translations from upstream, they are pulled periodically. -->
     <string name="restore_failed">Failed to restore backup</string>
 
     <string name="discord_integration">Discord Integration</string>
-    <string name="discord_information">OuterTune uses the KizzyRPC library to set your Discord account\'s status. This involves using the Discord Gateway connection, which may be considered a violation of Discord\'s TOS. However, there are no known cases of user accounts being suspended for this reason. Use at your own risk.\n\nOuterTune will only extract your token, and everything else is stored locally.</string>
+    <string name="discord_information">AsterTune uses the KizzyRPC library to set your Discord account\'s status. This involves using the Discord Gateway connection, which may be considered a violation of Discord\'s TOS. However, there are no known cases of user accounts being suspended for this reason. Use at your own risk.\n\nAsterTune will only extract your token, and everything else is stored locally.</string>
     <string name="dismiss">Dismiss</string>
     <string name="options">Options</string>
     <string name="preview">Preview</string>

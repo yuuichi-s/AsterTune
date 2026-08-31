@@ -1,0 +1,315 @@
+/*
+ * Copyright (C) 2024 z-huang/InnerTune
+ * Copyright (C) 2025 OuterTune Project
+ * Copyright (C) 2026 AsterTune Project
+ *
+ * SPDX-License-Identifier: GPL-3.0
+ *
+ * For any other attributions, refer to the git commit history
+ */
+
+package io.github.yuuichi_s.astertune.ui.component
+
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.navigation.NavController
+import io.github.yuuichi_s.astertune.db.entities.Album
+import io.github.yuuichi_s.astertune.db.entities.Artist
+import io.github.yuuichi_s.astertune.db.entities.Playlist
+import io.github.yuuichi_s.astertune.ui.component.items.AlbumGridItem
+import io.github.yuuichi_s.astertune.ui.component.items.AlbumListItem
+import io.github.yuuichi_s.astertune.ui.component.items.ArtistGridItem
+import io.github.yuuichi_s.astertune.ui.component.items.ArtistListItem
+import io.github.yuuichi_s.astertune.ui.component.items.PlaylistGridItem
+import io.github.yuuichi_s.astertune.ui.component.items.PlaylistListItem
+import io.github.yuuichi_s.astertune.ui.menu.AlbumMenu
+import io.github.yuuichi_s.astertune.ui.menu.ArtistMenu
+import io.github.yuuichi_s.astertune.ui.menu.MenuState
+import io.github.yuuichi_s.astertune.ui.menu.PlaylistMenu
+import io.github.yuuichi_s.astertune.ui.menu.YouTubePlaylistMenu
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.WatchEndpoint
+import kotlinx.coroutines.CoroutineScope
+
+@Composable
+fun LibraryArtistListItem(
+    navController: NavController,
+    menuState: MenuState,
+    coroutineScope: CoroutineScope,
+    artist: Artist,
+    modifier: Modifier = Modifier
+) = ArtistListItem(
+    artist = artist,
+    trailingContent = {
+        val haptic = LocalHapticFeedback.current
+        IconButton(
+            onClick = {
+                menuState.show {
+                    ArtistMenu(
+                        originalArtist = artist,
+                        coroutineScope = coroutineScope,
+                        onDismiss = menuState::dismiss
+                    )
+                }
+                haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+            }
+        ) {
+            Icon(
+                Icons.Rounded.MoreVert,
+                contentDescription = null
+            )
+        }
+    },
+    modifier = modifier
+        .fillMaxWidth()
+        .clickable {
+            navController.navigate("artist/${artist.id}")
+        }
+)
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LibraryArtistGridItem(
+    navController: NavController,
+    menuState: MenuState,
+    coroutineScope: CoroutineScope,
+    artist: Artist,
+    modifier: Modifier = Modifier
+) = ArtistGridItem(
+    artist = artist,
+    fillMaxWidth = true,
+    modifier = modifier
+        .fillMaxWidth()
+        .combinedClickable(
+            onClick = {
+                navController.navigate("artist/${artist.id}")
+            },
+            onLongClick = {
+                menuState.show {
+                    ArtistMenu(
+                        originalArtist = artist,
+                        coroutineScope = coroutineScope,
+                        onDismiss = menuState::dismiss
+                    )
+                }
+            }
+        )
+)
+
+@Composable
+fun LibraryAlbumListItem(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    menuState: MenuState,
+    album: Album,
+    isActive: Boolean = false,
+    isPlaying: Boolean = false
+) = AlbumListItem(
+    album = album,
+    isActive = isActive,
+    isPlaying = isPlaying,
+    trailingContent = {
+        val haptic = LocalHapticFeedback.current
+        IconButton(
+            onClick = {
+                menuState.show {
+                    AlbumMenu(
+                        originalAlbum = album,
+                        navController = navController,
+                        onDismiss = menuState::dismiss
+                    )
+                }
+                haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+            }
+        ) {
+            Icon(
+                Icons.Rounded.MoreVert,
+                contentDescription = null
+            )
+        }
+    },
+    modifier = modifier
+        .fillMaxWidth()
+        .clickable {
+            navController.navigate("album/${album.id}")
+        }
+)
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LibraryAlbumGridItem(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    menuState: MenuState,
+    coroutineScope: CoroutineScope,
+    album: Album,
+    isActive: Boolean = false,
+    isPlaying: Boolean = false
+) = AlbumGridItem(
+    album = album,
+    isActive = isActive,
+    isPlaying = isPlaying,
+    coroutineScope = coroutineScope,
+    fillMaxWidth = true,
+    modifier = modifier
+        .fillMaxWidth()
+        .combinedClickable(
+            onClick = {
+                navController.navigate("album/${album.id}")
+            },
+            onLongClick = {
+                menuState.show {
+                    AlbumMenu(
+                        originalAlbum = album,
+                        navController = navController,
+                        onDismiss = menuState::dismiss
+                    )
+                }
+            }
+        )
+)
+
+@Composable
+fun LibraryPlaylistListItem(
+    navController: NavController,
+    menuState: MenuState,
+    coroutineScope: CoroutineScope,
+    playlist: Playlist,
+    modifier: Modifier = Modifier
+) = PlaylistListItem(
+    playlist = playlist,
+    trailingContent = {
+        val haptic = LocalHapticFeedback.current
+        IconButton(
+            onClick = {
+                menuState.show {
+                    // TODO: investigate why song count is needed. Remove if not needed
+                    if (playlist.playlist.isEditable || playlist.playlist.isLocal || playlist.playlist.browseId == null || playlist.songCount != 0) {
+                        PlaylistMenu(
+                            navController = navController,
+                            playlist = playlist,
+                            coroutineScope = coroutineScope,
+                            onDismiss = menuState::dismiss
+                        )
+                    } else {
+                        val browseId = playlist.playlist.browseId
+                        YouTubePlaylistMenu(
+                            navController = navController,
+                            playlist = PlaylistItem(
+                                id = browseId,
+                                title = playlist.playlist.name,
+                                author = null,
+                                songCountText = null,
+                                thumbnail = null,
+                                playEndpoint = WatchEndpoint(
+                                    playlistId = browseId,
+                                    params = playlist.playlist.playEndpointParams
+                                ),
+                                shuffleEndpoint = WatchEndpoint(
+                                    playlistId = browseId,
+                                    params = playlist.playlist.shuffleEndpointParams
+                                ),
+                                radioEndpoint = WatchEndpoint(
+                                    playlistId = "RDAMPL$browseId",
+                                    params = playlist.playlist.radioEndpointParams
+                                ),
+                                isEditable = false
+                            ),
+                            coroutineScope = coroutineScope,
+                            onDismiss = menuState::dismiss
+                        )
+                    }
+                }
+                haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+            }
+        ) {
+            Icon(
+                Icons.Rounded.MoreVert,
+                contentDescription = null
+            )
+        }
+    },
+    modifier = modifier
+        .fillMaxWidth()
+        .clickable {
+            if (playlist.playlist.isEditable || playlist.playlist.isLocal || playlist.playlist.browseId == null || playlist.songCount != 0) {
+                navController.navigate("local_playlist/${playlist.id}")
+            } else {
+                navController.navigate("online_playlist/${playlist.playlist.browseId}")
+            }
+        }
+)
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LibraryPlaylistGridItem(
+    navController: NavController,
+    menuState: MenuState,
+    coroutineScope: CoroutineScope,
+    playlist: Playlist,
+    modifier: Modifier = Modifier
+) = PlaylistGridItem(
+    playlist = playlist,
+    fillMaxWidth = true,
+    modifier = modifier
+        .fillMaxWidth()
+        .combinedClickable(
+            onClick = {
+                if (playlist.playlist.isEditable || playlist.playlist.isLocal || playlist.playlist.browseId == null || playlist.songCount != 0) {
+                    navController.navigate("local_playlist/${playlist.id}")
+                } else {
+                    navController.navigate("online_playlist/${playlist.playlist.browseId}")
+                }
+            },
+            onLongClick = {
+                menuState.show {
+                    if (playlist.playlist.isEditable || playlist.songCount != 0) {
+                        PlaylistMenu(
+                            navController = navController,
+                            playlist = playlist,
+                            coroutineScope = coroutineScope,
+                            onDismiss = menuState::dismiss
+                        )
+                    } else {
+                        playlist.playlist.browseId?.let { browseId ->
+                            YouTubePlaylistMenu(
+                                navController = navController,
+                                playlist = PlaylistItem(
+                                    id = browseId,
+                                    title = playlist.playlist.name,
+                                    author = null,
+                                    songCountText = null,
+                                    thumbnail = null,
+                                    playEndpoint = WatchEndpoint(
+                                        playlistId = browseId,
+                                        params = playlist.playlist.playEndpointParams
+                                    ),
+                                    shuffleEndpoint = WatchEndpoint(
+                                        playlistId = browseId,
+                                        params = playlist.playlist.shuffleEndpointParams
+                                    ),
+                                    radioEndpoint = WatchEndpoint(
+                                        playlistId = "RDAMPL$browseId",
+                                        params = playlist.playlist.radioEndpointParams
+                                    ),
+                                    isEditable = false
+                                ),
+                                coroutineScope = coroutineScope,
+                                onDismiss = menuState::dismiss
+                            )
+                        }
+                    }
+                }
+            }
+        )
+)

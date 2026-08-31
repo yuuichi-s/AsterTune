@@ -89,7 +89,7 @@
     <string name="audio_offload_description">از مسیر صوتی آفلود برای پخش صدا استفاده کنید. غیرفعال کردن این گزینه ممکن است مصرف باتری را افزایش دهد، اما اگر در پخش صدا یا پردازش پس از آن با مشکل مواجه شدید، می‌تواند مفید باشد</string>
     <string name="audio_offload">فعالسازی آفلود</string>
     <string name="keep_alive_title">جلوگیری از بسته شدن برنامه توسط سیستم</string>
-    <string name="keep_alive_description">برای جلوگیری از بسته شدن OuterTune در پس‌زمینه، از یک سرویس پیش‌ زمینه‌ پایدار استفاده کنید.</string>
+    <string name="keep_alive_description">برای جلوگیری از بسته شدن AsterTune در پس‌زمینه، از یک سرویس پیش‌ زمینه‌ پایدار استفاده کنید.</string>
     <string name="persistent_queue_desc_ot">بازیابی صف(های) باز قبلی هنگام شروع برنامه</string>
     <string name="min_playback_duration">حداقل مدت زمان پخش</string>
     <string name="min_playback_duration_description">حداقل مقدار آهنگی که باید پخش شود تا «پخش شده» محسوب شود</string>
@@ -170,7 +170,7 @@
     <string name="dl_size_used_cache">داخلی: %s استفاده شده</string>
     <string name="dl_size_used_main">خارجی: %s استفاده شده</string>
     <string name="dl_size_used_extra">واردات اضافی: %s استفاده شده</string>
-    <string name="dl_storage_tooltip">دانلودهای داخلی در حافظه خصوصی برنامه ذخیره می‌شوند و بدون روت قابل دسترسی نیستند.\n\nدانلودهای خارجی در حافظه خارجی دستگاه شما (مثلاً /sdcard یا کارت‌های micro SD) ذخیره می‌شوند و می‌توان مستقیماً با یک فایل اکسپلورر به آنها دسترسی یا ویرایش کرد. برای پوشه دانلودهای خارجی، توصیه می‌کنیم یک پوشه خالی مخصوص دانلود آهنگ انتخاب کنید، زیرا OuterTune ممکن است فایل‌های موجود در آن پوشه را تغییر دهد یا حذف کند.\n\nپوشه‌های Extra Import فقط خواندنی هستند و برای بارگذاری آهنگ‌های اضافی استفاده می‌شوند. OuterTune هرگز فایل‌های این پوشه‌ها را تغییر یا حذف نمی‌کند. می‌توانید این پوشه‌ها را در بخش پیشرفته انتخاب کنید.\n\nهنگامی که دانلودها را پاک می‌کنید، فقط آهنگ‌های داخلی حذف می‌شوند. دانلودهای خارجی و آهنگ‌های Extra Import باید به صورت دستی، یا از طریق منوی آهنگ یا به صورت دستی از طریق فایل اکسپلورر، حذف شوند.\n\nاسکن مجدد پوشه‌های دانلود: دانلودهای آهنگ در پوشه‌های External Downloads و Extra Imports به طور خودکار به‌روزرسانی نمی‌شوند. اگر با استفاده از یک فایل اکسپلورر، فایل‌ها را به صورت دستی اضافه، حذف یا تغییر دهید، ممکن است لازم باشد پوشه‌های دانلود را دوباره اسکن کنید تا پایگاه داده برنامه به‌روزرسانی شود. این گزینه در بخش پیشرفته موجود است.</string>
+    <string name="dl_storage_tooltip">دانلودهای داخلی در حافظه خصوصی برنامه ذخیره می‌شوند و بدون روت قابل دسترسی نیستند.\n\nدانلودهای خارجی در حافظه خارجی دستگاه شما (مثلاً /sdcard یا کارت‌های micro SD) ذخیره می‌شوند و می‌توان مستقیماً با یک فایل اکسپلورر به آنها دسترسی یا ویرایش کرد. برای پوشه دانلودهای خارجی، توصیه می‌کنیم یک پوشه خالی مخصوص دانلود آهنگ انتخاب کنید، زیرا AsterTune ممکن است فایل‌های موجود در آن پوشه را تغییر دهد یا حذف کند.\n\nپوشه‌های Extra Import فقط خواندنی هستند و برای بارگذاری آهنگ‌های اضافی استفاده می‌شوند. AsterTune هرگز فایل‌های این پوشه‌ها را تغییر یا حذف نمی‌کند. می‌توانید این پوشه‌ها را در بخش پیشرفته انتخاب کنید.\n\nهنگامی که دانلودها را پاک می‌کنید، فقط آهنگ‌های داخلی حذف می‌شوند. دانلودهای خارجی و آهنگ‌های Extra Import باید به صورت دستی، یا از طریق منوی آهنگ یا به صورت دستی از طریق فایل اکسپلورر، حذف شوند.\n\nاسکن مجدد پوشه‌های دانلود: دانلودهای آهنگ در پوشه‌های External Downloads و Extra Imports به طور خودکار به‌روزرسانی نمی‌شوند. اگر با استفاده از یک فایل اکسپلورر، فایل‌ها را به صورت دستی اضافه، حذف یا تغییر دهید، ممکن است لازم باشد پوشه‌های دانلود را دوباره اسکن کنید تا پایگاه داده برنامه به‌روزرسانی شود. این گزینه در بخش پیشرفته موجود است.</string>
     <string name="restart_to_apply_changes">برای اعمال تغییرات، راه‌اندازی مجدد برنامه لازم است</string>
     <string name="pause_remote_listen_history">اشتراک‌گذاری سابقه گوش دادن با YouTube Music را متوقف کند</string>
     <string name="import_innertune_tooltip">بازیابی پشتیبان‌های InnerTune پشتیبانی می‌شود، البته به دلیل محدودیت‌های فنی، احتمال ناهنجاری وجود دارد</string>
@@ -179,7 +179,7 @@
     <string name="dev_settings_description">تنظیمات پیشرفته اضافی را که برای استفاده در توسعه در نظر گرفته شده است، آشکار می‌کند</string>
     <string name="swipe_to_skip_title">برای تغییر آهنگ، انگشت خود را به صورت افقی بکشید</string>
     <string name="swipe_to_skip_description">فعال کردن کشیدن انگشت به صورت افقی در پخش‌کننده برای تغییر آهنگ‌ها</string>
-    <string name="oobe_welcome_message">به OuterTune خوش آمدید</string>
+    <string name="oobe_welcome_message">به AsterTune خوش آمدید</string>
     <string name="oobe_ytm_integration">ادغام موسیقی یوتیوب</string>
     <string name="oobe_ytm_integration_description">به آهنگ‌های مورد علاقه‌تان به طور یکپارچه دسترسی داشته باشید</string>
     <string name="oobe_ad_free_exp">بدون تبلیغات YouTube</string>
@@ -189,7 +189,7 @@
     <string name="oobe_cross_platform_sync">همگام‌ سازی بین پلتفرمی</string>
     <string name="oobe_cross_platform_sync_description">موسیقی خود را در دستگاه‌های مختلف با هماهنگی پخش کنید</string>
     <string name="oobe_use_backup">من یک نسخه پشتیبان دارم</string>
-    <string name="oobe_interface_subtitle">ظاهر OuterTune و محتوایی که به شما نشان می‌دهد را سفارشی کنید.</string>
+    <string name="oobe_interface_subtitle">ظاهر AsterTune و محتوایی که به شما نشان می‌دهد را سفارشی کنید.</string>
     <string name="oobe_ytm_logon_title">حساب کاربری</string>
     <string name="oobe_ytm_logon_subtitle">برای همگام‌ سازی و دسترسی به محتوای حساب خصوصی، وارد حساب YouTube Music خود شوید. این گزینه اختیاری است.</string>
     <string name="oobe_local_media_title">رسانه محلی</string>
@@ -197,7 +197,7 @@
     <string name="oobe_downloads_title">دانلود آهنگ</string>
     <string name="oobe_downloads_subtitle">پوشه‌ ای را انتخاب کنید که آهنگ‌های دانلود شده در آن ذخیره شوند.</string>
     <string name="oobe_complete_title">همه چیز آماده است!</string>
-    <string name="oobe_complete">OuterTune تنظیم و آماده استفاده است. موسیقی خود را کاوش کنید، آهنگ‌های جدید کشف کنید و از این تجربه لذت ببرید!</string>
+    <string name="oobe_complete">AsterTune تنظیم و آماده استفاده است. موسیقی خود را کاوش کنید، آهنگ‌های جدید کشف کنید و از این تجربه لذت ببرید!</string>
     <string name="import_failed_songs">وارد نشد</string>
     <string name="import_success_songs">با موفقیت وارد شد</string>
     <string name="m3u_export">استخراج به عنوان فایل M3U</string>

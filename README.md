@@ -1,28 +1,51 @@
-# OuterTune
+# AsterTune
 
-[![OuterTune app icon](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/outertune.webp)](https://github.com/yuuichi-s/OuterTune/blob/dev/assets/outertune.webp)
+[![AsterTune app icon](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png)](https://github.com/yuuichi-s/AsterTune/blob/dev/assets/astertune.png)
 
 
-[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/OuterTune?include_prereleases)](https://github.com/yuuichi-s/OuterTune/releases)
-[![License](https://img.shields.io/github/license/yuuichi-s/OuterTune)](https://www.gnu.org/licenses/gpl-3.0)
+[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
+[![License](https://img.shields.io/github/license/yuuichi-s/AsterTune)](https://www.gnu.org/licenses/gpl-3.0)
 
 [English](README.md) | [日本語](README_ja.md)
 
 A Material 3 YouTube Music client & local music player for Android
 
 > [!NOTE]
-> This is a fork based on [OuterTune/OuterTune](https://github.com/OuterTune/OuterTune).
->
-> - No distribution channel is available at this time, but one may be provided in the future.
->
-> If you would like to use it, you can build the app yourself. For most people, we recommend the `core` build:
->
-> ```bash
-> # core debug build
-> ./gradlew assembleCoreDebug
-> ```
->
-> For step-by-step instructions, see [CONTRIBUTING.md](https://github.com/yuuichi-s/OuterTune/blob/dev/CONTRIBUTING.md).
+> AsterTune is currently in preparation. This README is a draft and will be rewritten once the migration is complete.
+
+## About This Fork
+
+AsterTune is a fork of [OuterTune/OuterTune](https://github.com/OuterTune/OuterTune).
+
+To facilitate APK distribution, we have changed the application and repository names from OuterTune to AsterTune.
+
+We will release the APK once maintenance work is complete.
+
+If you want to use the app right away, please build it yourself.
+For most users, we recommend the `core` build.
+If you want to play ALAC (.m4a) files, we recommend the `full` build.
+
+```bash
+# core debug build
+./gradlew assembleCoreDebug
+
+# full debug build
+./gradlew assembleFullDebug
+```
+
+For detailed instructions, please see [CONTRIBUTING.md](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md).
+
+### Migrating Data from OuterTune to AsterTune
+
+Since this is now a separate app, data will not be migrated automatically.
+Please manually back up and restore your data.
+
+The backup includes the library database and app settings.
+It does not include downloaded audio files, so you will need to download them again after restoration.
+
+1. In OuterTune, open ** Settings → Backup and Restore **, tap ** Backup **, and save the backup file.
+2. Install AsterTune.
+3. In AsterTune, open ** Settings → Backup and Restore **, tap ** Restore **, and select the backup file you saved.
 
 ## What This Fork Improves
 
@@ -76,57 +99,6 @@ This fork builds on [OuterTune/OuterTune](https://github.com/OuterTune/OuterTune
 ### Internal libraries and build tooling
 
 - Updated Kotlin, KSP, NewPipeExtractor, Ktor, Android Gradle Plugin, Gradle, and related tooling
-
-## Features
-
-OuterTune is a supercharged fork of [InnerTune](https://github.com/z-huang/InnerTune). This app is both a local media player, and a YouTube Music client.
-
-- YouTube Music client features
-  * Song downloading (offline playback)
-  * Seamless playback: no ads & background playback
-  * Account synchronization
-    + Full playlist sync from the app to the remote account is temporarily unavailable
-- Local audio file playback (ex. MP3, OGG, FLAC, etc.)
-  * Play local and YouTube Music songs at the same time
-  * Uses a custom tag extractor instead of MediaStore's broken metadata extractor! (e.g tags delimited with \ now show up properly)
-- Sleek Material3 design
-- Multiple queues
-- Synchronized lyrics, and support for word by word/Karaoke lyrics formats (e.g LRC, TTML)
-- Audio normalization, tempo/pitch adjustment, and various other audio effects
-- Android Auto support
-- Support for Android 8 (Oreo) and higher
-
-> [!NOTE]
-> Android 8 (Oreo) and higher is supported. While the app may work on Android 7.x (Nougat), we do not officially support this version
-
-## Screenshots
-
-[![Main player interface](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)
-
-[![Player interface](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)
-
-[![Sync with YouTube Music](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)
-
-[Full image gallery](https://github.com/yuuichi-s/OuterTune/tree/dev/assets/gallery)
-
-> [!WARNING]
-> If you're in a region where YouTube Music is not supported, you won't be able to use this app ***unless*** you have a proxy or VPN to connect to a YTM supported region.
-
-## Building & Contributing
-
-Just wish to build the app yourself, please see the [building and contribution notes](CONTRIBUTING.md).
-
-### Submitting Translations
-
-We use Weblate to translate OuterTune. For more details or to submit translations, visit our [Weblate page](https://hosted.weblate.org/projects/yuuichi-s-outertune/).
-
-[![Translation status](https://hosted.weblate.org/widget/yuuichi-s-outertune/multi-auto.svg)](https://hosted.weblate.org/projects/yuuichi-s-outertune/)
-
-Thank you very much for helping to make OuterTune accessible to many people worldwide.
-
-## Help & Support
-
-- For bugs **specific to this fork**, please open an [Issue in this repository](https://github.com/yuuichi-s/OuterTune/issues).
 
 ## Attribution
 

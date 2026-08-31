@@ -104,7 +104,7 @@
     <string name="m3u_export">Exporta com a fitxer M3U</string>
     <string name="import_success_songs">Importat correctament</string>
     <string name="import_failed_songs">No s’ha pogut importar</string>
-    <string name="oobe_complete">OuterTune està configurat i llest per a utilitzar-se. Explora la teua música, descobreix noves cançons i gaudeix de l’experiència!</string>
+    <string name="oobe_complete">AsterTune està configurat i llest per a utilitzar-se. Explora la teua música, descobreix noves cançons i gaudeix de l’experiència!</string>
     <string name="oobe_complete_title">Ja està tot a punt!</string>
     <string name="oobe_downloads_subtitle">Tria una carpeta on es desaran les cançons descarregades.</string>
     <string name="oobe_downloads_title">Descàrregues de cançons</string>
@@ -149,13 +149,13 @@
     <string name="oobe_local_media_title">Mitjans locals</string>
     <string name="oobe_ytm_logon_subtitle">nicia sessió al teu compte de YouTube Music per a sincronitzar i accedir al contingut privat del compte. Això és opcional.</string>
     <string name="oobe_ytm_logon_title">Compte</string>
-    <string name="oobe_interface_subtitle">Personalitza com es veu OuterTune i quin contingut et mostra.</string>
+    <string name="oobe_interface_subtitle">Personalitza com es veu AsterTune i quin contingut et mostra.</string>
     <string name="oobe_use_backup">Tinc una còpia de seguretat</string>
     <string name="oobe_cross_platform_sync_description">Mantín la teua música sincronitzada entre dispositius</string>
     <string name="oobe_cross_platform_sync">Sincronització multiplataforma</string>
     <string name="oobe_local_music_support_description">Reprodueix els teus fitxers de música (p. ex. MP3, OGG, FLAC, etc.)</string>
     <string name="keep_alive_title">Evita que el sistema tanque l’aplicació</string>
-    <string name="keep_alive_description">Utilitza un servei persistent en primer pla per a evitar que OuterTune es tanque en segon pla</string>
+    <string name="keep_alive_description">Utilitza un servei persistent en primer pla per a evitar que AsterTune es tanque en segon pla</string>
     <string name="persistent_queue_desc_ot">Restaura les cues obertes anteriorment quan s’inicie l’aplicació</string>
     <string name="min_playback_duration">Duració mínima de reproducció</string>
     <string name="min_playback_duration_description">La quantitat mínima d’una cançó que s’ha de reproduir perquè es considere «reproduïda»</string>

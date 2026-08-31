@@ -8,9 +8,9 @@ body:
       label: Checklist
       description: Make sure to complete each task before checking it off the checklist. We reserve the right to ignore or delete your issue, (and/or block your account in extreme cases) if you check the list blindly, disregard the template, or post a nonsensical or blatantly duplicate issue.
       options:
-        - label: I am able to reproduce the bug with the [latest debug version](https://github.com/OuterTune/OuterTune/actions) AND any logs I have attached are taken with the DEBUG version (NOT release).
+        - label: I am able to reproduce the bug with the [latest debug version](https://github.com/yuuichi-s/AsterTune/actions) AND any logs I have attached are taken with the DEBUG version (NOT release).
           required: true
-        - label: I've checked that there is no open or closed issue about this bug. [CHECK THE ISSUE TRACKER HERE](https://github.com/OuterTune/OuterTune/issues)
+        - label: I've checked that there is no open or closed issue about this bug. [CHECK THE ISSUE TRACKER HERE](https://github.com/yuuichi-s/AsterTune/issues)
           required: true
         - label: This issue contains only one bug.
           required: true
@@ -74,9 +74,9 @@ body:
   - type: input
     id: app-version
     attributes:
-      label: OuterTune version
+      label: AsterTune version
       description: |
-        You can find your OuterTune version in **Settings --> About**.
+        You can find your AsterTune version in **Settings --> About**.
       placeholder: |
         Example: "0.5.3"
     validations:

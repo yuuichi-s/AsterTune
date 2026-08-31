@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an idea for OuterTune
+description: Suggest an idea for AsterTune
 labels: [enhancement]
 body:
   - type: checkboxes

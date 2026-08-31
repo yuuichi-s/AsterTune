@@ -103,7 +103,7 @@
     <string name="audio_offload">Omogući rasterećenje</string>
     <string name="audio_offload_description">Za reprodukciju koristite putanju za rasterećenje zvuka. Onemogućavanje ove opcije može povećati potrošnju energije, ali može biti korisno ako imate problema sa reprodukcijom zvuka ili naknadnom obradom</string>
     <string name="keep_alive_title">Spreči sistem da zaustavi aplikaciju</string>
-    <string name="keep_alive_description">Koristi trajni servis u prvom planu da biste sprečili zatvaranje OuterTune-a u pozadini.</string>
+    <string name="keep_alive_description">Koristi trajni servis u prvom planu da biste sprečili zatvaranje AsterTune-a u pozadini.</string>
     <string name="persistent_queue_desc_ot">Vrati prethodno otvorene liste čekanja kada se aplikacija pokrene</string>
     <string name="min_playback_duration">Minimalno trajanje reprodukcije</string>
     <string name="min_playback_duration_description">Minimalno vreme koje pesma mora biti reprodukovana pre nego što se smatra „reprodukovanom\"</string>
@@ -188,7 +188,7 @@
     <string name="dl_size_used_cache">Interno: %s iskorišćeno</string>
     <string name="dl_size_used_main">Eksterno: %s iskorišćeno</string>
     <string name="dl_size_used_extra">Dodatni uvoz: %s iskorišćeno</string>
-    <string name="dl_storage_tooltip">Interna preuzimanja se čuvaju u privatnoj memoriji aplikacije i nisu dostupna bez root pristupa.\n\nEksterna preuzimanja se čuvaju u eksternoj memoriji vašeg uređaja (npr. /sdcard ili micro SD kartice) i može im se pristupiti ili ih direktno uređivati pomoću pregledača datoteka. Za fasciklu „Eksterna preuzimanja“ preporučujemo da izaberete praznu fasciklu posebno za preuzimanja pesama, jer OuterTune može da izmeni ili obriše datoteke u toj fascikli.\n\nFascikle „Dodatni uvoz“ su samo za čitanje i koriste se za učitavanje dodatnih pesama. OuterTune nikada neće menjati ili brisati datoteke u ovim fasciklama. Možete izabrati ove fascikle u naprednom odeljku.\n\nKada obrišete preuzimanja, brišu se samo interne pesme. Eksterna preuzimanja i pesme „Dodatni uvoz“ moraju se ručno ukloniti, bilo preko menija pesme ili ručno preko pregledača datoteka.\n\nPonovno skeniranje fascikli za preuzimanje: Preuzimanja pesama u fasciklama „Eksterna preuzimanja“ i „Dodatni uvoz“ se NE ažuriraju automatski. Ako ručno dodajete, uklanjate ili menjate datoteke pomoću pregledača datoteka, možda ćete morati ponovo da skenirate fascikle za preuzimanje da biste ažurirali bazu podataka aplikacije. Ova opcija je dostupna u naprednom odeljku.</string>
+    <string name="dl_storage_tooltip">Interna preuzimanja se čuvaju u privatnoj memoriji aplikacije i nisu dostupna bez root pristupa.\n\nEksterna preuzimanja se čuvaju u eksternoj memoriji vašeg uređaja (npr. /sdcard ili micro SD kartice) i može im se pristupiti ili ih direktno uređivati pomoću pregledača datoteka. Za fasciklu „Eksterna preuzimanja“ preporučujemo da izaberete praznu fasciklu posebno za preuzimanja pesama, jer AsterTune može da izmeni ili obriše datoteke u toj fascikli.\n\nFascikle „Dodatni uvoz“ su samo za čitanje i koriste se za učitavanje dodatnih pesama. AsterTune nikada neće menjati ili brisati datoteke u ovim fasciklama. Možete izabrati ove fascikle u naprednom odeljku.\n\nKada obrišete preuzimanja, brišu se samo interne pesme. Eksterna preuzimanja i pesme „Dodatni uvoz“ moraju se ručno ukloniti, bilo preko menija pesme ili ručno preko pregledača datoteka.\n\nPonovno skeniranje fascikli za preuzimanje: Preuzimanja pesama u fasciklama „Eksterna preuzimanja“ i „Dodatni uvoz“ se NE ažuriraju automatski. Ako ručno dodajete, uklanjate ili menjate datoteke pomoću pregledača datoteka, možda ćete morati ponovo da skenirate fascikle za preuzimanje da biste ažurirali bazu podataka aplikacije. Ova opcija je dostupna u naprednom odeljku.</string>
     <string name="restart_to_apply_changes">Potrebno je ponovno pokretanje aplikacije da bi promene stupile na snagu</string>
     <string name="pause_remote_listen_history">Pauziraj deljenje istorije slušanja sa YouTube Music</string>
     <string name="err_restore_incompatible_database">Nije moguće vratiti nekompatibilnu bazu podataka</string>
@@ -208,7 +208,7 @@
     <string name="oobe_cross_platform_sync">Sinhronizacija na više platformi</string>
     <string name="oobe_cross_platform_sync_description">Održavaj svoju muziku u harmoniji na svim uredajima</string>
     <string name="oobe_use_backup">Imam rezervnu kopiju</string>
-    <string name="oobe_interface_subtitle">Prilagodi izgled aplikacije OuterTune i koji sadržaj da prikazuje.</string>
+    <string name="oobe_interface_subtitle">Prilagodi izgled aplikacije AsterTune i koji sadržaj da prikazuje.</string>
     <string name="oobe_ytm_logon_title">Nalog</string>
     <string name="oobe_ytm_logon_subtitle">Prijavite se na svoj YouTube Music nalog da biste sinhronizovali i pristupili sadržaju privatnog naloga. Ovo je opciono.</string>
     <string name="oobe_local_media_title">Lokalni mediji</string>
@@ -216,7 +216,7 @@
     <string name="oobe_downloads_title">Preuzimanja pesama</string>
     <string name="oobe_downloads_subtitle">Izaberite fasciklu u kojoj će se čuvati preuzete pesme.</string>
     <string name="oobe_complete_title">Sve je spremno!</string>
-    <string name="oobe_complete">OuterTune je podešen i spreman za upotrebu. Istraži svoju muziku, otkrij nove numere i uživaj u doživljaju!</string>
+    <string name="oobe_complete">AsterTune je podešen i spreman za upotrebu. Istraži svoju muziku, otkrij nove numere i uživaj u doživljaju!</string>
     <string name="import_failed_songs">Nije moguće uvesti</string>
     <string name="import_success_songs">Uspešno uvezeno</string>
     <string name="m3u_export">Izvezi kao M3U datoteku</string>

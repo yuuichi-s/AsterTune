@@ -17,7 +17,7 @@
     <string name="flat_subfolders_title">تسطيح المجلدات الفرعية</string>
     <string name="flat_subfolders_description">قم بالتعطيل للحفاظ على بنية الملفات كما هي على القرص</string>
     <string name="swipe_to_skip_description">تمكين السحب الأفقي في المشغل لتبديل الأغاني</string>
-    <string name="oobe_welcome_message">مرحبًا بك في OuterTune</string>
+    <string name="oobe_welcome_message">مرحبًا بك في AsterTune</string>
     <plurals name="scanner_n_song_found">
         <item quantity="zero">صفر اغنية</item>
         <item quantity="one">اغنية واحدة</item>
@@ -106,7 +106,7 @@
     <string name="audio_offload">تمكين التفريغ</string>
     <string name="audio_offload_description">استخدام مسار الصوت المفرغ لتشغيل الصوت. قد يؤدي تعطيل هذا إلى زيادة استخدام الطاقة ولكنه قد يكون مفيدًا إذا واجهت مشكلات في تشغيل الصوت أو المعالجة اللاحقة</string>
     <string name="keep_alive_title">منع النظام من إنهاء التطبيق</string>
-    <string name="keep_alive_description">استخدام خدمة مستمرة في المقدمة لمنع إغلاق OuterTune في الخلفية.</string>
+    <string name="keep_alive_description">استخدام خدمة مستمرة في المقدمة لمنع إغلاق AsterTune في الخلفية.</string>
     <string name="persistent_queue_desc_ot">استعادة قائمة (قوائم) الانتظار المفتوحة السابقة عند بدء التطبيق</string>
     <string name="min_playback_duration">الحد الأدنى لمدة التشغيل</string>
     <string name="min_playback_duration_description">الحد الأدنى لمقدار الأغنية التي يجب تشغيلها قبل اعتبارها \"مشغلة\"</string>

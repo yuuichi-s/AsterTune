@@ -95,7 +95,7 @@
     <string name="audio_offload">Offload aktivieren</string>
     <string name="audio_offload_description">Nutze den Offload-Audiopfad für die Audiowiedergabe. Das Deaktivieren dieser Funktion kann den Stromverbrauch erhöhen, kann aber nützlich sein, wenn du Probleme mit der Audiowiedergabe oder der Nachbearbeitung hast</string>
     <string name="keep_alive_title">Beenden der App durchs System verhindern</string>
-    <string name="keep_alive_description">Einen permanenten Vordergrund-Service verwenden, um das schließen von OuterTune zu verhindern</string>
+    <string name="keep_alive_description">Einen permanenten Vordergrund-Service verwenden, um das schließen von AsterTune zu verhindern</string>
     <string name="persistent_queue_desc_ot">Vorherige Lieder-Warteschlangen beim Appstart wiederherstellen</string>
     <string name="min_playback_duration">Minimale Wiedergabedauer</string>
     <string name="min_playback_duration_description">Die minimale Abspieldauer eines Liedes, bevor es als \"abgespielt\" markiert wird</string>
@@ -192,7 +192,7 @@
     <string name="dl_size_used_cache">Intern: %s verwendet</string>
     <string name="dl_size_used_main">Extern: %s verwendet</string>
     <string name="dl_size_used_extra">Zusätzliche Importe: %s verwendet</string>
-    <string name="dl_storage_tooltip">Interne Downloads werden im privaten Speicher der App gespeichert und sind ohne Root nicht zugänglich\n\nExterne Downloads werden auf dem externen Speicher des Geräts gespeichert (z. B. /sdcard oder microSD-Karten) und können direkt mit einem Dateimanager geöffnet oder bearbeitet werden. Für den Ordner Externe Downloads wird empfohlen, einen leeren Ordner nur für Song-Downloads auszuwählen, da OuterTune Dateien darin ändern oder löschen kann\n\nZusätzliche Import-Ordner sind nur lesbar und dienen zum Laden weiterer Songs. OuterTune wird Dateien in diesen Ordnern nie ändern oder löschen. Du kannst diese Ordner im erweiterten Bereich auswählen\n\nBeim Löschen von Downloads werden nur interne Songs entfernt. Externe Downloads und Songs aus zusätzlichen Import-Ordnern müssen manuell über das Song-Menü oder einen Dateimanager entfernt werden\n\nDownload-Ordner erneut scannen: Songs in den Ordnern Externe Downloads und Zusätzliche Importe werden nicht automatisch aktualisiert. Wenn du Dateien manuell hinzufügst, entfernst oder änderst, musst du die Ordner möglicherweise erneut scannen, um die Datenbank der App zu aktualisieren. Diese Option findest du im erweiterten Bereich.</string>
+    <string name="dl_storage_tooltip">Interne Downloads werden im privaten Speicher der App gespeichert und sind ohne Root nicht zugänglich\n\nExterne Downloads werden auf dem externen Speicher des Geräts gespeichert (z. B. /sdcard oder microSD-Karten) und können direkt mit einem Dateimanager geöffnet oder bearbeitet werden. Für den Ordner Externe Downloads wird empfohlen, einen leeren Ordner nur für Song-Downloads auszuwählen, da AsterTune Dateien darin ändern oder löschen kann\n\nZusätzliche Import-Ordner sind nur lesbar und dienen zum Laden weiterer Songs. AsterTune wird Dateien in diesen Ordnern nie ändern oder löschen. Du kannst diese Ordner im erweiterten Bereich auswählen\n\nBeim Löschen von Downloads werden nur interne Songs entfernt. Externe Downloads und Songs aus zusätzlichen Import-Ordnern müssen manuell über das Song-Menü oder einen Dateimanager entfernt werden\n\nDownload-Ordner erneut scannen: Songs in den Ordnern Externe Downloads und Zusätzliche Importe werden nicht automatisch aktualisiert. Wenn du Dateien manuell hinzufügst, entfernst oder änderst, musst du die Ordner möglicherweise erneut scannen, um die Datenbank der App zu aktualisieren. Diese Option findest du im erweiterten Bereich.</string>
     <string name="restart_to_apply_changes">Ein Neustart der App ist erforderlich, damit die Änderungen wirksam werden</string>
     <string name="pause_remote_listen_history">Teilen des Hörverlaufs mit YouTube Music pausieren</string>
     <string name="err_restore_incompatible_database">Inkompatible Datenbank konnte nicht wiederhergestellt werden</string>
@@ -202,7 +202,7 @@
     <string name="dev_settings_description">Zeigt zusätzliche erweiterte Einstellungen für Entwicklerzwecke an</string>
     <string name="swipe_to_skip_title">Horizontal wischen, um den Song zu wechseln</string>
     <string name="swipe_to_skip_description">Horizontales Wischen im Player aktivieren, um Songs zu wechseln</string>
-    <string name="oobe_welcome_message">Willkommen bei OuterTune</string>
+    <string name="oobe_welcome_message">Willkommen bei AsterTune</string>
     <string name="oobe_ytm_integration">YouTube Music-Integration</string>
     <string name="oobe_ytm_integration_description">Greife nahtlos auf deine Lieblingssongs zu</string>
     <string name="oobe_ad_free_exp">Keine YouTube-Werbung</string>
@@ -212,7 +212,7 @@
     <string name="oobe_cross_platform_sync">Plattformübergreifende Synchronisierung</string>
     <string name="oobe_cross_platform_sync_description">Halte deine Musik auf allen Geräten synchron</string>
     <string name="oobe_use_backup">Ich habe ein Backup</string>
-    <string name="oobe_interface_subtitle">Passe an, wie OuterTune aussieht und welche Inhalte dir angezeigt werden.</string>
+    <string name="oobe_interface_subtitle">Passe an, wie AsterTune aussieht und welche Inhalte dir angezeigt werden.</string>
     <string name="oobe_ytm_logon_title">Konto</string>
     <string name="oobe_ytm_logon_subtitle">Melde dich bei deinem YouTube Music-Konto an, um private Inhalte zu synchronisieren und darauf zuzugreifen. Dies ist optional.</string>
     <string name="oobe_local_media_title">Lokale Medien</string>
@@ -220,7 +220,7 @@
     <string name="oobe_downloads_title">Song Downloads</string>
     <string name="oobe_downloads_subtitle">Wähle einen Ordner aus, in dem heruntergeladene Songs gespeichert werden.</string>
     <string name="oobe_complete_title">Du bist startklar!</string>
-    <string name="oobe_complete">OuterTune ist eingerichtet und einsatzbereit. Entdecke deine Musik, finde neue Titel und genieße das Erlebnis!</string>
+    <string name="oobe_complete">AsterTune ist eingerichtet und einsatzbereit. Entdecke deine Musik, finde neue Titel und genieße das Erlebnis!</string>
     <string name="import_failed_songs">Konnte nicht importieren</string>
     <string name="import_success_songs">Erfolgreich importiert</string>
     <string name="m3u_export">Als M3U-Datei exportieren</string>

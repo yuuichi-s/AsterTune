@@ -1,4 +1,4 @@
-<p><i>OuterTune</i> to pochodna innej aplikacji: <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. Ta aplikacja jest zarazem odtwarzaczem muzyki jak i klientem YouTube Music</p>
+<p><i>AsterTune</i> to pochodna innej aplikacji: <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. Ta aplikacja jest zarazem odtwarzaczem muzyki jak i klientem YouTube Music</p>
 
 <p><br><b>Funkcje:</b></p>
 </ul>
@@ -16,6 +16,6 @@ Odtwarzaj lokalnie i graj piosenki z YouTube Music w tym samym czasie</li>
 <p><br><b>Uwaga:</b></p>
 </ul>
 <li>Android 8 (Oreo)oraz wyżej jest wspierany. Aplikacja może nie działać na wersji Android 7.x, gdyż nie jest ona oficjalnie wspierana przez nas.</li>
-<li>OuterTune jest a fazie stabilnej bety. Chociaż że aplikacja może być używana jako twoje źródło muzyki,prosimy uważać na możliwość napotkania bugów, niekompletnych funkcji, czy też innych nieprawidłowości. Prosimy o zgłaszanie problemów na naszym Githubie!
-<li>Prosimy odwiedzić naszą wikipedię dla większej ilości informacji, między innymi FAQs, poradniki, and instrukcje obsługi: <a href="https://github.com/OuterTune/OuterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/OuterTune/OuterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
+<li>AsterTune jest a fazie stabilnej bety. Chociaż że aplikacja może być używana jako twoje źródło muzyki,prosimy uważać na możliwość napotkania bugów, niekompletnych funkcji, czy też innych nieprawidłowości. Prosimy o zgłaszanie problemów na naszym Githubie!
+<li>Prosimy odwiedzić naszą wikipedię dla większej ilości informacji, między innymi FAQs, poradniki, and instrukcje obsługi: <a href="https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
 </ul>

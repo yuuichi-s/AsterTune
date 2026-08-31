@@ -1,28 +1,52 @@
-# OuterTune
+# AsterTune
 
-[![OuterTune app icon](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/outertune.webp)](https://github.com/yuuichi-s/OuterTune/blob/dev/assets/outertune.webp)
+[![AsterTune アプリアイコン](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png)](https://github.com/yuuichi-s/AsterTune/blob/dev/assets/astertune.png)
 
 
-[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/OuterTune?include_prereleases)](https://github.com/yuuichi-s/OuterTune/releases)
-[![License](https://img.shields.io/github/license/yuuichi-s/OuterTune)](https://www.gnu.org/licenses/gpl-3.0)
+[![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
+[![License](https://img.shields.io/github/license/yuuichi-s/AsterTune)](https://www.gnu.org/licenses/gpl-3.0)
 
 [English](README.md) | [日本語](README_ja.md)
 
 Android向け Material 3 YouTube Music クライアント & ローカル音楽プレイヤー
 
 > [!NOTE]
-> これは [OuterTune/OuterTune](https://github.com/OuterTune/OuterTune) をベースにしたフォークです。
->
-> - 現時点では配布手段を用意していませんが、今後用意する可能性があります。
->
-> 利用したい場合は、ご自分でビルドできます。多くの方には `core` ビルドをおすすめします。
->
-> ```bash
-> # core debug build
-> ./gradlew assembleCoreDebug
-> ```
->
-> 詳しい手順は [CONTRIBUTING.md](https://github.com/yuuichi-s/OuterTune/blob/dev/CONTRIBUTING.md) をご覧ください。
+> AsterTuneの準備中です。このREADMEは暫定的なものであり、移行が完了次第、書き直されます。
+
+## このフォークについて
+
+AsterTuneは[OuterTune/OuterTune](https://github.com/OuterTune/OuterTune) のフォークです。
+
+APK配布のため、アプリケーション及びリポジトリ名称を OuterTune から AsterTune に変更しました。
+
+メンテナンス作業完了後、APKのリリースをします。
+
+今すぐアプリを使用したい場合は、ご自身でビルドしてください。
+ほとんどの方には、`core` ビルドをお勧めします。
+ALAC(.m4a)を再生する場合は、`full` ビルドをお勧めします。
+
+```bash
+# core デバッグビルド
+./gradlew assembleCoreDebug
+
+# full デバッグビルド
+./gradlew assembleFullDebug
+```
+
+手順の詳細については、[CONTRIBUTING.md](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md) をご覧ください。
+
+### OuterTune から AsterTune へデータを移行する
+
+別アプリになったため自動的なデータ移行が行われません。
+お手数ですが、手動でバックアップと復元を行ってください。
+
+バックアップには、ライブラリデータベースとアプリの設定が含まれています。
+ダウンロードしたオーディオファイルは含まれていないため、復元後はダウンロードを再度行う必要があります。
+
+1. OuterTune で **設定 → バックアップと復元** を開き、**バックアップ** をタップして、バックアップファイルを保存します。
+2. AsterTuneをインストールします。
+3. AsterTuneで、**設定 → バックアップと復元**を開き、**復元**をタップして、保存しておいたバックアップファイルを選択します。
+
 
 ## このフォークで改善していること
 
@@ -76,57 +100,6 @@ Android向け Material 3 YouTube Music クライアント & ローカル音楽�
 ### 内部ライブラリ・ビルド環境
 
 - Kotlin、KSP、NewPipeExtractor、Ktor、Android Gradle Plugin、Gradle などを更新
-
-## 機能
-
-OuterTune は [InnerTune](https://github.com/z-huang/InnerTune) を強化したフォークです。ローカル音楽プレイヤーと YouTube Music クライアントの両機能を備えています。
-
-- YouTube Music クライアント機能
-    * 楽曲のダウンロード（オフライン再生）
-    * 広告なし・バックグラウンド再生によるシームレスな再生
-    * アカウント同期
-        + アプリからリモートアカウントへのプレイリスト完全同期は現在一時的に利用不可
-- ローカル音声ファイルの再生（MP3、OGG、FLACなど）
-    * ローカル楽曲と YouTube Music の楽曲を同時に再生可能
-    * MediaStore の壊れたメタデータ抽出器の代わりにカスタムタグ抽出器を使用（`\` 区切りのタグなども正しく表示）
-- スタイリッシュな Material 3 デザイン
-- 複数キュー
-- 同期歌詞、および単語単位・カラオケ形式の歌詞に対応（LRC、TTMLなど）
-- 音量正規化、テンポ・ピッチ調整、その他各種オーディオエフェクト
-- Android Auto 対応
-- Android 8（Oreo）以降をサポート
-
-> [!NOTE]
-> Android 8（Oreo）以降をサポートしています。Android 7.x（Nougat）でも動作する可能性はありますが、正式サポート対象外です。
-
-## スクリーンショット
-
-[![メインプレイヤー画面](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/main-interface.jpg)
-
-[![プレイヤー画面](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/player.jpg)
-
-[![YouTube Music との同期](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)](https://github.com/yuuichi-s/OuterTune/raw/dev/assets/ytm-sync.jpg)
-
-[全画像ギャラリー](https://github.com/yuuichi-s/OuterTune/tree/dev/assets/gallery)
-
-> [!WARNING]
-> YouTube Music が利用できない地域では、プロキシまたは VPN を使用しない限りこのアプリは使用できません。
-
-## ビルド & コントリビュート
-
-ご自身でビルドしたい方は[ビルドおよびコントリビュートに関するノート](CONTRIBUTING.md)をご覧ください。
-
-### 翻訳の投稿
-
-OuterTune の翻訳には Weblate を使用しています。詳細や翻訳の投稿は[Weblate ページ](https://hosted.weblate.org/projects/yuuichi-s-outertune/)をご覧ください。
-
-[![翻訳ステータス](https://hosted.weblate.org/widget/yuuichi-s-outertune/multi-auto.svg)](https://hosted.weblate.org/projects/yuuichi-s-outertune/)
-
-世界中の方々に OuterTune をお届けするためにご協力いただきありがとうございます。
-
-## ヘルプ & サポート
-
-- **このフォーク固有のバグ**については、[このリポジトリの Issue](https://github.com/yuuichi-s/OuterTune/issues) を作成してください。
 
 ## クレジット
 

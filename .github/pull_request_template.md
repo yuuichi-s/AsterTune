@@ -1,4 +1,4 @@
-<!-- Hey there. Thank you so much for improving OuterTune, and filling out the details. Having roughly the same layout helps everyone considerably :)-->
+<!-- Hey there. Thank you so much for improving AsterTune, and filling out the details. Having roughly the same layout helps everyone considerably :)-->
 
 ### What is it?
 
@@ -40,7 +40,7 @@ Delete this if it doesn't apply to your PR. -->
 
 <!-- Please mark WIP pull requests and "Draft" and only "Ready for review" once it is ready to be merged  -->
 
-- [ ] I have read and agreed to the [contribution guidelines](https://github.com/OuterTune/OuterTune/blob/dev/CONTRIBUTING.md).
+- [ ] I have read and agreed to the [contribution guidelines](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md).
 
 ### Merging strategy / Merge conflict resolution
 
@@ -51,6 +51,6 @@ Select only ONE. If you select none, or both, the first selection will used as y
 - [ ] When merging this pull request, or in the event of merge conflicts, I ***DO NOT*** give permission for the
   merger to modify my code to solve merge conflicts. I understand in the event of a merge conflict, I will be
   responsible to resolve merge conflicts in a way that adheres to
-  the [contribution guidelines](https://github.com/OuterTune/OuterTune/blob/dev/CONTRIBUTING.md)
+  the [contribution guidelines](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md)
 
 <!-- This pull request template is based on Newpipe's:  https://github.com/TeamNewPipe/NewPipe/ -->

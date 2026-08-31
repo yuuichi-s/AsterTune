@@ -113,9 +113,9 @@
     <string name="action_skip">Bỏ qua</string>
     <string name="action_cancel">Hủy bỏ</string>
     <string name="import_failed_songs">Không thể nhập tệp</string>
-    <string name="oobe_complete">OuterTune đã thiết lập và sẵn sàng sử dụng. Khám phá âm nhạc, tìm bài hát mới, và tận hưởng trải nghiệm!</string>
+    <string name="oobe_complete">AsterTune đã thiết lập và sẵn sàng sử dụng. Khám phá âm nhạc, tìm bài hát mới, và tận hưởng trải nghiệm!</string>
     <string name="oobe_local_music_support_description">Phát tệp nhạc của bạn (VD. MP3, OGG, FLAC,...)</string>
     <string name="oobe_complete_title">Đã thiết lập thành công!</string>
-    <string name="oobe_welcome_message">Chào mừng đến với OuterTune</string>
+    <string name="oobe_welcome_message">Chào mừng đến với AsterTune</string>
     <string name="off">Đang tắt</string>
 </resources>

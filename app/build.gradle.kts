@@ -22,15 +22,15 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.dd3boh.outertune"
+    namespace = "io.github.yuuichi_s.astertune"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.dd3boh.outertune"
+        applicationId = "io.github.yuuichi_s.astertune"
         minSdk = 24
         targetSdk = 36
-        versionCode = 86
-        versionName = "0.10.16"
+        versionCode = 1
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // expose the TagLib library version (from the version catalog) for the About screen
@@ -39,7 +39,7 @@ android {
 
     signingConfigs {
         if (!keystoreProperties.isEmpty) {
-            create("ot_release") {
+            create("release") {
                 storeFile = file(keystoreProperties["storeFile"] as String)
                 (keystoreProperties["keyAlias"] as? String)?.let {
                     keyAlias = it
@@ -52,7 +52,7 @@ android {
                 }
             }
         } else {
-            create("ot_release") { }
+            create("release") { }
         }
     }
 
@@ -62,7 +62,7 @@ android {
             isShrinkResources = true
             isCrunchPngs = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("ot_release")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".debug"
@@ -115,7 +115,7 @@ android {
         variant.outputs
             .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
             .forEach { output ->
-                var outputFileName = "OuterTune-${variant.versionName}-${output.baseName}-${output.versionCode}.apk"
+                var outputFileName = "AsterTune-${variant.versionName}-${output.baseName}-${output.versionCode}.apk"
                 output.outputFileName = outputFileName
             }
     }
