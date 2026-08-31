@@ -1,6 +1,6 @@
 # AsterTune
 
-[![AsterTune app icon](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png)](https://github.com/yuuichi-s/AsterTune/blob/dev/assets/astertune.png)
+<img src="https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png" width="150" />
 
 
 [![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
