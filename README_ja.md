@@ -1,56 +1,65 @@
 # AsterTune
 
-[![AsterTune アプリアイコン](https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png)](https://github.com/yuuichi-s/AsterTune/blob/dev/assets/astertune.png)
+**Android向けMaterial Design 3採用のYouTube Music クライアント & ローカルメディアプレイヤー**
+
+<img src="https://github.com/yuuichi-s/AsterTune/raw/dev/assets/astertune.png" width="100" />
 
 
 [![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
 [![License](https://img.shields.io/github/license/yuuichi-s/AsterTune)](https://www.gnu.org/licenses/gpl-3.0)
 
+<!--
+[<img src="assets/badge_github.png" alt="GitHub で入手" height="40">](https://github.com/yuuichi-s/AsterTune/releases/latest)
+[<img src="assets/badge_obtainium.png" alt="Obtainium で入手" height="40">](https://github.com/yuuichi-s/AsterTune/releases/latest)
+[<img src="assets/badge_fdroid.svg" alt="F-Droid で入手" height="40">](https://f-droid.org/packages/io.github.yuuichi_s.astertune/)
+[<img src="assets/IzzyOnDroidButtonGreyBorder.svg" alt="IzzyOnDroid で入手" height="40">](https://apt.izzysoft.de/fdroid/index/apk/io.github.yuuichi_s.astertune)
+-->
+
 [English](README.md) | [日本語](README_ja.md)
 
-Android向け Material 3 YouTube Music クライアント & ローカル音楽プレイヤー
+## 特徴
 
-> [!NOTE]
-> AsterTuneの準備中です。このREADMEは暫定的なものであり、移行が完了次第、書き直されます。
+AsterTuneは、[OuterTune](https://github.com/OuterTune/OuterTune)をベースとするAndroidアプリケーションです。<br />
+Material Design 3を採用し、ローカルメディアプレーヤーとYouTube Musicクライアントの両方の機能を備えてます。
 
-## このフォークについて
+OuterTuneのデータを移行する場合は[OuterTuneからの移行](#outertune-からの移行) をご覧ください。
 
-AsterTuneは[OuterTune/OuterTune](https://github.com/OuterTune/OuterTune) のフォークです。
+## 機能
 
-APK配布のため、アプリケーション及びリポジトリ名称を OuterTune から AsterTune に変更しました。
+- YouTube Music
+    - YouTube Musicの楽曲をシームレスに再生（広告なし & バックグラウンド再生）
+    - YouTube Musicのアカウントに紐づくライブラリを同期
+    - 楽曲のダウンロード（オフライン再生）
 
-メンテナンス作業完了後、APKのリリースをします。
+- ローカル音楽ファイル再生
+    - 端末内の音声ファイル（MP3、OGG、FLAC等）の再生
+    - タグの読み取りにMediaStoreではなく独自の抽出処理を使用し、複数値タグや特殊なタグも正しく読み取り
+    - ローカルの曲とYouTube Musicの曲を同じキューで再生
+    - Android Auto 対応
 
-今すぐアプリを使用したい場合は、ご自身でビルドしてください。
-ほとんどの方には、`core` ビルドをお勧めします。
-ALAC(.m4a)を再生する場合は、`full` ビルドをお勧めします。
+- 歌詞
+    - 同期歌詞に対応。LRC や TTML など単語単位の形式も表示
+    - LrcLib、KuGou、SimpMusic、BetterLyrics、YouTube の字幕トラックから歌詞を取得
+    - 使用する取得元を選択可能。有効な取得元には並行して問い合わせ
+    - 歌詞の取り込みと編集
 
-```bash
-# core デバッグビルド
-./gradlew assembleCoreDebug
 
-# full デバッグビルド
-./gradlew assembleFullDebug
-```
+## 移行手順（OuterTune → AsterTune）
 
-手順の詳細については、[CONTRIBUTING.md](https://github.com/yuuichi-s/AsterTune/blob/dev/CONTRIBUTING.md) をご覧ください。
+アプリ内のバックアップ機能を使用することでデータを引き継ぐことが可能です。
 
-### OuterTune から AsterTune へデータを移行する
+> [!NOTE] 
+> バックアップには、ライブラリデータベースとアプリの設定が含まれています。
+> ダウンロードしたオーディオファイルは含まれていないため、復元後はダウンロードを再度行う必要があります。
 
-別アプリになったため自動的なデータ移行が行われません。
-お手数ですが、手動でバックアップと復元を行ってください。
-
-バックアップには、ライブラリデータベースとアプリの設定が含まれています。
-ダウンロードしたオーディオファイルは含まれていないため、復元後はダウンロードを再度行う必要があります。
-
-1. OuterTune で **設定 → バックアップと復元** を開き、**バックアップ** をタップして、バックアップファイルを保存します。
-2. AsterTuneをインストールします。
-3. AsterTuneで、**設定 → バックアップと復元**を開き、**復元**をタップして、保存しておいたバックアップファイルを選択します。
+1. OuterTune で **設定 → バックアップと復元** を開き、**バックアップ** をタップし、バックアップファイルを保存します。
+2. AsterTuneで、**設定 → バックアップと復元**を開き、**復元**をタップし、保存しておいたバックアップファイルを選択します。
 
 
 ## このフォークで改善していること
 
-このフォークでは、[OuterTune/OuterTune](https://github.com/OuterTune/OuterTune) をベースに、YouTube Music の再生安定性、歌詞表示、操作性、ローカル音楽再生まわりを中心に改善しています。
+<details>
+<summary>OuterTune v0.10.1をベースに、YouTube Music の再生安定性、歌詞表示、操作性、ローカル音楽再生まわりを中心に改善しています。</summary>
 
 ### YouTube Music の再生・表示
 
@@ -97,19 +106,63 @@ ALAC(.m4a)を再生する場合は、`full` ビルドをお勧めします。
 - フェードアウトして再生を完全に停止する睡眠タイマーを追加
 - Wi-Fi 接続時のみダウンロードするトグルを追加
 
-### 内部ライブラリ・ビルド環境
+</details>
 
-- Kotlin、KSP、NewPipeExtractor、Ktor、Android Gradle Plugin、Gradle などを更新
+## スクリーンショット
 
-## クレジット
+### スマートフォン
 
-すべてのコントリビューターに感謝します。[こちら](https://github.com/OuterTune/OuterTune/graphs/contributors)からご確認いただけます。
+| | | | |
+|---|---|---|---|
+| <img src="assets/gallery/homepage.png" height="480" /> | <img src="assets/gallery/player.png" height="480" /> | <img src="assets/gallery/lyrics.png" height="480" /> |  <img src="assets/gallery/queue_expanded.png" height="480" /> |
+| ホーム | プレイヤー | 歌詞 | キュー |
 
-このフォークの素晴らしいベースを提供してくださった [z-huang/InnerTune](https://github.com/z-huang/InnerTune) なしには実現できませんでした。
+### タブレット
 
-ローカル音楽プレイヤーの理想的な体験のインスピレーションをくれた [Musicolet](https://play.google.com/store/apps/details?id=in.krosbits.musicolet)。
+| | |
+|---|---|
+| <img src="assets/gallery/tablet_home.png" height="240" /> | <img src="assets/gallery/tablet_lyrics_library_dark.png" height="240" /> | 
+| ホーム | 歌詞ダーク | 
+| <img src="assets/gallery/tablet_lyrics_library.png" height="240" /> | <img src="assets/gallery/tablet_queue_home_light.png" height="240" /> |
+| 歌詞ライト  | キュー |
 
-精神的サポートと伝説の歌詞パーサーを提供してくれた [Gramophone](https://github.com/FoedusProgramme/Gramophone)。
+## 翻訳
+
+AsterTuneの翻訳にはWeblateを使用しています。<br />
+詳細や翻訳の投稿については、[Weblate page](https://hosted.weblate.org/projects/yuuichi-s-astertune/).
+
+<a href="https://hosted.weblate.org/projects/yuuichi-s-astertune/">
+<img src="https://hosted.weblate.org/widget/yuuichi-s-astertune/multi-auto.svg" alt="Translation status" />
+</a>
+
+## Credits
+
+| Project | Discription |
+|---|---|
+| [OuterTune](https://github.com/OuterTune/OuterTune/) | Upstream project |
+| [InnerTune](https://github.com/z-huang/InnerTune) | Original foundation of OuterTune |
+
+## Special Thanks
+
+| Project | Discription |
+|---|---|
+| [Musicolet](https://play.google.com/store/apps/details?id=in.krosbits.musicolet) | ローカルメディアプレーヤー体験 |
+| [Gramophone](https://github.com/FoedusProgramme/Gramophone) | 歌詞パーサー |
+
+## ソースからのビルド
+
+```bash
+# Core (.m4aが再生できません)
+./gradlew assembleCoreDebug
+
+# Full
+./gradlew assembleFullDebug
+```
+
+手順の詳細は [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
+
+> [!NOTE] 
+> Makdownドキュメントは順次メンテナンスします。
 
 ## 免責事項
 
