@@ -8,8 +8,8 @@
 [![Latest release](https://img.shields.io/github/v/release/yuuichi-s/AsterTune?include_prereleases)](https://github.com/yuuichi-s/AsterTune/releases)
 [![License](https://img.shields.io/github/license/yuuichi-s/AsterTune)](https://www.gnu.org/licenses/gpl-3.0)
 
-<!--
 [<img src="assets/badge_github.png" alt="GitHub で入手" height="40">](https://github.com/yuuichi-s/AsterTune/releases/latest)
+<!--
 [<img src="assets/badge_obtainium.png" alt="Obtainium で入手" height="40">](https://github.com/yuuichi-s/AsterTune/releases/latest)
 [<img src="assets/badge_fdroid.svg" alt="F-Droid で入手" height="40">](https://f-droid.org/packages/io.github.yuuichi_s.astertune/)
 [<img src="assets/IzzyOnDroidButtonGreyBorder.svg" alt="IzzyOnDroid で入手" height="40">](https://apt.izzysoft.de/fdroid/index/apk/io.github.yuuichi_s.astertune)
