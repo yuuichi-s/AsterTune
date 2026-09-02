@@ -24,7 +24,6 @@ import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.YouTubeClient
 import com.zionhuang.innertube.models.YouTubeClient.Companion.ANDROID_VR_1_43_32
 import com.zionhuang.innertube.models.YouTubeClient.Companion.ANDROID_VR_1_65_10
-import com.zionhuang.innertube.models.YouTubeClient.Companion.ANDROID_VR_NO_AUTH
 import com.zionhuang.innertube.models.YouTubeClient.Companion.IOS
 import com.zionhuang.innertube.models.YouTubeClient.Companion.ORIGIN_YOUTUBE_MUSIC
 import com.zionhuang.innertube.models.YouTubeClient.Companion.REFERER_YOUTUBE_MUSIC
@@ -109,13 +108,13 @@ object YTPlayerUtils {
         val streamUrl: String,
         val streamExpiresInSeconds: Int,
         /** Client that produced [streamUrl], so the player can report it back if the url is refused. */
-        val streamClient: String = "unknown",
+        val streamClient: String,
         /**
          * Headers the media request has to carry. googlevideo issues a url on behalf of a specific
          * client and expects the fetch to look like it came from that client; a request with the
          * http library's own defaults is served briefly and then refused.
          */
-        val streamHeaders: Map<String, String> = emptyMap(),
+        val streamHeaders: Map<String, String>,
     )
 
     /** Identifies a media request as coming from the client the stream url was issued for. */
@@ -196,6 +195,7 @@ object YTPlayerUtils {
             streamUrl = null
             streamExpiresInSeconds = null
             streamClient = null
+            streamHeaders = emptyMap()
 
             Log.d(TAG, "Trying stream client ${clientIndex + 1}/${STREAM_CLIENTS.size}: ${client.clientName}")
 
@@ -288,13 +288,14 @@ object YTPlayerUtils {
         Log.d(TAG, "[$videoId] stream url: $streamUrl")
 
         PlaybackData(
-            audioConfig,
-            videoDetails,
-            playbackTracking,
-            format,
-            streamUrl,
-            streamExpiresInSeconds,
-            streamClient ?: MAIN_CLIENT.clientName,
+            audioConfig = audioConfig,
+            videoDetails = videoDetails,
+            playbackTracking = playbackTracking,
+            format = format,
+            streamUrl = streamUrl,
+            streamExpiresInSeconds = streamExpiresInSeconds,
+            streamClient = streamClient ?: MAIN_CLIENT.clientName,
+            streamHeaders = streamHeaders,
         )
     }
 
@@ -336,13 +337,14 @@ object YTPlayerUtils {
      * If this returns true the url is likely to work.
      * If this returns false the url might cause an error during playback.
      */
-    private fun validateStatus(url: String, headers: Map<String, String> = emptyMap()): Boolean {
+    private fun validateStatus(url: String, headers: Map<String, String>): Boolean {
         try {
             // googlevideo often rejects HEAD with 403 even when the stream plays; validate with a
             // tiny ranged GET instead, which is how the player actually fetches the media.
             val requestBuilder = okhttp3.Request.Builder()
                 .header("Range", "bytes=0-0")
                 .url(url)
+            headers.forEach { (name, value) -> requestBuilder.header(name, value) }
             val response = httpClient.newCall(requestBuilder.build()).execute()
             val ok = response.isSuccessful
             if (!ok) {
