@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2026 AsterTune Project
+ *
+ * SPDX-License-Identifier: GPL-3.0
+ *
+ * For any other attributions, refer to the git commit history
+ */
 package io.github.yuuichi_s.astertune.playback
 
 import android.content.Context
@@ -19,6 +26,9 @@ import androidx.media3.exoplayer.offline.DownloadNotificationHelper
 import androidx.media3.exoplayer.offline.DownloadRequest
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.Requirements
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.SongItem
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.AudioQuality
 import io.github.yuuichi_s.astertune.constants.AudioQualityKey
@@ -47,9 +57,6 @@ import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.InvalidAudioFileException
 import io.github.yuuichi_s.astertune.utils.scanners.fileFromUri
 import io.github.yuuichi_s.astertune.utils.scanners.uriListFromString
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.SongItem
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -84,7 +91,7 @@ class DownloadUtil @Inject constructor(
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()!!
     private val audioQuality by enumPreference(context, AudioQualityKey, AudioQuality.AUTO)
-    private val songUrlCache = HashMap<String, Pair<String, Long>>()
+    private val songUrlCache = StreamUrlCache()
     private val dataSourceFactory = ResolvingDataSource.Factory(
         CacheDataSource.Factory()
             .setCache(playerCache)
@@ -102,8 +109,8 @@ class DownloadUtil @Inject constructor(
             return@Factory dataSpec
         }
 
-        songUrlCache[mediaId]?.takeIf { it.second > System.currentTimeMillis() }?.let {
-            return@Factory dataSpec.withUri(it.first.toUri())
+        songUrlCache[mediaId]?.let { cachedStream ->
+            return@Factory dataSpec.withResolvedStream(cachedStream)
         }
 
         val playbackData = runBlocking(Dispatchers.IO) {
@@ -136,8 +143,14 @@ class DownloadUtil @Inject constructor(
             "${it}&range=0-${format.contentLength ?: 10000000}"
         }
 
-        songUrlCache[mediaId] = streamUrl to System.currentTimeMillis() + (playbackData.streamExpiresInSeconds * 1000L)
-        dataSpec.withUri(streamUrl.toUri())
+        val stream = songUrlCache.put(
+            mediaId = mediaId,
+            url = streamUrl,
+            requestHeaders = playbackData.streamHeaders,
+            clientName = playbackData.streamClient,
+            expiresInSeconds = playbackData.streamExpiresInSeconds,
+        )
+        dataSpec.withResolvedStream(stream)
     }
     val downloadNotificationHelper = DownloadNotificationHelper(context, ExoDownloadService.CHANNEL_ID)
     val downloadManager: DownloadManager =
