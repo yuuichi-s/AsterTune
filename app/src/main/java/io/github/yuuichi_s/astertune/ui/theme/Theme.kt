@@ -138,9 +138,8 @@ fun AsterTuneTheme(
             }
 
 
-            // when high contrast mode Android collapses all accent colours into (more or less) one shade. We use
-            // secondaryContainer and onSecondaryContainer weirdly in several places in terms of theming so just replace
-            // those with shades that make sense
+            // Use a surface background and secondary foreground for secondary containers
+            // in the high-contrast system color scheme.
             if (highContrast) {
                 systemTheme.copy(
                     secondaryContainer = systemTheme.surfaceContainerHigh,

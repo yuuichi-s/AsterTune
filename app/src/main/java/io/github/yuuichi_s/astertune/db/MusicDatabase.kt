@@ -138,7 +138,11 @@ abstract class InternalDatabase : RoomDatabase() {
                     .build()
             )
 
-        // keep this separate in the rare case we come across concepts of a plan to support migrations from other forks
+        /**
+         * Creates a separate database instance for validating a restored backup with migrations.
+         *
+         * @param dbName Name of the temporary database containing the restored backup
+         */
         fun newTestInstance(context: Context, dbName: String): MusicDatabase =
             MusicDatabase(
                 delegate = Room.databaseBuilder(context, InternalDatabase::class.java, dbName)
@@ -668,13 +672,10 @@ class Migration12To13 : AutoMigrationSpec {
 }
 
 /**
- * Nonsense migration failure
+ * Nonsense migration failure, fix.
+ * https://github.com/OuterTune/OuterTune/discussions/359#discussioncomment-12366232
  *
- * Q: What? Why? playCount was never changed since it's creation
- * A: It wasn't. But that didn't stop Room from randomly adding an id column for *some* users only...
- *
- * Q: That sounds like complete nonsense.
- * A: Yep. https://github.com/OuterTune/OuterTune/discussions/359#discussioncomment-12366232
+ * Removes the `id` column from `playCount` when migrating the database from version 17 to 18.
  */
 @DeleteColumn.Entries(
     DeleteColumn(tableName = "playCount", columnName = "id"),

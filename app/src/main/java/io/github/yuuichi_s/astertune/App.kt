@@ -146,7 +146,7 @@ class App : Application(), SingletonImageLoader.Factory {
                     try {
                         YouTube.cookie = cookie
                     } catch (e: Exception) {
-                        // we now allow user input now, here be the demons. This serves as a last ditch effort to avoid a crash loop
+                        // Clear the rejected cookie to avoid parsing it again on startup.
                         Log.e(TAG, "Could not parse cookie. Clearing existing cookie. ${e.message}")
                         forgetAccount(this@App)
                     }

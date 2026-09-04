@@ -389,10 +389,7 @@ class MusicService : MediaLibraryService(),
                 }
             }
 
-            // Fetch lyrics for the current song and prefetch the upcoming ones in a single coroutine so
-            // they never run concurrently: the current fetch (only while lyrics display is on) completes
-            // before prefetch starts. collectLatest restarts on a song change or a lyrics-display toggle,
-            // cancelling any fetch in flight; already-fetched songs are skipped by the DB check.
+            // Fetch current-song lyrics before prefetching, keeping both in the same collector.
             combine(
                 dataStore.data.map { it[ShowLyricsKey] ?: false }.distinctUntilChanged(),
                 lyricsFetchTargets
@@ -402,8 +399,8 @@ class MusicService : MediaLibraryService(),
                     if (showLyrics && current != null && lyricsHelper.shouldFetch(current.id)) {
                         lyricsHelper.fetchAndStoreRemote(current, LyricsFetchRole.CURRENT)
                     }
-                    // Read prefetch settings and connectivity after the current-song fetch so their changes
-                    // do not cancel it. Changes take effect on the next lyricsFetchTargets emission.
+                    // Read prefetch settings and connectivity without observing their changes,
+                    // so they do not restart or cancel this collector.
                     if (dataStore.get(EnableLyricsPrefetchKey, true) && isNetworkConnected.value) {
                         val count = dataStore.get(LyricsPrefetchCountKey, 3)
                         targets.upcoming.take(count).forEach { mediaMetadata ->
@@ -505,16 +502,19 @@ class MusicService : MediaLibraryService(),
 // Queue
 
     /**
-     * Play a queue.
+     * Resolves a queue and loads it into the player.
      *
-     * @param queue Queue to play.
-     * @param playWhenReady
-     * @param shouldResume Set to true for the player should resume playing at the current song's last save position or
-     * false to start from the beginning.
-     * @param replace Replace media items instead of the underlying logic
-     * @param title Title override for the queue. If this value us unspecified, this method takes the value from queue.
-     * If both are unspecified, the title will default to "Queue".
-     */
+     * @param queue Queue to load
+     * @param playWhenReady Whether to start playback when ready
+     * @param shouldResume Whether to resume at the saved position when reloading; false uses
+     *     the default starting position. Preloading or retaining the currently playing song
+     *     can preserve its position regardless of this flag.
+     * @param replace Whether to replace an existing queue's contents; resolving a preload queue
+     *     replaces its contents regardless of this flag
+     * @param isRadio Whether to configure radio continuation
+     * @param title Queue title override; otherwise uses the initial response title or the
+     *     localized default queue title
+    */
     fun playQueue(
         queue: Queue,
         playWhenReady: Boolean = true,
@@ -662,7 +662,7 @@ class MusicService : MediaLibraryService(),
                 saveQueueToDisk(pos)
             }
         }
-        // do not replace the object. Can lead to entire queue being deleted even though it is supposed to be saved already
+        // Retain the QueueBoard and its in-memory queues while marking it uninitialized.
         qbInit.value = false
         if (SERVICE_DEBUG) Log.i(TAG, "-deInitQueue()")
     }
@@ -1077,7 +1077,8 @@ class MusicService : MediaLibraryService(),
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         super.onMediaItemTransition(mediaItem, reason)
-        // +2 when and error happens, and -1 when transition. Thus when error, number increments by 1, else doesn't change
+        // Error skips add two to this counter. Each transition, including a successful one,
+        // reduces a positive count by one.
         if (consecutivePlaybackErr > 0) {
             consecutivePlaybackErr--
         }
@@ -1123,7 +1124,7 @@ class MusicService : MediaLibraryService(),
             player.shuffleModeEnabled && player.repeatMode == REPEAT_MODE_ALL
         ) {
             scope.launch(SilentHandler) {
-                // or else race condition: Assertions.checkArgument(eventTime.realtimeMs >= currentPlaybackStateStartTimeMs) fails in updatePlaybackState()
+                // Defer reshuffling for 200 ms after the media-item transition callback.
                 delay(200)
                 queueBoard.value.shuffleCurrent(player.mediaItemCount > 2)
                 queueBoard.value.setCurrQueue()

@@ -113,9 +113,11 @@ class LyricsHelper @Inject constructor(
     }
 
     /**
-     * Whether a remote fetch should run for [videoId] right now: true when there is no row, when
-     * [forceRefresh] is set, or when the stored row is a negative cache that is stale, was written under
-     * a different provider configuration, or predates the signature columns. A positive cache is kept.
+     * Determines whether it is time to perform a remote fetch for [videoId].
+     *
+     * Checks for cache expiration and provider settings are delegated to [shouldFetchLyrics].
+     * Unless [forceRefresh] is true, the cache is retained if it exists. If no entry exists,
+     * a fetch is always performed.
      */
     suspend fun shouldFetch(videoId: String, forceRefresh: Boolean = false): Boolean {
         val entity = database.lyrics(videoId).first()
@@ -124,15 +126,11 @@ class LyricsHelper @Inject constructor(
     }
 
     /**
-     * Resolve lyrics for [mediaMetadata] from the remote providers and store the outcome.
+     * Fetches and caches remote lyrics unless a reusable cache exists and [forceRefresh] is false.
      *
-     * Single-flight per videoId: runs under a per-videoId lock and re-checks [shouldFetchLyrics] under
-     * the lock so a concurrent fetch that already resolved this song is not repeated. A usable result
-     * (Found) is stored with its provider and metadata, and a unanimous absence (DefinitiveNotFound) is
-     * stored as a negative cache; Indeterminate and Skipped leave any existing row untouched, so a
-     * transient failure never becomes a persistent negative cache, even with [forceRefresh].
+     * Stores lyrics or confirmed absence; inconclusive results leave existing data unchanged.
      *
-     * @param role which caller started this fetch, used only for log correlation
+     * @param role Caller category used for logging
      */
     suspend fun fetchAndStoreRemote(
         mediaMetadata: MediaMetadata,
@@ -429,12 +427,10 @@ class LyricsHelper @Inject constructor(
 const val NEGATIVE_CACHE_TTL_MS = 7L * 24 * 60 * 60 * 1000
 
 /**
- * Pure decision for whether a remote fetch should run for one song.
+ * Determines whether remote lyrics need fetching.
  *
- * A positive cache (real lyrics) is always kept. A negative cache is re-fetched when it is stale past
- * [ttlMs], was written under a different provider [signature], predates the signature columns (null
- * fields), or the device clock moved backwards ([now] earlier than the stored timestamp). [forceRefresh]
- * and a missing row always fetch.
+ * Reuses found lyrics unless [forceRefresh] is true. Cached absence is checked against
+ * [ttlMs] and the provider [signature].
  */
 internal fun shouldFetchLyrics(
     entity: LyricsEntity?,

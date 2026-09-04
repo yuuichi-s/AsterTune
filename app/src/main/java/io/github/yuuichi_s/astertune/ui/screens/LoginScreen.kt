@@ -80,8 +80,8 @@ fun LoginScreen(
                         if (url?.startsWith("https://music.youtube.com") != true) return
                         val cookie = CookieManager.getInstance().getCookie(url) ?: return
 
-                        // Act only once the cookie shows an established session, so the fetch is not
-                        // started during intermediate, not-yet-signed-in page loads.
+                        // Use SAPISID presence as the session check and handle at most one matching
+                        // page load per WebView before fetching account details.
                         if (loginHandled || "SAPISID" !in parseCookieString(cookie)) return
                         loginHandled = true
 

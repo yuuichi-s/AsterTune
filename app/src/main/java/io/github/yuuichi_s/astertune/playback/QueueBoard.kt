@@ -82,16 +82,16 @@ class QueueBoard(
     }
 
     /**
-     * Push this queue to top of the master queue list, and track set this as current queue
+     * Moves a queue to the end of [masterQueues] and selects it.
      *
-     * @param item
+     * @param item Queue to select
      */
     private fun bubbleUp(item: MultiQueueObject) = bubbleUp(masterQueues.indexOf(item))
 
     /**
-     * Push this queue at index to top of the master queue list, and track set this as current queue.
+     * Moves a queue to the end of [masterQueues] and selects it.
      *
-     * @param index
+     * @param index Index of the queue to select
      */
     private fun bubbleUp(index: Int) {
         if (index < 0 || index >= masterQueues.size) {
@@ -109,38 +109,35 @@ class QueueBoard(
     }
 
     /**
-     * Add a new queue to the QueueBoard, or add to a queue if it exists.
+     * Adds songs to a queue identified by [title].
      *
-     * Depending on the circumstances, there can be varying behaviour.
-     * 1. Queue does not exist: Queue is added as a new queue.
-     * 2. Queue exists, and the contents are a perfect match (by songID): Current position (queuePos)
-     *      index is updated. Queue itself is not modified.
-     * 3. Queue exists, contents are different:
-     *      delta is true: Extra items are added to the old queue. Current position is updated.
-     *      delta is false: Items are added to the end of the queue, see 4.
-     * 4. Items are purely added into the queue: Current position is NOT updated.
-     *      When delta is false, this is "add mode". A new "+" suffix queue is spawned if it doesn't
-     *      exist, and items are added to the end of the queue. We want queues with titles to represent
-     *      the source (title), while the "+" suffix denotes a custom user queue where "anything goes".
+     * For a non-empty [mediaList], applies the first matching case:
+     * 1. No matching queue: creates a queue with the supplied songs.
+     * 2. [replace] is true: replaces the matching queue's contents.
+     * 3. [forceInsert] is false, every input song ID exists, and the sizes match:
+     *    keeps the songs and updates the selected song.
+     * 4. [delta] is true: adds songs whose IDs are absent and updates the selected song.
+     * 5. Otherwise: appends to an existing extension queue, or extends the matching queue
+     *    and adds the extension suffix to its title.
      *
-     * or add songs to queue it exists (and forceInsert is not true).
+     * Appending loads the destination queue into the player and preserves the selected song
+     * unless [shuffled] is true.
+     * Creating a queue at the queue limit removes the first queue from [masterQueues].
      *
-     * @param title Title (id) of the queue
-     * @param mediaList List of items to add
-     * @param player Player object
-     * @param shuffled Whether to load a shuffled queue into the player
-     * @param forceInsert When mediaList contains one item, force an insert instead of jumping to an
-     *      item if it exists
-     * @param replace Replace all items in the queue. This overrides forceInsert, delta
-     * @param delta Takes not effect if forceInsert is false. Setting this to true will add only new
-     *      songs, false will add all songs
-     * @param continuationEndpoint An endpoint and continuation separated with \n if this is a queue that supports
-     *      continuation, else null
-     * @param startIndex Index/position to instantiate the new queue with. This value takes no effect
-     * if the queue already exists
-     *
-     * @return Boolean whether a full reload of player items should be done. In some cases it may be possible to enqueue
-     *      without interrupting playback. Currently this is only supported when adding to extension queues
+     * @param title Title used to find an existing queue
+     * @param mediaList Songs to add; null entries are omitted from inserted content
+     * @param shuffled Whether to reshuffle the affected queue and select its first shuffled song
+     * @param forceInsert Whether to bypass case 3; [delta] still controls whether existing
+     *     song IDs are added again
+     * @param replace Whether to replace the matching queue's contents, overriding [forceInsert]
+     *     and [delta]
+     * @param delta Whether to add only missing song IDs when neither replacement nor case 3 applies
+     * @param continuationEndpoint Video ID used as the radio seed, or null for no continuation
+     * @param startIndex Initial position when creating or replacing a queue. In cases 3 and 4,
+     *     selects the song identified by [mediaList] at this index, if found. Ignored when
+     *     appending; [shuffled] overrides the selection.
+     * @return The new queue or the queue matching [title], or null for an empty [mediaList].
+     *     Appending to a separate extension queue still returns the original matching queue.
      */
     fun addQueue(
         title: String,
@@ -162,11 +159,11 @@ class QueueBoard(
             return null
         }
 
-        val match = masterQueues.firstOrNull { it.title == title } // look for matching queue. Title is uid
-        if (match != null) { // found an existing queue
-            // Titles ending in "+​" (u200B) signify a extension queue
+        val match = masterQueues.firstOrNull { it.title == title }
+        if (match != null) {
+            // Extension queue titles end with a plus and a zero-width space (U+200B).
             val anyExts = masterQueues.firstOrNull { it.title == match.title + " +\u200B" }
-            if (replace) { // force replace
+            if (replace) {
                 if (QUEUE_DEBUG)
                     Log.d(TAG, "Adding to queue: Replacing all queue items")
 
@@ -187,17 +184,14 @@ class QueueBoard(
                 return match
             }
 
-            // don't add songs to the queue if it's just one EXISTING song AND the new medialist is a subset of what we have
-            // UNLESS forced to
-            val containsAll = mediaList.all { s -> match.queue.any { s?.id == it.id } } // if is subset
-            if (containsAll && match.getSize() == mediaList.size && !forceInsert) { // jump to song, don't add
+            val containsAll = mediaList.all { s -> match.queue.any { s?.id == it.id } }
+            if (containsAll && match.getSize() == mediaList.size && !forceInsert) {
                 if (QUEUE_DEBUG)
                     Log.d(TAG, "Adding to queue: jump only")
                 // find the song in existing queue song, track the index to jump to
                 val findSong = match.queue.firstOrNull { it.id == mediaList[startIndex]?.id }
                 if (findSong != null) {
                     match.queuePos = match.queue.indexOf(findSong)
-                    // no need update index in db, onMediaItemTransition() has alread done it
                 }
                 if (shuffled) {
                     shuffle(match, false, true)
@@ -222,7 +216,7 @@ class QueueBoard(
                 // find the song in existing queue song, track the index to jump to
                 val findSong = match.queue.firstOrNull { it.id == mediaList[startIndex]?.id }
                 if (findSong != null) {
-                    match.queuePos = match.queue.indexOf(findSong) // track the index we jumped to
+                    match.queuePos = match.queue.indexOf(findSong)
                 }
                 if (shuffled) {
                     shuffle(match, false, true)
@@ -233,7 +227,7 @@ class QueueBoard(
 
                 saveQueueSongs(match)
                 return match
-            } else if (match.title.endsWith("+\u200B") || anyExts != null) { // this queue is an already an extension queue
+            } else if (match.title.endsWith("+\u200B") || anyExts != null) {
                 if (QUEUE_DEBUG)
                     Log.d(TAG, "Adding to queue: extension queue additive")
                 // add items to existing queue unconditionally
@@ -259,7 +253,7 @@ class QueueBoard(
                 saveQueueSongs(anyExts ?: match)
 
                 return match
-            } else { // make new extension queue
+            } else { // Extend and rename the matching queue.
                 if (QUEUE_DEBUG)
                     Log.d(TAG, "Adding to queue: extension queue rename + extension queue additive")
                 // add items to existing queue unconditionally
@@ -320,7 +314,12 @@ class QueueBoard(
     }
 
     /**
-     * Add songs to queue object & update it in the player, given an index to insert at
+     * Add songs to a queue and load it into the player.
+     *
+     * @param q Queue to update
+     * @param pos Insertion index in playback order, clamped to the queue bounds
+     * @param mediaList Songs to insert
+     * @param saveToDb Whether to save song mappings; queue metadata can still be saved when false
      */
     fun addSongsToQueue(
         q: MultiQueueObject,
@@ -379,7 +378,7 @@ class QueueBoard(
     /**
      * Removes song from the current queue
      *
-     * @param index Index of item
+     * @param index Song index in playback order
      */
     fun removeCurrentQueueSong(index: Int): Boolean {
         val q = getCurrentQueue()
@@ -394,7 +393,7 @@ class QueueBoard(
      * Removes song from the queue
      *
      * @param item Queue
-     * @param index Index of item
+     * @param index Song index in playback order
      */
     fun removeSong(item: MultiQueueObject, index: Int): Boolean {
         var ret = false
@@ -414,7 +413,7 @@ class QueueBoard(
         }
         item.getCurrentQueueShuffled().fastForEachIndexed { index, s -> s.shuffleIndex = index }
 
-        // update current position only if the move will affect it
+        // Adjust the selection after removal.
         if (index < currentMediaItemIndex) {
             newQueuePos--
         } else if (index == currentMediaItemIndex) {
@@ -437,7 +436,8 @@ class QueueBoard(
     /**
      * Deletes a queue
      *
-     * @param item
+     * @param item Queue identifying the target by title
+     * @return Number of remaining queues
      */
     fun deleteQueue(item: MultiQueueObject): Int {
         if (QUEUE_DEBUG)
@@ -466,14 +466,14 @@ class QueueBoard(
     /**
      * Un-shuffles current queue
      *
-     * @return New current position tracker
+     * @return Selected song index in the underlying queue
      */
     fun unShuffleCurrent() = unShuffle(masterIndex)
 
     /**
      * Un-shuffles a queue
      *
-     * @return New current position tracker
+     * @return Selected song index in the underlying queue
      */
     fun unShuffle(index: Int): Int {
         val item = masterQueues[index]
@@ -496,18 +496,13 @@ class QueueBoard(
 
 
     /**
-     * Shuffles a queue
+     * Shuffles a queue and enables shuffle mode.
      *
-     * If shuffle is enabled, it will pull from the shuffled queue, if shuffle is not enabled, it pulls from the
-     * un-shuffled queue
-     *
-     * @param index
-     * @param preserveCurrent True will push the currently playing song to the top of the queue. False will
-     *      fully shuffle everything.
-     * @param bypassSaveToDb By default, the queue will be saved after shuffling. In some cases it may be necessary
-     *      to avoid this behaviour
-     *
-     * @return New current position tracker
+     * @param q Queue to shuffle
+     * @param preserveCurrent Whether to keep the selected song first; false selects the first
+     *     shuffled song and resets its saved playback position
+     * @param bypassSaveToDb Whether to skip saving song mappings; queue metadata can still be saved
+     * @return Song index in the underlying queue, or zero if [q] is not in [masterQueues]
      */
     fun shuffle(
         q: MultiQueueObject,
@@ -516,18 +511,13 @@ class QueueBoard(
     ) = shuffle(masterQueues.indexOf(q), preserveCurrent, bypassSaveToDb)
 
     /**
-     * Shuffles a queue
+     * Shuffles a queue and enables shuffle mode.
      *
-     * If shuffle is enabled, it will pull from the shuffled queue, if shuffle is not enabled, it pulls from the
-     * un-shuffled queue
-     *
-     * @param index
-     * @param preserveCurrent True will push the currently playing song to the top of the queue. False will
-     *      fully shuffle everything.
-     * @param bypassSaveToDb By default, the queue will be saved after shuffling. In some cases it may be necessary
-     *      to avoid this behaviour
-     *
-     * @return New current position tracker
+     * @param index Queue index
+     * @param preserveCurrent Whether to keep the selected song first; false selects the first
+     *     shuffled song and resets its saved playback position
+     * @param bypassSaveToDb Whether to skip saving song mappings; queue metadata can still be saved
+     * @return Selected song index in the underlying queue, or zero if [index] is negative
      */
     fun shuffle(
         index: Int,
@@ -569,10 +559,8 @@ class QueueBoard(
     /**
      * Move a queue in masterQueues
      *
-     * @param fromIndex Song to move
-     * @param toIndex Destination
-     *
-     * @return New current position tracker
+     * @param fromIndex Index of the queue to move
+     * @param toIndex Destination queue index
      */
     fun move(fromIndex: Int, toIndex: Int) {
         // update current position only if the move will affect it
@@ -601,11 +589,9 @@ class QueueBoard(
     /**
      * Move a song in the current queue
      *
-     * @param fromIndex Song to move
-     * @param toIndex Destination
-     * @param currentMediaItemIndex Index of now playing song
-     *
-     * @return New current position tracker
+     * @param fromIndex Song index in playback order
+     * @param toIndex Destination index in playback order
+     * @return Updated current song index, or null if there is no current queue
      */
     fun moveSong(fromIndex: Int, toIndex: Int) =
         getCurrentQueue()?.let { moveSong(it, fromIndex, toIndex) }
@@ -614,10 +600,9 @@ class QueueBoard(
      * Move a song, given a queue.
      *
      * @param queue Queue to operate on
-     * @param fromIndex Song to move
-     * @param toIndex Destination
-     *
-     * @return New current position tracker
+     * @param fromIndex Song index in playback order
+     * @param toIndex Destination index in playback order
+     * @return Updated current song index
      */
     private fun moveSong(
         queue: MultiQueueObject,
@@ -646,7 +631,6 @@ class QueueBoard(
         }
         queue.queuePos = newQueuePos
 
-        // I like to move it move it
         if (queue.shuffled) {
             items.move(fromIndex, toIndex)
             items.fastForEachIndexed { index, s ->
@@ -673,7 +657,7 @@ class QueueBoard(
      */
 
     /**
-     * Get all copy of all queues
+     * Returns an immutable snapshot of the queue list.
      */
     fun getAllQueues() = masterQueues.toImmutableList()
 
@@ -686,7 +670,7 @@ class QueueBoard(
     /**
      * Retrieve the current queue
      *
-     * @return Queue object (entire object)
+     * @return Current queue, or null if the current queue index is invalid
      */
     fun getCurrentQueue(): MultiQueueObject? {
         try {
@@ -710,12 +694,12 @@ class QueueBoard(
     }
 
     /**
-     * Load a queue into the media player
+     * Loads a queue into the player. Must be called on the main thread.
      *
-     * @param index Index of queue
-     * @param shouldResume Set to true for the player should resume playing at the current song's last save position or
-     * false to start from the beginning.
-     * @return New current position tracker
+     * @param index Queue index
+     * @param shouldResume Whether to use the saved position or the default start when reloading;
+     *     an already-playing target keeps its position regardless of this flag
+     * @return Selected queue, or null if a queue or song index is out of bounds
      */
     fun setCurrQueue(index: Int, shouldResume: Boolean = true): MultiQueueObject? {
         return try {
@@ -728,11 +712,13 @@ class QueueBoard(
     }
 
     /**
-     * Load the current queue into the media player
+     * Loads the current queue into the player. Must be called on the main thread.
      *
-     * @param shouldResume Set to true for the player should resume playing at the current song's last save position or
-     * false to start from the beginning.
-     * @return New current position tracker
+     * A missing or empty queue clears the player.
+     *
+     * @param shouldResume Whether to use the saved position or the default start when reloading;
+     *     an already-playing target keeps its position regardless of this flag
+     * @return Current queue, or null if there is none
      */
     fun setCurrQueue(shouldResume: Boolean = true): MultiQueueObject? {
         val q = getCurrentQueue()
@@ -741,12 +727,12 @@ class QueueBoard(
     }
 
     /**
-     * Load a queue into the media player. This should ran exclusively on the main thread.
+     * Loads a queue into the player. Must be called on the main thread.
      *
-     * @param item Queue object
-     * @param shouldResume Set to true for the player should resume playing at the current song's last save position or
-     * false to start from the beginning.
-     * @return New current position tracker
+     * @param item Queue to load; a null or empty queue clears the player
+     * @param shouldResume Whether to use the saved position or the default start when reloading;
+     *     an already-playing target keeps its position regardless of this flag
+     * @return Selected song index in playback order, or null for a null or empty queue
      */
     fun setCurrQueue(item: MultiQueueObject?, shouldResume: Boolean = true): Int? {
         Log.d(
@@ -759,7 +745,6 @@ class QueueBoard(
             return null
         }
 
-        // I have no idea why this value gets reset to 0 by the end... but ig this works
         val queuePos = item.getQueuePosShuffled()
         val lastSongPos = if (shouldResume) item.lastSongPos else C.TIME_UNSET
         val realQueuePos = item.queuePos
@@ -772,9 +757,7 @@ class QueueBoard(
                     "queuePos: $queuePos, real queuePos: ${realQueuePos}, lastSongPos: $lastSongPos" +
                     "ids: ${player.player.currentMetadata?.id}, ${mediaItems[queuePos].id}"
         )
-        /**
-         * current playing == jump target, do seamlessly
-         */
+        // Keep the playing item when it matches the target song.
         val seamlessSupported = (queuePos < mediaItems.size)
                 && player.player.currentMetadata?.id == mediaItems[queuePos].id
         if (seamlessSupported) {
@@ -783,8 +766,6 @@ class QueueBoard(
 
             if (queuePos == 0) {
                 val playerItemCount = player.player.mediaItemCount
-                // player.player.replaceMediaItems seems to stop playback so we
-                // remove all songs except the currently playing one and then add the list of new items
                 if (playerIndex < playerItemCount - 1) {
                     player.player.removeMediaItems(playerIndex + 1, playerItemCount)
                 }
@@ -817,7 +798,7 @@ class QueueBoard(
     /**
      * Update the current position index of the current queue
      *
-     * @param index
+     * @param index Song index in playback order
      */
     fun setCurrQueuePosIndex(index: Int) {
         getCurrentQueue()?.let {
@@ -843,7 +824,8 @@ class QueueBoard(
     val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     /**
-     * Execute the most recent save request, with a 5 second delay from function call
+     * Drains references to eagerly launched save jobs at five-second intervals,
+     * checking song-mapping jobs before queue-entity jobs.
      */
     private suspend fun databaseDispatcher() {
         Log.d(TAG, "Starting database save task")
@@ -859,7 +841,7 @@ class QueueBoard(
                 }
                 Log.d(TAG, "Running database save task")
 
-                // saving songs nukes the queue entity in the process, about it shouldn't matter since are same queue object
+                // A song save rewrites both the queue entity and its song mappings.
                 if (!queueSongMap.isEmpty()) {
                     queueSongMap.last().job.start()
                     queueSongMap.clear()
@@ -916,7 +898,6 @@ class QueueBoard(
     private fun saveAllQueues(mq: MutableList<MultiQueueObject>) {
         if (player.dataStore.get(PersistentQueueKey, true)) {
             queueEntity.add(
-                // we select most recent task, therefore "lowest" numeric priority at the end of the list == "highest" priority
                 PriorityJob(
                     -1,
                     coroutineScope.launch(start = CoroutineStart.DEFAULT) {

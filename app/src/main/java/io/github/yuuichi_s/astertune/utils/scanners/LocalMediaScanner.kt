@@ -639,16 +639,20 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
 
 
     /**
-     * Run a full scan and ful database update. This will update all song data in the
-     * database of all songs, and also disable inacessable songs
+     * Synchronizes local songs from MediaStore and disables songs absent from the scan results.
      *
-     * No remote artist lookup is done
+     * Queries music files under [scanPaths] and skips paths covered by [excludedScanPaths].
+     * When [refreshExisting] is false, paths already stored for local songs are excluded from
+     * the database sync input. Local songs whose stored paths are absent from the results
+     * are disabled.
+     * No remote artist lookup is performed.
      *
-     * WARNING: cachedDirectoryTree is not refreshed and may lead to inconsistencies.
-     * It is highly recommend to rebuild the tree after scanner operation
+     * The cached directory tree is not rebuilt; callers displaying it must rebuild it to reflect
+     * the updated database.
      *
-     * @param newSongs List of songs. This is expecting a barebones DirectoryTree
-     * (only paths are necessary), thus you may use the output of refreshLocal().toList()
+     * @param scanPaths Directories whose music files are queried from MediaStore
+     * @param excludedScanPaths Path prefixes to omit from the query results
+     * @param refreshExisting Whether to include existing paths and refresh matched song metadata
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun fullMediaStoreSync(
@@ -1192,16 +1196,12 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
         }
 
         /**
-         * Quickly rebuild a skeleton directory tree of local files based on the database
+         * Rebuilds a skeleton directory tree from local song records in the database.
          *
-         * Notes:
-         * If files move around, that's on you to re run the scanner.
-         * If the metadata changes, that's also on you to re run the scanner.
+         * Does not inspect files or refresh metadata. A separate scan is required to reflect file
+         * moves or metadata changes in the database before rebuilding the tree.
          *
-         * @param scanPaths List of whitelist paths to scan under. This assumes
-         * the current directory is /storage/emulated/0/ a.k.a, /sdcard.
-         * For example, to scan under Music and Documents/songs --> ("Music", Documents/songs)
-         * @param filter Raw file path
+         * @param filter Raw directory path used to select database records and root the tree
          */
         suspend fun refreshLocal(
             database: MusicDatabase,

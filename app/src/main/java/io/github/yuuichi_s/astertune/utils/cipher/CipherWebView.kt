@@ -25,14 +25,11 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
- * Runs YouTube's signature deobfuscation function inside the full player.js.
+ * Runs YouTube's signature and n-parameter transformations inside the full player.js.
  *
- * Players obfuscate the signature with a multi-purpose function that depends on the player's
- * internal helpers, so it cannot be extracted and run in isolation. We load the whole player.js
- * into a WebView and inject a wrapper, inside the player's IIFE so the function is in scope; the
- * function name and constants come from [PlayerCipherConfig].
- *
- * Modeled on [io.github.yuuichi_s.astertune.utils.potoken.PoTokenWebView] for the WebView/coroutine bridge.
+ * Loads the full script and injects a wrapper inside its IIFE so the configured function
+ * and its internal helpers are in scope. Function names and constants come from
+ * [PlayerCipherConfig]. JavaScript results resume the pending Kotlin continuation.
  */
 class CipherWebView private constructor(
     context: Context,
@@ -48,7 +45,7 @@ class CipherWebView private constructor(
         @Suppress("SetJavaScriptEnabled")
         settings.javaScriptEnabled = true
         settings.allowFileAccess = true
-        // Deprecated in API 30, but required to run the local file:// player.js with no replacement.
+        // Allow the file-based wrapper page to access the cached local player.js.
         @Suppress("DEPRECATION")
         settings.allowFileAccessFromFileURLs = true
         settings.blockNetworkLoads = true // player.js is loaded from a local file

@@ -92,8 +92,9 @@ data class MultiQueueObject(
     }
 
     fun validateQueuePos() {
-        if (queuePos < 0 || queuePos >= queue.size) { // I don't even...
-            // possible issues with migrating some queues, notably from 0.7.4 to newer versions. Reset shuffle parts
+        if (queuePos < 0 || queuePos >= queue.size) {
+            // possible issues with migrating some queues, notably from 0.7.4 to newer versions.
+            // Reset an invalid selection to index zero and restore unshuffled indices.
             queue.fastForEachIndexed { index, s -> s.shuffleIndex = index }
             shuffled = false
             queuePos = 0

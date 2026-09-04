@@ -996,8 +996,8 @@ class MainActivity : ComponentActivity() {
                                         .align(Alignment.BottomCenter)
                                 )
                             } else {
-                                // tabmode only enables >= 600dp (unless it's forced on). For those who wish to try down
-                                // to the widescreen limit, 320dp player is the minimum acceptable size for the player
+                                // Even forced tablet mode requires a window width of 600 dp.
+                                // Keep the player pane between 320 and 500 dp.
                                 val playerW = (maxW.value * 0.4).coerceIn(320.0, 500.0)
                                 Row(
                                     modifier = Modifier

@@ -45,9 +45,9 @@ object YTPlayerUtils {
     private val poTokenGenerator = PoTokenGenerator()
 
     /**
-     * How long a video keeps skipping WEB_REMIX after one of its streams was rejected. Long enough
-     * to get past the rejection, short enough that a transient CDN failure does not pin the video to
-     * a lower-quality client for the rest of the session.
+     * Duration for skipping WEB_REMIX after a reported stream rejection for a video.
+     *
+     * The next resolution after this interval expires can try WEB_REMIX again.
      */
     private const val WEB_REMIX_FAILURE_TTL_MS = 5 * 60 * 1000L
 
@@ -73,30 +73,26 @@ object YTPlayerUtils {
     }
 
     /**
-     * Client used for metadata and the initial stream response. Other clients are not used for the
-     * metadata because it can differ between them (e.g. different loudnessDb normalization targets).
+     * Client for the initial player response and playback metadata.
      *
-     * This has to be a client that carries the signed-in session. Leading with an anonymous one
-     * hands YouTube an unauthenticated request for every single song, which is what gets answered
-     * with "sign in to confirm you're not a bot".
+     * Uses WEB_REMIX, which includes the configured session cookie when available. Metadata
+     * continues to come from this response even if another client supplies the stream.
      */
     private val MAIN_CLIENT: YouTubeClient = WEB_REMIX
 
     /**
-     * Clients tried for the stream, in order. Separate from [MAIN_CLIENT], which only has to be good
-     * for metadata: the VR builds hand out the longest-lived urls for music, so they go first even
-     * though the metadata keeps coming from the signed-in client. When this list reaches
-     * [MAIN_CLIENT] its already-fetched response is reused instead of asking again.
+     * Clients tried in order when resolving the playable stream.
+     *
+     * Metadata comes from [MAIN_CLIENT]. Its initial response is reused when stream resolution
+     * reaches that client, rather than issuing another player request.
      */
     private val STREAM_CLIENTS: Array<YouTubeClient> = arrayOf(
-        // First on purpose: its urls play a track through, while the others get cut off partway.
         VISIONOS,
         ANDROID_VR_1_65_10,
         ANDROID_VR_1_43_32,
         WEB_REMIX,
         TVHTML5,
         IOS,
-        // ANDROID stays out: its player request answers 400. Measured 2026-08-19.
     )
 
 
@@ -371,10 +367,12 @@ object YTPlayerUtils {
     }
 
     /**
-     * Resolves the playable stream URL for the given audio [format].
+     * Resolves an audio stream URL with NewPipe, then the WebView cipher fallback if needed.
      *
-     * @param videoId the id of the video [format] belongs to
-     * @return the stream URL, or null if it could not be resolved; any error is reported, not thrown
+     * @param videoId ID of the video [format] belongs to
+     * @return The resolved stream URL, or null if no URL could be resolved
+     * @throws kotlinx.coroutines.CancellationException If coroutine cancellation propagates from
+     *     a suspending resolution step
      */
     private suspend fun findUrlOrNull(
         format: PlayerResponse.StreamingData.Format,
