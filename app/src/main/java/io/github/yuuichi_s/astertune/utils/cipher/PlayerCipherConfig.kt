@@ -19,6 +19,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okio.BufferedSource
 import org.json.JSONObject
 import java.io.File
 
@@ -61,8 +62,11 @@ object PlayerCipherConfigStore {
     /** Only this schema is understood; anything else is ignored so a future format cannot corrupt the map. */
     private const val SCHEMA_VERSION = 1
 
-    /** Sanity cap on the downloaded file; the real one is tens of KB. */
-    private const val MAX_CONFIG_CHARS = 4 * 1024 * 1024
+    /** Sanity cap on how much of the response body is read into memory; the real file is tens of KB. */
+    private const val MAX_CONFIG_BYTES = 4L * 1024 * 1024
+
+    // sigFuncName and nClass are embedded directly in JavaScript source, so their character sets are restricted.
+    private val JS_IDENTIFIER = Regex("^[A-Za-z_$][A-Za-z0-9_$]*$")
 
     /**
      * Minimum time between network attempts. A player that stays unknown (upstream has not published
@@ -189,14 +193,14 @@ object PlayerCipherConfigStore {
                 Log.e(TAG, "Config fetch failed: HTTP ${response.code}")
                 null
             } else {
-                val text = response.body?.string()
+                val body = response.body
                 when {
-                    text == null -> null
-                    text.length > MAX_CONFIG_CHARS -> {
-                        Log.e(TAG, "Config fetch rejected: ${text.length} chars")
+                    body == null -> null
+                    exceedsLimit(body.source(), MAX_CONFIG_BYTES) -> {
+                        Log.e(TAG, "Config fetch rejected: over $MAX_CONFIG_BYTES bytes")
                         null
                     }
-                    else -> text
+                    else -> body.string()
                 }
             }
         }
@@ -227,20 +231,29 @@ object PlayerCipherConfigStore {
         return result
     }
 
+    private fun parseEntry(entry: JSONObject): PlayerCipherConfig? =
+        parseConfig(entry.optString("sig"), entry.optString("nClass"))
+
     // sig is a `name(int,int,INPUT)` call; returns null on any malformed field so one bad entry can't break the map.
-    private fun parseEntry(entry: JSONObject): PlayerCipherConfig? {
-        val sig = entry.optString("sig")
-        val nClass = entry.optString("nClass")
-        if (sig.isEmpty() || nClass.isEmpty()) return null
+    internal fun parseConfig(sig: String, nClass: String): PlayerCipherConfig? {
+        if (sig.isEmpty() || !JS_IDENTIFIER.matches(nClass)) return null
 
         val open = sig.indexOf('(')
         if (open <= 0 || !sig.endsWith(")")) return null
         val funcName = sig.substring(0, open)
+        if (!JS_IDENTIFIER.matches(funcName)) return null
+
         val args = sig.substring(open + 1, sig.length - 1).split(",").map { it.trim() }
         if (args.lastOrNull() != "INPUT") return null
         val constants = args.dropLast(1).map { it.toIntOrNull() ?: return null }
         if (constants.isEmpty()) return null
 
         return PlayerCipherConfig(funcName, constants, nClass)
+    }
+
+    /** True when [source] holds more than [maxBytes], without reading the whole body. */
+    internal fun exceedsLimit(source: BufferedSource, maxBytes: Long): Boolean {
+        source.request(maxBytes + 1)
+        return source.buffer.size > maxBytes
     }
 }
