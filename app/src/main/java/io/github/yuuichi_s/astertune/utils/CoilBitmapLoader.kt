@@ -28,11 +28,14 @@ import coil3.fetch.Fetcher
 import coil3.fetch.ImageFetchResult
 import coil3.imageLoader
 import coil3.key.Keyer
+import coil3.map.Mapper
 import coil3.request.CachePolicy
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.Options
 import coil3.request.allowHardware
+import coil3.size.Scale
+import coil3.size.pxOrElse
 import coil3.toBitmap
 import io.github.yuuichi_s.astertune.R
 import com.google.common.util.concurrent.ListenableFuture
@@ -41,11 +44,13 @@ import kotlinx.coroutines.guava.future
 import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 class CoilBitmapLoader @Inject constructor(
     private val context: Context,
     private val scope: CoroutineScope = CoroutineScope(coilCoroutine),
     private val data: LocalArtworkPath = LocalArtworkPath(null),
+    private val targetScale: Scale = Scale.FIT,
 ) : Fetcher, BitmapLoader {
 
     override fun supportsMimeType(mimeType: String): Boolean {
@@ -98,34 +103,21 @@ class CoilBitmapLoader @Inject constructor(
                     val art = mData.embeddedPicture
                     BitmapFactory.decodeByteArray(art, 0, art!!.size)
                 } catch (e: Exception) {
-                    drawPlaceholder(context)
-                } ?: drawPlaceholder(context)
+                    framePlaceholder()
+                } ?: framePlaceholder()
 
-                if (data.x + data.y > 0) {
-                    var realX = data.x
-                    var realY = data.y
-
-                    // scale maintaining aspect ratio
-                    if (image.width != image.height) {
-                        val frameW = data.x
-                        val frameH = data.y
-                        val imgW = image.width
-                        val imgH = image.height
-
-                        val scaleX = frameW.toFloat() / imgW
-                        val scaleY = frameH.toFloat() / imgH
-                        val scale = minOf(scaleX, scaleY)
-
-                        realX = (imgW * scale).toInt()
-                        realY = (imgH * scale).toInt()
-                    }
-
-                    image = image.scale(realX, realY)
+                val factor = scaleFactor(image.width, image.height)
+                val sampled = factor < 1f
+                if (sampled) {
+                    image = image.scale(
+                        (image.width * factor).roundToInt().coerceAtLeast(1),
+                        (image.height * factor).roundToInt().coerceAtLeast(1)
+                    )
                 }
 
                 ImageFetchResult(
                     image = image.asImage(),
-                    isSampled = false,
+                    isSampled = sampled,
                     dataSource = DataSource.DISK
                 )
             } else {
@@ -134,11 +126,37 @@ class CoilBitmapLoader @Inject constructor(
         } catch (e: Exception) {
             reportException(e)
             ImageFetchResult(
-                image = drawPlaceholder(context).asImage(),
+                image = framePlaceholder().asImage(),
                 isSampled = false,
                 dataSource = DataSource.MEMORY
             )
         }
+    }
+
+    /**
+     * Calculate the magnification factor to be applied to the original image dimensions
+     *
+     * The image will fit within the specified frame while maintaining its aspect ratio,
+     * or it will be displayed to fill the entire frame.
+     */
+    private fun scaleFactor(width: Int, height: Int): Float {
+        if (width <= 0 || height <= 0) return 1f
+
+        val fitX = if (data.x > 0) data.x.toFloat() / width else null
+        val fitY = if (data.y > 0) data.y.toFloat() / height else null
+        val factor = when {
+            fitX != null && fitY != null ->
+                if (targetScale == Scale.FILL) maxOf(fitX, fitY) else minOf(fitX, fitY)
+
+            else -> fitX ?: fitY ?: return 1f
+        }
+
+        return factor.coerceAtMost(1f)
+    }
+
+    private fun framePlaceholder(): Bitmap {
+        val side = maxOf(data.x, data.y)
+        return if (side > 0) drawPlaceholder(context, side, side) else drawPlaceholder(context)
     }
 
     companion object {
@@ -175,8 +193,28 @@ class CoilBitmapLoader @Inject constructor(
         private val context: Context,
     ) : Fetcher.Factory<LocalArtworkPath> {
         override fun create(data: LocalArtworkPath, options: Options, imageLoader: ImageLoader): Fetcher? {
-            return CoilBitmapLoader(context, data = data)
+            return CoilBitmapLoader(context, data = data, targetScale = options.scale)
         }
+    }
+}
+
+/**
+ * Maps Coil's resolved request dimensions to local artwork whose dimensions are unspecified.
+ *
+ * The mapped dimensions are used by [LocalArtworkPathKeyer] and [CoilBitmapLoader].
+ */
+class LocalArtworkPathSizeMapper : Mapper<LocalArtworkPath, LocalArtworkPath> {
+    override fun map(
+        data: LocalArtworkPath,
+        options: Options
+    ): LocalArtworkPath? {
+        if (data.x > 0 || data.y > 0) return null
+
+        val x = options.size.width.pxOrElse { -1 }
+        val y = options.size.height.pxOrElse { -1 }
+        if (x <= 0 && y <= 0) return null
+
+        return data.copy(x = x, y = y)
     }
 }
 
@@ -185,7 +223,8 @@ class LocalArtworkPathKeyer : Keyer<LocalArtworkPath> {
         data: LocalArtworkPath,
         options: Options
     ): String? {
-        return data.path + ";" + data.x + ";" + data.y
+        val key = data.path + ";" + data.x + ";" + data.y
+        return if (data.x > 0 || data.y > 0) key + ";" + options.scale else key
     }
 
 }

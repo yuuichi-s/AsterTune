@@ -47,6 +47,7 @@ import io.github.yuuichi_s.astertune.extensions.toEnum
 import io.github.yuuichi_s.astertune.extensions.toInetSocketAddress
 import io.github.yuuichi_s.astertune.utils.CoilBitmapLoader
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathKeyer
+import io.github.yuuichi_s.astertune.utils.LocalArtworkPathSizeMapper
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.normalizeDataSyncId
@@ -161,6 +162,7 @@ class App : Application(), SingletonImageLoader.Factory {
         if (cacheSize == 0) {
             return ImageLoader.Builder(this)
                 .components {
+                    add(LocalArtworkPathSizeMapper())
                     add(CoilBitmapLoader.Factory(this@App))
                     add(LocalArtworkPathKeyer())
                 }
@@ -177,6 +179,7 @@ class App : Application(), SingletonImageLoader.Factory {
 
         return ImageLoader.Builder(this)
             .components {
+                add(LocalArtworkPathSizeMapper())
                 add(CoilBitmapLoader.Factory(this@App))
                 add(LocalArtworkPathKeyer())
             }
