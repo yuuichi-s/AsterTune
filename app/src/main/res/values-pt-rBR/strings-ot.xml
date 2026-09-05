@@ -267,4 +267,25 @@
     <string name="scanner_type_tooltip">O busca do sistema é mais rápida, mas pode extrair alguns metadados incorretamente comparado a outros extratores. Observe que ao alterar buscadores, os metadados de músicas existentes não serão recarregados.</string>
     <string name="restore_lm_tooltip">Em instalações limpas do app, caminhos de busca de mídia local e download podem não funcionar. Para resolver isso, remova-os e adicione-os novamente.</string>
     <string name="off">Desativado</string>
+    <string name="local_files">Local</string>
+    <string name="grp_appearance_controls">Aparência e controles</string>
+    <string name="grp_display">Tela</string>
+    <string name="grp_now_playing">Tocando agora</string>
+    <string name="show_queue_title">Mostrar o nome da fila no reprodutor</string>
+    <string name="slider_style_title">Estilo do controle deslizante</string>
+    <string name="slider_style_squiggly">Ondulado</string>
+    <string name="slider_style_default">Padrão</string>
+    <string name="slider_style_slim">Pequeno</string>
+    <string name="sleep_timer_fade">Atenuação</string>
+    <string name="sleep_timer_fade_duration">Duração da atenuação</string>
+    <string name="sleep_timer_fade_duration_desc">Segundos para abaixar o volume antes de parar</string>
+    <string name="sleep_timer_default_time">Tempo padrão para desligar</string>
+    <string name="sleep_timer_minutes_short">%d min</string>
+    <string name="sleep_timer_second_unit">s</string>
+    <string name="sleep_timer_stop">Desativar temporizador</string>
+    <string name="sleep_timer_show_on_player">Temporizador</string>
+    <string name="sleep_timer_show_on_player_desc">Mostrar botão do temporizador na tela do reprodutor</string>
+    <string name="lyrics_prefetch_title">Pré-carregar as letras das músicas</string>
+    <string name="lyrics_prefetch_description">Procurar as letras das próximas músicas antecipadamente</string>
+    <string name="lyrics_prefetch_count_title">Número de músicas para carregar antecipadamente</string>
 </resources>
