@@ -97,18 +97,23 @@ class CoilBitmapLoader @Inject constructor(
     override suspend fun fetch(): FetchResult? {
         return try {
             if (data.path?.startsWith("/storage/") == true) {
-                val mData = MediaMetadataRetriever()
+                var subsampled = false
                 var image: Bitmap = try {
-                    mData.setDataSource(data.path)
-                    val art = mData.embeddedPicture
-                    BitmapFactory.decodeByteArray(art, 0, art!!.size)
+                    val art = embeddedPicture(data.path)!!
+                    val sampleSize = sampleSize(art)
+                    val decoded = BitmapFactory.decodeByteArray(
+                        art, 0, art.size,
+                        BitmapFactory.Options().apply { inSampleSize = sampleSize }
+                    )
+                    subsampled = decoded != null && sampleSize > 1
+                    decoded
                 } catch (e: Exception) {
                     framePlaceholder()
                 } ?: framePlaceholder()
 
                 val factor = scaleFactor(image.width, image.height)
-                val sampled = factor < 1f
-                if (sampled) {
+                val scaled = factor < 1f
+                if (scaled) {
                     image = image.scale(
                         (image.width * factor).roundToInt().coerceAtLeast(1),
                         (image.height * factor).roundToInt().coerceAtLeast(1)
@@ -117,7 +122,7 @@ class CoilBitmapLoader @Inject constructor(
 
                 ImageFetchResult(
                     image = image.asImage(),
-                    isSampled = sampled,
+                    isSampled = subsampled || scaled,
                     dataSource = DataSource.DISK
                 )
             } else {
@@ -131,6 +136,42 @@ class CoilBitmapLoader @Inject constructor(
                 dataSource = DataSource.MEMORY
             )
         }
+    }
+
+    /**
+     * Reads the artwork embedded in the audio file at [path].
+     *
+     * [MediaMetadataRetriever] does not implement `AutoCloseable` below API 29,
+     * so it is released in a `finally` block instead of with `use`.
+     */
+    private fun embeddedPicture(path: String?): ByteArray? {
+        val retriever = MediaMetadataRetriever()
+        return try {
+            retriever.setDataSource(path)
+            retriever.embeddedPicture
+        } finally {
+            retriever.release()
+        }
+    }
+
+    /**
+     * Calculates the power-of-two sample size for decoding [art].
+     *
+     * Returns the largest sample size that keeps the decoded bitmap large enough for
+     * [targetScale], allowing [fetch] to apply only a final downscale when needed.
+     */
+    private fun sampleSize(art: ByteArray): Int {
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeByteArray(art, 0, art.size, bounds)
+
+        val factor = scaleFactor(bounds.outWidth, bounds.outHeight)
+        if (factor <= 0f || factor >= 1f) return 1
+
+        var sampleSize = 1
+        while (sampleSize * 2 <= 1f / factor) {
+            sampleSize *= 2
+        }
+        return sampleSize
     }
 
     /**
