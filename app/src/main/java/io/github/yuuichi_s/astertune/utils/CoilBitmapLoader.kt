@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import androidx.core.graphics.scale
 import androidx.media3.common.util.BitmapLoader
 import coil3.ImageLoader
@@ -37,8 +38,8 @@ import coil3.request.allowHardware
 import coil3.size.Scale
 import coil3.size.pxOrElse
 import coil3.toBitmap
-import io.github.yuuichi_s.astertune.R
 import com.google.common.util.concurrent.ListenableFuture
+import io.github.yuuichi_s.astertune.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.guava.future
 import java.util.concurrent.ExecutionException
@@ -107,7 +108,7 @@ class CoilBitmapLoader @Inject constructor(
                     )
                     subsampled = decoded != null && sampleSize > 1
                     decoded
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     framePlaceholder()
                 } ?: framePlaceholder()
 
@@ -221,7 +222,7 @@ class CoilBitmapLoader @Inject constructor(
             val squareTop = ((y - squareLength) / 2)
 
             val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.placeholder_icon)
-            val bitmap = Bitmap.createBitmap(x, y, Bitmap.Config.ARGB_8888)
+            val bitmap = createBitmap(x, y, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
 
             drawable?.setBounds(squareLeft, squareTop, squareLeft + squareLength, squareTop + squareLength)
@@ -233,7 +234,7 @@ class CoilBitmapLoader @Inject constructor(
     class Factory(
         private val context: Context,
     ) : Fetcher.Factory<LocalArtworkPath> {
-        override fun create(data: LocalArtworkPath, options: Options, imageLoader: ImageLoader): Fetcher? {
+        override fun create(data: LocalArtworkPath, options: Options, imageLoader: ImageLoader): Fetcher {
             return CoilBitmapLoader(context, data = data, targetScale = options.scale)
         }
     }
