@@ -66,17 +66,48 @@ interface AlbumsDao : ArtistsDao {
     """)
     fun localAlbumsByNameFuzzy(query: String, previewSize: Int = Int.MAX_VALUE): List<AlbumEntity>
 
-    @Transaction
-    @Query("""
-        SELECT * FROM album
-        WHERE album.isLocal = 1
-        ORDER BY album.title ASC
-    LIMIT :previewSize""")
-    fun allLocalAlbumsByName(previewSize: Int = Int.MAX_VALUE): List<AlbumEntity>
+    /**
+     * All local albums in insertion order, so callers that merge duplicates can pick the oldest
+     * row of a group without another sort.
+     */
+    @Query("SELECT * FROM album WHERE album.isLocal = 1 ORDER BY album.rowId ASC")
+    fun allLocalAlbums(): List<AlbumEntity>
 
+    /**
+     * Relink songs of [oldId] to [newId]. Rows whose song is already linked to [newId] would
+     * violate the (songId, albumId) primary key, so they are left behind for [deleteSongAlbumMap]
+     * to remove.
+     */
     @Transaction
-    @Query("UPDATE song_album_map SET albumId = :newId WHERE albumId = :oldId")
+    @Query("UPDATE OR IGNORE song_album_map SET albumId = :newId WHERE albumId = :oldId")
     fun updateSongAlbumMap(oldId: String, newId: String)
+
+    @Query("DELETE FROM song_album_map WHERE albumId = :albumId")
+    fun deleteSongAlbumMap(albumId: String)
+
+    /**
+     * Recount songCount and duration of every local album from its linked songs, replacing the
+     * running totals kept by the song insert and scanner update paths.
+     */
+    @Query("""
+        UPDATE album
+        SET songCount = (
+                SELECT COUNT(*)
+                FROM song_album_map
+                    JOIN song ON song_album_map.songId = song.id
+                WHERE song_album_map.albumId = album.id
+                    AND song.inLibrary IS NOT NULL
+            ),
+            duration = (
+                SELECT COALESCE(SUM(song.duration), 0)
+                FROM song_album_map
+                    JOIN song ON song_album_map.songId = song.id
+                WHERE song_album_map.albumId = album.id
+                    AND song.inLibrary IS NOT NULL
+            )
+        WHERE album.isLocal = 1
+    """)
+    fun recountLocalAlbums()
 
     @Query(
         """
@@ -99,10 +130,33 @@ interface AlbumsDao : ArtistsDao {
         WHERE album.id = :albumId
         GROUP BY album.id
     """)
-    fun albumWithSongs(albumId: String): Flow<AlbumWithSongs?>
+    fun _albumWithSongs(albumId: String): Flow<AlbumWithSongs?>
 
+    /**
+     * Observes the album identified by [albumId] and its songs, omitting disabled songs for local
+     * albums.
+     */
+    fun albumWithSongs(albumId: String): Flow<AlbumWithSongs?> =
+        _albumWithSongs(albumId).map { album ->
+            if (album?.album?.isLocal == true) {
+                album.copy(songs = album.songs.filter { it.song.inLibrary != null })
+            } else {
+                album
+            }
+        }
+
+    /**
+     * Observes songs linked to [albumId], omitting disabled songs when the album is local.
+     */
     @Transaction
-    @Query("SELECT song.* FROM song JOIN song_album_map ON song.id = song_album_map.songId WHERE song_album_map.albumId = :albumId")
+    @Query("""
+        SELECT song.*
+        FROM song
+            JOIN song_album_map ON song.id = song_album_map.songId
+            JOIN album ON song_album_map.albumId = album.id
+        WHERE song_album_map.albumId = :albumId
+            AND (album.isLocal = 0 OR song.inLibrary IS NOT NULL)
+    """)
     fun albumSongs(albumId: String): Flow<List<Song>>
 
     @Transaction
@@ -292,8 +346,11 @@ interface AlbumsDao : ArtistsDao {
      * Set artistId
      */
     @Transaction
-    @Query("UPDATE album_artist_map SET artistId = :newId WHERE artistId = :oldId")
+    @Query("UPDATE OR IGNORE album_artist_map SET artistId = :newId WHERE artistId = :oldId")
     fun updateAlbumArtistMap(oldId: String, newId: String)
+
+    @Query("DELETE FROM album_artist_map WHERE artistId = :artistId")
+    fun deleteAlbumArtistMap(artistId: String)
 
     @Transaction
     @Query("DELETE FROM song_artist_map WHERE songId = :songID")

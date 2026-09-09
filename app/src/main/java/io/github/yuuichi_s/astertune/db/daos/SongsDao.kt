@@ -404,7 +404,7 @@ interface SongsDao {
     @Query("UPDATE song SET liked = 0, likedDate = null WHERE id = :songId")
     fun removeLike(songId: String)
 
-    @Query("UPDATE song SET inLibrary = null WHERE localPath = null")
+    @Query("UPDATE song SET inLibrary = null WHERE localPath IS NULL AND isLocal = 1")
     fun disableInvalidLocalSongs()
 
     @Query("UPDATE song SET inLibrary = null, localPath = null WHERE id = :songId")

@@ -92,6 +92,7 @@ import io.github.yuuichi_s.astertune.ui.utils.clearDtCache
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
+import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.destroyScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.getScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerProgressCurrent
@@ -102,6 +103,7 @@ import io.github.yuuichi_s.astertune.utils.scanners.ScannerAbortException
 import io.github.yuuichi_s.astertune.utils.scanners.absoluteFilePathFromUri
 import io.github.yuuichi_s.astertune.utils.scanners.stringFromUriList
 import io.github.yuuichi_s.astertune.utils.scanners.uriListFromString
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -238,6 +240,17 @@ fun ColumnScope.LocalScannerFrag() {
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
                             )
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            scannerFailure = true
+                            reportException(e)
+
+                            snackbarHostState.showSnackbar(
+                                message = scanFailMessage,
+                                withDismissAction = true,
+                                duration = SnackbarDuration.Short
+                            )
                         } finally {
                             clearDtCache()
                             destroyScanner(SCANNER_OWNER_LM)
@@ -271,6 +284,17 @@ fun ColumnScope.LocalScannerFrag() {
 
                             snackbarHostState.showSnackbar(
                                 message = "$scanFailMessage: ${e.message}",
+                                withDismissAction = true,
+                                duration = SnackbarDuration.Short
+                            )
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            scannerFailure = true
+                            reportException(e)
+
+                            snackbarHostState.showSnackbar(
+                                message = scanFailMessage,
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
                             )
@@ -476,12 +500,13 @@ fun ColumnScope.LocalScannerFrag() {
                 ActivityResultContracts.OpenDocumentTree()
             ) { uri ->
                 if (uri == null) return@rememberLauncherForActivityResult
-                if (tempScanPaths.any { it.toString() == uri.toString() }) return@rememberLauncherForActivityResult
 
                 val contentResolver = context.contentResolver
                 val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 contentResolver.takePersistableUriPermission(uri, takeFlags)
-                tempScanPaths.add(uri)
+                if (tempScanPaths.none { it.toString() == uri.toString() }) {
+                    tempScanPaths.add(uri)
+                }
             }
 
             Text(

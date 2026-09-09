@@ -21,6 +21,7 @@ import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastMapNotNull
 import androidx.datastore.preferences.core.edit
 import androidx.documentfile.provider.DocumentFile
+import androidx.documentfile.provider.TreeDocumentFileOt
 import io.github.yuuichi_s.astertune.constants.SCANNER_DEBUG
 import io.github.yuuichi_s.astertune.constants.SYNC_SCANNER
 import io.github.yuuichi_s.astertune.constants.ScannerImpl
@@ -30,7 +31,6 @@ import io.github.yuuichi_s.astertune.constants.ScannerMatchCriteria
 import io.github.yuuichi_s.astertune.constants.scannerWhitelistExts
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.AlbumEntity
-import io.github.yuuichi_s.astertune.db.entities.Artist
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
 import io.github.yuuichi_s.astertune.db.entities.FormatEntity
 import io.github.yuuichi_s.astertune.db.entities.GenreEntity
@@ -53,6 +53,7 @@ import io.github.yuuichi_s.astertune.utils.reportException
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.SongItem
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -179,18 +180,23 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
     }
 
     /**
-     * Update the Database with local files
+     * Synchronizes scanned local songs with [database].
      *
-     * @param database
-     * @param newSongs
-     * @param matchStrength How lax should the scanner be
-     * @param strictFileNames Whether to consider file names
-     * @param refreshExisting Setting this this to true will updated existing songs
-     * with new information, else existing song's data will not be touched, regardless
-     * whether it was actually changed on disk
+     * Unmatched songs are inserted. A matched song keeps its database ID, download timestamp,
+     * Like state, and any non-null existing library-added timestamp. When [refreshExisting] is
+     * true, its scanned metadata, format, and artist, album, and genre mappings are refreshed.
+     * When false, it is updated only as needed to restore its local path or library availability.
      *
-     * Inserts a song if not found
-     * Updates a song information depending on if refreshExisting value
+     * Unless [noDisable] is true, duplicate local rows are consolidated, local songs absent from
+     * [newSongs] are disabled, and local album song counts and durations are recalculated.
+     *
+     * @param newSongs scanned local songs to synchronize
+     * @param matchStrength how closely a scanned song must match an existing song
+     * @param strictFileNames whether file names participate in matching
+     * @param strictFilePaths whether file paths must match
+     * @param refreshExisting whether to refresh metadata and relationship rows for matched songs
+     * @param noDisable whether to skip duplicate cleanup, missing-song disabling, and album
+     * recounting
      */
     suspend fun syncDB(
         database: MusicDatabase,
@@ -268,12 +274,19 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                     Log.v(TAG, "Found in database, updating song: ${song.song.title} rescan = $refreshExisting")
 
                 val oldSong = songMatch.first().song
-                val songToUpdate = song.song.song.copy(id = oldSong.id, localPath = song.song.song.localPath)
+                val songToUpdate = song.song.song.copy(
+                    id = oldSong.id,
+                    localPath = song.song.song.localPath,
+                    inLibrary = oldSong.inLibrary ?: song.song.song.inLibrary,
+                    dateDownload = oldSong.dateDownload,
+                    liked = oldSong.liked,
+                    likedDate = oldSong.likedDate,
+                )
 
                 // don't run if we will update these values in rescan anyways
                 // always ensure inLibrary and local path values are valid
                 if (!refreshExisting && (oldSong.inLibrary == null || oldSong.localPath == null)) {
-                    database.transaction {
+                    database.awaitTransaction {
                         update(songToUpdate)
 
                         // update format
@@ -298,7 +311,7 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                 var albumToDo: Pair<AlbumEntity?, AlbumEntity>? = null
 
                 // update artists and genre
-                database.transaction {
+                database.awaitTransaction {
                     // get any existing matches
                     song.song.artists.forEachIndexed { index, it ->
                         val dbQuery = localArtistsByNameFuzzy(it.name).sortedBy { item -> item.name.length }
@@ -374,7 +387,7 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                 if (SCANNER_DEBUG)
                     Log.v(TAG, "NOT found in database, adding song: ${song.song.title}")
 
-                database.transaction {
+                database.awaitTransaction {
                     insert(song.song.toMediaMetadata())
                     song.format?.let {
                         upsert(it.copy(id = song.song.id))
@@ -386,25 +399,33 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
         scannerProgressCurrent.value = scannerProgressTotal.value
         // do not delete songs from database automatically, we just disable them
         if (!noDisable) {
-            finalize(database)
+            reportUnmergedGroups(finalize(database))
             disableSongs(finalSongs.map { it.song }, database)
+            database.awaitTransaction { recountLocalAlbums() }
         }
         scannerState.value = 0
         Log.i(TAG, "------------ SYNC: Finished Local Library Sync ------------")
     }
 
     /**
-     * A faster scanner implementation that adds new songs to the database,
-     * and does not touch older songs entries (apart from removing
-     * inacessable songs from libaray).
+     * Scans paths in [newSongs] that are not already stored in [database].
      *
-     * No remote artist lookup is done
+     * [newSongs] represents the complete set of song URIs found by the current scan because it is
+     * also used to identify missing local songs. If a URI cannot be resolved to a file path, this
+     * function throws before updating the database.
      *
-     * WARNING: cachedDirectoryTree is not refreshed and may lead to inconsistencies.
-     * It is highly recommend to rebuild the tree after scanner operation
+     * Existing song metadata is not refreshed. After scanning new paths, this function:
      *
-     * @param newSongs List of songs. This is expecting a barebones DirectoryTree
-     * (only paths are necessary), thus you may use the output of refreshLocal().toList()
+     * - disables local songs whose paths are absent from the resolved input paths
+     * - removes duplicate song records and merges duplicate local artists, albums, and genres
+     * - recalculates local album song counts and durations
+     *
+     * Cleanup still runs when no new valid song is found. No remote artist lookup is performed.
+     *
+     * The cached directory tree is not refreshed, so callers displaying it should rebuild it after
+     * the scan.
+     *
+     * @param newSongs complete set of local-song URIs found by the current scan
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun quickSync(
@@ -425,7 +446,10 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
         // get list of all songs in db, then get songs unknown to the database
         // TODO: duplicate songs with different paths will cycle through paths, causing it to be synced instead of ignored...
         val allSongs = database.allLocalSongs().fastMapNotNull { it.song.localPath }.toSet()
-        val converted = newSongs.fastMapNotNull { fileFromUri(context, it)?.absolutePath }
+        val converted = newSongs.map { uri ->
+            fileFromUri(context, uri)?.absolutePath
+                ?: throw IOException("Could not resolve local file path: $uri")
+        }
         val delta = converted.minus(allSongs)
         Log.d(TAG, "Songs found: ${delta.size}")
         val mod = if (newSongs.size < 20) {
@@ -522,7 +546,8 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
         // we handle disabling songs here instead
         scannerState.value = 3
         disableSongsByPath(converted, database)
-        finalize(database)
+        reportUnmergedGroups(finalize(database))
+        database.awaitTransaction { recountLocalAlbums() }
 
         scannerState.value = 0
         Log.i(TAG, "------------ SYNC: Finished Quick (additive delta) Library Sync ------------")
@@ -530,16 +555,24 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
 
 
     /**
-     * Run a full scan and ful database update. This will update all song data in the
-     * database of all songs, and also disable inacessable songs
+     * Rescans [newSongs] and synchronizes local-song data with [database].
      *
-     * No remote artist lookup is done
+     * For a matched song, the scan refreshes its metadata, format, and artist, album, and genre
+     * relationships while preserving:
      *
-     * WARNING: cachedDirectoryTree is not refreshed and may lead to inconsistencies.
-     * It is highly recommend to rebuild the tree after scanner operation
+     * - its database ID
+     * - its download timestamp
+     * - its Like state
+     * - an existing non-null library-added timestamp
      *
-     * @param newSongs List of songs. This is expecting a barebones DirectoryTree
-     * (only paths are necessary), thus you may use the output of refreshLocal().toList()
+     * If at least one valid song is found, new songs are inserted, missing local songs are disabled,
+     * duplicate local rows are merged, and local album song counts and durations are recalculated.
+     * If no valid song is found, the database is left unchanged.
+     *
+     * No remote artist lookup is performed. The cached directory tree is not refreshed, so callers
+     * displaying it should rebuild it after the scan.
+     *
+     * @param newSongs local-song URIs to rescan
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun fullSync(
@@ -634,7 +667,7 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
         }
 
         scannerState.value = 0
-        Log.i(TAG, "------------ SYNC: Finished Quick (additive delta) Library Sync ------------")
+        Log.i(TAG, "------------ SYNC: Finished FULL Library Sync ------------")
     }
 
 
@@ -799,17 +832,18 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                     e.printStackTrace()
                 }
 
-                val artistList = ArrayList<ArtistEntity>()
-                val genresList = ArrayList<GenreEntity>()
+                val artistList = artist.split(ARTIST_SEPARATORS)
+                    .map { it.trim() }
+                    .filterNot { it.isBlank() }
+                    .distinctBy { it.lowercase() }
+                    .map { ArtistEntity(ArtistEntity.generateArtistId(), it, isLocal = true) }
 
-
-                artist.split(ARTIST_SEPARATORS).forEach { artistVal ->
-                    artistList.add(ArtistEntity(ArtistEntity.generateArtistId(), artistVal, isLocal = true))
-                }
-
-                genre?.split(ARTIST_SEPARATORS)?.forEach { genreVal ->
-                    genresList.add(GenreEntity(GenreEntity.generateGenreId(), genreVal, isLocal = true))
-                }
+                val genresList = genre?.split(ARTIST_SEPARATORS)
+                    ?.map { it.trim() }
+                    ?.filterNot { it.isBlank() }
+                    ?.distinctBy { it.lowercase() }
+                    ?.map { GenreEntity(GenreEntity.generateGenreId(), it, isLocal = true) }
+                    ?: emptyList()
                 val albumID = AlbumEntity.generateAlbumId()
                 val albumEntity = if (album != null) AlbumEntity(
                     id = albumID,
@@ -883,7 +917,8 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
         // we handle disabling songs here instead
         scannerState.value = 3
         disableSongsByPath(mediaStoreSongs.mapNotNull { it.song.song.localPath }, database)
-        finalize(database)
+        reportUnmergedGroups(finalize(database))
+        database.awaitTransaction { recountLocalAlbums() }
         scannerState.value = 0
 
 
@@ -908,7 +943,7 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
             if (newSongs.none { it == song.song.localPath }) {
                 if (SCANNER_DEBUG)
                     Log.v(TAG, "Disabling song ${song.song.localPath}")
-                database.transaction {
+                database.awaitTransaction {
                     disableLocalSong(song.song.id)
                 }
             }
@@ -941,9 +976,12 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
     }
 
     /**
-     * Remove inaccessible, and duplicate songs from the library
+     * Remove duplicate songs from the library and merge local artists, albums and genres that
+     * share a name.
+     *
+     * @return the number of duplicate groups that could not be merged
      */
-    private suspend fun finalize(database: MusicDatabase) {
+    private suspend fun finalize(database: MusicDatabase): Int {
         Log.i(TAG, "Start finalize (database cleanup job)")
 
         // remove duplicates
@@ -968,76 +1006,149 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
             }
         }
 
-        // remove duplicated local artists
-        val dbArtists: MutableList<Artist> = database.localArtistsByName().toMutableList()
-        while (dbArtists.isNotEmpty()) {
-            // gather same artists (precondition: artists are ordered by name
-            val tmp = ArrayList<Artist>()
-            val oldestArtist: Artist = dbArtists.removeAt(0)
-            tmp.add(oldestArtist)
-            while (dbArtists.isNotEmpty() && dbArtists.first().title == tmp.first().title) {
-                tmp.add(dbArtists.removeAt(0))
-            }
+        var failedGroups = 0
 
-            if (tmp.size > 1) {
-                try {
-                    // merge all duplicate artists into the oldest one
-                    tmp.removeAt(0)
-                    tmp.sortBy { it.artist.bookmarkedAt }
-                    tmp.forEach { swapArtists(it.artist, oldestArtist.artist, database) }
-                } catch (e: Exception) {
-                    reportException(e)
+        failedGroups += mergeDuplicates(
+            kind = "artists",
+            rows = database.allLocalArtists(),
+            id = { it.id },
+            name = { it.name },
+            bookmarkedAt = { it.bookmarkedAt }
+        ) { survivor, duplicates ->
+            database.awaitTransaction {
+                val target = artistById(survivor.id) ?: return@awaitTransaction false
+                val merged = duplicates.mapNotNull { artistById(it.id) }
+                merged.forEach { old ->
+                    updateSongArtistMap(old.id, target.id)
+                    updateAlbumArtistMap(old.id, target.id)
+                    deleteSongArtistMap(old.id)
+                    deleteAlbumArtistMap(old.id)
+                    safeDeleteArtist(old.id)
                 }
+                val bookmarkedAt = (merged + target).mapNotNull { it.bookmarkedAt }.minOrNull()
+                if (bookmarkedAt != target.bookmarkedAt) {
+                    update(target.copy(bookmarkedAt = bookmarkedAt))
+                }
+                true
             }
         }
 
-        // remove duplicated local albums
-        val dbAlbums: MutableList<AlbumEntity> = database.allLocalAlbumsByName().toMutableList()
-        while (dbAlbums.isNotEmpty()) {
-            // gather same artists (precondition: artists are ordered by name
-            val tmp = ArrayList<AlbumEntity>()
-            val oldestAlbum: AlbumEntity = dbAlbums.removeAt(0)
-            tmp.add(oldestAlbum)
-            while (dbAlbums.isNotEmpty() && dbAlbums.first().title == tmp.first().title) {
-                tmp.add(dbAlbums.removeAt(0))
-            }
-
-            if (tmp.size > 1) {
-                try {
-                    // merge all duplicate artists into the oldest one
-                    tmp.removeAt(0)
-                    tmp.sortBy { it.bookmarkedAt }
-                    tmp.forEach { swapAlbums(it, oldestAlbum, database) }
-                } catch (e: Exception) {
-                    reportException(e)
+        failedGroups += mergeDuplicates(
+            kind = "albums",
+            rows = database.allLocalAlbums(),
+            id = { it.id },
+            name = { it.title },
+            bookmarkedAt = { it.bookmarkedAt }
+        ) { survivor, duplicates ->
+            database.awaitTransaction {
+                val target = albumById(survivor.id) ?: return@awaitTransaction false
+                val merged = duplicates.mapNotNull { albumById(it.id) }
+                merged.forEach { old ->
+                    updateSongAlbumMap(old.id, target.id)
+                    deleteSongAlbumMap(old.id)
+                    safeDeleteAlbum(old.id)
                 }
+                val bookmarkedAt = (merged + target).mapNotNull { it.bookmarkedAt }.minOrNull()
+                if (bookmarkedAt != target.bookmarkedAt) {
+                    update(target.copy(bookmarkedAt = bookmarkedAt))
+                }
+                true
             }
         }
 
-        // remove duplicated genres
-        val dbGenres: MutableList<GenreEntity> = database.allLocalGenresByName().toMutableList()
-        while (dbGenres.isNotEmpty()) {
-            // gather same artists (precondition: artists are ordered by name
-            val tmp = ArrayList<GenreEntity>()
-            val oldestGenre: GenreEntity = dbGenres.removeAt(0)
-            tmp.add(oldestGenre)
-            while (dbGenres.isNotEmpty() && dbGenres.first().title == tmp.first().title) {
-                tmp.add(dbGenres.removeAt(0))
-            }
-
-            if (tmp.size > 1) {
-                try {
-                    // merge all duplicate artists into the oldest one
-                    tmp.removeAt(0)
-                    tmp.sortBy { it.bookmarkedAt }
-                    tmp.forEach { swapGenres(it, oldestGenre, database) }
-                } catch (e: Exception) {
-                    reportException(e)
+        failedGroups += mergeDuplicates(
+            kind = "genres",
+            rows = database.allLocalGenres(),
+            id = { it.id },
+            name = { it.title },
+            bookmarkedAt = { it.bookmarkedAt }
+        ) { survivor, duplicates ->
+            database.awaitTransaction {
+                val target = genreById(survivor.id) ?: return@awaitTransaction false
+                val merged = duplicates.mapNotNull { genreById(it.id) }
+                merged.forEach { old ->
+                    updateSongGenreMap(old.id, target.id)
+                    deleteSongGenreMap(old.id)
+                    safeDeleteGenre(old.id)
                 }
+                val bookmarkedAt = (merged + target).mapNotNull { it.bookmarkedAt }.minOrNull()
+                if (bookmarkedAt != target.bookmarkedAt) {
+                    updateGenreBookmark(target.id, bookmarkedAt)
+                }
+                true
             }
         }
 
         Log.i(TAG, "Finished finalize (duplicate removal) job")
+        return failedGroups
+    }
+
+    private fun reportUnmergedGroups(count: Int) {
+        if (count > 0) {
+            Log.w(TAG, "$count group(s) of duplicates were left in the library")
+        }
+    }
+
+    /**
+     * Merges rows whose names match when case is ignored.
+     *
+     * In each duplicate group, the row with the earliest bookmark timestamp survives. If none is
+     * bookmarked, the first row in the group survives. [merge] receives the surviving row and the
+     * remaining rows so it can update their mappings and remove the duplicates.
+     *
+     * Each group is passed to [merge] separately. A false result or a non-cancellation exception is
+     * counted as one failed group. Cancellation is rethrown; other exceptions are logged, and
+     * processing continues with the next group.
+     *
+     * @param rows candidate rows in insertion order
+     * @return number of groups that were not merged
+     */
+    private suspend fun <T> mergeDuplicates(
+        kind: String,
+        rows: List<T>,
+        id: (T) -> String,
+        name: (T) -> String,
+        bookmarkedAt: (T) -> LocalDateTime?,
+        merge: suspend (survivor: T, duplicates: List<T>) -> Boolean,
+    ): Int {
+        val groups = rows.groupBy { name(it).lowercase() }.values.filter { it.size > 1 }
+        Log.d(TAG, "Start finalize (duplicate $kind) job. Number of groups: ${groups.size}")
+
+        var merged = 0
+        var failed = 0
+        groups.forEach { group ->
+            val survivor = group.filter { bookmarkedAt(it) != null }.minByOrNull { bookmarkedAt(it)!! }
+                ?: group.first()
+            val duplicates = group.filterNot { it === survivor }
+            val groupName = name(survivor).lineSequence().joinToString(" ")
+            try {
+                if (merge(survivor, duplicates)) {
+                    merged++
+                } else {
+                    failed++
+                    Log.w(
+                        TAG,
+                        "Duplicate merge skipped: kind=$kind, name=$groupName, rows=${group.size}, " +
+                                "survivorId=${id(survivor)}, duplicateIds=${duplicates.joinToString { id(it) }}, " +
+                                "reason=survivor missing"
+                    )
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                failed++
+                val exception = "${e.javaClass.simpleName}: ${e.message}".lineSequence().joinToString(" ")
+                Log.e(
+                    TAG,
+                    "Duplicate merge failed: kind=$kind, name=$groupName, rows=${group.size}, " +
+                            "survivorId=${id(survivor)}, duplicateIds=${duplicates.joinToString { id(it) }}, " +
+                            "exception=$exception"
+                )
+                reportException(e)
+            }
+        }
+        Log.i(TAG, "Duplicate merge result: kind=$kind, groups=${groups.size}, merged=$merged, failed=$failed")
+        return failed
     }
 
 
@@ -1138,7 +1249,7 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                     val file = documentFileFromUri(context, path)
                     if (file != null) {
                         val songsHere = ArrayList<DocumentFile>()
-                        scanDfRecursive(file, songsHere) {
+                        scanDfRecursive(file, songsHere, failOnListingError = true) {
                             // Allow: audio mime, or certain audio exts
                             // Disallow: x-mpegurl (m3u)
                             val mime = it.type ?: return@scanDfRecursive false
@@ -1173,14 +1284,18 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
             dir: DocumentFile,
             result: ArrayList<DocumentFile>,
             scanHidden: Boolean = false,
+            failOnListingError: Boolean = false,
             validator: ((DocumentFile) -> Boolean)? = null
         ): DocumentFile? {
-            val files = dir.listFiles()
+            val files = listFiles(dir, failOnListingError)
             for (file in files) {
                 if (!scanHidden && file.name?.startsWith(".") == true) continue
-                if (file.isDirectory && (scanHidden || !file.listFiles().any { it.name == ".nomedia" })) {
+                if (
+                    file.isDirectory &&
+                    (scanHidden || !listFiles(file, failOnListingError).any { it.name == ".nomedia" })
+                ) {
                     // look into subdirs
-                    scanDfRecursive(file, result, scanHidden, validator)
+                    scanDfRecursive(file, result, scanHidden, failOnListingError, validator)
                 } else {
                     // add if file matches
                     if (validator == null || validator(file)) {
@@ -1193,6 +1308,14 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                 }
             }
             return null
+        }
+
+        private fun listFiles(dir: DocumentFile, failOnListingError: Boolean): Array<DocumentFile> {
+            return if (failOnListingError) {
+                (dir as TreeDocumentFileOt).listFilesOrThrow()
+            } else {
+                dir.listFiles()
+            }
         }
 
         /**
@@ -1406,70 +1529,6 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
             }
 
             return ytmResult
-        }
-
-        /**
-         * Swap all participation(s) with old artist to use new artist
-         *
-         * p.s. This is here instead of DatabaseDao because it won't compile there because
-         * "oooga boooga error in generated code"
-         */
-        fun swapArtists(old: ArtistEntity, new: ArtistEntity, database: MusicDatabase) {
-            database.transaction {
-                if (artistById(old.id) == null) {
-                    reportException(Exception("Attempting to swap with non-existent old artist in database with id: ${old.id}"))
-                    return@transaction
-                }
-                if (artistById(new.id) == null) {
-                    reportException(Exception("Attempting to swap with non-existent new artist in database with id: ${new.id}"))
-                    return@transaction
-                }
-
-                // update participation(s)
-                updateSongArtistMap(old.id, new.id)
-                updateAlbumArtistMap(old.id, new.id)
-
-                // nuke old artist
-                safeDeleteArtist(old.id)
-            }
-        }
-
-        fun swapAlbums(old: AlbumEntity, new: AlbumEntity, database: MusicDatabase) {
-            database.transaction {
-                if (albumById(old.id) == null) {
-                    reportException(Exception("Attempting to swap with non-existent old album in database with id: ${old.id}"))
-                    return@transaction
-                }
-                if (albumById(new.id) == null) {
-                    reportException(Exception("Attempting to swap with non-existent new album in database with id: ${new.id}"))
-                    return@transaction
-                }
-
-                // update participation(s)
-                updateSongAlbumMap(old.id, new.id)
-
-                // nuke old artist
-                safeDeleteAlbum(old.id)
-            }
-        }
-
-        fun swapGenres(old: GenreEntity, new: GenreEntity, database: MusicDatabase) {
-            database.transaction {
-                if (genreById(old.id) == null) {
-                    reportException(Exception("Attempting to swap with non-existent old album in database with id: ${old.id}"))
-                    return@transaction
-                }
-                if (genreById(new.id) == null) {
-                    reportException(Exception("Attempting to swap with non-existent new album in database with id: ${new.id}"))
-                    return@transaction
-                }
-
-                // update participation(s)
-                updateSongGenreMap(old.id, new.id)
-
-                // nuke old genre
-                safeDeleteGenre(old.id)
-            }
         }
     }
 }

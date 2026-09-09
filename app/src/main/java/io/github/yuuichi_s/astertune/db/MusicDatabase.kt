@@ -11,6 +11,7 @@ import androidx.room.RenameColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.withTransaction
 import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -64,6 +65,16 @@ class MusicDatabase(
             }
         }
     }
+
+    /**
+     * Run [block] in a transaction and suspend until it has been applied. Unlike [transaction],
+     * which only queues the work, the caller can rely on the write being visible afterwards and
+     * receives any exception it threw.
+     */
+    suspend fun <T> awaitTransaction(block: MusicDatabase.() -> T): T =
+        delegate.withTransaction {
+            block(this@MusicDatabase)
+        }
 
     fun close() = delegate.close()
 

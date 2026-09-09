@@ -116,15 +116,18 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     )
     fun relatedSongs(songId: String): List<Song>
 
-    @Query("""
-        SELECT * FROM genre
-        WHERE genre.isLocal = 1
-        ORDER BY genre.title ASC
-    LIMIT :previewSize""")
-    fun allLocalGenresByName(previewSize: Int = Int.MAX_VALUE): List<GenreEntity>
+    /**
+     * All local genres in insertion order, so callers that merge duplicates can pick the oldest
+     * row of a group without another sort.
+     */
+    @Query("SELECT * FROM genre WHERE genre.isLocal = 1 ORDER BY genre.rowId ASC")
+    fun allLocalGenres(): List<GenreEntity>
 
     @Query("SELECT * FROM genre WHERE id = :id")
     fun genreById(id: String): GenreEntity?
+
+    @Query("UPDATE genre SET bookmarkedAt = :bookmarkedAt WHERE id = :genreId")
+    fun updateGenreBookmark(genreId: String, bookmarkedAt: LocalDateTime?)
 
     @Query("SELECT * FROM genre WHERE title = :name")
     fun genreByName(name: String): GenreEntity?
@@ -132,9 +135,17 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Query("SELECT * FROM genre WHERE isLocal = 1 AND title LIKE '%' || :query || '%' LIMIT :previewSize")
     fun localGenreByNameFuzzy(query: String, previewSize: Int = Int.MAX_VALUE): List<GenreEntity>
 
+    /**
+     * Relink songs of [oldId] to [newId]. Rows whose song is already linked to [newId] would
+     * violate the (songId, genreId) primary key, so they are left behind for [deleteSongGenreMap]
+     * to remove.
+     */
     @Transaction
-    @Query("UPDATE song_genre_map SET genreId = :newId WHERE genreId = :oldId")
+    @Query("UPDATE OR IGNORE song_genre_map SET genreId = :newId WHERE genreId = :oldId")
     fun updateSongGenreMap(oldId: String, newId: String)
+
+    @Query("DELETE FROM song_genre_map WHERE genreId = :genreId")
+    fun deleteSongGenreMap(genreId: String)
 
     @Query(
         """
@@ -168,7 +179,13 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     fun insert(mediaMetadata: MediaMetadata, block: (SongEntity) -> SongEntity = { it }) {
         if (insert(mediaMetadata.toSongEntity().let(block)) == -1L) return
         mediaMetadata.artists.forEachIndexed { index, artist ->
-            val artistId = artist.id ?: artistByName(artist.name)?.id ?: ArtistEntity.generateArtistId()
+            // Local songs arrive with a per-file artist id, so they match by name first. Each side
+            // only reuses a row of its own kind, keeping local and remote artists apart.
+            val artistId = if (artist.isLocal) {
+                localArtistByName(artist.name)?.id ?: artist.id ?: ArtistEntity.generateArtistId()
+            } else {
+                artist.id ?: remoteArtistByName(artist.name)?.id ?: ArtistEntity.generateArtistId()
+            }
             insert( // TODO: use upsert???
                 ArtistEntity(
                     id = artistId,

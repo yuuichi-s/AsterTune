@@ -41,6 +41,7 @@ import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.destroyScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerState
 import com.zionhuang.innertube.YouTube
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -194,6 +195,7 @@ suspend fun scanInit(
 
 
     // local media scan
+    var localScanFailed = false
     val perms = context.checkSelfPermission(MEDIA_PERMISSION_LEVEL)
     // Check if the permissions for local media access
     if (scannerState.value <= 0 && localLibEnable) {
@@ -208,10 +210,13 @@ suspend fun scanInit(
                 )
                 val uris = scanner.scanLocal(scanPaths, excludedScanPaths)
                 scanner.quickSync(database, uris, scannerSensitivity, strictExtensions, strictFilePaths)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
+                localScanFailed = true
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(
-                        message = "${context.getString(R.string.scanner_scan_fail)}: ${e.message}",
+                        message = context.getString(R.string.scanner_scan_fail),
                         withDismissAction = true,
                         duration = SnackbarDuration.Short
                     )
@@ -227,7 +232,9 @@ suspend fun scanInit(
                 settings[LastLocalScanKey] = timeNow
             }
             playerConnection?.service?.initQueue()
-            Log.i(MAIN_TAG, "Local media and downloads scan completed")
+            if (!localScanFailed) {
+                Log.i(MAIN_TAG, "Local media and downloads scan completed")
+            }
         } else if (perms == PackageManager.PERMISSION_DENIED) {
             // Request the permission using the permission launcher
             (context as MainActivity).permissionLauncher.launch(MEDIA_PERMISSION_LEVEL)
@@ -237,13 +244,15 @@ suspend fun scanInit(
         Log.w(MAIN_TAG, "Cannot perform local media scan, scanner is in use")
     }
 
-    Log.i(MAIN_TAG, "Local media and downloads auto scan complete")
-    coroutineScope.launch {
-        snackbarHostState.showSnackbar(
-            message = context.getString(R.string.scanner_auto_end),
-            withDismissAction = true,
-            duration = SnackbarDuration.Short
-        )
+    if (!localScanFailed) {
+        Log.i(MAIN_TAG, "Local media and downloads auto scan complete")
+        coroutineScope.launch {
+            snackbarHostState.showSnackbar(
+                message = context.getString(R.string.scanner_auto_end),
+                withDismissAction = true,
+                duration = SnackbarDuration.Short
+            )
+        }
     }
 
 }

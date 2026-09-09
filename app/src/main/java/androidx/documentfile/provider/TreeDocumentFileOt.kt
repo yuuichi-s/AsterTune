@@ -114,7 +114,14 @@ class TreeDocumentFileOt(
         return DocumentsContractApi19Ot.exists(context, _uri)
     }
 
-    override fun listFiles(): Array<DocumentFile> {
+    override fun listFiles(): Array<DocumentFile> = listFiles(suppressErrors = true)
+
+    /**
+     * Lists child documents without converting a provider query failure into a partial result.
+     */
+    fun listFilesOrThrow(): Array<DocumentFile> = listFiles(suppressErrors = false)
+
+    private fun listFiles(suppressErrors: Boolean): Array<DocumentFile> {
         val resolver = context.contentResolver
         val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(
             _uri, DocumentsContract.getDocumentId(_uri)
@@ -141,6 +148,7 @@ class TreeDocumentFileOt(
                 resultNames.add(documentName)
             }
         } catch (e: Exception) {
+            if (!suppressErrors) throw e
             Log.w(TAG, "Failed query: $e")
         } finally {
             closeQuietly(c)
