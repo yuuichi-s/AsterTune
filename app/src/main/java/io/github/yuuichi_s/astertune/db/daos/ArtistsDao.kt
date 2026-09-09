@@ -52,6 +52,12 @@ interface ArtistsDao {
     @Query("SELECT * FROM artist WHERE name = :name")
     fun artistByName(name: String): ArtistEntity?
 
+    @Query("SELECT * FROM artist WHERE isLocal = 1 AND name = :name COLLATE NOCASE LIMIT 1")
+    fun localArtistByName(name: String): ArtistEntity?
+
+    @Query("SELECT * FROM artist WHERE isLocal = 0 AND name = :name LIMIT 1")
+    fun remoteArtistByName(name: String): ArtistEntity?
+
     @Query("SELECT * FROM artist WHERE isLocal = 1 AND name LIKE '%' || :name || '%'")
     fun localArtistsByNameFuzzy(name: String): List<ArtistEntity>
 
@@ -102,7 +108,11 @@ interface ArtistsDao {
     @Query("SELECT * FROM artist WHERE isLocal != 1")
     fun allRemoteArtists(): Flow<List<ArtistEntity>>
 
-    @Query("SELECT * FROM artist WHERE isLocal = 1")
+    /**
+     * All local artists in insertion order, so callers that merge duplicates can pick the oldest
+     * row of a group without another sort.
+     */
+    @Query("SELECT * FROM artist WHERE isLocal = 1 ORDER BY artist.rowId ASC")
     fun allLocalArtists(): List<ArtistEntity>
 
     @Query("""
@@ -180,21 +190,6 @@ interface ArtistsDao {
     fun artistsBookmarkedAsc() = artists(ArtistFilter.LIKED, ArtistSortType.CREATE_DATE, false)
     fun artistsLocalBookmarkedAsc() = artists(ArtistFilter.LIKED, ArtistSortType.CREATE_DATE, false, true)
 
-    @Transaction
-    @Query("""
-        SELECT 
-            artist.*,
-            COUNT(song.id) AS songCount,
-            SUM(CASE WHEN song.dateDownload IS NOT NULL THEN 1 ELSE 0 END) AS downloadCount
-        FROM artist
-            LEFT JOIN song_artist_map sam ON artist.id = sam.artistId
-            LEFT JOIN song ON sam.songId = song.id
-        WHERE artist.isLocal = 1
-        GROUP BY artist.id
-        ORDER BY artist.name ASC
-    """)
-    fun localArtistsByName(): List<Artist>
-
     /**
      * Representative artwork path for each local artist, preferring a local album cover and falling
      * back to a local song's embedded artwork. MIN() keeps the choice stable across rescans.
@@ -254,9 +249,17 @@ interface ArtistsDao {
         )
     }
 
+    /**
+     * Relink participations of [oldId] to [newId]. Rows whose song is already linked to [newId]
+     * would violate the (songId, artistId) primary key, so they are left behind for
+     * [deleteSongArtistMap] to remove.
+     */
     @Transaction
-    @Query("UPDATE song_artist_map SET artistId = :newId WHERE artistId = :oldId")
+    @Query("UPDATE OR IGNORE song_artist_map SET artistId = :newId WHERE artistId = :oldId")
     fun updateSongArtistMap(oldId: String, newId: String)
+
+    @Query("DELETE FROM song_artist_map WHERE artistId = :artistId")
+    fun deleteSongArtistMap(artistId: String)
     // endregion
 
     // region Deletes
