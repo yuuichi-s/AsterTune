@@ -1,0 +1,20 @@
+<p>AsterTune は、Android 向けの Material Design 3 ローカル音楽プレーヤー兼 YouTube Music クライアントです。OuterTune のフォークです。</p>
+
+<p><b>主な機能：</b></p>
+<ul>
+<li>広告なしの YouTube Music 再生、バックグラウンド再生、オフライン用のダウンロード、アカウントのライブラリとの同期</li>
+<li>MP3・OGG・FLAC などのローカル音声ファイルの再生</li>
+<li>複数値を持つタグや特殊な音声タグに対応した独自のメタデータ抽出処理</li>
+<li>ローカル曲と YouTube Music の曲を同じ再生キューで再生</li>
+<li>ローカルの曲・アルバム・アーティスト・プレイリスト・フォルダーの閲覧</li>
+<li>複数の再生キュー</li>
+<li>単語単位の歌詞を含む同期歌詞、複数の歌詞取得元、歌詞のインポート・編集</li>
+<li>音量の正規化、テンポ・ピッチ調整などの音響効果</li>
+<li>Android Auto 対応</li>
+</ul>
+
+<p><b>OuterTune からの移行：</b></p>
+<p>OuterTune のバックアップを AsterTune で復元することで、ライブラリと設定を移行できます。ダウンロード済みの音声ファイルはバックアップに含まれないため、再ダウンロードが必要です。</p>
+
+<p><b>More information:</b></p>
+<p>プロジェクトの情報と移行手順は <a href="https://github.com/yuuichi-s/AsterTune">AsterTune のリポジトリ</a> を参照してください。不具合は <a href="https://github.com/yuuichi-s/AsterTune/issues">AsterTune/issues</a>で報告してください。</p>

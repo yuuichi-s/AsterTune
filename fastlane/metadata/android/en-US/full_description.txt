@@ -1,21 +1,20 @@
-<p><i>AsterTune</i> is a supercharged fork of <a href="https://github.com/z-huang/InnerTune" target="_blank" rel="nofollow noopener">InnerTune</a>. This app is both a local media player, and a YouTube Music client.</p>
+<p>AsterTune is a Material Design 3 local music player and YouTube Music client for Android. It is a fork of OuterTune.</p>
 
-<p><br><b>Features:</b></p>
+<p><b>Features:</b></p>
 <ul>
-<li>YouTube Music client with song downloading (offline playback), background playback, no ADs, and account synchronization</li>
-<li>Local audio file playback (MP3, OGG, FLAC, etc.)</li>
-<li>Uses a custom tag extractor instead of MediaStore's broken metadata extractor! (e.g tags delimited with backslash now show up properly)</li>
-<li>Play local and Youtube Music songs at the same time</li>
-<li>New integrated library screen design</li>
-<li>Multiple queues</li>
-<li>Synchronized lyrics, and support for word by word/Karaoke lyrics (e.g LRC, TTML)</li>
-<li>Audio normalization, tempo/pitch adjustment, and various other audio effects</li>
+<li>YouTube Music playback with background playback, offline downloads, and account library synchronization</li>
+<li>Local audio file playback, including MP3, OGG, and FLAC</li>
+<li>A custom metadata extractor that supports multi-value and specialized audio tags</li>
+<li>Local and YouTube Music songs in the same playback queue</li>
+<li>Browse local songs, albums, artists, playlists, and folders</li>
+<li>Multiple playback queues</li>
+<li>Synchronized lyrics, including word-by-word lyrics, with multiple sources and support for importing and editing lyrics</li>
+<li>Audio normalization, tempo and pitch adjustments, and other audio effects</li>
 <li>Android Auto support</li>
 </ul>
 
-<p><br><b>Notice:</b></p>
-<ul>
-<li>Android 8 (Oreo) and higher is supported. While the app may work on Android 7.x, we do not officially support this version</li>
-<li>AsterTune is in a "stable beta" phase. While this app can certainly be used as your main music player, be aware there is a possibility of bugs, incomplete features, or any other unexpected behaviour. Please report issues on our GitHub page!</li>
-<li>Please visit our wiki for more information including FAQs, guides, and manuals: <a href="https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)">https://github.com/yuuichi-s/AsterTune/wiki/Frequently-Asked-Questions-(FAQ)</a></li>
-</ul>
+<p><b>Moving from OuterTune:</b></p>
+<p>You can transfer your library and settings by restoring an OuterTune backup in AsterTune. Downloaded audio files are not included in backups and must be downloaded again.</p>
+
+<p><b>More information:</b></p>
+<p>Visit <a href="https://github.com/yuuichi-s/AsterTune">the AsterTune repository</a> for project information and migration instructions. Please report problems on <a href="https://github.com/yuuichi-s/AsterTune/issues">the issue tracker</a>.</p>

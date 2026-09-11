@@ -1,1 +1,1 @@
-Material 3 local Music Player and YouTube Music client
+A Material Design 3 music player for local files and YouTube Music

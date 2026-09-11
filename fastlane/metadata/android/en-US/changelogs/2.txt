@@ -1,0 +1,9 @@
+AsterTune 1.0.1
+
+- Fix duplicate local artists and merge existing duplicate artists, albums, and genres.
+- Preserve favorites and dates when rescanning local songs.
+- Keep the library unchanged if selected folders cannot be read.
+- Correct local album track counts and durations after songs are removed.
+- Fix client headers for stream playback and downloads.
+- Reduce local artwork memory usage and update the fallback logo.
+- Update Brazilian Portuguese translation.

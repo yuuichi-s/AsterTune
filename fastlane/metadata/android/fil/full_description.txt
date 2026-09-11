@@ -1,0 +1,20 @@
+<p>Ang AsterTune ay isang lokal na music player at YouTube Music client para sa Android na gumagamit ng Material Design 3. Isa itong fork ng OuterTune.</p>
+
+<p><b>Mga tampok:</b></p>
+<ul>
+<li>Pag-play ng YouTube Music sa background, pag-download para sa offline na pakikinig, at pag-sync ng library ng account</li>
+<li>Pag-play ng mga lokal na audio file, kabilang ang MP3, OGG, at FLAC</li>
+<li>Sariling pangkuha ng metadata na sumusuporta sa mga audio tag na may maraming halaga at mga espesyal na tag</li>
+<li>Mga lokal na kanta at kanta mula sa YouTube Music sa iisang pila ng pag-play</li>
+<li>Pag-browse ng mga lokal na kanta, album, artist, playlist, at folder</li>
+<li>Maramihang pila ng pag-play</li>
+<li>Naka-sync na lyrics, kabilang ang pag-sync sa bawat salita, mula sa iba't ibang pinagmulan, at pag-import at pag-edit ng lyrics</li>
+<li>Pagpapantay ng lakas ng tunog, pagsasaayos ng tempo at pitch, at iba pang audio effect</li>
+<li>Suporta sa Android Auto</li>
+</ul>
+
+<p><b>Paglipat mula sa OuterTune:</b></p>
+<p>Maaari mong ilipat ang iyong library at mga setting sa pamamagitan ng pag-restore ng backup ng OuterTune sa AsterTune. Hindi kasama sa mga backup ang mga na-download na audio file, kaya kailangan mong i-download muli ang mga ito.</p>
+
+<p><b>Karagdagang impormasyon:</b></p>
+<p>Bisitahin ang <a href="https://github.com/yuuichi-s/AsterTune">repository ng AsterTune</a> para sa impormasyon tungkol sa proyekto at mga tagubilin sa paglipat. Iulat ang mga problema sa <a href="https://github.com/yuuichi-s/AsterTune/issues">issue tracker</a>.</p>

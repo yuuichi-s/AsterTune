@@ -1,1 +1,1 @@
-Reprodutor de música local e cliente do YouTube Music em Material 3
+Player Material Design 3 para arquivos locais e YouTube Music
