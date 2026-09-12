@@ -177,10 +177,16 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
 
     @Transaction
     fun insert(mediaMetadata: MediaMetadata, block: (SongEntity) -> SongEntity = { it }) {
-        if (insert(mediaMetadata.toSongEntity().let(block)) == -1L) return
+        val album = mediaMetadata.album?.let { albumsByName(it.title, it.isLocal) }
+        val albumId = mediaMetadata.album?.let { album?.id ?: GenreEntity.generateGenreId() }
+
+        val songEntity = mediaMetadata.toSongEntity().let(block).let {
+            // Align local song.albumId with the row used below; preserve YouTube album IDs for navigation.
+            if (mediaMetadata.isLocal && albumId != null) it.copy(albumId = albumId) else it
+        }
+        if (insert(songEntity) == -1L) return
         mediaMetadata.artists.forEachIndexed { index, artist ->
-            // Local songs arrive with a per-file artist id, so they match by name first. Each side
-            // only reuses a row of its own kind, keeping local and remote artists apart.
+            // Local scans generate per-file artist IDs, so match local artists by name first.
             val artistId = if (artist.isLocal) {
                 localArtistByName(artist.name)?.id ?: artist.id ?: ArtistEntity.generateArtistId()
             } else {
@@ -220,22 +226,30 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
         }
 
         mediaMetadata.album?.let {
-            val album = albumsByName(it.title)
-            val albumId = album?.id ?: GenreEntity.generateGenreId()
             upsert(
-                AlbumEntity(
-                    id = albumId,
-                    title = it.title,
-                    thumbnailUrl = album?.thumbnailUrl?: mediaMetadata.thumbnailUrl,
-                    songCount = (album?.songCount ?: 0).coerceAtLeast(1),
-                    duration = (album?.duration ?: 0) + mediaMetadata.duration,
-                    isLocal = it.isLocal
-                )
+                if (album != null) {
+                    // Keep every other column (playlistId, year, themeColor, bookmarkedAt, ...)
+                    // as-is; only the running totals and a missing thumbnail are refreshed.
+                    album.copy(
+                        songCount = album.songCount.coerceAtLeast(1),
+                        duration = album.duration + mediaMetadata.duration,
+                        thumbnailUrl = album.thumbnailUrl ?: mediaMetadata.thumbnailUrl
+                    )
+                } else {
+                    AlbumEntity(
+                        id = albumId!!,
+                        title = it.title,
+                        thumbnailUrl = mediaMetadata.thumbnailUrl,
+                        songCount = 1,
+                        duration = mediaMetadata.duration,
+                        isLocal = it.isLocal
+                    )
+                }
             )
             insert(
                 SongAlbumMap(
                     songId = mediaMetadata.id,
-                    albumId = albumId,
+                    albumId = albumId!!,
                     index = album?.songCount ?: 0
                 )
             )

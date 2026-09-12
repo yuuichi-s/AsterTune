@@ -82,6 +82,38 @@ interface AlbumsDao : ArtistsDao {
     @Query("UPDATE OR IGNORE song_album_map SET albumId = :newId WHERE albumId = :oldId")
     fun updateSongAlbumMap(oldId: String, newId: String)
 
+    /**
+     * Relinks song.albumId of local songs pointing to [oldId] to [newId], mirroring
+     * [updateSongAlbumMap] for the denormalized column read by stats, home, and library search queries.
+     */
+    @Query("UPDATE song SET albumId = :newId WHERE isLocal = 1 AND albumId = :oldId")
+    fun updateSongAlbumId(oldId: String, newId: String)
+
+    /**
+     * Corrects song.albumId for local songs whose single song_album_map entry points to a
+     * different local album row, restoring them to stats, home, and library search queries that
+     * join on song.albumId.
+     */
+    @Query("""
+        UPDATE song
+        SET albumId = (
+            SELECT song_album_map.albumId
+            FROM song_album_map
+            WHERE song_album_map.songId = song.id
+        )
+        WHERE song.isLocal = 1
+            AND (SELECT COUNT(*) FROM song_album_map WHERE song_album_map.songId = song.id) = 1
+            AND EXISTS (
+                SELECT 1
+                FROM song_album_map
+                    JOIN album ON album.id = song_album_map.albumId
+                WHERE song_album_map.songId = song.id
+                    AND album.isLocal = 1
+                    AND song.albumId IS NOT song_album_map.albumId
+            )
+    """)
+    fun fixLocalSongAlbumIdMismatches()
+
     @Query("DELETE FROM song_album_map WHERE albumId = :albumId")
     fun deleteSongAlbumMap(albumId: String)
 
@@ -133,29 +165,26 @@ interface AlbumsDao : ArtistsDao {
     fun _albumWithSongs(albumId: String): Flow<AlbumWithSongs?>
 
     /**
-     * Observes the album identified by [albumId] and its songs, omitting disabled songs for local
-     * albums.
+     * Observes the album identified by [albumId] and its songs, omitting disabled local songs.
+     * Uses each song's own isLocal/inLibrary rather than the album's isLocal, so a song list stays
+     * correct even when the album's own local/YouTube classification does not match its songs.
      */
     fun albumWithSongs(albumId: String): Flow<AlbumWithSongs?> =
         _albumWithSongs(albumId).map { album ->
-            if (album?.album?.isLocal == true) {
-                album.copy(songs = album.songs.filter { it.song.inLibrary != null })
-            } else {
-                album
-            }
+            album?.copy(songs = album.songs.filter { !it.song.isLocal || it.song.inLibrary != null })
         }
 
     /**
-     * Observes songs linked to [albumId], omitting disabled songs when the album is local.
+     * Observes songs linked to [albumId], omitting disabled local songs. Uses each song's own
+     * isLocal/inLibrary rather than the album's isLocal; see [albumWithSongs].
      */
     @Transaction
     @Query("""
         SELECT song.*
         FROM song
             JOIN song_album_map ON song.id = song_album_map.songId
-            JOIN album ON song_album_map.albumId = album.id
         WHERE song_album_map.albumId = :albumId
-            AND (album.isLocal = 0 OR song.inLibrary IS NOT NULL)
+            AND (song.isLocal = 0 OR song.inLibrary IS NOT NULL)
     """)
     fun albumSongs(albumId: String): Flow<List<Song>>
 
@@ -242,8 +271,12 @@ interface AlbumsDao : ArtistsDao {
     fun albumsInLibraryAsc() = albums(AlbumFilter.LIBRARY, AlbumSortType.CREATE_DATE, false)
     fun albumsLikedAsc() = albums(AlbumFilter.LIKED, AlbumSortType.CREATE_DATE, false)
 
-    @Query("SELECT * FROM album WHERE title = :name")
-    fun albumsByName(name: String): AlbumEntity?
+    /**
+     * Finds the album matching [name] and [isLocal] exactly, so local and YouTube albums sharing
+     * a title are never treated as the same row. Ties resolve to the lowest rowId.
+     */
+    @Query("SELECT * FROM album WHERE title = :name AND isLocal = :isLocal ORDER BY rowId ASC LIMIT 1")
+    fun albumsByName(name: String, isLocal: Boolean): AlbumEntity?
 
     @Transaction
     @Query(

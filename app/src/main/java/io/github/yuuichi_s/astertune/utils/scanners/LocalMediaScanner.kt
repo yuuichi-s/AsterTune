@@ -1045,6 +1045,7 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                 val merged = duplicates.mapNotNull { albumById(it.id) }
                 merged.forEach { old ->
                     updateSongAlbumMap(old.id, target.id)
+                    updateSongAlbumId(old.id, target.id)
                     deleteSongAlbumMap(old.id)
                     safeDeleteAlbum(old.id)
                 }
@@ -1078,6 +1079,8 @@ class LocalMediaScanner(context: Context, scannerImpl: ScannerImpl) {
                 true
             }
         }
+
+        database.awaitTransaction { fixLocalSongAlbumIdMismatches() }
 
         Log.i(TAG, "Finished finalize (duplicate removal) job")
         return failedGroups
