@@ -114,6 +114,7 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Contributions -->
     <string name="all_contributors">Show all contributors</string>
+    <string name="att_based_on">Based on</string>
     <string name="att_contributor">Contributor</string>
     <string name="att_lead_developer">Lead developer</string>
     <string name="att_maintainer">Maintainer</string>
