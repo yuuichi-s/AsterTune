@@ -103,8 +103,6 @@
     <string name="scanner_sensitivity_L1">匹配标题</string>
     <string name="scanner_sensitivity_L2">匹配标题和音乐人</string>
     <string name="scanner_sensitivity_L3">匹配标题、音乐人、专辑</string>
-    <string name="scanner_type_title">元数据提取器</string>
-    <string name="scanner_type_taglib">使用集成的 TagLib 元数据提取器</string>
     <string name="scanner_variant_rescan">重新扫描整个音乐库并重新加载所有歌曲的元数据</string>
     <string name="scanner_online_artist_linking">尝试将本地文件的音乐人与 YouTube Music 上的音乐人相关联</string>
     <string name="import_failed_songs">无法导入：</string>
@@ -251,7 +249,6 @@
     <string name="scanner_auto_start">正在刷新本地媒体和歌曲下载文件夹…</string>
     <string name="scanner_strict_file_paths_title">依据文件路径进行匹配，而非元数据</string>
     <string name="scanner_strict_file_paths_description">禁用所有元数据的智能匹配功能。这可能导致本地文件被移动时出现问题，但允许您在不同文件夹中保存同一首歌曲的副本。</string>
-    <string name="scanner_type_tooltip">系统扫描器的速度更快，但与其它提取器相比，在提取某些元数据时可能不够准确。请注意，切换扫描器并不会自动重新加载现有歌曲的元数据。</string>
     <string name="dl_rescan_description">若文件或文件夹发生变动，更新数据库并刷新下载记录</string>
     <string name="dl_rescan_confirm">是否立即重新扫描所有下载文件夹？这可能需要几分钟，具体取决于您的媒体库大小。</string>
     <string name="dl_storage_tooltip">内部下载保存在应用的私有存储空间，没有 root 权限将无法访问。外部下载保存在您设备的外部存储空间（例如，/sdcard 或 micro SD 卡），可以使用文件管理器直接访问或编辑。对于“外部下载”文件夹，我们建议您选择一个专门用于歌曲下载的空文件夹，因为 AsterTune 可能会修改或删除该文件夹中的文件。\n\n额外导入文件夹是只读的，用于加载额外的歌曲。AsterTune 绝不会更改或删除这些文件夹中的文件。您可以在高级设置部分选择这些文件夹。\n\n当您清除下载时，只有内部歌曲会被删除。外部下载和额外导入的歌曲必须手动移除，可以通过歌曲菜单操作，也可以通过文件管理器手动删除。\n\n重新扫描下载文件夹： “外部下载”和“额外导入”文件夹中的歌曲不会自动更新。如果您使用文件管理器手动添加、移除或更改了文件，您可能需要重新扫描下载文件夹来更新应用的数据库。此选项可在高级设置部分找到。</string>

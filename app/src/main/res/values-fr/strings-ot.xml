@@ -49,7 +49,6 @@
     <string name="scanner_sensitivity_L1">Correspondance titre</string>
     <string name="scanner_sensitivity_L2">Correspondance titre et artistes</string>
     <string name="scanner_sensitivity_L3">Correspondance titre, artistes, albums</string>
-    <string name="scanner_type_title">Extracteur de métadonnées</string>
     <string name="scanner_variant_rescan">Réanalyser l\'intégralité de la bibliothèque et recharger les métadonnées de tous les titres</string>
     <string name="scanner_online_artist_linking">Essayer de lier les artistes des fichiers locaux avec ceux de YouTube Music</string>
     <string name="import_failed_songs">Impossible d\'importer :</string>
@@ -95,7 +94,6 @@
     <string name="action_back">Retour</string>
     <string name="oobe_use_backup">J\'ai une sauvegarde</string>
     <string name="scan_paths_incl">Chemins d\'analyse</string>
-    <string name="scanner_type_taglib">Utiliser l’extracteur de métadonnées intégré TagLib</string>
     <string name="scanner_strict_file_name_title">Noms de fichiers stricts</string>
     <string name="dev_settings_description">Révèle des paramètres avancés supplémentaires destinés à une utilisation en développement</string>
     <string name="sync_progress_active">Synchronisation avec le compte YouTube…</string>
@@ -264,7 +262,6 @@
     <string name="scanner_auto_start">Actualisation des dossiers de téléchargement de médias locaux et de titres…</string>
     <string name="scanner_strict_file_paths_title">Faire correspondre les chemins de fichiers au lieu des métadonnées</string>
     <string name="scanner_strict_file_paths_description">Désactive toute correspondance intelligente des métadonnées. Cela peut poser problème si des fichiers sont déplacés de votre stockage local, mais autorise le même titre dans différents dossiers</string>
-    <string name="scanner_type_tooltip">L\'analyseur système est plus rapide, mais il peut extraire certaines métadonnées de manière incorrecte par rapport à d\'autres extracteurs. Veuillez noter que le changement d\'analyseur ne recharge pas automatiquement les métadonnées des titres existants.</string>
     <string name="restore_lm_tooltip">Lors d\'une nouvelle installation de l\'application, il se peut que les chemins de téléchargement personnalisés et d\'analyse des médias locaux ne fonctionnent pas. Pour résoudre ce problème, supprimez-les puis ajoutez-les à nouveau.</string>
     <string name="local_files">Local</string>
     <string name="show_queue_title">Afficher le nom de la file d\'attente dans le lecteur</string>

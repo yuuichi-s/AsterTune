@@ -54,7 +54,6 @@
     <string name="ytm_sync">Автоматично синхронизиране с вашия профил в YouTube Music</string>
     <string name="tab_arrangement_home_required">Разделът Начало е задължителен.</string>
     <string name="lyrics_prefer_local_description">Дайте приоритет на разрешаването на локални текстови файлове, преди да използвате всички доставчици на облачни услуги. Изключете тази опция, за да дадете приоритет на доставчиците на облачни услуги</string>
-    <string name="scanner_type_taglib">Използвайте интегриран инструмент за извличане на метаданни TagLib</string>
     <string name="recent_activity">Скорошна дейнист</string>
     <string name="local_history">Локално</string>
     <string name="queue_local_history">История (локално)</string>
@@ -102,7 +101,6 @@
     <string name="scanner_strict_file_name_title">Точни файлови имена</string>
     <string name="scanner_sensitivity_title">Конфигуриране на чувствителността на сканиране</string>
     <string name="scanner_sensitivity_L2">Съпоставете заглавието и изпълнителите</string>
-    <string name="scanner_type_title">Екстракт на метаданни</string>
     <string name="pause_remote_listen_history">Пауза при споделяне на историята на слушане с YouTube Music</string>
     <string name="oobe_complete">AsterTune е настроен и готов за употреба. Разгледайте музиката си, открийте нови парчета и се насладете на преживяването!</string>
     <string name="action_back">Назад</string>
@@ -261,7 +259,6 @@
     <string name="scanner_auto_start">Опресняване на локални папки за медийни файлове и изтегляне на песни…</string>
     <string name="scanner_strict_file_paths_title">Съвпадение на файлови пътища вместо метаданни</string>
     <string name="scanner_strict_file_paths_description">Деактивира всяко интелигентно съпоставяне на метаданни. Това може да причини проблеми, ако файловете се преместват в локалното ви хранилище, но позволява една и съща песен в различни папки.</string>
-    <string name="scanner_type_tooltip">Системният скенер е по-бърз, но може да извлече някои метаданни неправилно в сравнение с други инструменти за извличане. Моля, обърнете внимание, че превключването на скенери няма автоматично да презареди метаданните на съществуващите песни.</string>
     <string name="restore_lm_tooltip">За нови инсталации на приложението, персонализираното изтегляне и пътищата за сканиране на локални медии може да не работят. За да разрешите това, премахнете ги и ги добавете отново.</string>
     <string name="off">Изключено</string>
 </resources>

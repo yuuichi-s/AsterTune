@@ -113,11 +113,9 @@
     <string name="scanner_local_title">Локальный сканер</string>
     <string name="scanner_ytm_link_start">Начало привязки исполнителей к YouTube…</string>
     <string name="scanner_ytm_link_success">Привязка исполнителей к YouTube успешно завершена</string>
-    <string name="scanner_type_taglib">Использовать встроенный экстрактор TagLib</string>
     <string name="queue_local_history">История (локальная)</string>
     <string name="queue_remote_history">История (удаленная)</string>
     <string name="keep_alive_description">Использовать постоянную службу на переднем плане, чтобы предотвратить закрытие AsterTune в фоновом режиме</string>
-    <string name="scanner_type_title">Экстрактор метаданных</string>
     <string name="scanner_variant_rescan">Пересканировать всю библиотеку и обновить метаданные всех треков</string>
     <string name="scanner_online_artist_linking">Попытаться связать исполнителей локальных файлов с исполнителями на YouTube Music</string>
     <string name="like_all">Отметить всё понравившимся</string>
@@ -267,7 +265,6 @@
     <string name="scanner_auto_end">Обновление локальных песен и загрузок завершено!</string>
     <string name="scanner_strict_file_paths_title">Сопоставлять пути к файлам вместо метаданных</string>
     <string name="scanner_strict_file_paths_description">Отключает интеллектуальное сопоставление метаданных. Это может вызвать проблемы, если файлы будут перемещены в локальном хранилище, но позволяет распознавать одну и ту же песню в разных папках</string>
-    <string name="scanner_type_tooltip">Системный сканер работает быстрее, но может некорректно извлекать некоторые метаданные по сравнению с другими методами. Обратите внимание, что смена сканера не приведёт к автоматическому обновлению метаданных уже существующих песен.</string>
     <string name="restore_lm_tooltip">При чистой установке приложения пользовательские пути загрузки и сканирования локальных медиафайлов могут не работать. Чтобы решить эту проблему, удалите их и добавьте заново.</string>
     <string name="off">Отключено</string>
 </resources>

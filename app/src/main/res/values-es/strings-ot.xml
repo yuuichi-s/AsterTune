@@ -92,7 +92,6 @@
     <string name="scanner_sensitivity_L1">Título coincidente</string>
     <string name="scanner_sensitivity_L2">Coincidir títulos y artistas</string>
     <string name="scanner_sensitivity_L3">Coincidir título, artistas y álbumes</string>
-    <string name="scanner_type_taglib">Usar extractor de metadatos TagLib integrado</string>
     <string name="scanner_variant_rescan">Reescanear la biblioteca entera y recargar todos los metadatos de las canciones</string>
     <string name="pause_remote_listen_history">Compartir historial de escucha con YouTube Music</string>
     <string name="import_failed_songs">No se pudo importar</string>
@@ -122,7 +121,6 @@
     <string name="scanner_progress_syncing">Sincronizando…</string>
     <string name="scanner_strict_file_name_description">Cuando esté habilitado, los nombres de los archivos NO serán ignorados. Por ejemplo, Song.ogg será una canción diferente de Song.flac. Se seguirá aplicando la preferencia de sensibilidad del escáner</string>
     <string name="experimental_settings_title">Experimental</string>
-    <string name="scanner_type_title">Extractor de metadatos</string>
     <string name="scanner_online_artist_linking">Intenta vincular los artistas de los archivos locales con los de YouTube Music</string>
     <string name="dev_settings_description">Revela ajustes avanzadas adicionales destinadas al uso en desarrollo</string>
     <string name="oobe_complete">AsterTune está configurado y listo para usar. ¡Explora tu música, descubre nuevas pistas y disfruta de la experiencia!</string>
@@ -264,7 +262,6 @@
     <string name="scanner_auto_start">Actualizando los medios locales y las carpetas de descarga de canciones…</string>
     <string name="scanner_strict_file_paths_title">Coincidir rutas de archivo en lugar de metadatos</string>
     <string name="scanner_strict_file_paths_description">Desactiva toda la coincidencia inteligente de metadatos. Esto puede causar problemas si se mueven archivos en tu almacenamiento local, pero permite que la misma canción se encuentre en diferentes carpetas</string>
-    <string name="scanner_type_tooltip">El escáner del sistema es más rápido, pero puede extraer algunos metadatos de forma incorrecta en comparación con otros extractores. Ten en cuenta que al cambiar de escáner no se volverán a cargar automáticamente los metadatos de las canciones existentes.</string>
     <string name="restore_lm_tooltip">En instalaciones nuevas de la aplicación, es posible que las rutas de descarga personalizadas y de escaneo de medios locales no funcionen. Para solucionarlo, elimínelas y vuelva a agregarlas.</string>
     <string name="local_files">Local</string>
     <string name="show_queue_title">Mostrar el nombre de la cola en el reproductor</string>

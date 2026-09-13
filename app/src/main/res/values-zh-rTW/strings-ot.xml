@@ -159,9 +159,6 @@
     <string name="scanner_sensitivity_L1">匹配標題</string>
     <string name="scanner_sensitivity_L2">匹配標題與創作者</string>
     <string name="scanner_sensitivity_L3">匹配標題、創作者與專輯</string>
-    <string name="scanner_type_title">元資料擷取器</string>
-    <string name="scanner_type_tooltip">使用系統掃描器將會更快，但相比於其他擷取器，在擷取元數據時可能會不太準確。請注意切換掃描器並不會自動載入已有歌曲的元資料。</string>
-    <string name="scanner_type_taglib">使用集成之 TagLib 元資料擷取器</string>
     <string name="scanner_variant_rescan">重新掃描媒體庫並載入所有歌曲的元資料</string>
     <string name="scanner_online_artist_linking">嘗試將本地音檔的創作者與 YouTube Music 上的創作者相關聯</string>
     <string name="off">已關閉</string>

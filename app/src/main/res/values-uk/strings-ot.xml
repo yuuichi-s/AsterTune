@@ -69,8 +69,6 @@
     <string name="scanner_sensitivity_title">Налаштувати чутливість сканера</string>
     <string name="scanner_sensitivity_L1">Збіг назви</string>
     <string name="scanner_sensitivity_L2">Збіг назви та виконавця</string>
-    <string name="scanner_type_title">Витягувач метаданих</string>
-    <string name="scanner_type_taglib">Використовути вбудований витягувач метаданих TagLib</string>
     <string name="scanner_variant_rescan">Пересканувати всю бібліотеку та перезавантажити метадані всіх пісень</string>
     <string name="import_failed_songs">Не вдалось імпортувати</string>
     <string name="oobe_use_backup">У мене є резервна копія</string>
@@ -267,7 +265,6 @@
     <string name="scanner_auto_start">Оновлення папок локальних медіафайлів та завантаження пісень…</string>
     <string name="scanner_strict_file_paths_title">Зіставлення шляхів до файлів замість метаданих</string>
     <string name="scanner_strict_file_paths_description">Вимикає інтелектуальне зіставлення метаданих. Це може спричинити проблеми, якщо файли переміщуються в локальному сховищі, але дозволяє зберігати одну й ту ж пісню в різних теках</string>
-    <string name="scanner_type_tooltip">Системний сканер працює швидше, але може некоректно витягувати деякі метадані порівняно з іншими видобувачами. Зверніть увагу, що зміна сканера не призведе до автоматичного перезавантаження метаданих наявних пісень.</string>
     <string name="restore_lm_tooltip">Для нових встановлень програми шляхи завантаження та сканування локальних медіафайлів можуть не працювати. Щоб вирішити цю проблему, видаліть і знову додайте їх.</string>
     <string name="off">Вимкнено</string>
 </resources>

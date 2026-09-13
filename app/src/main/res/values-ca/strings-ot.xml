@@ -177,9 +177,6 @@
     <string name="scanner_sensitivity_L1">Coincideix amb el títol</string>
     <string name="scanner_sensitivity_L2">Coincideix amb el títol i els artistes</string>
     <string name="scanner_sensitivity_L3">Coincideix amb el títol, els artistes i els àlbums</string>
-    <string name="scanner_type_title">Extractor de metadata</string>
-    <string name="scanner_type_tooltip">L’escàner del sistema és més ràpid, però pot extreure metadades de manera incorrecta en comparació amb altres extractors. Tingues en compte que canviar d’escàner no tornarà a carregar automàticament les metadades de les cançons existents.</string>
-    <string name="scanner_type_taglib">Utilitza l’extractor de metadades TagLib integrat</string>
     <string name="scanner_variant_rescan">Torna a escanejar tota la biblioteca i recarrega les metadades de totes les cançons</string>
     <string name="scanner_online_artist_linking">Intenta vincular els artistes dels fitxers locals amb els de YouTube Music</string>
     <string name="clear_downloads_confirm">Estàs segur que vols eliminar totes les descàrregues? Només s’eliminaran les descàrregues de la carpeta principal de descàrregues.</string>

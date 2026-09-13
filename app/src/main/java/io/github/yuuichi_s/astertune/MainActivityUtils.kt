@@ -19,8 +19,6 @@ import io.github.yuuichi_s.astertune.constants.OOBE_VERSION
 import io.github.yuuichi_s.astertune.constants.OobeStatusKey
 import io.github.yuuichi_s.astertune.constants.SCANNER_OWNER_LM
 import io.github.yuuichi_s.astertune.constants.ScanPathsKey
-import io.github.yuuichi_s.astertune.constants.ScannerImpl
-import io.github.yuuichi_s.astertune.constants.ScannerImplKey
 import io.github.yuuichi_s.astertune.constants.ScannerMatchCriteria
 import io.github.yuuichi_s.astertune.constants.ScannerSensitivityKey
 import io.github.yuuichi_s.astertune.constants.ScannerStrictExtKey
@@ -139,11 +137,6 @@ suspend fun scanInit(
         key = ScannerSensitivityKey,
         defaultValue = ScannerMatchCriteria.LEVEL_2
     )
-    val scannerImpl by enumPreference(
-        context = context,
-        key = ScannerImplKey,
-        defaultValue = ScannerImpl.TAGLIB
-    )
     val scanPaths = context.dataStore.get(ScanPathsKey, defaultValue = "")
     val excludedScanPaths = context.dataStore.get(ExcludedScanPathsKey, defaultValue = "")
     val strictExtensions = context.dataStore.get(ScannerStrictExtKey, defaultValue = false)
@@ -206,7 +199,7 @@ suspend fun scanInit(
                     playerConnection?.player?.pause()
                 }
                 val scanner = LocalMediaScanner.getScanner(
-                    context, scannerImpl, SCANNER_OWNER_LM
+                    context, SCANNER_OWNER_LM
                 )
                 val uris = scanner.scanLocal(scanPaths, excludedScanPaths)
                 scanner.quickSync(database, uris, scannerSensitivity, strictExtensions, strictFilePaths)

@@ -118,14 +118,6 @@ Local scanner
 ---------------------------
  */
 
-enum class ScannerImpl {
-    MEDIASTORE,
-    TAGLIB,
-
-    // Deprecated. Retained so previously stored preferences still parse; treated as TAGLIB.
-    FFMPEG_EXT,
-}
-
 /**
  * Specify how strict the metadata scanner should be
  */

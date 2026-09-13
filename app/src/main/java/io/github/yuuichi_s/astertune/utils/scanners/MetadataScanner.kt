@@ -9,7 +9,6 @@
 
 package io.github.yuuichi_s.astertune.utils.scanners
 
-import io.github.yuuichi_s.astertune.db.entities.FormatEntity
 import io.github.yuuichi_s.astertune.models.SongTempData
 import java.io.File
 
@@ -26,8 +25,3 @@ interface MetadataScanner {
      */
     suspend fun getAllMetadataFromFile(file: File): SongTempData
 }
-
-/**
- * A wrapper containing extra raw metadata that MediaStore fails to read properly
- */
-data class ExtraMetadataWrapper(val artists: String?, val genres: String?, val date: String?, var format: FormatEntity?)

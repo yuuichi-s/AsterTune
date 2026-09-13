@@ -178,8 +178,6 @@
     </plurals>
     <string name="scanner_sensitivity_L2">शीर्षक और कलाकारों को मेल करें</string>
     <string name="scanner_sensitivity_L3">शीर्षक, कलाकारों, एल्बमों को मेल करें</string>
-    <string name="scanner_type_title">मेटाडाटा निकालना</string>
-    <string name="scanner_type_taglib">एकीकृत TagLib से मेटाडाटा निकालना</string>
     <string name="scanner_variant_rescan">पूरा संग्रह फ़िरसे स्कैन करें और सभी गानों के मेटाडाटा को फिर से लोड करें</string>
     <string name="grp_more_settings">अधिक सेटिंग्स</string>
     <string name="auto_scanner_tooltip">स्थानीय मीडिया के लिए, स्वचालित स्कैनिंग मौजूदा गानों के मेटाडेटा को पुनः लोड नहीं करती है। यदि आप मेटाडेटा को भी रीफ़्रेश करना चाहते हैं, तो रीस्कैन चेकबॉक्स का चयन करके मैन्युअल स्कैनर का उपयोग करें।</string>
@@ -188,7 +186,6 @@
     <string name="scanner_strict_file_paths_title">मेटाडेटा के बजाय फ़ाइल पथों का मिलान करें</string>
     <string name="scanner_strict_file_paths_description">यह मेटाडेटा के सभी स्मार्ट मैचिंग को अक्षम कर देता है। अगर फ़ाइलों को आपके लोकल स्टोरेज में कहीं और ले जाया जाता है, तो इससे समस्याएँ हो सकती हैं, लेकिन यह अलग-अलग फ़ोल्डरों में एक ही गीत को रखने की सुविधा देता है</string>
     <string name="scanner_sensitivity_L0">YouTube पर खोज करने की सुविधा चालू होने पर YouTube द्वारा प्रदान किया गया पहला परिणाम लें, अन्यथा टाइटल से मैच करें</string>
-    <string name="scanner_type_tooltip">सिस्टम स्कैनर तेज़ है, लेकिन अन्य एक्सट्रैक्टरों की तुलना में कुछ मेटाडेटा गलत तरीके से निकाल सकता है। कृपया ध्यान दें कि स्कैनर बदलने से मौजूदा गानों का मेटाडेटा अपने आप रीलोड नहीं होगा।</string>
     <string name="scanner_online_artist_linking">लोकल फ़ाइलों के कलाकारों को YouTube Music पर मौजूद कलाकारों से जोड़ने का प्रयास करें</string>
     <string name="clear_downloads_confirm">क्या आप वाकई सभी डाउनलोड हटाना चाहते हैं? केवल मुख्य डाउनलोड फ़ोल्डर में मौजूद डाउनलोड ही हटाए जाएंगे।</string>
     <string name="clear_image_cache_confirm">क्या आप वाकई इमेज कैश साफ़ करना चाहते हैं? एल्बम के सभी मौजूदा थंमनेल हटा दिए जाएंगे।</string>

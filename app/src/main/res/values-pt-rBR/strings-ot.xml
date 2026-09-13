@@ -17,7 +17,6 @@
     <string name="scanner_variant_rescan">Buscar a biblioteca inteira novamente e recarregar os metadados de todas as músicas</string>
     <string name="import_failed_songs">Não foi possível importar</string>
     <string name="scanner_sensitivity_L3">Corresponder título, artistas, e álbuns</string>
-    <string name="scanner_type_taglib">Usar o extrator de metadados TagLib integrado</string>
     <string name="oobe_welcome_message">Boas vindas ao AsterTune</string>
     <string name="folders">Pastas</string>
     <string name="local_history">Local</string>
@@ -78,7 +77,6 @@
     <string name="scanner_sensitivity_title">Configurar sensibilidade da busca</string>
     <string name="scanner_sensitivity_L1">Corresponder ao título</string>
     <string name="scanner_sensitivity_L2">Corresponder título e artistas</string>
-    <string name="scanner_type_title">Extrator de metadados</string>
     <string name="scanner_online_artist_linking">Tentar sincronizar os artistas dos arquivos locais com os no YouTube Music</string>
     <string name="experimental_settings_title">Experimentais</string>
     <string name="dev_settings_title">Ativar configurações de desenvolvedor</string>
@@ -264,7 +262,6 @@
     <string name="scanner_auto_start">Recarregando mídia local e pastas de download de música…</string>
     <string name="scanner_strict_file_paths_title">Corresponder caminhos de arquivo em vez de metadados</string>
     <string name="scanner_strict_file_paths_description">Desativa toda a correspondência inteligente de metadados. Isso pode causar problemas se os arquivos forem movidos no seu armazenamento local, mas permite a mesma música em pastas diferentes</string>
-    <string name="scanner_type_tooltip">O busca do sistema é mais rápida, mas pode extrair alguns metadados incorretamente comparado a outros extratores. Observe que ao alterar buscadores, os metadados de músicas existentes não serão recarregados.</string>
     <string name="restore_lm_tooltip">Em instalações limpas do app, caminhos de busca de mídia local e download podem não funcionar. Para resolver isso, remova-os e adicione-os novamente.</string>
     <string name="off">Desativado</string>
     <string name="local_files">Local</string>

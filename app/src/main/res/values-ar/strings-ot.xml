@@ -148,8 +148,6 @@
     <string name="scanner_sensitivity_L1">مطابقة العنوان</string>
     <string name="scanner_sensitivity_L2">مطابقة العنوان والفنانين</string>
     <string name="scanner_sensitivity_L3">تطابق العناوين, الفنان, الالبوم</string>
-    <string name="scanner_type_title">مستخرج البيانات الوصفية</string>
-    <string name="scanner_type_taglib">استخدام مستخرج البيانات الوصفية TagLib المدمج</string>
     <string name="pause_remote_listen_history">إيقاف مؤقت لمشاركة سجل الاستماع مع YouTube Music</string>
     <string name="scanner_variant_rescan">اعادة فحص كامل المكتبة وتحديث \' metadata</string>
     <string name="scanner_online_artist_linking">محاولة ربط ملف\' فنان مع YouTube Music</string>

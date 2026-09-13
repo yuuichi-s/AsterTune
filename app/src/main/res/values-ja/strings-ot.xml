@@ -133,9 +133,6 @@
     <string name="scanner_sensitivity_title">スキャンの感度を設定</string>
     <string name="scanner_sensitivity_L2">タイトルとアーティストが一致</string>
     <string name="scanner_sensitivity_L3">タイトル、アーティスト、アルバムが一致</string>
-    <string name="scanner_type_title">メタデータ抽出</string>
-    <string name="scanner_type_tooltip">システムスキャナーは高速ですが、他の抽出方式と比べてメタデータの取得に誤りが生じる場合があります。スキャナーを切り替えても、既存の曲のメタデータは自動的には再読み込みされませんのでご注意ください。</string>
-    <string name="scanner_type_taglib">統合されたTagLibメタデータ抽出ツールを使用</string>
     <string name="scanner_sensitivity_L1">タイトルが一致</string>
     <string name="scanner_online_artist_linking">端末内のファイルのアーティストをYouTube Music のアーティストとリンクする</string>
     <string name="import_failed_songs">インポートできませんでした:</string>

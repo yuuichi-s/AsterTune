@@ -166,8 +166,6 @@
     <string name="scanner_sensitivity_L1">Podudaranje naslova</string>
     <string name="scanner_sensitivity_L2">Podudaranje naslova i izvođača</string>
     <string name="scanner_sensitivity_L3">Podudaranje naslova, izvođača i albuma</string>
-    <string name="scanner_type_title">Ekstraktor metapodataka</string>
-    <string name="scanner_type_taglib">Koristi integrisani ekstraktor metapodataka TagLib</string>
     <string name="scanner_variant_rescan">Ponovo skeniraj celu biblioteku i ponovo učitaj metapodatke svih pesama</string>
     <string name="scanner_online_artist_linking">Pokušaj da povežeš lokalne izvođače sa onima na YouTube</string>
     <string name="clear_downloads_confirm">Da li ste sigurni da želite da uklonite sva preuzimanja? Biće uklonjena samo preuzimanja u glavnoj fascikli za preuzimanja.</string>

@@ -34,7 +34,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.GraphicEq
 import androidx.compose.material.icons.rounded.MoreHoriz
-import androidx.compose.material.icons.rounded.Speed
 import androidx.compose.material.icons.rounded.TextFields
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.Button
@@ -74,8 +73,6 @@ import io.github.yuuichi_s.astertune.constants.ExcludedScanPathsKey
 import io.github.yuuichi_s.astertune.constants.LastLocalScanKey
 import io.github.yuuichi_s.astertune.constants.SCANNER_OWNER_LM
 import io.github.yuuichi_s.astertune.constants.ScanPathsKey
-import io.github.yuuichi_s.astertune.constants.ScannerImpl
-import io.github.yuuichi_s.astertune.constants.ScannerImplKey
 import io.github.yuuichi_s.astertune.constants.ScannerMatchCriteria
 import io.github.yuuichi_s.astertune.constants.ScannerSensitivityKey
 import io.github.yuuichi_s.astertune.constants.ScannerStrictExtKey
@@ -141,10 +138,6 @@ fun ColumnScope.LocalScannerFrag() {
     val scannerSensitivity by rememberEnumPreference(
         key = ScannerSensitivityKey,
         defaultValue = ScannerMatchCriteria.LEVEL_2
-    )
-    val scannerImpl by rememberEnumPreference(
-        key = ScannerImplKey,
-        defaultValue = ScannerImpl.TAGLIB
     )
     val strictExtensions by rememberPreference(ScannerStrictExtKey, defaultValue = false)
     val strictFilePaths by rememberPreference(ScannerStrictFilePathsKey, defaultValue = false)
@@ -215,21 +208,9 @@ fun ColumnScope.LocalScannerFrag() {
                     // full rescan
                     if (fullRescan) {
                         try {
-                            val scanner = getScanner(context, scannerImpl, SCANNER_OWNER_LM)
-                            if (scannerImpl == ScannerImpl.MEDIASTORE) {
-                                scanner.fullMediaStoreSync(
-                                    database,
-                                    uriListFromString(scanPaths),
-                                    uriListFromString(excludedScanPaths),
-                                    scannerSensitivity,
-                                    strictExtensions,
-                                    strictFilePaths,
-                                    true,
-                                )
-                            } else {
-                                val uris = scanner.scanLocal(scanPaths, excludedScanPaths)
-                                scanner.fullSync(database, uris, scannerSensitivity, strictExtensions, strictFilePaths)
-                            }
+                            val scanner = getScanner(context, SCANNER_OWNER_LM)
+                            val uris = scanner.scanLocal(scanPaths, excludedScanPaths)
+                            scanner.fullSync(database, uris, scannerSensitivity, strictExtensions, strictFilePaths)
 
                             delay(1000)
                         } catch (e: ScannerAbortException) {
@@ -258,25 +239,12 @@ fun ColumnScope.LocalScannerFrag() {
                     } else {
                         // quick scan
                         try {
-                            val scanner = getScanner(context, scannerImpl, SCANNER_OWNER_LM)
-
-                            if (scannerImpl == ScannerImpl.MEDIASTORE) {
-                                scanner.fullMediaStoreSync(
-                                    database,
-                                    uriListFromString(scanPaths),
-                                    uriListFromString(excludedScanPaths),
-                                    scannerSensitivity,
-                                    strictExtensions,
-                                    strictFilePaths,
-                                    false
-                                )
-                            } else {
-                                val uris = scanner.scanLocal(scanPaths, excludedScanPaths)
-                                scanner.quickSync(
-                                    database, uris, scannerSensitivity, strictExtensions,
-                                    strictFilePaths
-                                )
-                            }
+                            val scanner = getScanner(context, SCANNER_OWNER_LM)
+                            val uris = scanner.scanLocal(scanPaths, excludedScanPaths)
+                            scanner.quickSync(
+                                database, uris, scannerSensitivity, strictExtensions,
+                                strictFilePaths
+                            )
 
                             delay(1000)
                         } catch (e: ScannerAbortException) {
@@ -590,10 +558,6 @@ fun ColumnScope.LocalScannerExtraFrag() {
         key = ScannerSensitivityKey,
         defaultValue = ScannerMatchCriteria.LEVEL_2
     )
-    val (scannerImpl, onScannerImplChange) = rememberEnumPreference(
-        key = ScannerImplKey,
-        defaultValue = ScannerImpl.TAGLIB
-    )
     val (strictExtensions, onStrictExtensionsChange) = rememberPreference(ScannerStrictExtKey, defaultValue = false)
     val (strictFilePaths, onStrictFilePathsChange) = rememberPreference(ScannerStrictFilePathsKey, defaultValue = false)
 
@@ -630,23 +594,6 @@ fun ColumnScope.LocalScannerExtraFrag() {
         checked = strictFilePaths,
         onCheckedChange = onStrictFilePathsChange,
     )
-    // scanner type
-    EnumListPreference(
-        title = { Text(stringResource(R.string.scanner_type_title)) },
-        icon = { Icon(Icons.Rounded.Speed, null) },
-        selectedValue = scannerImpl,
-        onValueSelected = onScannerImplChange,
-        valueText = {
-            when (it) {
-                ScannerImpl.MEDIASTORE -> stringResource(R.string.scanner_type_mediastore)
-                ScannerImpl.TAGLIB -> stringResource(R.string.scanner_type_taglib)
-                // legacy value, hidden from the list but kept for exhaustiveness
-                ScannerImpl.FFMPEG_EXT -> stringResource(R.string.scanner_type_taglib)
-            }
-        },
-        values = listOf(ScannerImpl.MEDIASTORE, ScannerImpl.TAGLIB),
-    )
-    InfoLabel(stringResource(R.string.scanner_type_tooltip))
 }
 
 @Preview(showBackground = true)

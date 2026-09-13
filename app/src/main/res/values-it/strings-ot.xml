@@ -109,10 +109,8 @@
     <string name="scan_paths_excl">Percorsi da scansionare esclusi</string>
     <string name="min_playback_duration_description">La quantità minima di un brano che deve essere riprodotto prima di essere considerato \"riprodotto\"</string>
     <string name="m3u_import_playlist_failed">Importazione fallita</string>
-    <string name="scanner_type_title">Estrattore di metadati</string>
     <string name="scanner_strict_file_name_description">Se abilitato, i nomi dei file NON saranno ignorati. Es. Song.ogg sarà un brano diverso da Song.flac. La preferenza di sensibilità dello scanner sarà comunque applicata</string>
     <string name="scanner_sensitivity_title">Configura la sensibilità dello scanner</string>
-    <string name="scanner_type_taglib">Usa l\'estrattore di metadati integrato TagLib</string>
     <string name="sort_by_like_date">Data di gradimento</string>
     <string name="oobe_complete">AsterTune è impostato e pronto per l\'uso. Esplora la tua musica, scopri nuovi brani e goditi l\'esperienza!</string>
     <string name="scanner_online_artist_linking">Prova a collegare gli artisti dei file locali con quelli su YouTube Music</string>
@@ -264,7 +262,6 @@
     <string name="scanner_auto_start">Aggiornamento dei media locali e delle cartelle di scaricamento dei brani…</string>
     <string name="scanner_strict_file_paths_title">Abbina i percorsi dei file anziché i metadati</string>
     <string name="scanner_strict_file_paths_description">Disabilita tutte le corrispondenze intelligenti dei metadati. Ciò può causare problemi se i file vengono spostati nella memoria locale, ma consente lo stesso brano in cartelle diverse</string>
-    <string name="scanner_type_tooltip">Lo scanner di sistema è più veloce, ma potrebbe estrarre in modo errato alcuni metadati rispetto ad altri estrattori. Tieni presente che il cambio di scanner non ricaricherà automaticamente i metadati dei brani esistenti.</string>
     <string name="restore_lm_tooltip">Per le nuove installazioni dell\'app, i percorsi personalizzati di download e di scansione dei media locali potrebbero non funzionare. Per risolvere il problema, rimuovili e aggiungili nuovamente.</string>
     <string name="off">Off</string>
 </resources>

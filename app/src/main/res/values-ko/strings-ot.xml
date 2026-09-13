@@ -65,7 +65,6 @@
     <string name="scanner_strict_file_name_title">엄격한 파일 이름 규칙</string>
     <string name="scanner_sensitivity_title">스캔 민감도 설정</string>
     <string name="scanner_sensitivity_L1">제목 일치</string>
-    <string name="scanner_type_taglib">내장된 TagLib 메타데이터 추출기 사용</string>
     <string name="scanner_online_artist_linking">로컬 미디어 아티스트를 YouTube Music과 연동</string>
     <string name="import_failed_songs">불러오지 못했습니다:</string>
     <string name="experimental_settings_title">실험적 기능</string>
@@ -118,7 +117,6 @@
     <string name="show_liked_and_downloaded_playlist">좋아요를 표시한 재생목록과 라이브러리에 다운로드한 곡을 표시합니다</string>
     <string name="slim_navbar_title">얇은 네비게이션 바</string>
     <string name="sync_mode_rw">읽고 쓰기 (온라인 콘텐츠 변경 가능)</string>
-    <string name="scanner_type_title">메타데이터 추출기</string>
     <string name="restart_to_apply_changes">앱을 재시작하면 적용됩니다</string>
     <string name="slim_navbar_description">네비게이션 바 높이를 줄이기 위해 텍스트 라벨을 지웁니다</string>
     <string name="sync_mode">동기화 모드</string>
@@ -271,7 +269,6 @@
     <string name="scanner_strict_file_paths_title">메타데이터 대신 파일 경로 일치</string>
     <string name="scanner_strict_file_paths_description">모든 스마트 메타데이터 일치를 비활성화합니다. 로컬 저장소에서 파일을 이동하면 문제가 발생할 수 있지만, 서로 다른 폴더에 같은 곡을 둘 수 있습니다</string>
     <string name="scanner_sensitivity_L0">YouTube 검색을 사용하면 YouTube가 제공한 첫 번째 결과를 사용하고, 그렇지 않으면 제목을 일치시킵니다</string>
-    <string name="scanner_type_tooltip">시스템 스캐너는 더 빠르지만 다른 추출기에 비해 일부 메타데이터를 잘못 추출할 수 있습니다. 스캐너를 전환해도 기존 곡의 메타데이터가 자동으로 다시 로드되지는 않습니다.</string>
     <string name="download_on_wifi_only_title">Wi-Fi에서만 다운로드</string>
     <string name="download_on_wifi_only_description">모바일 데이터로 다운로드하지 않습니다. 모바일 데이터 사용 중 대기열에 추가한 곡은 Wi-Fi에 연결되면 자동으로 다운로드를 시작합니다</string>
     <string name="download_waiting_for_wifi">Wi-Fi에 연결되면 다운로드합니다</string>

@@ -273,6 +273,8 @@ dependencies {
     implementation("androidx.webkit:webkit:1.14.0")
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }
 
 afterEvaluate {

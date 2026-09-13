@@ -59,7 +59,6 @@
     <string name="scanner_btn_idle">Skanuj</string>
     <string name="local_history">Lokalne</string>
     <string name="m3u_import_playlist_failed">Importowanie playlisty nieudane</string>
-    <string name="scanner_type_title">Wykrywacz metadanych</string>
     <string name="lyrics_prefer_local">Preferuj lokalne pliki tekstów</string>
     <string name="local_player_settings_title">Media lokalne</string>
     <string name="lyrics_prefer_local_description">Priorytetyzuj rozwiązanie lokalnych plików tekstowych przed użyciem wszystkich dostawców z chmury. Wyłącz tę opcję aby priorytetyzować dostawców z chmury</string>
@@ -139,7 +138,6 @@
     <string name="scanner_strict_file_name_title">Konkretne nazwy plików</string>
     <string name="scanner_strict_file_name_description">Po włączeniu nazwy plików NIE BĘDĄ ignorowane. np. Utwór.ogg będzie inną piosenką niż Utwór.flac. Wrażliwość skanera pozostanie taka sama</string>
     <string name="scanner_sensitivity_title">Dostosuj wrażliwość skanera</string>
-    <string name="scanner_type_taglib">Używaj zintegrowanego wykrywacza metadanych TagLib</string>
     <string name="pause_remote_listen_history">Zatrzymaj udostępnianie historii odtwarzania z YouTube Music</string>
     <string name="experimental_settings_title">Eksperymentalne</string>
     <string name="dev_settings_description">Odkrywa dodatkowe ustawienia przeznaczone do użycia podczas programowania</string>
@@ -267,7 +265,6 @@
     <string name="scanner_auto_start">Odświeżanie folderów lokalnych mediów oraz pobranych piosenek…</string>
     <string name="scanner_strict_file_paths_title">Dopasuj ścieżki plików zamiast metadanych</string>
     <string name="scanner_strict_file_paths_description">­Wyłącza wszystkie mądre dopasowania metadanych. Może to spowodować problemy jeśli pliki są przeniesione w pamięci lokalnej, ale pozwala jednej piosence by była w różnych folderach</string>
-    <string name="scanner_type_tooltip">Systemowy skaner jest szybszy, ale może nieprawidłowo wypakowywać metadane w porównaniu z innym ekstraktorami. Zmienianie skanera nie przeładuje automatycznie metadanych istniejących piosenek.</string>
     <string name="restore_lm_tooltip">Dla świeżej instalacji aplikacji, niestandardowe pobrania oraz lokalne media mogą nie działa. By rozwiązać ten problem dodaj je z powrotem.</string>
     <string name="off">Wyłączono</string>
 </resources>

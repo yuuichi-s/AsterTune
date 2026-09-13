@@ -423,7 +423,6 @@ class DownloadUtil @Inject constructor(
         }
         isProcessingDownloads.value = true
 
-//            val scanner = LocalMediaScanner.getScanner(context, ScannerImpl.TAGLIB, SCANNER_OWNER_DL)
         database.removeAllDownloadedSongs()
         val timeNow = LocalDateTime.now()
 

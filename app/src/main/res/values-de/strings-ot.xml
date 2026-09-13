@@ -145,7 +145,6 @@
     <string name="scan_paths_title">Scanorte einstellen…</string>
     <string name="scan_paths_add_folder">Neuen Ordner hinzufügen</string>
     <string name="scanner_missing_storage_perm">Der lokale Medien-Scanner benötigt Speicherzugriff.</string>
-    <string name="scanner_type_title">Metadaten-Extraktor</string>
     <string name="scanner_variant_rescan">Gesamte Medienbibliothek erneut scannen und alle Metadaten neu laden</string>
     <string name="scan_paths_tooltip">Dies betrifft auch alle Unterordner</string>
     <string name="lyrics_prefer_local_description">Verwendung lokaler Liedtextdateien priorisieren. Deaktivieren um Cloudanbieter bevorzugt zu verwenden</string>
@@ -172,7 +171,6 @@
     <string name="scanner_sensitivity_L1">Titel abgleichen</string>
     <string name="scanner_sensitivity_L2">Titel und Künstler abgleichen</string>
     <string name="scanner_sensitivity_L3">Titel, Künstler und Alben abgleichen</string>
-    <string name="scanner_type_taglib">Integrierten TagLib-Metadaten-Extractor verwenden</string>
     <string name="scanner_online_artist_linking">Versuche, die Künstler lokaler Dateien mit denen auf YouTube Music zu verknüpfen</string>
     <string name="clear_downloads_confirm">Bist du sicher, dass du alle Downloads entfernen willst? Nur Downloads im Haupt-Download-Ordner werden entfernt</string>
     <string name="clear_image_cache_confirm">Bist du sicher, dass du den Bild-Cache leeren willst? Alle vorhandenen Album-Cover werden entfernt.</string>
