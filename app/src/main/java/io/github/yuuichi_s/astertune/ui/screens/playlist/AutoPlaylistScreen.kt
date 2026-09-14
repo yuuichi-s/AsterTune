@@ -114,6 +114,7 @@ import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
 import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
+import io.github.yuuichi_s.astertune.ui.component.SortHeader
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
@@ -538,6 +539,25 @@ fun AutoPlaylistScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     ) {
+                        SortHeader(
+                            sortType = sortType,
+                            sortDescending = sortDescending,
+                            onSortTypeChange = onSortTypeChange,
+                            onSortDescendingChange = onSortDescendingChange,
+                            sortTypeText = { sortType ->
+                                when (sortType) {
+                                    SongSortType.CREATE_DATE -> if (playlistType == PlaylistType.LIKE) R.string.sort_by_like_date else R.string.sort_by_create_date
+                                    SongSortType.MODIFIED_DATE -> R.string.sort_by_date_modified
+                                    SongSortType.RELEASE_DATE -> R.string.sort_by_date_released
+                                    SongSortType.NAME -> R.string.sort_by_name
+                                    SongSortType.ARTIST -> R.string.sort_by_artist
+                                    SongSortType.PLAY_COUNT -> R.string.sort_by_play_count
+                                }
+                            }
+                        )
+
+                        Spacer(Modifier.weight(1f))
+
                         Text(
                             text = pluralStringResource(R.plurals.n_song, songs.size, songs.size),
                             style = MaterialTheme.typography.titleSmall,
