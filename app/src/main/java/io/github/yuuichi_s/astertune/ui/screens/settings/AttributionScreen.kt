@@ -37,6 +37,7 @@ import io.github.yuuichi_s.astertune.ui.component.ContributorInfo
 import io.github.yuuichi_s.astertune.ui.component.ContributorType.CUSTOM
 import io.github.yuuichi_s.astertune.ui.component.ContributorType.LEAD_DEVELOPER
 import io.github.yuuichi_s.astertune.ui.component.ContributorType.MAINTAINER
+import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import androidx.compose.foundation.layout.WindowInsets
@@ -70,25 +71,25 @@ fun AttributionScreen(
         ElevatedCard(
             modifier = Modifier.fillMaxWidth()
         ) {
+            ContributorCard(
+                contributor = ContributorInfo (
+                    name = stringResource(R.string.all_contributors),
+                    type = listOf(CUSTOM),
+                    url = "https://github.com/yuuichi-s/AsterTune/graphs/contributors"
+                )
+            )
+        }
+
+        PreferenceGroupTitle(title = stringResource(R.string.att_based_on))
+        ElevatedCard(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             contributors.map {
                 ContributorCard(
                     contributor = it,
                     descriptionColour = MaterialTheme.colorScheme.secondary
                 )
             }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ElevatedCard(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            ContributorCard(
-                contributor = ContributorInfo (
-                    name = stringResource(R.string.all_contributors),
-                    type = listOf(CUSTOM),
-                    url = "https://github.com/OuterTune/OuterTune/graphs/contributors"
-                )
-            )
         }
     }
 
@@ -112,20 +113,28 @@ fun AttributionScreen(
 
 val maintainers = mutableListOf(
     ContributorInfo(
+        name = "yuuichi",
+        alias = "yuuichi-s",
+        type = listOf(LEAD_DEVELOPER, MAINTAINER),
+        url = "https://github.com/yuuichi-s"
+    ),
+)
+
+val contributors = mutableListOf(
+    ContributorInfo(
         name = "Davide Garberi",
         alias = "DD3Boh",
-        type = listOf(LEAD_DEVELOPER),
+        type = listOf(CUSTOM),
+        description = "OuterTune developer",
         url = "https://github.com/DD3Boh"
     ),
     ContributorInfo(
         name = "Michael Zh",
         alias = "mikooomich",
-        type = listOf(LEAD_DEVELOPER, MAINTAINER),
+        type = listOf(CUSTOM),
+        description = "OuterTune developer",
         url = "https://github.com/mikooomich"
     ),
-)
-
-val contributors = mutableListOf(
     ContributorInfo(
         name = "Zion Huang",
         alias = "z-huang",
