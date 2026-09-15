@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.exoplayer.offline.Download
 import io.github.yuuichi_s.astertune.constants.PlaylistSongSortDescendingKey
 import io.github.yuuichi_s.astertune.constants.PlaylistSongSortType
 import io.github.yuuichi_s.astertune.constants.PlaylistSongSortTypeKey
 import io.github.yuuichi_s.astertune.db.MusicDatabase
+import io.github.yuuichi_s.astertune.db.entities.PlaylistSong
 import io.github.yuuichi_s.astertune.extensions.reversed
 import io.github.yuuichi_s.astertune.extensions.toEnum
 import io.github.yuuichi_s.astertune.utils.dataStore
+import io.github.yuuichi_s.astertune.utils.getDownloadState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +24,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,7 +53,12 @@ class LocalPlaylistViewModel @Inject constructor(
             PlaylistSongSortType.ADDED_DATE -> songs.sortedBy { it.song.song.inLibrary }
             PlaylistSongSortType.MODIFIED_DATE -> songs.sortedBy { it.song.song.dateModified }
             PlaylistSongSortType.RELEASE_DATE -> songs.sortedBy { it.song.song.getDateLong() }
-        }.reversed(sortDescending && sortType != PlaylistSongSortType.CUSTOM)
+            PlaylistSongSortType.DOWNLOAD_DATE -> songs.sortedWith(
+                if (sortDescending) downloadDateComparator.reversed() else downloadDateComparator
+            )
+        }.reversed(
+            sortDescending && sortType != PlaylistSongSortType.CUSTOM && sortType != PlaylistSongSortType.DOWNLOAD_DATE
+        )
 
         Pair(playlist, sortedSongs)
     }.stateIn(viewModelScope, SharingStarted.Lazily, Pair(null, emptyList()))
@@ -68,3 +77,17 @@ class LocalPlaylistViewModel @Inject constructor(
         }
     }
 }
+
+private val downloadDateComparator = compareBy<PlaylistSong>(
+    { song ->
+        when {
+            song.completedDownloadDate() != null -> 2
+            song.song.song.isLocal -> 1
+            else -> 0
+        }
+    },
+    { it.completedDownloadDate() }
+)
+
+private fun PlaylistSong.completedDownloadDate(): LocalDateTime? =
+    song.song.dateDownload?.takeIf { getDownloadState(it) == Download.STATE_COMPLETED }
