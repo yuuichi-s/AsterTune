@@ -251,7 +251,7 @@ interface SongsDao {
             FROM playCount 
             WHERE playCount.song = song.id) AS pc 
         FROM song 
-        WHERE liked IS NOT NULL 
+        WHERE liked
         ORDER BY pc ASC
     """)
     fun likedSongsByPlayCountAsc(): Flow<List<Song>>
