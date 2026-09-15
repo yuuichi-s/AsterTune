@@ -57,6 +57,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="sort_by_like_date">Date liked</string>
     <string name="sort_by_play_count">Play count</string>
     <string name="sort_by_track_number">Track number</string>
+    <string name="sort_by_download_date">Date downloaded</string>
 
 <!-- Dialog -->
     <string name="bits_per_sample">Bits per sample</string>

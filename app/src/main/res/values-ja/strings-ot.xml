@@ -18,6 +18,7 @@
     <string name="sort_by_date_released">リリース日</string>
     <string name="sort_by_like_date">いいねした日</string>
     <string name="sort_by_play_count">再生回数</string>
+    <string name="sort_by_download_date">ダウンロード日</string>
     <string name="create_sync_playlist">再生リストを同期</string>
     <string name="create_sync_playlist_description">注: YouTube Music との同期が可能になります。これは後で変更できません。同期した再生リストに端末内の曲は追加できません。</string>
     <string name="play_count">再生回数</string>
