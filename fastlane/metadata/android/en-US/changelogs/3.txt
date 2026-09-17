@@ -1,0 +1,9 @@
+AsterTune 1.0.2
+
+- Add a sort menu to the Liked songs and Downloaded songs screens.
+- Add a "Date downloaded" sort option to playlists.
+- Show only liked songs when sorting Liked songs by Play count.
+- Remove the Metadata extractor setting, whose MediaStore option could stop automatic scans from importing new songs.
+- Keep local and YouTube albums that share a title as separate albums.
+- Correct the songs listed under local albums.
+- Correct the credits for AsterTune and OuterTune.

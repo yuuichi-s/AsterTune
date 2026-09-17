@@ -29,8 +29,8 @@ android {
         applicationId = "io.github.yuuichi_s.astertune"
         minSdk = 24
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 3
+        versionName = "1.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // expose the TagLib library version (from the version catalog) for the About screen
