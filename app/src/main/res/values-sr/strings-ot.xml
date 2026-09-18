@@ -86,7 +86,7 @@
     <string name="tab_arrangement_disable_tip">--- Prevucite ovde ispod da biste onemogućili ---</string>
     <string name="tab_arrangement_home_required">Početna kartica je obavezna.</string>
     <string name="tablet_ui_title">Prisilno koristi tablet interfejs</string>
-    <string name="tablet_ui_title_description">Omogući položeni interfejs koji je optimizovan za veće ekrane bez obzira na trenutnu veličinu ekrana</string>
+    <string name="tablet_ui_title_description">Prisilno koristi podeljeni interfejs optimizovan za velike ekrane. Ovo podešavanje nema efekta ako nisu ispunjeni zahtevi za minimalnu širinu</string>
     <string name="filter_arrangement">Rasporedi filtere</string>
     <string name="like_autodownload">Automatski preuzmi pesme koje ti se sviđaju</string>
     <string name="token_adv_login_description">Ovo je NAPREDNI metod prijavljivanja. Kao alternativa veb portalu, možete direktno uneti ili ažurirati svoj token za prijavu ovde. Na primer, ovo može ubrzati prijavljivanje na više uređaja. Imajte na umu da svi nevažeći formati tokena koje aplikacija ne uspe da analizira neće biti prihvaćeni</string>
@@ -101,7 +101,7 @@
     <string name="ytm_sync">Automatska sinhronizacija sa vašim YouTube Music nalogom</string>
     <string name="wifi_only">Samo Wi-Fi</string>
     <string name="audio_offload">Omogući rasterećenje</string>
-    <string name="audio_offload_description">Za reprodukciju koristite putanju za rasterećenje zvuka. Onemogućavanje ove opcije može povećati potrošnju energije, ali može biti korisno ako imate problema sa reprodukcijom zvuka ili naknadnom obradom</string>
+    <string name="audio_offload_description">Koristi putanju za rasterećenje zvuka pri reprodukciji. Omogućavanje može smanjiti potrošnju energije, ali može dovesti do problema sa reprodukcijom ili naknadnom obradom zvuka. Ovo podešavanje nema efekta na nepodržane kodeke ili uređaje</string>
     <string name="keep_alive_title">Spreči sistem da zaustavi aplikaciju</string>
     <string name="keep_alive_description">Koristi trajni servis u prvom planu da biste sprečili zatvaranje AsterTune-a u pozadini.</string>
     <string name="persistent_queue_desc_ot">Vrati prethodno otvorene liste čekanja kada se aplikacija pokrene</string>
@@ -125,9 +125,9 @@
     <string name="local_player_settings_title">Lokalni mediji</string>
     <string name="flat_subfolders_title">Spoji podfascikle</string>
     <string name="flat_subfolders_description">Onemogući da bi sačuvao strukturu datoteka kao na disku</string>
-    <string name="disable_lm_confirm">Da li ste sigurni da želite da onemogučite funkcije lokalnih medija?</string>
+    <string name="disable_lm_confirm">Da li ste sigurni da želite da onemogućite funkcije lokalnih medija? Sadržaj biblioteke neće biti izmenjen.</string>
     <string name="auto_scanner_title">Automatski skeniraj</string>
-    <string name="auto_scanner_description">Automatski skeniraj pesme pri otvaranju aplikacije. Ovo ne učitava ponovo metapodatke postojećih pesama.</string>
+    <string name="auto_scanner_description">Periodično osvežavaj lokalne pesme i prilagođene fascikle za preuzimanja pri otvaranju aplikacije</string>
     <string name="scan_paths_title">Podesi lokacije za skeniranje…</string>
     <string name="scan_paths_description">Izaberi fascikle u lokalnoj memoriji za skeniranje pesama</string>
     <string name="scan_paths_tooltip">Utiče na sve poddirektorijume takođe</string>
@@ -190,7 +190,7 @@
     <string name="restart_to_apply_changes">Potrebno je ponovno pokretanje aplikacije da bi promene stupile na snagu</string>
     <string name="pause_remote_listen_history">Pauziraj deljenje istorije slušanja sa YouTube Music</string>
     <string name="err_restore_incompatible_database">Nije moguće vratiti nekompatibilnu bazu podataka</string>
-    <string name="import_innertune_tooltip">Vraćanje rezervnih kopija InnerTune-a je podržano, mada postoji mogućnost anomalija zbog tehničkih ograničenja</string>
+    <string name="import_innertune_tooltip">Vraćanje rezervnih kopija InnerTune-a je podržano, ali su moguća odstupanja zbog tehničkih ograničenja. Fork verzije NISU podržane.</string>
     <string name="experimental_settings_title">Eksperimentalno</string>
     <string name="dev_settings_title">Omogući podešavanja za programere</string>
     <string name="dev_settings_description">Otkriva dodatna napredna podešavanja namenjena za razvojnu upotrebu</string>
@@ -199,7 +199,7 @@
     <string name="oobe_welcome_message">Pomoćnik za podešavanje</string>
     <string name="oobe_ytm_integration">YouTube Music integracija</string>
     <string name="oobe_ytm_integration_description">Pristupi omiljenim pesmama neprimetno</string>
-    <string name="oobe_ad_free_exp">Doživljaj bez reklama</string>
+    <string name="oobe_ad_free_exp">Bez YouTube reklama</string>
     <string name="oobe_ad_free_exp_description">Uživaj u muzici bez prekidanja</string>
     <string name="oobe_local_music_support">Opsežna podrška lokalnom sadržaju</string>
     <string name="oobe_local_music_support_description">Puštaj svoje audio datoteke (npr. MP3, OGG, FLAC, itd.)</string>

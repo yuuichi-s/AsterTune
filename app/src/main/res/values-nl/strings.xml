@@ -22,7 +22,7 @@
     <string name="last_week">Vorige week</string>
     <string name="most_played_songs">Meest afgespeelde nummers</string>
     <string name="most_played_artists">Meest afgespeelde artiesten</string>
-    <string name="most_played_albums">Meest afgespeelde artiesten</string>
+    <string name="most_played_albums">Meest afgespeelde albums</string>
     <string name="search">Zoeken</string>
     <string name="search_yt_music">Zoeken via YouTube Music…</string>
     <string name="search_library">Zoeken in bibliotheek…</string>
@@ -39,7 +39,7 @@
     <string name="filter_featured_playlists">Voorgestelde afspeellijsten</string>
     <string name="filter_bookmarked">Gebookmarked</string>
     <string name="no_results_found">Geen resultaten gevonden</string>
-    <string name="from_your_library">Verwijderen van bibliotheek</string>
+    <string name="from_your_library">Uit je bibliotheek</string>
     <string name="liked_songs">Favoriete nummers</string>
     <string name="downloaded_songs">Gedownloade nummers</string>
     <string name="playlist_is_empty">Afspeellijst is leeg</string>

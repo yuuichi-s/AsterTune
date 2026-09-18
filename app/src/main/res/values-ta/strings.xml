@@ -75,8 +75,8 @@
     <string name="action_like_all">எல்லாவற்றையும் போல</string>
     <string name="action_remove_like">அகற்றவும்</string>
     <string name="action_remove_like_all">எல்லா விருப்பங்களையும் அகற்று</string>
-    <string name="action_shuffle_on">கலக்கு</string>
-    <string name="action_shuffle_off">கலக்கவும்</string>
+    <string name="action_shuffle_on">கலக்கு இயக்கத்தில்</string>
+    <string name="action_shuffle_off">கலக்கு முடக்கப்பட்டது</string>
     <string name="queue_all_songs">அனைத்து பாடல்களும்</string>
     <string name="queue_searched_songs">தேடியது பாடல்கள்</string>
     <string name="dark_theme">இருண்ட கருப்பொருள்</string>
@@ -263,7 +263,7 @@
     <string name="backup_create_failed">காப்புப்பிரதியை உருவாக்க முடியவில்லை</string>
     <string name="restore_failed">காப்புப்பிரதியை மீட்டெடுப்பதில் தோல்வி</string>
     <string name="discord_integration">முரண்பாடு ஒருங்கிணைப்பு</string>
-    <string name="discord_information">உங்கள் முரண்பாடு கணக்கின் நிலையை அமைக்க இன்டெர்டூன் கிச்சார்பிசி நூலகத்தைப் பயன்படுத்துகிறது. இது முரண்பாடான நுழைவாயில் இணைப்பைப் பயன்படுத்துவதை உள்ளடக்குகிறது, இது டிச்கார்டின் TOS இன் மீறலாகக் கருதப்படலாம். இருப்பினும், இந்த காரணத்திற்காக பயனர் கணக்குகள் இடைநிறுத்தப்பட்டதாக அறியப்படாத வழக்குகள் எதுவும் இல்லை. உங்கள் சொந்த ஆபத்தில் பயன்படுத்தவும்.\n\n இன்னெர்டூன் உங்கள் கிள்ளாக்கை மட்டுமே பிரித்தெடுக்கும், மற்ற அனைத்தும் உள்நாட்டில் சேமிக்கப்படும்.</string>
+    <string name="discord_information">உங்கள் முரண்பாடு கணக்கின் நிலையை அமைக்க AsterTune கிச்சார்பிசி நூலகத்தைப் பயன்படுத்துகிறது. இது முரண்பாடான நுழைவாயில் இணைப்பைப் பயன்படுத்துவதை உள்ளடக்குகிறது, இது டிச்கார்டின் TOS இன் மீறலாகக் கருதப்படலாம். இருப்பினும், இந்த காரணத்திற்காக பயனர் கணக்குகள் இடைநிறுத்தப்பட்டதாக அறியப்படாத வழக்குகள் எதுவும் இல்லை. உங்கள் சொந்த ஆபத்தில் பயன்படுத்தவும்.\n\n AsterTune உங்கள் கிள்ளாக்கை மட்டுமே பிரித்தெடுக்கும், மற்ற அனைத்தும் உள்நாட்டில் சேமிக்கப்படும்.</string>
     <string name="dismiss">தள்ளுபடி</string>
     <string name="options">விருப்பங்கள்</string>
     <string name="preview">முன்னோட்டம்</string>

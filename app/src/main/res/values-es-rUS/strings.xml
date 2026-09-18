@@ -214,7 +214,7 @@
     <string name="sided">con bordes</string>
     <string name="default_">Predeterminado</string>
     <string name="grid_cell_size">Tamaño de celda de la cuadrícula</string>
-    <string name="login">Inicio</string>
+    <string name="login">Inicio de sesión</string>
     <string name="not_logged_in">No ha iniciado sesión</string>
     <string name="login_failed">Error al iniciar sesión</string>
     <string name="content_language">Idioma predeterminado del contenido</string>

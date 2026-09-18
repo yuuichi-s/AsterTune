@@ -138,7 +138,7 @@
     <string name="sleep_timer">Uniajastin</string>
     <string name="end_of_song">Laulun loppu</string>
     <plurals name="minute">
-        <item quantity="one">%d minuutti</item>
+        <item quantity="one">1 minuutti</item>
         <item quantity="other">%d minuuttia</item>
     </plurals>
     <string name="error_no_stream">Suoratoistoa ei saatavilla</string>

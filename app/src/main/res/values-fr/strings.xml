@@ -147,7 +147,7 @@
     <string name="sleep_timer">Minuterie de Sommeil</string>
     <string name="end_of_song">Fin du titre</string>
     <plurals name="minute">
-        <item quantity="one">%d minute</item>
+        <item quantity="one">1 minute</item>
         <item quantity="many">%d minutes</item>
         <item quantity="other">%d minutes</item>
     </plurals>
@@ -241,7 +241,7 @@
     <string name="enable_lrclib">Activer le fournisseur de paroles LrcLib</string>
     <string name="hide_explicit">Masquer le contenu explicite</string>
     <string name="discord_integration">Intégration Discord</string>
-    <string name="dismiss">Abandonner</string>
+    <string name="dismiss">Ignorer</string>
     <string name="options">Options</string>
     <string name="preview">Prévisualisation</string>
     <string name="action_logout">Se déconnecter</string>

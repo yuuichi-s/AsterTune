@@ -128,7 +128,7 @@
         <item quantity="other">%d piosenek odnalezionych</item>
     </plurals>
     <string name="flat_subfolders_description">Wyłącz tę opcję aby zachować strukturę plików jak na dysku</string>
-    <string name="auto_scanner_description">Automatycznie skanuj w poszukiwaniu utworów po otwarciu aplikacji. Nie ładuje ponownie metadanych istniejących utworów</string>
+    <string name="auto_scanner_description">Okresowo odświeżaj lokalne utwory i niestandardowe foldery pobierania podczas otwierania aplikacji</string>
     <string name="scanner_sensitivity_L2">Dopasuj tytuł i artystów</string>
     <string name="scanner_warning">Skaner NIE ZAŁADUJE domyślnie żadnych metadanych istniejących utworów o ile nie określisz tego wyżej. W zależności od rozmiarów twojej biblioteki ta czynność może zająć chwilę.</string>
     <string name="scanner_scan_fail">Skanowanie nieudane</string>
@@ -182,7 +182,7 @@
     <string name="speed_fast">Szybka</string>
     <string name="check_for_update">Sprawdź, czy dostępna jest nowa aktualizacja</string>
     <string name="checking_for_update">Sprawdzanie, czy nie została wydana nowa aktualizacja</string>
-    <string name="tablet_ui_title_description">Włącz krajobrazowy interfejs, który jest zoptymalizowany dla większych ekranów niezależnie od aktualnej wielkości ekranu</string>
+    <string name="tablet_ui_title_description">Wymuś podzielony interfejs zoptymalizowany pod kątem dużych ekranów. To ustawienie nie działa, jeśli wymagania dotyczące minimalnej szerokości nie są spełnione</string>
     <string name="playlist_missing_note">Brakujące playlisty? Kliknij tutaj, by pozwolić na synchronizację typu czytaj-pisz w ustawieniach</string>
     <string name="grp_behavior">Zachowanie</string>
     <string name="dl_rescan_description">Zaktualizuje bazę danych i odśwież register pobrań jeżeli jakiekolwiek pliki lub foldery zostały zmienione</string>

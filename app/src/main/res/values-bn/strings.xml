@@ -134,12 +134,12 @@
     <string name="playlist_imported">ইমপোর্ট করা প্লেলিস্ট</string>
     <string name="removed_song_from_playlist">প্লেলিস্ট থেকে \"%s\" সরানো হয়েছে</string>
     <string name="playlist_synced">সিঙ্ক্রোনাইজ করা প্লেলিস্ট</string>
-    <string name="undo">বাতিল করুন</string>
+    <string name="undo">পূর্বাবস্থায় ফেরান</string>
     <string name="lyrics_not_found">গানের লিরিক পাওয়া যায়নি</string>
     <string name="sleep_timer">স্লীপ টাইমার</string>
     <string name="end_of_song">গান শেষে</string>
     <plurals name="minute">
-        <item quantity="one">%d মিনিট</item>
+        <item quantity="one">১ মিনিট</item>
         <item quantity="other">%d মিনিট</item>
     </plurals>
     <string name="error_no_stream">স্ট্রিম পাওয়া যায়নি</string>
@@ -275,7 +275,7 @@
     <string name="hide_explicit">স্পষ্ট বিষয়বস্তু লুকান</string>
     <string name="discord_integration">ডিসকর্ড ইন্টিগ্রেশন</string>
     <string name="discord_information">AsterTune আপনার Discord অ্যাকাউন্টের স্ট্যাটাস সেট করার জন্য KizzyRPC লাইব্রেরি ব্যবহার করে। এর মধ্যে Discord Gateway সংযোগ ব্যবহার করা হয়, যা Discord-এর পরিষেবার শর্তাবলীর (TOS) লঙ্ঘন হিসেবে বিবেচিত হতে পারে। তবে, এই কারণে ব্যবহারকারীর অ্যাকাউন্ট সাসপেন্ড হওয়ার কোনো পরিচিত ঘটনা নেই। ব্যবহার আপনার নিজের ঝুঁকিতে করুন।\n\nAsterTune শুধুমাত্র আপনার টোকেন সংগ্রহ করবে, এবং বাকী সবকিছু স্থানীয়ভাবে সংরক্ষিত থাকবে।</string>
-    <string name="dismiss">বাতিল করুন</string>
+    <string name="dismiss">খারিজ করুন</string>
     <string name="options">বিকল্পসমূহ</string>
     <string name="preview">প্রিভিউ</string>
     <string name="enable_discord_rpc">রিচ প্রেজেন্স সক্ষম করুন</string>

@@ -181,7 +181,7 @@
     <string name="small">Petita</string>
     <string name="big">Gran</string>
     <string name="action_login">Inicia la sessió</string>
-    <string name="login">Compte</string>
+    <string name="login">Inici de sessió</string>
     <string name="content_language">Llengua per defecte del contingut</string>
     <string name="content_country">País per defecte del contingut</string>
     <string name="system_default">Valor per defecte del sistema</string>

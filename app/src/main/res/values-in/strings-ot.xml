@@ -90,7 +90,7 @@
     <string name="tab_arrangement_disable_tip">--- Seret ke bawah sini untuk menonaktifkan ---</string>
     <string name="tab_arrangement_home_required">Tab Beranda diperlukan.</string>
     <string name="tablet_ui_title">Paksa tampilan tablet</string>
-    <string name="tablet_ui_title_description">Aktifkan tampilan lanskap untuk layar besar, meski perangkat tidak dalam orientasi lanskap</string>
+    <string name="tablet_ui_title_description">Paksa antarmuka terbagi yang dioptimalkan untuk layar besar. Pengaturan ini tidak berpengaruh jika persyaratan lebar minimum tidak terpenuhi</string>
     <string name="filter_arrangement">Pengaturan filter</string>
     <string name="like_autodownload">Unduh otomatis lagu yang disukai</string>
     <string name="token_adv_login_description">Ini adalah metode masuk TINGKAT LANJUT. Sebagai alternatif dari portal web, Anda dapat langsung memasukkan atau memperbarui token masuk Anda di sini. Contohnya, ini dapat mempercepat proses masuk di beberapa perangkat. Perlu diingat bahwa format token apa pun yang tidak valid dan gagal diurai oleh aplikasi tidak akan diterima</string>
@@ -105,7 +105,7 @@
     <string name="ytm_sync">Sinkronisasi otomatis dengan akun YouTube Music Anda</string>
     <string name="wifi_only">Hanya Wi-Fi</string>
     <string name="audio_offload">Aktifkan offload</string>
-    <string name="audio_offload_description">Gunakan jalur audio offload untuk pemutaran audio. Menonaktifkan ini dapat meningkatkan penggunaan daya, tetapi bisa berguna jika Anda mengalami masalah dengan pemutaran audio atau pasca-pemrosesan</string>
+    <string name="audio_offload_description">Gunakan jalur audio offload untuk pemutaran audio. Mengaktifkannya dapat mengurangi penggunaan daya, tetapi dapat menyebabkan masalah pada pemutaran audio atau pascapemrosesan. Pengaturan ini tidak berpengaruh pada codec atau perangkat yang tidak didukung</string>
     <string name="keep_alive_title">Cegah sistem mematikan aplikasi</string>
     <string name="keep_alive_description">Gunakan layanan latar depan persisten untuk mencegah AsterTune ditutup di latar belakang.</string>
     <string name="persistent_queue_desc_ot">Pulihkan antrean yang terakhir dibuka saat aplikasi dimulai</string>
@@ -190,7 +190,7 @@
     <string name="restart_to_apply_changes">Mulai ulang aplikasi agar perubahan diterapkan</string>
     <string name="pause_remote_listen_history">Jeda berbagi riwayat mendengarkan dengan YouTube Music</string>
     <string name="err_restore_incompatible_database">Basis data tidak kompatibel, tidak dapat dipulihkan</string>
-    <string name="import_innertune_tooltip">Pemulihan cadangan InnerTune didukung, meskipun ada kemungkinan masalah karena keterbatasan teknis</string>
+    <string name="import_innertune_tooltip">Pemulihan cadangan InnerTune didukung, meskipun mungkin terjadi masalah karena keterbatasan teknis. Fork TIDAK didukung.</string>
     <string name="experimental_settings_title">Eksperimental</string>
     <string name="dev_settings_title">Aktifkan pengaturan pengembang</string>
     <string name="dev_settings_description">Menampilkan pengaturan lanjutan tambahan yang ditujukan untuk penggunaan pengembangan</string>
@@ -240,7 +240,7 @@
         <item quantity="other">%d detik</item>
     </plurals>
     <string name="library_filter">Filter koleksi</string>
-    <string name="toggle_lyrics">Lirik</string>
+    <string name="toggle_lyrics">Tampilkan/sembunyikan lirik</string>
     <string name="grp_more_settings">Pengaturan lebih lanjut</string>
     <string name="action_logout_tooltip">Untuk keluar sepenuhnya, silahkan logout akun YouTube-mu lewat web terlebih dahulu sebelum memakai tombol logout ini</string>
     <string name="audio_decoder_ffmpeg_only">Prioritaskan dekoder FFmpeg</string>

@@ -117,7 +117,7 @@
     <string name="info">信息</string>
     <string name="playlist_add_local_to_synced_note">注意：不支持将本地歌曲添加到同步/远程播放列表。任何其他组合均有效</string>
     <string name="player_background_style">播放器背景样式</string>
-    <string name="scanner_missing_storage_perm">扫描需要存储权限</string>
+    <string name="scanner_missing_storage_perm">本地媒体扫描器需要存储权限才能运行</string>
     <string name="local_library_enable_title">启用本地媒体</string>
     <string name="experimental_settings_title">实验功能</string>
     <string name="auto_scanner_description">在打开应用时，定期更新本地歌曲和自定义下载的文件夹</string>
@@ -164,7 +164,7 @@
     <string name="action_cancel">取消</string>
     <string name="grp_sync">同步</string>
     <string name="check_for_update">检查更新</string>
-    <string name="clear_song_cache_confirm">您确认想清理音乐换成吗?</string>
+    <string name="clear_song_cache_confirm">您确定要清除歌曲缓存吗？</string>
     <string name="disable_lm_confirm">您确定要禁用本地媒体功能吗？您库中的内容不会被影响。</string>
     <string name="scan_paths_description">选择本地存储上的文件夹来扫描歌曲</string>
     <string name="oobe_local_media_title">本地歌曲</string>
@@ -178,7 +178,7 @@
     <string name="err_invalid_ytm_song">播放歌曲失败。只能播放在 YouTube Music 上可用的内容</string>
     <string name="playlist_missing_note">缺少播放列表？点击此处在设置中启用同步读写模式</string>
     <string name="app_info_title">应用信息</string>
-    <string name="checking_for_update">检查更新</string>
+    <string name="checking_for_update">正在检查更新</string>
     <string name="device_info_title">设备信息</string>
     <string name="oss_licenses_title">开源许可证</string>
     <string name="wiki">文档</string>

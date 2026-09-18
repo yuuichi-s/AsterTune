@@ -258,7 +258,7 @@
     <string name="remove_download_playlist_confirm">Vuoi davvero rimuovere tutti i brani della playlist \"%s\" dalla memoria dei Brani Scaricati?</string>
     <string name="skip_duplicates">Salta duplicati</string>
     <string name="library_artist_empty">Gli artisti della libreria verranno visualizzati qui</string>
-    <string name="action_like_all">Mi piace a tutto</string>
+    <string name="action_like_all">Metti Mi piace a tutti</string>
     <string name="not_logged_in">Non autenticato</string>
     <string name="small">Piccolo</string>
     <string name="big">Grande</string>
@@ -286,6 +286,13 @@
     <string name="action_logout">Esci</string>
     <string name="use_login_for_browse_desc">Ciò può influenzare il contenuto che vedi e ad esempio mostra album solo premium se hai effettuato l\'accesso con un account Premium</string>
     <string name="enable_discord_rpc">Abilita Rich Presence</string>
-    <string name="dismiss">Ignorare</string>
+    <string name="dismiss">Ignora</string>
     <string name="action_login">Accedi</string>
+    <string name="custom_accent_color">Colore di accento personalizzato</string>
+    <string name="custom_accent_color_description">Usa un colore fisso a tua scelta come accento in tutta l\'app</string>
+    <string name="accent_color">Colore di accento</string>
+    <string name="ignore_audio_focus">Mantieni il focus audio</string>
+    <string name="ignore_audio_focus_desc">Continua la riproduzione quando un\'altra app acquisisce il focus audio. La musica non verrà messa in pausa da altre sorgenti audio, incluse le chiamate.</string>
+    <string name="enable_betterlyrics">Attiva il fornitore di testi BetterLyrics</string>
+    <string name="enable_simpmusic">Attiva il fornitore di testi SimpMusic</string>
 </resources>

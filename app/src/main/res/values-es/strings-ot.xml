@@ -175,13 +175,13 @@
     <string name="dl_migrate_title">Migrar descargas a almacenamiento externo…</string>
     <string name="dl_migrate_description">Mueve las descargas del almacenamiento interno de la aplicación al un almacenamiento externo en el dispositivo</string>
     <string name="tablet_ui_title">Forzar interfaz de tableta</string>
-    <string name="tablet_ui_title_description">Habilita una interfaz horizontal optimizada para pantallas más grandes, independientemente del tamaño actual de la pantalla</string>
+    <string name="tablet_ui_title_description">Fuerza una interfaz dividida optimizada para pantallas grandes. Este ajuste no tiene efecto si no se cumplen los requisitos de anchura mínima</string>
     <string name="attribution_title">Colaboradores</string>
     <string name="oss_licenses_title">Licencias de código abierto</string>
     <string name="lyrics_karaoke_title">Letra estilo karaoke.</string>
     <string name="lyrics_karaoke_hz_title">Ajustar la velocidad de actualización de las letras de karaoke</string>
-    <string name="dl_extra_path_title">Configurar ubicaciones de descarga adicionales…</string>
-    <string name="dl_main_path_title">Configurar directorio de descarga…</string>
+    <string name="dl_extra_path_title">Configurar ubicaciones de importación adicionales…</string>
+    <string name="dl_main_path_title">Establecer carpeta de descargas externa…</string>
     <string name="speed_slow">Lento</string>
     <string name="speed_medium">Medio</string>
     <string name="speed_very_slow">Muy lento</string>

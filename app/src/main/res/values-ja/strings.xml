@@ -16,7 +16,7 @@
     <string name="quick_picks_empty">何曲か再生するとおすすめを生成します</string>
     <string name="new_release_albums">新作アルバム</string>
     <string name="forgotten_favorites">聴かなくなったお気に入り</string>
-    <string name="keep_listening">視聴を維持</string>
+    <string name="keep_listening">続きを聴く</string>
     <string name="your_youtube_playlists">あなたのYouTubeの再生リスト</string>
     <string name="similar_to">これに似ている</string>
     <string name="today">今日</string>
@@ -85,7 +85,7 @@
     <string name="advanced">高度</string>
     <string name="tempo_and_pitch">速度とピッチ</string>
     <string name="sort_by_create_date">追加日時</string>
-    <string name="sort_by_name">曲名</string>
+    <string name="sort_by_name">名前</string>
     <string name="sort_by_artist">アーティスト</string>
     <string name="sort_by_year">リリース年</string>
     <string name="sort_by_song_count">曲数</string>

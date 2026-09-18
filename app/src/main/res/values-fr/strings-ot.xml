@@ -285,4 +285,11 @@
     <string name="lyrics_prefetch_description">Récupérer à l\'avance les paroles des prochains titres de la file d\'attente</string>
     <string name="lyrics_prefetch_count_title">Nombre de titres dont les paroles doivent être préchargées</string>
     <string name="off">Désactivé</string>
+    <string name="sort_by_download_date">Date de téléchargement</string>
+    <string name="grp_appearance_controls">Apparence et commandes</string>
+    <string name="grp_display">Affichage</string>
+    <string name="grp_now_playing">Lecture en cours</string>
+    <string name="att_based_on">Basé sur</string>
+    <string name="tap_artwork_to_show_lyrics_title">Toucher la pochette pour afficher les paroles</string>
+    <string name="tap_artwork_to_show_lyrics_description">Afficher les paroles en touchant la pochette dans le lecteur</string>
 </resources>

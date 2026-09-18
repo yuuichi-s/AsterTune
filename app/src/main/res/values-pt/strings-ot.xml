@@ -32,7 +32,7 @@
     <string name="sort_by_like_date">Data de quando \"Gosto\"</string>
     <string name="sort_by_play_count">Número de reproduções</string>
     <string name="sort_by_track_number">Número da faixa</string>
-    <string name="bits_per_sample">Frequência</string>
+    <string name="bits_per_sample">Bits por amostra</string>
     <string name="create_sync_playlist">Sincronizar lista de reprodução</string>
     <string name="create_sync_playlist_description">Observação: isto permite a sincronização com o YouTube Music. NÃO pode ser alterado depois. Não pode adicionar músicas locais a listas de reprodução sincronizadas.</string>
     <string name="disc_number">Número do disco</string>

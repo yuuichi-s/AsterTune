@@ -39,7 +39,7 @@
     <string name="m3u_export">Exportar com arxiu M3U</string>
     <string name="import_success_songs">Importat correctament</string>
     <string name="import_failed_songs">No s\'ha pogut importar</string>
-    <string name="oobe_complete">OverTune està configurat i llest per utilitzar. Explora la teva música, descobreix noves pustes i disfruta de la experiència!</string>
+    <string name="oobe_complete">AsterTune està configurat i llest per utilitzar. Explora la teva música, descobreix noves pustes i disfruta de la experiència!</string>
     <string name="oobe_complete_title">Tot a punt!</string>
     <string name="oobe_downloads_subtitle">Escull la carpeta en la que es guardaran les cançons descareegades.</string>
     <string name="oobe_downloads_title">Cançons descarregades</string>

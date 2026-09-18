@@ -19,20 +19,20 @@
     <string name="swipe_to_skip_description">تمكين السحب الأفقي في المشغل لتبديل الأغاني</string>
     <string name="oobe_welcome_message">مرحبًا بك في AsterTune</string>
     <plurals name="scanner_n_song_found">
-        <item quantity="zero">صفر اغنية</item>
-        <item quantity="one">اغنية واحدة</item>
-        <item quantity="two">اغنيتين</item>
-        <item quantity="few">اغاني</item>
-        <item quantity="many">اغاني</item>
-        <item quantity="other">اغنية</item>
+        <item quantity="zero">%d اغنية</item>
+        <item quantity="one">%d اغنية</item>
+        <item quantity="two">%d اغنيتين</item>
+        <item quantity="few">%d اغاني</item>
+        <item quantity="many">%d اغاني</item>
+        <item quantity="other">%d اغنية</item>
     </plurals>
     <plurals name="scanner_n_song_processed">
-        <item quantity="zero">اغاني معالجة</item>
-        <item quantity="one">اغنية معالجة</item>
-        <item quantity="two">اغنيتين معالجة</item>
-        <item quantity="few">عدة اغاني معالجة</item>
-        <item quantity="many">اغاني معالجة</item>
-        <item quantity="other">اغاني</item>
+        <item quantity="zero">%d اغاني معالجة</item>
+        <item quantity="one">%d اغنية معالجة</item>
+        <item quantity="two">%d اغنيتين معالجة</item>
+        <item quantity="few">%d اغاني معالجة</item>
+        <item quantity="many">%d اغاني معالجة</item>
+        <item quantity="other">%d اغاني معالجة</item>
     </plurals>
     <string name="missing_media_permission_warning">أذونات التخزين مطلوبة للوسائط المحلية. انقر لمنح الإذن.</string>
     <string name="queues_title">قوائم الانتظار</string>
@@ -95,7 +95,7 @@
     <string name="like_autodownload">تنزيل الأغاني المعجب بها تلقائيًا</string>
     <string name="token_adv_login_description">هذه طريقة متقدمة لتسجيل الدخول. كبديل لبوابة الويب، يمكنك إدخال رمز تسجيل الدخول الخاص بك مباشرة أو تحديثه هنا. على سبيل المثال، يمكن أن يؤدي ذلك إلى تسريع تسجيل الدخول على أجهزة متعددة. يرجى ملاحظة أنه لن يتم قبول أي تنسيقات رمزية غير صالحة يفشل التطبيق في تحليلها.</string>
     <string name="token_shown">انقر مرة أخرى للنسخ أو التحرير</string>
-    <string name="sync_conflict_add_only">Keep all local content, add new remote content</string>
+    <string name="sync_conflict_add_only">الاحتفاظ بكل المحتوى المحلي وإضافة المحتوى البعيد الجديد</string>
     <string name="sync_conflict_overwrite">استبدال المحتوى المحلي بالمحتوى البعيد</string>
     <string name="sync_conflict_title">حل التعارض</string>
     <string name="sync_mode">وضع المزامنة</string>
@@ -104,7 +104,7 @@
     <string name="ytm_sync">المزامنة تلقائيًا مع حساب YouTube Music الخاص بك</string>
     <string name="wifi_only">واي فاي فقط</string>
     <string name="audio_offload">تمكين التفريغ</string>
-    <string name="audio_offload_description">استخدام مسار الصوت المفرغ لتشغيل الصوت. قد يؤدي تعطيل هذا إلى زيادة استخدام الطاقة ولكنه قد يكون مفيدًا إذا واجهت مشكلات في تشغيل الصوت أو المعالجة اللاحقة</string>
+    <string name="audio_offload_description">استخدام مسار تفريغ الصوت لتشغيل الصوت. قد يؤدي تمكينه إلى تقليل استهلاك الطاقة، لكنه قد يسبب مشكلات في تشغيل الصوت أو المعالجة اللاحقة. لا يؤثر هذا الإعداد في برامج الترميز أو الأجهزة غير المدعومة</string>
     <string name="keep_alive_title">منع النظام من إنهاء التطبيق</string>
     <string name="keep_alive_description">استخدام خدمة مستمرة في المقدمة لمنع إغلاق AsterTune في الخلفية.</string>
     <string name="persistent_queue_desc_ot">استعادة قائمة (قوائم) الانتظار المفتوحة السابقة عند بدء التطبيق</string>
@@ -121,10 +121,10 @@
     <string name="local_library_enable_title">تمكين الوسائط المحلية</string>
     <string name="local_library_enable_description">التعطيل سيخفي المكتبة المحلية من التطبيق</string>
     <string name="local_player_settings_title">الوسائط المحلية</string>
-    <string name="import_innertune_tooltip">يتم دعم استعادة النسخ الاحتياطية من InnerTune، وإن كان هناك احتمال لوجود حالات شاذة بسبب القيود الفنية</string>
+    <string name="import_innertune_tooltip">يتم دعم استعادة النسخ الاحتياطية من InnerTune، مع احتمال حدوث مشكلات بسبب القيود التقنية. النسخ المتفرعة غير مدعومة.</string>
     <string name="m3u_import_playlist_failed">فشل استيراد قائمة التشغيل</string>
     <string name="auto_scanner_title">المسح تلقائيًا</string>
-    <string name="auto_scanner_description">مسح الأغاني تلقائيًا عند فتح التطبيق. هذا لا يعيد تحميل البيانات الوصفية للأغاني الموجودة.</string>
+    <string name="auto_scanner_description">تحديث أغاني الوسائط المحلية ومجلدات التنزيل المخصصة دوريًا عند فتح التطبيق</string>
     <string name="scan_paths_title">تكوين مواقع المسح…</string>
     <string name="scan_paths_tooltip">ستتأثر أيضًا جميع الدلائل الفرعية</string>
     <string name="scan_paths_add_folder">إضافة مجلد جديد</string>
@@ -133,7 +133,7 @@
     <string name="scanner_manual_btn">تشغيل المزامنة اليدوية</string>
     <string name="scanner_local_title">الماسح المحلي</string>
     <string name="scanner_warning">بشكل افتراضي، لن يقوم المسح بإعادة تحميل أي بيانات وصفية للأغاني الموجودة ما لم تحدد خلاف ذلك أعلاه. اعتمادًا على حجم مكتبتك، يستغرق الأمر بعض الوقت.</string>
-    <string name="scanner_missing_storage_perm">يتطلب الماسح أذونات التخزين</string>
+    <string name="scanner_missing_storage_perm">يتطلب ماسح الوسائط المحلية أذونات التخزين ليعمل</string>
     <string name="scanner_btn_idle">مسح</string>
     <string name="scanner_progress_complete">اكتمل المسح</string>
     <string name="scanner_progress_scanning">جارٍ المسح…</string>
@@ -155,7 +155,7 @@
     <string name="dev_settings_title">تمكين إعدادات المطور</string>
     <string name="dev_settings_description">يكشف عن إعدادات متقدمة إضافية مخصصة للاستخدام التطويري</string>
     <string name="swipe_to_skip_title">اسحب أفقيًا لتغيير الأغنية</string>
-    <string name="oobe_complete">اكتمل الإعداد</string>
+    <string name="oobe_complete">تم إعداد AsterTune وأصبح جاهزًا للاستخدام. استكشف موسيقاك، واكتشف مقاطع جديدة، واستمتع بالتجربة!</string>
     <string name="oobe_use_backup">لدي نسخة احتياطية</string>
     <string name="action_back">رجوع</string>
     <string name="action_next">التالي</string>
@@ -176,7 +176,7 @@
     <string name="att_project_support">دعم المشروع</string>
     <string name="att_translator">المترجم (%s)</string>
     <string name="sort_by_track_number">عدد المسارات</string>
-    <string name="bits_per_sample">حوار</string>
+    <string name="bits_per_sample">بت لكل عينة</string>
     <string name="disc_number">رقم القرص</string>
     <string name="extra_details">تفاصيل اضافيه</string>
     <string name="file_path">مسار الملف</string>
@@ -185,7 +185,7 @@
     <string name="wiki">أسبوع</string>
     <string name="attribution_title">الإسناد</string>
     <string name="tablet_ui_title">فرض واجهة مستخدم الجهاز اللوحي</string>
-    <string name="tablet_ui_title_description">تمكين واجهة أفقية مُحسّنة للشاشات الأكبر حجمًا بغض النظر عن حجم الشاشة الحالي</string>
+    <string name="tablet_ui_title_description">فرض واجهة مقسمة محسّنة للشاشات الكبيرة. لا يكون لهذا الإعداد أي تأثير إذا لم يتم استيفاء متطلبات الحد الأدنى للعرض</string>
     <string name="lyrics_karaoke_title">كلمات الأغاني بأسلوب الكاريوكي.</string>
     <string name="lyrics_karaoke_description">يُمكّن مزامنة كلمات الأغاني كلمةً بكلمة. يتطلب دعم تنسيق كلمات الأغاني.</string>
     <string name="lyrics_karaoke_hz_title">ضبط سرعة تحديث كلمات الكاريوكي</string>
@@ -196,7 +196,7 @@
     <string name="scanner_progress_discovering">يكتشف…</string>
     <string name="scanner_progress_processing">يعالج…</string>
     <string name="scanner_sensitivity_L0">احصل على النتيجة الأولى التي يوفرها YouTube عند تمكين البحث على YouTube، وإلا قم بمطابقة العنوان</string>
-    <string name="clear_image_cache_confirm">هل أنت متأكد من رغبتك في حذف جميع التنزيلات؟ سيتم حذف التنزيلات الموجودة في مجلد التنزيلات الرئيسي فقط.</string>
+    <string name="clear_image_cache_confirm">هل أنت متأكد أنك تريد مسح ذاكرة التخزين المؤقت للصور؟ ستتم إزالة جميع الصور المصغرة الحالية للألبومات.</string>
     <string name="clear_song_cache_confirm">هل أنت متأكد أنك تريد مسح ذاكرة التخزين المؤقتة للأغاني؟</string>
     <string name="dl_calculate_size">انقر لحساب حجم التنزيل</string>
     <string name="dl_extra_path_title">تكوين مواقع الاستيراد الإضافية…</string>

@@ -46,7 +46,7 @@
     <string name="min_playback_duration_description">곡이 재생된 것으로 간주되기 전에 재생되어야 하는 최소 시간</string>
     <string name="lyrics_settings_title">자막</string>
     <string name="lyrics_multiline_title">다중 행 가사 읽기</string>
-    <string name="lyrics_multiline_description">자막 리더</string>
+    <string name="lyrics_multiline_description">동기화 지점 사이의 모든 줄을 하나의 가사 텍스트로 처리합니다</string>
     <string name="lyrics_trim_title">자막 줄 사이의 공백 지우기</string>
     <string name="lyrics_prefer_local">로컬 가사 파일을 우선</string>
     <string name="flat_subfolders_title">하위 폴더 평탄화</string>
@@ -112,7 +112,7 @@
     <string name="scan_paths_title">스캔 위치 설정…</string>
     <string name="scan_paths_excl">제외된 스캔 위치</string>
     <string name="scanner_btn_idle">스캔</string>
-    <string name="scanner_missing_storage_perm">스캔은 저장소 권한이 필요합니다</string>
+    <string name="scanner_missing_storage_perm">로컬 미디어 스캐너가 작동하려면 저장소 권한이 필요합니다</string>
     <string name="grp_layout">레이아웃</string>
     <string name="show_liked_and_downloaded_playlist">좋아요를 표시한 재생목록과 라이브러리에 다운로드한 곡을 표시합니다</string>
     <string name="slim_navbar_title">얇은 네비게이션 바</string>
@@ -127,7 +127,7 @@
     <string name="like_autodownload">좋아요를 표시한 곡을 자동으로 다운로드</string>
     <string name="local_library_enable_description">비활성화시 로컬 라이브러리를 숨깁니다</string>
     <string name="scanner_progress_complete">스캔 완료</string>
-    <string name="audio_offload_description">오디오 재생에 \'오프로드 오디오 경로(offload audio path)\'를 사용합니다. 이를 비활성화하면 전력 소모가 증가할 수 있지만, 오디오 재생이나 후처리에서 문제가 발생할 경우 유용할 수 있습니다</string>
+    <string name="audio_offload_description">오디오 재생에 오프로드 오디오 경로를 사용합니다. 활성화하면 전력 사용량을 줄일 수 있지만 오디오 재생이나 후처리에 문제가 발생할 수 있습니다. 지원되지 않는 코덱이나 기기에서는 이 설정이 적용되지 않습니다</string>
     <string name="oobe_complete">AsterTune를 사용할 준비를 마쳤습니다. 새로운 음악을 탐색하고, 새로운 트랙을 찾으며, 즐거운 경험을 하세요!</string>
     <string name="local_library_enable_title">로컬 미디어 가져오기</string>
     <string name="scan_paths_incl">스캔 위치</string>
@@ -136,11 +136,11 @@
     <string name="lyrics_prefer_local_description">로컬 가사 파일이 온라인 자막보다 우선됩니다. 이를 끄면 온라인 자막을 우선적으로 표시합니다</string>
     <string name="playlist_add_local_to_synced_note">참고: 기기 미디어를 동기화된/온라인 재생목록에 추가할 수 없습니다. 다른 조합은 가능합니다</string>
     <string name="m3u_import_playlist_failed">가져오기를 실패했습니다</string>
-    <string name="auto_scanner_description">앱을 실행할 때 자동으로 곡을 스캔합니다. 이미 존재하는 곡은 메타 데이터를 재로딩하지는 않습니다.</string>
+    <string name="auto_scanner_description">앱을 열 때 로컬 미디어의 곡과 사용자 지정 다운로드 폴더를 주기적으로 새로 고칩니다</string>
     <string name="flat_subfolders_description">비활성화시 파일 구조 유지</string>
     <string name="scan_paths_add_folder">새 폴더 추가</string>
     <string name="scanner_warning">일반적으로, 스캔은 위에서 다르게 지정하지 않는 한 기존 곡의 메타데이터를 다시 불러오지 않습니다. 라이브러리 크기에 따라 시간이 걸릴 수 있습니다.</string>
-    <string name="import_innertune_tooltip">InnerTune 백업 복원은 지원되지만, 기술적 제한으로 인해 일부 이상이 발생할 수 있습니다</string>
+    <string name="import_innertune_tooltip">InnerTune 백업 복원은 지원되지만 기술적 제한으로 인해 문제가 발생할 수 있습니다. 포크 버전은 지원되지 않습니다.</string>
     <string name="scanner_manual_btn">수동 동기화 작동</string>
     <string name="scanner_ytm_link_start">유튜브 아티스트 연결 중…</string>
     <string name="scanner_strict_file_name_description">활성화시, 파일 이름이 무시되지 않습니다. 예: Song.ogg는 Song.flac와 다른 곡으로 취급됩니다. 스캐너 민감도 설정은 여전히 적용됩니다</string>
@@ -154,13 +154,13 @@
     <string name="check_for_update">업데이트 확인</string>
     <string name="grp_behavior">행동</string>
     <string name="playlist_missing_note">재생목록이 없나요? 이곳을 눌러 설정에서 읽기-쓰기 모드 동기화를 활성화하세요</string>
-    <string name="library_empty">라이브러리</string>
+    <string name="library_empty">라이브러리 콘텐츠가 여기에 표시됩니다</string>
     <string name="m3u_ytm_lookup">앱 데이터베이스에서 찾을 수 없는 노래를 YouTube Music에서 검색하세요</string>
     <string name="lyrics_karaoke_title">노래방 스타일 자막.</string>
     <string name="attribution_title">기여</string>
     <string name="speed_very_fast">매우 빠름</string>
     <string name="tablet_ui_title">강제 테블릿 UI</string>
-    <string name="tablet_ui_title_description">현재 화면 크기에 관계없이 더 큰 화면에 최적화된 가로형 인터페이스를 활성화합니다</string>
+    <string name="tablet_ui_title_description">대형 화면에 최적화된 분할 인터페이스를 강제로 사용합니다. 최소 너비 요구 사항을 충족하지 않으면 이 설정이 적용되지 않습니다</string>
     <string name="oss_licenses_title">오픈 소스 라이센스</string>
     <string name="lyrics_karaoke_description">단어별 가사 동기화를 지원합니다. 가사 형식 지원이 필요합니다.</string>
     <string name="lyrics_karaoke_hz_title">노래방 자막 속도 조정</string>
@@ -170,7 +170,7 @@
     <string name="speed_slow">느림</string>
     <string name="speed_medium">중간</string>
     <string name="speed_fast">빠름</string>
-    <string name="disable_lm_confirm">로컬 미디어 기능을 비활성화하시겠습니까?</string>
+    <string name="disable_lm_confirm">로컬 미디어 기능을 비활성화하시겠습니까? 라이브러리 콘텐츠에는 영향을 주지 않습니다.</string>
     <string name="scanner_rejected_dir">잘못된 선택입니다. 스캔 폴더는 다운로드 폴더의 하위 폴더이거나, 다운로드 폴더 자체일 수 없습니다</string>
     <string name="scanner_progress_discovering">탐색 중…</string>
     <string name="scanner_progress_processing">처리 중…</string>
@@ -196,7 +196,7 @@
     <string name="oobe_ytm_integration_description">좋아하는 음악을 끊김 없이 감상하세요</string>
     <string name="oobe_ytm_integration">YouTube Music 연동</string>
     <string name="oobe_local_media_subtitle">음악이 들어있는 폴더를 선택하세요. 선택하신 폴더를 스캔하여 노래를 가져옵니다.</string>
-    <string name="oobe_ad_free_exp">광고 없는 경험</string>
+    <string name="oobe_ad_free_exp">YouTube 광고 없음</string>
     <string name="oobe_local_music_support">폭넓은 로컬 음악 지원</string>
     <string name="oobe_interface_subtitle">AsterTune의 디자인과 표시되는 콘텐츠를 맞춤 설정하세요.</string>
     <string name="oobe_ytm_logon_title">계정</string>
@@ -221,15 +221,15 @@
     <string name="audio_decoder_system_with_ffmpeg">우선순위 시스템 디코더</string>
     <string name="library_filter">라이브러리 필터</string>
     <string name="sort_by_track_number">트랙 번호</string>
-    <string name="bits_per_sample">다이로그</string>
+    <string name="bits_per_sample">샘플당 비트 수</string>
     <string name="extra_details">추가 디테일</string>
     <string name="file_path">파일 경로</string>
     <string name="track_number">트랙 숫자</string>
-    <string name="app_info_title">에플리케이션 정보</string>
+    <string name="app_info_title">애플리케이션 정보</string>
     <string name="att_translator">번역가 (%s)</string>
     <string name="m3u_import_failed">노래를 찾을 수 없습니다.M3U 파일이 유효하지 않거나 맞지 않는 음악 입니다</string>
     <plurals name="second">
-        <item quantity="other">초</item>
+        <item quantity="other">%d초</item>
     </plurals>
     <string name="att_project_support">프로젝트 지원</string>
     <string name="local_files">로컬</string>

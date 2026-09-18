@@ -86,12 +86,12 @@
     <string name="player_background_style">播放器背景樣式</string>
     <string name="show_liked_and_downloaded_playlist">在媒體庫中顯示喜歡和已下載歌曲的播放清單</string>
     <string name="slim_navbar_title">窄性導航列</string>
-    <string name="slim_navbar_description">移除文字以減少寬度</string>
+    <string name="slim_navbar_description">移除文字標籤以降低導覽列高度</string>
     <string name="tab_arrangement">排列選項卡</string>
     <string name="tab_arrangement_disable_tip">--- 拖動到此處以禁用 ---</string>
     <string name="tab_arrangement_home_required">必須保留主頁。</string>
     <string name="tablet_ui_title">強制使用平板佈局</string>
-    <string name="tablet_ui_title_description">使用轉為大屏幕優化的橫向界面</string>
+    <string name="tablet_ui_title_description">強制使用針對大螢幕最佳化的分割介面。如果不符合最小寬度要求，此設定不會生效</string>
     <string name="filter_arrangement">修改篩選順序</string>
     <string name="like_autodownload">自動下載你喜歡的歌曲</string>
     <string name="action_logout_tooltip">為了全面登出賬號，請先按下用戶名打開網頁端登出後再返回應用登出</string>
@@ -131,7 +131,7 @@
     <string name="scanner_manual_btn">開始手動同步</string>
     <string name="scanner_rejected_dir">此選擇無效。掃描資料夾不能是音樂下載的資料夾或其下所有子目錄</string>
     <string name="scanner_warning">默認情況下除非另有指定，否則掃描器不會重新載入已有歌曲的元資料。根據指定媒體庫的大小，可能需要一段時間。</string>
-    <string name="scanner_missing_storage_perm">掃描器需要儲存空間權限</string>
+    <string name="scanner_missing_storage_perm">本機媒體掃描器需要儲存空間權限才能運作</string>
     <string name="scanner_auto_end">已刷新本地媒體與歌曲下載資料夾！</string>
     <string name="scanner_auto_start">正在刷新本地媒體與歌曲下載資料夾…</string>
     <string name="scanner_btn_idle">掃描</string>

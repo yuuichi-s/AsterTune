@@ -37,7 +37,7 @@
     <string name="queue_local_history">ประวัติคิว (บนเครื่อง)</string>
     <string name="queue_remote_history">ประวัติคิว (ออนไลน์)</string>
     <string name="remote_history">ออนไลน์</string>
-    <string name="bits_per_sample">Bits per sample</string>
+    <string name="bits_per_sample">บิตต่อตัวอย่าง</string>
     <string name="file_path">เส้นทางไฟล์</string>
     <string name="track_number">หมายเลขแทร็ก</string>
     <string name="play_count">จำนวนครั้งการเล่น</string>

@@ -176,7 +176,7 @@
     <string name="sleep_timer">Таймер сну</string>
     <string name="end_of_song">Кінець пісні</string>
     <plurals name="minute">
-        <item quantity="one">%d хвилина</item>
+        <item quantity="one">1 хвилина</item>
         <item quantity="few">%d хвилини</item>
         <item quantity="many">%d хвилин</item>
         <item quantity="other">%d хвилин</item>
@@ -274,7 +274,7 @@
     <string name="enable_lrclib">Увімкнути провайдера текстів LrcLib</string>
     <string name="enable_kugou">Увімкнути провайдера текстів KuGou</string>
     <string name="hide_explicit">Приховувати контент із нецензурною лексикою</string>
-    <string name="backup_restore">Резервне Копіювання</string>
+    <string name="backup_restore">Резервне копіювання та відновлення</string>
     <string name="action_backup">Резервне копіювання</string>
     <string name="action_restore">Відновити</string>
     <string name="imported_playlist">Імпортований плейлист</string>

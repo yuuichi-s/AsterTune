@@ -123,12 +123,12 @@
     <string name="playlist_imported">আমদানি করা প্লেলিস্ট</string>
     <string name="removed_song_from_playlist">প্লেলিস্ট থেকে \"%s\" সরানো হয়েছে</string>
     <string name="playlist_synced">সিঙ্ক্রোনাইজ করা প্লেলিস্ট</string>
-    <string name="undo">বাতিল করুন</string>
+    <string name="undo">পূর্বাবস্থায় ফেরান</string>
     <string name="lyrics_not_found">গানের কথা পাওয়া যায়নি</string>
     <string name="sleep_timer">ঘুমের টাইমার</string>
     <string name="end_of_song">গানের শেষ</string>
     <plurals name="minute">
-        <item quantity="one">%d মিনিট</item>
+        <item quantity="one">১ মিনিট</item>
         <item quantity="other">%d মিনিট</item>
     </plurals>
     <string name="error_no_stream">স্ট্রিম উপলব্ধ নয়</string>

@@ -55,7 +55,7 @@
     <string name="playlist_add_local_to_synced_note">Note: Thêm bài hát có sẵn ở trong máy vào danh sách phát đã được đồng bộ / từ bên ngoài (remote) sẽ không được hỗ trợ. Còn lại đều là hợp lệ</string>
     <string name="grp_interface">Giao diện</string>
     <string name="player_background_default">Theo chủ đề</string>
-    <string name="slim_navbar_description">Xóa nhãn chữ để giảm độ dày của thanh điều chỉnh</string>
+    <string name="slim_navbar_description">Xóa nhãn văn bản để giảm chiều cao thanh điều hướng</string>
     <string name="grp_localization">Vị trí</string>
     <string name="grp_lyrics_source">Nguồn lời bài hát</string>
     <string name="grp_manual_scanner">Quét bằng tay</string>
@@ -67,7 +67,7 @@
     <string name="wifi_only">Chỉ Wi-Fi</string>
     <string name="audio_offload">Bật chuyển tải</string>
     <string name="grp_behavior">Hành vi</string>
-    <string name="checking_for_update">Kiểm tra cập nhật</string>
+    <string name="checking_for_update">Đang kiểm tra cập nhật</string>
     <string name="check_for_update">kiểm tra cập nhật</string>
     <string name="missing_media_permission_warning">Cần quyền truy cập phương tiện cục bộ. Nhấn để cấp quyền.</string>
     <string name="library_empty">Nội dung trong thư viện của bạn sẽ xuất hiện tại đây</string>
@@ -78,7 +78,7 @@
     <string name="tablet_ui_title">Bắt buộc hiển thị kiểu máy tính bảng</string>
     <string name="attribution_title">Ghi công</string>
     <string name="oss_licenses_title">Giấy phép mã nguồn mở</string>
-    <string name="tablet_ui_title_description">Bật giao diện nằm ngang được tối ưu cho màn hình lớn, bất kể kích thước màn hình hiện tại</string>
+    <string name="tablet_ui_title_description">Buộc sử dụng giao diện chia đôi được tối ưu hóa cho màn hình lớn. Cài đặt này không có tác dụng nếu không đáp ứng yêu cầu về chiều rộng tối thiểu</string>
     <string name="token_shown">Chạm lại để sao chép hoặc chỉnh sửa</string>
     <string name="sync_conflict_title">Xung đột độ phân giải</string>
     <string name="sync_mode">Chế độ đồng bộ</string>
@@ -93,7 +93,7 @@
     <string name="help_contact_email_inquiries">Các câu hỏi khác [ Nhấn để copy Email ]</string>
     <string name="help_support_forum">Hỗ trợ [ Thông qua GitHub ]</string>
     <string name="wiki">Trang Wiki</string>
-    <string name="audio_offload_description">Sử dụng đường dẫn truyền tải âm thanh. Tắt cài đặt này có thể làm tăng mức tiêu thụ pin, nhưng sẽ hữu dụng nếu bạn gặp các vấn đề về phát lại hoặc xử lí</string>
+    <string name="audio_offload_description">Sử dụng đường dẫn giảm tải âm thanh để phát âm thanh. Việc bật tùy chọn này có thể giảm mức tiêu thụ điện năng nhưng có thể gây ra sự cố khi phát hoặc xử lý hậu kỳ âm thanh. Cài đặt này không có tác dụng với codec hoặc thiết bị không được hỗ trợ</string>
     <string name="keep_alive_title">Cho phép ứng dụng chạy ngầm</string>
     <string name="tap_show_more">Chạm để hiện thêm thông tin</string>
     <string name="err_invalid_ytm_song">Phát bài hát không thành công. Chỉ có nội dung khả dụng trên Youtube Music mới có thể được phát</string>

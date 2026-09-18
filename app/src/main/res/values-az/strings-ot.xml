@@ -60,7 +60,7 @@
     <string name="grp_behavior">Davranış</string>
     <string name="grp_library_and_content">Kitabxana və kontentlər</string>
     <string name="grp_sync">Sinxronizasiya</string>
-    <string name="app_info_title">Mobil əlavə məlumatları</string>
+    <string name="app_info_title">Tətbiq məlumatları</string>
     <string name="check_for_update">Yeniləmələri yoxlayın</string>
     <string name="checking_for_update">Yeniləmələr yoxlanılır</string>
     <string name="device_info_title">Cihaz məlumatları</string>

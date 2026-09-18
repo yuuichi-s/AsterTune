@@ -81,7 +81,7 @@
     <string name="codecs">Codecs</string>
     <string name="bitrate">Bitrate</string>
     <string name="sample_rate">Abtastrate</string>
-    <string name="loudness">Lautstärke</string>
+    <string name="loudness">Lautheit</string>
     <string name="volume">Lautstärke</string>
     <string name="file_size">Dateigröße</string>
     <string name="unknown">Unbekannt</string>

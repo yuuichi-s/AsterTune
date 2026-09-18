@@ -116,7 +116,7 @@
     <string name="toggle_lyrics">Lülita laulusõnad sisse/välja</string>
     <string name="sync_progress_active">Sünkroonin YouTube\'i kasutajakontoga…</string>
     <string name="sync_progress_success">Sünkroonimine on lõppenud</string>
-    <string name="prefs_advanced">Täiendavad seadistused</string>
+    <string name="prefs_advanced">Täpsemad seaded</string>
     <string name="settings_debug">Veaotsing</string>
     <string name="grp_account_sync">Kasutajakonto ja sünkroonimine</string>
     <string name="grp_audio">Heli</string>
