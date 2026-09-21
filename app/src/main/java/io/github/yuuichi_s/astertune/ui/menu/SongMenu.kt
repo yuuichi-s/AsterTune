@@ -268,7 +268,8 @@ fun SongMenu(
 
         GridMenuItem(
             icon = R.drawable.artist,
-            title = R.string.view_artist
+            title = R.string.view_artist,
+            enabled = song.artists.isNotEmpty()
         ) {
             if (song.artists.size == 1) {
                 navController.navigate("artist/${song.artists[0].id}")

@@ -19,9 +19,10 @@ data class SearchResult(
 
 object SearchPage {
     fun toYTItem(renderer: MusicResponsiveListItemRenderer): YTItem? {
-        val secondaryLine = renderer.flexColumns.getOrNull(1)
-            ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.splitBySeparator()
+        val secondaryRuns = renderer.flexColumns.getOrNull(1)
+            ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs
             ?: return null
+        val secondaryLine = secondaryRuns.splitBySeparator()
         return when {
             renderer.isSong -> {
                 SongItem(
@@ -29,12 +30,12 @@ object SearchPage {
                     title = renderer.flexColumns.firstOrNull()
                         ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs
                         ?.firstOrNull()?.text ?: return null,
-                    artists = secondaryLine.firstOrNull()?.oddElements()?.map {
+                    artists = PageHelper.extractArtistRuns(secondaryRuns).map {
                         Artist(
                             name = it.text,
                             id = it.navigationEndpoint?.browseEndpoint?.browseId
                         )
-                    } ?: return null,
+                    },
                     album = secondaryLine.getOrNull(1)?.firstOrNull()?.takeIf { it.navigationEndpoint?.browseEndpoint != null }?.let {
                         Album(
                             name = it.text,

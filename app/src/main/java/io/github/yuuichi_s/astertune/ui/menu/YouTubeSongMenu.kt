@@ -205,17 +205,16 @@ fun YouTubeSongMenu(
                 )
             }
         )
-        if (artists.isNotEmpty()) {
-            GridMenuItem(
-                icon = Icons.Rounded.Person,
-                title = R.string.view_artist
-            ) {
-                if (artists.size == 1) {
-                    navController.navigate("artist/${artists[0].id}")
-                    onDismiss()
-                } else {
-                    showSelectArtistDialog = true
-                }
+        GridMenuItem(
+            icon = Icons.Rounded.Person,
+            title = R.string.view_artist,
+            enabled = artists.isNotEmpty()
+        ) {
+            if (artists.size == 1) {
+                navController.navigate("artist/${artists[0].id}")
+                onDismiss()
+            } else {
+                showSelectArtistDialog = true
             }
         }
         song.album?.let { album ->

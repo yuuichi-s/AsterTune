@@ -305,7 +305,8 @@ fun PlayerMenu(
         }
         GridMenuItem(
             icon = R.drawable.artist,
-            title = R.string.view_artist
+            title = R.string.view_artist,
+            enabled = mediaMetadata.artists.isNotEmpty()
         ) {
             if (mediaMetadata.artists.size == 1) {
                 navController.navigate("artist/${mediaMetadata.artists[0].id}")
