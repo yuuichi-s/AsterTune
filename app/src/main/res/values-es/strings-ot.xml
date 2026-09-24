@@ -190,7 +190,7 @@
     <string name="disable_lm_confirm">¿Está seguro de que desea desactivar las funciones multimedia locales? El contenido de su biblioteca no se verá afectado.</string>
     <string name="scanner_rejected_dir">Selección no válida. Una carpeta de escaneo no puede ser un subdirectorio de la carpeta de descargas ni la propia carpeta de descargas</string>
     <string name="clear_downloads_confirm">¿Estás seguro que quieres eliminar todas las descargas? Solo se eliminarán las descargas de la carpeta de descargas principal.</string>
-    <string name="clear_image_cache_confirm">¿Estás seguro que quieres eliminar la caché de imágenes? Se eliminarán todas las miniaturas de los álbumes.</string>
+    <string name="clear_image_cache_confirm">¿Vaciar caché de imágenes? Se borrarán las miniaturas.</string>
     <string name="oobe_ytm_integration_description">Accede a tus pistas favoritas sin problemas</string>
     <string name="oobe_ad_free_exp_description">Disfruta la reproducción de música ininterrumpida</string>
     <string name="oobe_cross_platform_sync_description">Mantén tu música en armonía en todos los dispositivos</string>
@@ -285,4 +285,11 @@
     <string name="download_on_wifi_only_description">No descargar mediante datos móviles. Las canciones puestas en cola mientras se usan datos móviles comenzarán a descargarse automáticamente cuando haya una conexión Wi-Fi disponible</string>
     <string name="download_waiting_for_wifi">Se descargará cuando haya una conexión Wi-Fi</string>
     <string name="off">Desactivado</string>
+    <string name="sort_by_download_date">Fecha de descarga</string>
+    <string name="grp_appearance_controls">Apariencia y controles</string>
+    <string name="grp_display">Pantalla</string>
+    <string name="grp_now_playing">Reproduciendo ahora</string>
+    <string name="att_based_on">Basado en</string>
+    <string name="tap_artwork_to_show_lyrics_title">Toca la carátula para ver la letra</string>
+    <string name="tap_artwork_to_show_lyrics_description">Mostrar la letra al tocar la carátula en el reproductor</string>
 </resources>
