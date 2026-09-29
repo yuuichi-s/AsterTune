@@ -176,7 +176,7 @@
     <string name="sleep_timer">Časovač vypnutia</string>
     <string name="end_of_song">Koniec skladby</string>
     <plurals name="minute">
-        <item quantity="one">1 minúta</item>
+        <item quantity="one">%d minúta</item>
         <item quantity="few">%d minúty</item>
         <item quantity="many">%d minút</item>
         <item quantity="other">%d minút</item>

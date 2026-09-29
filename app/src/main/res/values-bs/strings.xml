@@ -181,7 +181,7 @@
     <string name="duplicates">Duplikati</string>
     <string name="playlist_imported">Spiska uvezena</string>
     <plurals name="minute">
-        <item quantity="one">1 minut</item>
+        <item quantity="one">%d minut</item>
         <item quantity="few">%d minute</item>
         <item quantity="other">%d minuta</item>
     </plurals>

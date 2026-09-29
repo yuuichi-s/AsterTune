@@ -176,7 +176,7 @@
     <string name="sleep_timer">Таймер сну</string>
     <string name="end_of_song">Кінець пісні</string>
     <plurals name="minute">
-        <item quantity="one">1 хвилина</item>
+        <item quantity="one">%d хвилина</item>
         <item quantity="few">%d хвилини</item>
         <item quantity="many">%d хвилин</item>
         <item quantity="other">%d хвилин</item>

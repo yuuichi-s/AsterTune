@@ -258,7 +258,7 @@
     <string name="sleep_timer">Merač vremena za spavanje</string>
     <string name="end_of_song">Kraj pesme</string>
     <plurals name="minute">
-        <item quantity="one">1 minut</item>
+        <item quantity="one">%d minut</item>
         <item quantity="few">%d minuta</item>
         <item quantity="other">%d minuta</item>
     </plurals>

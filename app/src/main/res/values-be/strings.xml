@@ -148,7 +148,7 @@
     <string name="sleep_timer">Таймер рэжыму сну</string>
     <string name="end_of_song">Канец песні</string>
     <plurals name="minute">
-        <item quantity="one">1 хвіліна</item>
+        <item quantity="one">%d хвіліна</item>
         <item quantity="few">%d хвіліны</item>
         <item quantity="many">%d хвілін</item>
         <item quantity="other">%d хвілін</item>
