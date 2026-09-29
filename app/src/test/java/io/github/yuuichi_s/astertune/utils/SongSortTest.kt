@@ -8,7 +8,6 @@ import io.github.yuuichi_s.astertune.db.baseArtists
 import io.github.yuuichi_s.astertune.db.baseSongs
 import io.github.yuuichi_s.astertune.db.day
 import io.github.yuuichi_s.astertune.db.epochMillis
-import io.github.yuuichi_s.astertune.db.ReleaseKey
 import io.github.yuuichi_s.astertune.db.releaseKey
 import io.github.yuuichi_s.astertune.db.separationFailures
 import io.github.yuuichi_s.astertune.db.sortFailures
@@ -189,9 +188,13 @@ class SongSortTest {
             ArtistEntity(id = "LAtag00003", name = "Bravo", isLocal = true),
             ArtistEntity(id = "LAtag00004", name = "Alpha", isLocal = true),
             ArtistEntity(id = "LAtag00005", name = "Foxtrot", isLocal = true),
+            ArtistEntity(id = "LAtag00006", name = "Juliett", isLocal = true),
         )
 
-        /** Adds track-number digit lengths and full-date, year-only, and missing release tags. */
+        /**
+         * Adds track-number digit lengths and full-date, year-only, and missing release tags, including
+         * a release date before 1970 and one at epoch 0.
+         */
         val tagSongs = listOf(
             TestSong(
                 SongEntity(
@@ -226,27 +229,25 @@ class SongSortTest {
                 ),
                 artists = listOf("LAtag00004" to 0),
             ),
-        )
-
-        /**
-         * Used only in playlist sorting, which compares its 1962 release date as a negative epoch value.
-         * Local-song sorting maps that value to the same key as a missing date.
-         */
-        val oldTagSong = TestSong(
-            SongEntity(
-                id = "local-uniform", title = "Uniform", localPath = "/music/uniform.flac", isLocal = true,
-                inLibrary = day(1), year = 1962,
+            TestSong(
+                SongEntity(
+                    id = "local-uniform", title = "Uniform", localPath = "/music/uniform.flac", isLocal = true,
+                    inLibrary = day(1), year = 1962,
+                ),
+                artists = listOf("LAtag00005" to 0),
             ),
-            artists = listOf("LAtag00005" to 0),
+            TestSong(
+                SongEntity(
+                    id = "local-victor", title = "Victor", localPath = "/music/victor.flac", isLocal = true,
+                    inLibrary = day(10), date = LocalDateTime.of(1970, 1, 1, 0, 0), dateModified = day(-14),
+                ),
+                artists = listOf("LAtag00006" to 0),
+            ),
         )
-
-        fun isBefore1971(song: Song): Boolean =
-            releaseKey(song.song)?.let { it < ReleaseKey(1971, 0) } == true
 
         val localSongs: List<Song> = (baseSongs + tagSongs).map { it.toSong(baseArtists + tagArtists) }
-            .filterNot(::isBefore1971)
 
-        val playlistSongs: List<PlaylistSong> = (baseSongs + tagSongs + oldTagSong).mapIndexed { position, testSong ->
+        val playlistSongs: List<PlaylistSong> = (baseSongs + tagSongs).mapIndexed { position, testSong ->
             PlaylistSong(
                 PlaylistSongMap(playlistId = "pl", songId = testSong.entity.id, position = position),
                 testSong.toSong(baseArtists + tagArtists),

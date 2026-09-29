@@ -23,17 +23,17 @@ fun sortLocalSongs(
     sortType: FolderSongSortType,
     descending: Boolean,
 ): List<Song> {
-    val sorted = songs.sortedBy {
-        when (sortType) {
-            FolderSongSortType.CREATE_DATE -> numberToAlpha(it.song.inLibrary?.toEpochSecond(ZoneOffset.UTC) ?: -1L)
-            FolderSongSortType.MODIFIED_DATE -> numberToAlpha(it.song.getDateModifiedLong() ?: -1L)
-            FolderSongSortType.RELEASE_DATE -> numberToAlpha(it.song.getDateLong() ?: -1L)
-            FolderSongSortType.NAME -> it.song.title.lowercase()
-            FolderSongSortType.ARTIST -> it.artists.joinToString { artist -> artist.name }.lowercase()
-            FolderSongSortType.PLAY_COUNT -> numberToAlpha((it.playCount?.sumOf { pc -> pc.count })?.toLong() ?: 0L)
-            FolderSongSortType.TRACK_NUMBER -> numberToAlpha(it.song.trackNumber?.toLong() ?: Long.MAX_VALUE)
-        }
+    val comparator: Comparator<Song> = when (sortType) {
+        FolderSongSortType.CREATE_DATE -> compareBy { numberToAlpha(it.song.inLibrary?.toEpochSecond(ZoneOffset.UTC) ?: -1L) }
+        FolderSongSortType.MODIFIED_DATE -> compareBy { numberToAlpha(it.song.getDateModifiedLong() ?: -1L) }
+        // numberToAlpha() cannot order the negative values of release dates before 1970.
+        FolderSongSortType.RELEASE_DATE -> compareBy(nullsFirst<Long>()) { it.song.getDateLong() }
+        FolderSongSortType.NAME -> compareBy { it.song.title.lowercase() }
+        FolderSongSortType.ARTIST -> compareBy { it.artists.joinToString { artist -> artist.name }.lowercase() }
+        FolderSongSortType.PLAY_COUNT -> compareBy { numberToAlpha((it.playCount?.sumOf { pc -> pc.count })?.toLong() ?: 0L) }
+        FolderSongSortType.TRACK_NUMBER -> compareBy { numberToAlpha(it.song.trackNumber?.toLong() ?: Long.MAX_VALUE) }
     }
+    val sorted = songs.sortedWith(comparator)
     return if (descending) sorted.reversed() else sorted
 }
 
