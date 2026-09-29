@@ -147,7 +147,7 @@ AsterTuneの翻訳にはWeblateを使用しています。<br />
 | Project | Discription |
 |---|---|
 | [Musicolet](https://play.google.com/store/apps/details?id=in.krosbits.musicolet) | ローカルメディアプレーヤー体験 |
-| [Gramophone](https://github.com/FoedusProgramme/Gramophone) | 歌詞パーサー |
+| [Gramophone](https://github.com/FoedusProgramme/Gramophone) | 歌詞パーサー、ALAC デコーダー |
 
 ## ソースからのビルド
 

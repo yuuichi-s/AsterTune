@@ -148,6 +148,7 @@ android {
         offlineMode = true
 
         collect {
+            configPath = file("config")
             fetchRemoteLicense = false
             fetchRemoteFunding = false
             filterVariants.addAll("release")

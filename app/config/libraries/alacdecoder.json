@@ -1,0 +1,20 @@
+{
+  "uniqueId": "com.beatofthedrum.alacdecoder:alacdecoder",
+  "developers": [
+    {
+      "name": "Peter McQuillan",
+      "organisationUrl": "https://github.com/soiaf"
+    },
+    {
+      "name": "David Hammerton"
+    }
+  ],
+  "artifactVersion": "afd5bf3",
+  "description": "Apple Lossless decoder written in Java, with modifications from Gramophone.",
+  "name": "Java-Apple-Lossless-decoder",
+  "tag": "custom",
+  "website": "https://github.com/soiaf/Java-Apple-Lossless-decoder",
+  "licenses": [
+    "alacdecoder-bsd-3-clause"
+  ]
+}

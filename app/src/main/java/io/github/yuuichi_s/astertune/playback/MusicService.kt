@@ -18,6 +18,7 @@ import android.database.SQLException
 import android.media.audiofx.AudioEffect
 import android.net.ConnectivityManager
 import android.os.Binder
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.getSystemService
@@ -49,14 +50,17 @@ import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.Renderer
 import androidx.media3.exoplayer.analytics.AnalyticsListener
 import androidx.media3.exoplayer.analytics.PlaybackStats
 import androidx.media3.exoplayer.analytics.PlaybackStatsListener
 import androidx.media3.exoplayer.audio.AudioOffloadSupport
+import androidx.media3.exoplayer.audio.AudioRendererEventListener
 import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioOffloadSupportProvider
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor
+import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.ShuffleOrder
 import androidx.media3.session.CommandButton
@@ -157,6 +161,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import org.nift4.alacdecoder.AlacRenderer
 import java.io.File
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -903,6 +908,29 @@ class MusicService : MediaLibraryService(),
                             )
                         )
                         .build()
+                }
+
+                override fun buildAudioRenderers(
+                    context: Context,
+                    extensionRendererMode: Int,
+                    mediaCodecSelector: MediaCodecSelector,
+                    enableDecoderFallback: Boolean,
+                    audioSink: AudioSink,
+                    eventHandler: Handler,
+                    eventListener: AudioRendererEventListener,
+                    out: ArrayList<Renderer>
+                ) {
+                    out.add(AlacRenderer(eventHandler, eventListener, audioSink))
+                    super.buildAudioRenderers(
+                        context,
+                        extensionRendererMode,
+                        mediaCodecSelector,
+                        enableDecoderFallback,
+                        audioSink,
+                        eventHandler,
+                        eventListener,
+                        out
+                    )
                 }
             }
         }
