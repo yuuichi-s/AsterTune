@@ -7,6 +7,9 @@ import io.github.yuuichi_s.astertune.db.TestSong
 import io.github.yuuichi_s.astertune.db.baseArtists
 import io.github.yuuichi_s.astertune.db.baseSongs
 import io.github.yuuichi_s.astertune.db.day
+import io.github.yuuichi_s.astertune.db.epochMillis
+import io.github.yuuichi_s.astertune.db.ReleaseKey
+import io.github.yuuichi_s.astertune.db.releaseKey
 import io.github.yuuichi_s.astertune.db.separationFailures
 import io.github.yuuichi_s.astertune.db.sortFailures
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
@@ -20,7 +23,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 /**
  * In-memory sorting of [sortLocalSongs] and [sortPlaylistSongs], on the base song data of the DAO
@@ -68,17 +70,22 @@ class SongSortTest {
      */
     @Test
     fun playlistDownloadDateKeepsThePlaylistOrderWithinGroups() {
-        // dateDownload 0 (failed or stopped) and 1 (downloading) are not downloaded.
-        val remote = listOf("ytm-oscar", "ytm-kilo-lower", "ytm-mike", "ytm-papa", "ytm-emile-lower")
-        val local = listOf("local-sakura", "local-juliet", "local-hotel", "local-foxtrot", "local-tango", "local-sierra", "local-quebec", "local-uniform")
-        // A local song with a download date counts as downloaded.
-        val downloaded = listOf("ytm-dated-alfa", "ytm-dated-bravo", "ytm-dated-delta", "local-romeo", "ytm-kilo", "ytm-emile-upper", "ytm-lima")
+        // dateDownload 0 (failed or stopped) and 1 (downloading) are not downloaded, and a local song
+        // with a download date counts as downloaded.
+        fun isDownloaded(song: PlaylistSong) = song.song.song.dateDownload?.let { it > epochMillis(1) } == true
+        val remote = playlistSongs.filter { !isDownloaded(it) && !it.song.song.isLocal }
+        val local = playlistSongs.filter { !isDownloaded(it) && it.song.song.isLocal }
+        val downloaded = playlistSongs.filter(::isDownloaded)
+        assertTrue("every group needs several songs", listOf(remote, local, downloaded).all { it.size >= 2 })
+        assertTrue("downloaded songs need a local one", downloaded.any { it.song.song.isLocal })
+        assertTrue("downloaded songs need a tie", downloaded.groupBy { it.song.song.dateDownload }.any { it.value.size >= 2 })
+
         assertEquals(
-            remote + local + downloaded,
+            (remote + local + downloaded.sortedBy { it.song.song.dateDownload }).map { it.map.songId },
             sortPlaylistSongs(playlistSongs, PlaylistSongSortType.DOWNLOAD_DATE, false).map { it.map.songId },
         )
         assertEquals(
-            downloaded.reversed() + local + remote,
+            (downloaded.sortedByDescending { it.song.song.dateDownload } + local + remote).map { it.map.songId },
             sortPlaylistSongs(playlistSongs, PlaylistSongSortType.DOWNLOAD_DATE, true).map { it.map.songId },
         )
     }
@@ -128,7 +135,7 @@ class SongSortTest {
             override fun key(row: Song) = row.song.dateModified
         },
         RELEASE_DATE {
-            override fun key(row: Song) = releaseDate(row)
+            override fun key(row: Song) = releaseKey(row.song)
         },
         TITLE {
             override fun key(row: Song) = row.song.title.lowercase()
@@ -168,7 +175,7 @@ class SongSortTest {
             override fun key(row: PlaylistSong) = row.song.song.dateModified
         },
         RELEASE_DATE {
-            override fun key(row: PlaylistSong) = releaseDate(row.song)
+            override fun key(row: PlaylistSong) = releaseKey(row.song.song)
         },
         POSITION {
             override fun key(row: PlaylistSong) = row.map.position
@@ -176,10 +183,6 @@ class SongSortTest {
     }
 
     private companion object {
-        /** The tag date, or January 1 of the tag year. */
-        fun releaseDate(song: Song): LocalDateTime? =
-            song.song.date ?: song.song.year?.let { LocalDateTime.of(it, 1, 1, 0, 0) }
-
         val tagArtists = listOf(
             ArtistEntity(id = "LAtag00001", name = "Delta", isLocal = true),
             ArtistEntity(id = "LAtag00002", name = "charlie", isLocal = true),
@@ -202,6 +205,8 @@ class SongSortTest {
                 SongEntity(
                     id = "local-sierra", title = "Sierra", localPath = "/music/sierra.flac", isLocal = true,
                     inLibrary = day(6), year = 2015, dateModified = day(-8), trackNumber = 9,
+                    // Downloaded at the same time as local-romeo.
+                    dateDownload = day(15),
                 ),
                 artists = listOf("LAtag00002" to 0),
             ),
@@ -236,7 +241,7 @@ class SongSortTest {
         )
 
         fun isBefore1971(song: Song): Boolean =
-            song.song.getDateLong()?.let { it < LocalDateTime.of(1971, 1, 1, 0, 0).toEpochSecond(ZoneOffset.UTC) } == true
+            releaseKey(song.song)?.let { it < ReleaseKey(1971, 0) } == true
 
         val localSongs: List<Song> = (baseSongs + tagSongs).map { it.toSong(baseArtists + tagArtists) }
             .filterNot(::isBefore1971)

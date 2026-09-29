@@ -162,6 +162,19 @@ private fun <T> hasInvertedPair(rows: List<T>, key: SortKey<T>, other: SortKey<T
     }
 }
 
+/**
+ * Release date order: by year, then by the time within the year, with a year-only tag on January 1.
+ * Shared by the SQL and the in-memory sort tests so that both follow one rule.
+ */
+internal data class ReleaseKey(val year: Long, val secondOfYear: Long) : Comparable<ReleaseKey> {
+    override fun compareTo(other: ReleaseKey) = compareValuesBy(this, other, { it.year }, { it.secondOfYear })
+}
+
+internal fun releaseKey(song: SongEntity): ReleaseKey? =
+    song.date?.let {
+        ReleaseKey(it.year.toLong(), it.toEpochSecond(ZoneOffset.UTC) - LocalDateTime.of(it.year, 1, 1, 0, 0).toEpochSecond(ZoneOffset.UTC))
+    } ?: song.year?.let { ReleaseKey(it.toLong(), 0) }
+
 /** Song values a query could sort by. */
 internal enum class SongColumn : SortKey<Song> {
     IN_LIBRARY {
@@ -171,8 +184,7 @@ internal enum class SongColumn : SortKey<Song> {
         override fun key(row: Song) = row.song.likedDate
     },
     RELEASE_DATE {
-        override fun key(row: Song) =
-            row.song.date ?: row.song.year?.let { LocalDateTime.of(it, 1, 1, 0, 0) }
+        override fun key(row: Song) = releaseKey(row.song)
     },
     DATE_MODIFIED {
         override fun key(row: Song) = row.song.dateModified
