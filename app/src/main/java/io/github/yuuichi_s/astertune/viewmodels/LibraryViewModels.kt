@@ -65,9 +65,9 @@ import io.github.yuuichi_s.astertune.ui.utils.cacheDirectoryTree
 import io.github.yuuichi_s.astertune.ui.utils.getDirectoryTree
 import io.github.yuuichi_s.astertune.utils.SyncUtils
 import io.github.yuuichi_s.astertune.utils.dataStore
-import io.github.yuuichi_s.astertune.utils.numberToAlpha
 import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.refreshLocal
+import io.github.yuuichi_s.astertune.utils.sortLocalSongs
 import com.zionhuang.innertube.YouTube
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -85,7 +85,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 import javax.inject.Inject
 
 @HiltViewModel
@@ -201,25 +200,6 @@ class LocalLibraryViewModel @Inject constructor(
             filteredSongs.clear()
             filteredSongs.addAll(result)
         }
-    }
-
-    private fun sortLocalSongs(
-        songs: List<Song>,
-        sortType: FolderSongSortType,
-        descending: Boolean,
-    ): List<Song> {
-        val sorted = songs.sortedBy {
-            when (sortType) {
-                FolderSongSortType.CREATE_DATE -> numberToAlpha(it.song.inLibrary?.toEpochSecond(ZoneOffset.UTC) ?: -1L)
-                FolderSongSortType.MODIFIED_DATE -> numberToAlpha(it.song.getDateModifiedLong() ?: -1L)
-                FolderSongSortType.RELEASE_DATE -> numberToAlpha(it.song.getDateLong() ?: -1L)
-                FolderSongSortType.NAME -> it.song.title.lowercase()
-                FolderSongSortType.ARTIST -> it.artists.joinToString { artist -> artist.name }.lowercase()
-                FolderSongSortType.PLAY_COUNT -> numberToAlpha((it.playCount?.sumOf { pc -> pc.count })?.toLong() ?: 0L)
-                FolderSongSortType.TRACK_NUMBER -> numberToAlpha(it.song.trackNumber?.toLong() ?: Long.MAX_VALUE)
-            }
-        }
-        return if (descending) sorted.reversed() else sorted
     }
 }
 

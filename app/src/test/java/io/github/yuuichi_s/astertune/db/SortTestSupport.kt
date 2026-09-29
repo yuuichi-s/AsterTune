@@ -207,7 +207,16 @@ internal class TestSong(
     val artists: List<Pair<String, Int>>,
     /** One play count row per month. */
     val playCounts: List<Int> = emptyList(),
-)
+) {
+    /** The [Song] a query would return, for tests that sort without a database. */
+    fun toSong(artistPool: List<ArtistEntity> = baseArtists) = Song(
+        song = entity,
+        artists = artists.sortedBy { it.second }.map { (id, _) -> artistPool.single { it.id == id } },
+        playCount = playCounts.mapIndexed { month, count ->
+            PlayCountEntity(entity.id, year = 2026, month = month + 1, count = count)
+        },
+    )
+}
 
 private val base: LocalDateTime = LocalDateTime.of(2026, 1, 1, 0, 0)
 internal fun day(n: Long): LocalDateTime = base.plusDays(n)

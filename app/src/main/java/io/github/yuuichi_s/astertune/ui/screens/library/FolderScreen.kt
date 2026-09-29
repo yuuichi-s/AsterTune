@@ -69,7 +69,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastSumBy
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalMenuState
@@ -115,16 +114,15 @@ import io.github.yuuichi_s.astertune.ui.utils.STORAGE_ROOT
 import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.ui.utils.canNavigateUp
 import io.github.yuuichi_s.astertune.utils.fixFilePath
-import io.github.yuuichi_s.astertune.utils.numberToAlpha
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
+import io.github.yuuichi_s.astertune.utils.sortLocalSongs
 import io.github.yuuichi_s.astertune.viewmodels.LibraryFoldersViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, FlowPreview::class)
@@ -242,26 +240,14 @@ fun FolderScreen(
     }
 
     LaunchedEffect(sortType, sortDescending, currDir) {
-        val tempList = currDir.files.map { it }.toMutableList()
         // sort songs
-        tempList.sortBy {
-            when (sortType) {
-                FolderSongSortType.CREATE_DATE -> numberToAlpha(it.song.inLibrary?.toEpochSecond(ZoneOffset.UTC) ?: -1L)
-                FolderSongSortType.MODIFIED_DATE -> numberToAlpha(it.song.getDateModifiedLong() ?: -1L)
-                FolderSongSortType.RELEASE_DATE -> numberToAlpha(it.song.getDateLong() ?: -1L)
-                FolderSongSortType.NAME -> it.song.title.lowercase()
-                FolderSongSortType.ARTIST -> it.artists.joinToString { artist -> artist.name }.lowercase()
-                FolderSongSortType.PLAY_COUNT -> numberToAlpha((it.playCount?.fastSumBy { it.count })?.toLong() ?: 0L)
-                FolderSongSortType.TRACK_NUMBER -> numberToAlpha(it.song.trackNumber?.toLong() ?: Long.MAX_VALUE)
-            }
-        }
+        val sortedSongs = sortLocalSongs(currDir.files, sortType, sortDescending)
         // sort folders
         val newSubdirs: ArrayList<DirectoryTree> = ArrayList()
         newSubdirs.addAll(currDir.subdirs.sortedBy { it.currentDir.lowercase() }) // only sort by name
 
         if (sortDescending) {
             newSubdirs.reverse()
-            tempList.reverse()
         }
 
         mutableSubdirs.apply {
@@ -277,7 +263,7 @@ fun FolderScreen(
 
         mutableSongs.apply {
             clear()
-            mutableSongs.addAll(tempList.distinctBy { it.id })
+            mutableSongs.addAll(sortedSongs.distinctBy { it.id })
         }
     }
 
