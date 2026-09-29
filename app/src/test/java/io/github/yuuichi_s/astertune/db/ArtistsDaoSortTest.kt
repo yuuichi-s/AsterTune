@@ -38,7 +38,10 @@ class ArtistsDaoSortTest {
         database.close()
     }
 
-    /** Sort order is checked on the library list only: the filters change the WHERE clause, not the ORDER BY. */
+    /**
+     * Checks every sort type for LIBRARY; the filters do not change the ORDER BY, and a separate test
+     * covers membership for the other filters.
+     */
     @Test
     fun libraryArtistsAreSortedByEveryType() = runBlocking {
         val failures = sortFailures(

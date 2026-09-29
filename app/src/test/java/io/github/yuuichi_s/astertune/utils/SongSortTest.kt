@@ -63,15 +63,15 @@ class SongSortTest {
     }
 
     /**
-     * Songs are grouped into remote songs not downloaded, local songs not downloaded, and downloaded
-     * songs by download date. Descending reverses the groups and the dates, but songs within a group
-     * keep the playlist order in both directions, so that songs still to download can be checked
-     * against the playlist.
+     * Verifies download-date grouping and stable input order for equal keys in both directions.
+     *
+     * Descending reverses the group and completed-date order, but not equal-key songs, so that songs
+     * not yet downloaded stay in playlist order for comparing with the playlist.
      */
     @Test
     fun playlistDownloadDateKeepsThePlaylistOrderWithinGroups() {
-        // dateDownload 0 (failed or stopped) and 1 (downloading) are not downloaded, and a local song
-        // with a download date counts as downloaded.
+        // 0 is failed or stopped and 1 is queued or downloading; only later timestamps are completed.
+        // A local song with a completed timestamp belongs to the completed group.
         fun isDownloaded(song: PlaylistSong) = song.song.song.dateDownload?.let { it > epochMillis(1) } == true
         val remote = playlistSongs.filter { !isDownloaded(it) && !it.song.song.isLocal }
         val local = playlistSongs.filter { !isDownloaded(it) && it.song.song.isLocal }
@@ -118,14 +118,14 @@ class SongSortTest {
         PlaylistSongSortType.ADDED_DATE -> PlaylistSongKey.IN_LIBRARY
         PlaylistSongSortType.MODIFIED_DATE -> PlaylistSongKey.DATE_MODIFIED
         PlaylistSongSortType.RELEASE_DATE -> PlaylistSongKey.RELEASE_DATE
-        // Checked by their own tests.
         PlaylistSongSortType.CUSTOM, PlaylistSongSortType.DOWNLOAD_DATE -> error("$sortType has its own test")
     }
 
     /**
-     * Keys of the local songs order. A missing date comes first ascending like the earliest date,
-     * and a missing play count sorts as 0; both record the current behavior, so if either is changed
-     * on purpose, update the key in the same change. A missing track number goes last on purpose.
+     * Expected keys for local-song sorting.
+     *
+     * Missing dates sort first ascending, missing play counts as 0, and missing track numbers last.
+     * The first two record current behavior; the last is intended.
      */
     private enum class LocalSongKey : SortKey<Song> {
         IN_LIBRARY {
@@ -191,7 +191,7 @@ class SongSortTest {
             ArtistEntity(id = "LAtag00005", name = "Foxtrot", isLocal = true),
         )
 
-        /** Local songs with track numbers and a year-only date. Track numbers differ in digits. */
+        /** Adds track-number digit lengths and full-date, year-only, and missing release tags. */
         val tagSongs = listOf(
             TestSong(
                 SongEntity(
@@ -229,8 +229,8 @@ class SongSortTest {
         )
 
         /**
-         * Only in the playlist: the local songs order treats dates before 1971 as missing, which is
-         * to be fixed with its own test.
+         * Used only in playlist sorting, which compares its 1962 release date as a negative epoch value.
+         * Local-song sorting maps that value to the same key as a missing date.
          */
         val oldTagSong = TestSong(
             SongEntity(

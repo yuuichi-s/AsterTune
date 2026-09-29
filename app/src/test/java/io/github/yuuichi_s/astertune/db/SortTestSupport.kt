@@ -14,31 +14,16 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 /*
- * Shared by the DAO sort tests. Each test checks every sort type in both directions: the returned
- * set, the order of the sort key, and the position of rows without a key. The order among rows with
- * equal keys is not checked, because the queries have no second ordering term.
- *
- * Notes on building test data:
- * - Insert the parent rows (song, artist, album, playlist) before the map tables that point to
- *   them. Every map table has foreign keys, and SQLite throws on a foreign key violation even for
- *   INSERT OR IGNORE.
- * - artists() drops, after the query, artists that are neither YouTube artists
- *   (ArtistEntity.isYouTubeArtist, such as an id starting with "UC") nor local. A test artist needs
- *   one of the two to be listed.
- * - albums() reaches songs through song_album_map, not SongEntity.albumId, and its ARTIST order
- *   reads album_artist_map. artists() reaches songs through song_artist_map.
- * - albums() and artists() apply the LIBRARY and DOWNLOADED conditions to the joined songs, so an
- *   album or artist without such a song is not listed. LIKED checks bookmarkedAt only, so it lists
- *   them even without songs.
- * - playlists() with variant 0 lists bookmarked or local playlists; PlaylistFilter.LIBRARY narrows
- *   nothing further. Only DOWNLOADED and localSongsOnly change the set.
- * - The playCount key is (song, year, month), all defaulting to -1, and the insert ignores
- *   conflicts. Always set count, and vary year or month for several rows of one song; otherwise
- *   the second row is dropped silently.
- * - PlaylistSongMap.position defaults to 0 and playlistSongs() orders by position alone, so give
- *   every song in a playlist a distinct position.
- * - For songs with several artists, choose ids, names and SongArtistMap.position so that the
- *   three orders all differ.
+ * Fixture constraints shared by the DAO and in-memory sort tests:
+ * - Insert parent rows before mapping rows; INSERT OR IGNORE does not ignore foreign-key failures.
+ * - artists() keeps only YouTube or local artists.
+ * - albums() uses song_album_map and album_artist_map; artists() uses song_artist_map.
+ * - LIBRARY and DOWNLOADED require linked songs for albums and artists; LIKED uses bookmarkedAt.
+ * - playlists() variant 0 includes bookmarked or local playlists; DOWNLOADED and localSongsOnly
+ *   further restrict that set.
+ * - Set PlayCountEntity.count, which defaults to -1, and use unique year/month keys per song.
+ * - Use unique PlaylistSongMap.position values to avoid order ties.
+ * - For multi-artist songs, make ID, name, and position orders differ.
  */
 
 /**
@@ -74,6 +59,8 @@ internal interface SortKey<T> {
 
 /**
  * Checks [query] for every sort type in both directions against [expectedIds] and [sortKey].
+ * Equal-key order is not checked because DAO queries have no secondary `ORDER BY`.
+ *
  * Returns one message per failure.
  */
 internal suspend fun <T, S> sortFailures(
@@ -91,9 +78,8 @@ internal suspend fun <T, S> sortFailures(
             val label = "$name $sortType descending=$descending"
             setFailure(label, rows.map(id), expectedIds)?.let { failures += it }
 
-            // SQLite sorts NULL before any value, and descending reverses the ascending list, so a
-            // row without a key comes first ascending and last descending. This records the current
-            // behavior; if it is changed on purpose, update this expectation in the same change.
+            // A null key sorts first ascending. Reversing the result places it last descending.
+            // This placement records current behavior rather than a spec.
             val key = sortKey(sortType)
             val ascending = if (descending) rows.asReversed() else rows
             val keys = ascending.filter { key.appliesTo(it) }.map { key.key(it) }
@@ -152,7 +138,6 @@ internal fun compareKeys(a: Comparable<*>?, b: Comparable<*>?): Int = when {
     else -> (a as Comparable<Any>).compareTo(b)
 }
 
-/** Whether some rows are ordered strictly one way by [key] and strictly the other way by [other]. */
 private fun <T> hasInvertedPair(rows: List<T>, key: SortKey<T>, other: SortKey<T>): Boolean {
     val candidates = rows.filter { key.appliesTo(it) && other.appliesTo(it) }
     return candidates.any { a ->
@@ -259,7 +244,7 @@ internal val baseArtists = listOf(
     ArtistEntity(id = "UCmulti_c", name = "Xray"),
 )
 
-/** YouTube Music songs have no date, modified date, year or track number, except the last rows. */
+/** Shared song fixtures; `ytm-dated-*` intentionally carry release and modified dates. */
 internal val baseSongs = listOf(
     TestSong(
         SongEntity(id = "ytm-oscar", title = "Oscar", localPath = null, inLibrary = day(8), dateDownload = epochMillis(0)),
@@ -345,8 +330,7 @@ internal val baseSongs = listOf(
         ),
         artists = listOf("LAloc00004" to 0),
     ),
-    // Remote songs never get a date or a modified date today. Without these downloaded rows,
-    // every song in downloadSongs() would tie on both, and sorting by another column would pass.
+    // These dates make RELEASE_DATE and MODIFIED_DATE differ from each other and from insertion order.
     TestSong(
         SongEntity(
             id = "ytm-dated-bravo", title = "Bravo", localPath = null, dateDownload = day(11),

@@ -40,7 +40,10 @@ class PlaylistsDaoSortTest {
         database.close()
     }
 
-    /** Sort order is checked on the library list only: the filters change the WHERE clause, not the ORDER BY. */
+    /**
+     * Checks every sort type for LIBRARY; the filters do not change the ORDER BY, and a separate test
+     * covers membership for the other filters.
+     */
     @Test
     fun libraryPlaylistsAreSortedByEveryType() = runBlocking {
         val failures = sortFailures(
@@ -51,7 +54,7 @@ class PlaylistsDaoSortTest {
         assertTrue(failures.joinToString("\n"), failures.isEmpty())
     }
 
-    /** The library list, the local playlists screen and the add to playlist dialog. */
+    /** Covers the argument combinations used by library screens and the add-to-playlist dialog. */
     @Test
     fun playlistsMatchEveryFilterUsedByTheScreens() = runBlocking {
         val cases = PlaylistFilter.entries.map { Triple(it, 0, false) } +

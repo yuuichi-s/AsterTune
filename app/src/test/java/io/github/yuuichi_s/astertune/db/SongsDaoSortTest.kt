@@ -95,9 +95,8 @@ class SongsDaoSortTest {
         get() = Entry(
             name = "downloadSongs",
             query = database::downloadSongs,
-            // Includes dateDownload 0 (failed or stopped) and 1 (queued or downloading), which the
-            // download rescan writes. This records the current behavior; if the set is changed on
-            // purpose, update this expectation in the same change.
+            // dateDownload 0 (failed or stopped) and 1 (queued or downloading) are not completed
+            // downloads but still pass the DAO's non-null filter. This records current behavior.
             inSet = { !it.isLocal && it.dateDownload != null },
             sortColumn = ::librarySortColumn,
         )

@@ -37,7 +37,14 @@ fun sortLocalSongs(
     return if (descending) sorted.reversed() else sorted
 }
 
-/** Song order of a local playlist. [PlaylistSongSortType.CUSTOM] keeps [songs] as given. */
+/**
+ * Applies the song order used by local playlists.
+ *
+ * [PlaylistSongSortType.CUSTOM] keeps input order regardless of [descending].
+ * [PlaylistSongSortType.DOWNLOAD_DATE] groups remote songs without a completed download, local
+ * songs without a completed download, and completed downloads. Descending reverses the group and
+ * completed-date order while equal keys retain input order.
+ */
 fun sortPlaylistSongs(
     songs: List<PlaylistSong>,
     sortType: PlaylistSongSortType,
