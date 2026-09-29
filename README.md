@@ -146,7 +146,7 @@ We use Weblate to translate AsterTune. For more details or to submit translation
 | Project | Description |
 |---|---|
 | [Musicolet](https://play.google.com/store/apps/details?id=in.krosbits.musicolet) | Inspiration for the local media player experience |
-| [Gramophone](https://github.com/FoedusProgramme/Gramophone) | Lyrics parser |
+| [Gramophone](https://github.com/FoedusProgramme/Gramophone) | Lyrics parser and ALAC decoder |
 
 ## Building from Source
 
