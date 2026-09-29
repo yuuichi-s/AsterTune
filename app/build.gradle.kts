@@ -185,6 +185,8 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
         unitTests.isReturnDefaultValues = true
+        // Robolectric needs this to set up SDK 36 on current JDKs (robolectric/robolectric#11434)
+        unitTests.all { it.jvmArgs("--add-exports", "java.base/jdk.internal.access=ALL-UNNAMED") }
     }
 
     lint {
@@ -273,6 +275,7 @@ dependencies {
     implementation("androidx.webkit:webkit:1.14.0")
 
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
 }

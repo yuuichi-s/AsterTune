@@ -139,7 +139,7 @@
     <string name="sleep_timer">স্লীপ টাইমার</string>
     <string name="end_of_song">গান শেষে</string>
     <plurals name="minute">
-        <item quantity="one">১ মিনিট</item>
+        <item quantity="one">%d মিনিট</item>
         <item quantity="other">%d মিনিট</item>
     </plurals>
     <string name="error_no_stream">স্ট্রিম পাওয়া যায়নি</string>

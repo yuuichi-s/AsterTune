@@ -90,7 +90,7 @@ fun AddToPlaylistDialog(
         mutableStateOf(emptyList<String>())
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(sortType, sortDescending) {
         if (syncMode == SyncMode.RO) {
             database.playlists(PlaylistFilter.LIBRARY, sortType, sortDescending, 1).collect {
                 playlists = it

@@ -4,7 +4,7 @@
     <string name="undo">Poništi</string>
     <string name="lyrics_not_found">Tekst pjesama nije pronađen</string>
     <plurals name="minute">
-        <item quantity="one">1 minuta</item>
+        <item quantity="one">%d minuta</item>
         <item quantity="few">%d minute</item>
         <item quantity="other">%d minuta</item>
     </plurals>

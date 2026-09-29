@@ -188,7 +188,7 @@
     <string name="default_">الافتراضي</string>
     <plurals name="minute">
         <item quantity="zero">%d دقيقة</item>
-        <item quantity="one">دقيقة واحدة</item>
+        <item quantity="one">%d دقيقة</item>
         <item quantity="two">%d دقيقة</item>
         <item quantity="few">%d دقائق</item>
         <item quantity="many">%d دقيقة</item>
