@@ -59,7 +59,8 @@ internal interface SortKey<T> {
 
 /**
  * Checks [query] for every sort type in both directions against [expectedIds] and [sortKey].
- * Equal-key order is not checked because DAO queries have no secondary `ORDER BY`.
+ * Equal-key order is outside this helper: DAO queries have no secondary `ORDER BY`, and sort modes
+ * with a defined equal-key order are verified by dedicated tests.
  *
  * Returns one message per failure.
  */

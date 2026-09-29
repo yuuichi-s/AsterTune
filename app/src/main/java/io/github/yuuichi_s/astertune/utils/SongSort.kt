@@ -38,7 +38,7 @@ fun sortLocalSongs(
 }
 
 /**
- * Applies the song order used by local playlists.
+ * Applies the song order used for playlists stored in the database.
  *
  * [PlaylistSongSortType.CUSTOM] keeps input order regardless of [descending].
  * [PlaylistSongSortType.DOWNLOAD_DATE] groups remote songs without a completed download, local
