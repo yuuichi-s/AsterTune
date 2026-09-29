@@ -21,6 +21,11 @@ import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+// Year-only tags use January 1 in epoch milliseconds.
+// Check for NULL because printf() would format it as 0000.
+private const val RELEASE_DATE_ORDER =
+    "COALESCE(date, CASE WHEN year IS NOT NULL THEN strftime('%s', printf('%04d-01-01', year)) * 1000 END)"
+
 @Dao
 interface SongsDao {
 
@@ -94,7 +99,7 @@ interface SongsDao {
     fun songsByCreateDateAsc(): Flow<List<Song>>
 
     @Transaction
-    @Query("SELECT * FROM song WHERE inLibrary IS NOT NULL ORDER BY date")
+    @Query("SELECT * FROM song WHERE inLibrary IS NOT NULL ORDER BY $RELEASE_DATE_ORDER")
     fun songsByReleaseDateAsc(): Flow<List<Song>>
 
     @Transaction
@@ -220,7 +225,7 @@ interface SongsDao {
     fun likedSongsByCreateDateAsc(): Flow<List<Song>>
 
     @Transaction
-    @Query("SELECT * FROM song WHERE liked ORDER BY date")
+    @Query("SELECT * FROM song WHERE liked ORDER BY $RELEASE_DATE_ORDER")
     fun likedSongsByReleaseDateAsc(): Flow<List<Song>>
 
     @Transaction
@@ -310,7 +315,7 @@ interface SongsDao {
     fun downloadSongsByCreateDateAsc(): Flow<List<Song>>
 
     @Transaction
-    @Query("SELECT * FROM song WHERE isLocal = 0 AND dateDownload IS NOT NULL ORDER BY date")
+    @Query("SELECT * FROM song WHERE isLocal = 0 AND dateDownload IS NOT NULL ORDER BY $RELEASE_DATE_ORDER")
     fun downloadSongsByReleaseDateAsc(): Flow<List<Song>>
 
     @Transaction

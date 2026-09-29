@@ -235,6 +235,8 @@ internal val baseArtists = listOf(
     ArtistEntity(id = "LAloc00002", name = "Whiskey", isLocal = true),
     ArtistEntity(id = "LAloc00003", name = "Xenon", isLocal = true),
     ArtistEntity(id = "LAloc00004", name = "Golf", isLocal = true),
+    ArtistEntity(id = "LAloc00005", name = "Charlie", isLocal = true),
+    ArtistEntity(id = "LAloc00006", name = "Alfred", isLocal = true),
     ArtistEntity(id = "UCdated_01", name = "Mango"),
     ArtistEntity(id = "UCdated_02", name = "Lemon"),
     ArtistEntity(id = "UCdated_03", name = "Kiwi"),
@@ -329,6 +331,22 @@ internal val baseSongs = listOf(
             date = LocalDateTime.of(2010, 1, 1, 0, 0), dateModified = day(-3),
         ),
         artists = listOf("LAloc00004" to 0),
+    ),
+    // Tags with a year only, which the scanner stores in year instead of date.
+    TestSong(
+        SongEntity(
+            id = "local-india", title = "India", localPath = "/music/india.flac", isLocal = true,
+            inLibrary = day(0), liked = true, likedDate = day(26), year = 2005, dateModified = day(-6),
+        ),
+        artists = listOf("LAloc00005" to 0),
+        playCounts = listOf(7),
+    ),
+    TestSong(
+        SongEntity(
+            id = "local-yankee", title = "Yankee", localPath = "/music/yankee.flac", isLocal = true,
+            inLibrary = day(0), year = 1968, dateModified = day(-4),
+        ),
+        artists = listOf("LAloc00006" to 0),
     ),
     // These dates make RELEASE_DATE and MODIFIED_DATE differ from each other and from insertion order.
     TestSong(
