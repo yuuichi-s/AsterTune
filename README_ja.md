@@ -152,7 +152,7 @@ AsterTuneの翻訳にはWeblateを使用しています。<br />
 ## ソースからのビルド
 
 ```bash
-# Core (.m4aが再生できません)
+# Core
 ./gradlew assembleCoreDebug
 
 # Full

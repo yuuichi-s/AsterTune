@@ -151,7 +151,7 @@ We use Weblate to translate AsterTune. For more details or to submit translation
 ## Building from Source
 
 ```bash
-# Core (.m4a files cannot be played)
+# Core
 ./gradlew assembleCoreDebug
 
 # Full

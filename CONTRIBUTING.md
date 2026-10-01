@@ -19,17 +19,12 @@ For most users, we recommend importing and building through Android Studio.
 
 ## Build flavors/variants
 
-There are the following build flavors
+There are the following build flavors:
 
-```
-core
-full
-```
-
-| Flavor  | Architecture support                | Version update checker | FFmpeg audio decoders |
-|---------|-------------------------------------|------------------------|-----------------------|
-| core    | arm64-v8a, armeabi-v7a, x86, x86_64 | ❌                      | ❌                     |
-| full    | arm64-v8a, armeabi-v7a, x86, x86_64 | ✅                      | ✅                     |
+| Flavor  | Architecture support                | FFmpeg audio decoders |
+|---------|-------------------------------------|-----------------------|
+| core    | arm64-v8a, armeabi-v7a, x86, x86_64 | ❌                     |
+| full    | arm64-v8a, armeabi-v7a, x86, x86_64 | ✅                     |
 
 Tag extraction uses TagLib in all flavors. The `full` flavor additionally bundles ffMetadataEx
 (prebuilt AAR at `prebuilt/ffMetadataEx-release.aar`) for the FFmpeg audio decoders, which enable
