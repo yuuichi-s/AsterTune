@@ -40,6 +40,7 @@ import io.github.yuuichi_s.astertune.constants.DEFAULT_SLIDER_STYLE
 import io.github.yuuichi_s.astertune.constants.DEFAULT_SWIPE_TO_SKIP
 import io.github.yuuichi_s.astertune.constants.IgnoreAudioFocusKey
 import io.github.yuuichi_s.astertune.constants.KeepAliveKey
+import io.github.yuuichi_s.astertune.constants.LocalAudioNormalizationKey
 import io.github.yuuichi_s.astertune.constants.PersistentQueueKey
 import io.github.yuuichi_s.astertune.constants.PlayerBackgroundStyle
 import io.github.yuuichi_s.astertune.constants.PlayerBackgroundStyleKey
@@ -118,6 +119,10 @@ fun AudioQualityFrag() {
         key = AudioNormalizationKey,
         defaultValue = true
     )
+    val (localAudioNormalization, onLocalAudioNormalizationChange) = rememberPreference(
+        key = LocalAudioNormalizationKey,
+        defaultValue = false
+    )
 
     EnumListPreference(
         title = { Text(stringResource(R.string.audio_quality)) },
@@ -134,9 +139,17 @@ fun AudioQualityFrag() {
     )
     SwitchPreference(
         title = { Text(stringResource(R.string.audio_normalization)) },
+        description = stringResource(R.string.youtube_music),
         icon = { Icon(Icons.AutoMirrored.Rounded.VolumeUp, null) },
         checked = audioNormalization,
         onCheckedChange = onAudioNormalizationChange
+    )
+    SwitchPreference(
+        title = { Text(stringResource(R.string.audio_normalization)) },
+        description = stringResource(R.string.local_player_settings_title),
+        icon = { Icon(Icons.AutoMirrored.Rounded.VolumeUp, null) },
+        checked = localAudioNormalization,
+        onCheckedChange = onLocalAudioNormalizationChange
     )
 }
 

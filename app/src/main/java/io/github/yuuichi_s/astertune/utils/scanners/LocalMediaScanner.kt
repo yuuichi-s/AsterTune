@@ -272,7 +272,7 @@ class LocalMediaScanner(context: Context) {
 
                         // update format
                         if (song.format != null) {
-                            upsert(song.format.copy(id = songToUpdate.id))
+                            upsert(song.format.copy(id = songToUpdate.id, loudnessDb = formatLoudnessDb(songToUpdate.id)))
                         }
                     }
                 }
@@ -317,7 +317,7 @@ class LocalMediaScanner(context: Context) {
                         )
                     )
                     if (song.format != null) {
-                        upsert(song.format.copy(id = songToUpdate.id))
+                        upsert(song.format.copy(id = songToUpdate.id, loudnessDb = formatLoudnessDb(songToUpdate.id)))
                     }
 
                     // destroy existing artist links
