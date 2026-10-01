@@ -84,6 +84,7 @@ import io.github.yuuichi_s.astertune.constants.ENABLE_FFMETADATAEX
 import io.github.yuuichi_s.astertune.constants.EnableLyricsPrefetchKey
 import io.github.yuuichi_s.astertune.constants.IgnoreAudioFocusKey
 import io.github.yuuichi_s.astertune.constants.KeepAliveKey
+import io.github.yuuichi_s.astertune.constants.LocalAudioNormalizationKey
 import io.github.yuuichi_s.astertune.constants.LyricsPrefetchCountKey
 import io.github.yuuichi_s.astertune.constants.MAX_PLAYER_CONSECUTIVE_ERR
 import io.github.yuuichi_s.astertune.constants.MaxQueuesKey
@@ -121,6 +122,8 @@ import io.github.yuuichi_s.astertune.models.HybridCacheDataSinkFactory
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
+import io.github.yuuichi_s.astertune.playback.audio.LoudnessMeasurement
+import io.github.yuuichi_s.astertune.playback.audio.LoudnessTracker
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.playback.queues.Queue
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
@@ -152,14 +155,18 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import okhttp3.OkHttpClient
 import org.nift4.alacdecoder.AlacRenderer
 import java.io.File
@@ -243,6 +250,54 @@ class MusicService : MediaLibraryService(),
 
     private val normalizeFactor = MutableStateFlow(1f)
 
+    // Both callbacks are posted to the main thread in the order the tracker calls them.
+    private val loudnessTracker = LoudnessTracker(object : LoudnessTracker.Listener {
+        override fun onSectionStarted(windowSequenceNumber: Long) {
+            scope.launch { measuringWindowSequenceNumber.value = windowSequenceNumber }
+        }
+
+        override fun onMeasured(measurement: LoudnessMeasurement) {
+            scope.launch { onLoudnessMeasured(measurement) }
+        }
+    })
+    private val measuringWindowSequenceNumber = MutableStateFlow(C.INDEX_UNSET.toLong())
+
+    private val localLoudness = LocalLoudnessStore()
+
+    // Read loudness once per playback so later measurements do not change the volume midway.
+    private data class LocalPlayback(
+        val songId: String,
+        // Makes each playback distinct so StateFlow emits even when the song is unchanged.
+        val sequence: Int,
+        // Set when the same song plays again, whose previous measurement may still be on its way.
+        val awaitedWindowSequenceNumber: Long?,
+    )
+
+    private var localPlaybackSequence = 0
+    private var lastPlaybackState = Player.STATE_IDLE
+    private val localPlayback = MutableStateFlow<LocalPlayback?>(null)
+    private val localPlaybackLoudness = localPlayback.flatMapLatest { playback ->
+        if (playback == null) {
+            flowOf<Pair<String, Double?>?>(null)
+        } else {
+            flow {
+                playback.awaitedWindowSequenceNumber?.let { windowSequenceNumber ->
+                    // Bound the wait because offload playback may never start a PCM section.
+                    withTimeoutOrNull(LOCAL_LOUDNESS_SECTION_WAIT_TIMEOUT_MS) {
+                        measuringWindowSequenceNumber.first { it >= windowSequenceNumber }
+                    }
+                }
+                val songId = playback.songId
+                val loudnessDb = if (songId in localLoudness) {
+                    localLoudness[songId]
+                } else {
+                    database.format(songId).first()?.loudnessDb.also { localLoudness.remember(songId, it) }
+                }
+                emit(playback.songId to loudnessDb)
+            }
+        }
+    }
+
     private val audioDecoder = dataStore.get(AudioDecoderKey, DEFAULT_AUDIO_DECODER)
     private val isGaplessOffloadAllowed = dataStore.get(AudioGaplessOffloadKey, false)
     val playerVolume = MutableStateFlow(dataStore.get(PlayerVolumeKey, 1f).coerceIn(0f, 1f))
@@ -290,6 +345,15 @@ class MusicService : MediaLibraryService(),
                 sleepTimer.onFinish = { this@MusicService.pauseAllPlayersAndStopSelf() }
                 addListener(sleepTimer)
                 addAnalyticsListener(PlaybackStatsListener(false, this@MusicService))
+                addAnalyticsListener(object : AnalyticsListener {
+                    override fun onMediaItemTransition(
+                        eventTime: AnalyticsListener.EventTime,
+                        mediaItem: MediaItem?,
+                        reason: Int
+                    ) {
+                        updateLocalPlayback(mediaItem, reason, eventTime.currentMediaPeriodId?.windowSequenceNumber)
+                    }
+                })
 
                 // misc
                 setOffloadEnabled(dataStore.get(AudioOffloadKey, false))
@@ -380,18 +444,22 @@ class MusicService : MediaLibraryService(),
                 }
 
             combine(
+                currentMediaMetadata,
                 currentFormat,
+                localPlaybackLoudness,
                 dataStore.data
-                    .map { it[AudioNormalizationKey] ?: true }
+                    .map { (it[AudioNormalizationKey] ?: true) to (it[LocalAudioNormalizationKey] ?: false) }
                     .distinctUntilChanged()
-            ) { format, normalizeAudio ->
-                format to normalizeAudio
-            }.collectLatest(scope) { (format, normalizeAudio) ->
-                normalizeFactor.value = if (normalizeAudio && format?.loudnessDb != null) {
-                    min(10f.pow(-format.loudnessDb.toFloat() / 20), 1f)
+            ) { mediaMetadata, format, localLoudness, (normalizeAudio, normalizeLocalAudio) ->
+                val loudnessDb = if (mediaMetadata?.isLocal == true) {
+                    if (localLoudness == null || localLoudness.first != mediaMetadata.id) return@combine null
+                    localLoudness.second.takeIf { normalizeLocalAudio }
                 } else {
-                    1f
+                    format?.loudnessDb.takeIf { normalizeAudio }
                 }
+                if (loudnessDb != null) min(10f.pow(-loudnessDb.toFloat() / 20), 1f) else 1f
+            }.filterNotNull().collectLatest(scope) {
+                normalizeFactor.value = it
             }
 
             // Fetch current-song lyrics before prefetching, keeping both in the same collector.
@@ -867,7 +935,7 @@ class MusicService : MediaLibraryService(),
                         .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
                         .setAudioProcessorChain(
                             DefaultAudioSink.DefaultAudioProcessorChain(
-                                emptyArray(),
+                                arrayOf(loudnessTracker.audioProcessor),
                                 SilenceSkippingAudioProcessor(),
                                 SonicAudioProcessor()
                             )
@@ -879,6 +947,31 @@ class MusicService : MediaLibraryService(),
                             )
                         )
                         .build()
+                        .let(loudnessTracker::wrapSink)
+                }
+
+                override fun buildAudioRenderers(
+                    context: Context,
+                    extensionRendererMode: Int,
+                    mediaCodecSelector: MediaCodecSelector,
+                    enableDecoderFallback: Boolean,
+                    audioSink: AudioSink,
+                    eventHandler: Handler,
+                    eventListener: AudioRendererEventListener,
+                    out: ArrayList<Renderer>
+                ) {
+                    val start = out.size
+                    super.buildAudioRenderers(
+                        context,
+                        extensionRendererMode,
+                        mediaCodecSelector,
+                        enableDecoderFallback,
+                        audioSink,
+                        eventHandler,
+                        eventListener,
+                        out
+                    )
+                    for (i in start until out.size) out[i] = loudnessTracker.wrapRenderer(out[i])
                 }
             }
                 .setEnableDecoderFallback(true)
@@ -896,7 +989,7 @@ class MusicService : MediaLibraryService(),
                         .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
                         .setAudioProcessorChain(
                             DefaultAudioSink.DefaultAudioProcessorChain(
-                                emptyArray(),
+                                arrayOf(loudnessTracker.audioProcessor),
                                 SilenceSkippingAudioProcessor(),
                                 SonicAudioProcessor()
                             )
@@ -908,6 +1001,7 @@ class MusicService : MediaLibraryService(),
                             )
                         )
                         .build()
+                        .let(loudnessTracker::wrapSink)
                 }
 
                 override fun buildAudioRenderers(
@@ -920,6 +1014,7 @@ class MusicService : MediaLibraryService(),
                     eventListener: AudioRendererEventListener,
                     out: ArrayList<Renderer>
                 ) {
+                    val start = out.size
                     out.add(AlacRenderer(eventHandler, eventListener, audioSink))
                     super.buildAudioRenderers(
                         context,
@@ -931,6 +1026,7 @@ class MusicService : MediaLibraryService(),
                         eventListener,
                         out
                     )
+                    for (i in start until out.size) out[i] = loudnessTracker.wrapRenderer(out[i])
                 }
             }
         }
@@ -1162,10 +1258,55 @@ class MusicService : MediaLibraryService(),
         updateNotification() // also updates when queue changes
     }
 
+    private fun updateLocalPlayback(mediaItem: MediaItem?, reason: Int, windowSequenceNumber: Long?) {
+        val song = mediaItem?.metadata?.takeIf { it.isLocal }
+        val current = localPlayback.value
+        localPlayback.value = when {
+            song == null -> null
+            // The queue was rebuilt around the song that keeps playing.
+            reason == Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED && current?.songId == song.id -> current
+            else -> LocalPlayback(
+                songId = song.id,
+                sequence = ++localPlaybackSequence,
+                awaitedWindowSequenceNumber = windowSequenceNumber.takeIf { current?.songId == song.id },
+            )
+        }
+    }
+
+    private fun onLoudnessMeasured(measurement: LoudnessMeasurement) {
+        val song = measurement.mediaItem.metadata ?: return
+        if (!song.isLocal) return
+        val durationUs = measurement.durationUs.takeIf { it != C.TIME_UNSET && it > 0 }
+            ?: song.duration.takeIf { it > 0 }?.times(1_000_000L)
+            ?: return
+        if (measurement.measuredUs * 2 < durationUs) return
+
+        val loudnessDb = measurement.integratedLufs - LOCAL_LOUDNESS_REFERENCE_LUFS
+        localLoudness.onMeasured(song.id, loudnessDb, measurement.complete)
+        database.transaction {
+            if (measurement.complete) {
+                updateLoudnessDb(song.id, loudnessDb)
+            } else {
+                updateLoudnessDbIfAbsent(song.id, loudnessDb)
+            }
+        }
+    }
+
+    private fun restartLocalPlayback() {
+        val current = localPlayback.value ?: return
+        if (player.currentMetadata?.id != current.songId) return
+        localPlayback.value = current.copy(sequence = ++localPlaybackSequence, awaitedWindowSequenceNumber = null)
+    }
+
     override fun onPlaybackStateChanged(@Player.State playbackState: Int) {
         if (playbackState == STATE_IDLE) {
             queuePlaylistId = null
         }
+        // Playing an ended song again is a new playback without a media item transition.
+        if (lastPlaybackState == Player.STATE_ENDED && playbackState != Player.STATE_ENDED) {
+            restartLocalPlayback()
+        }
+        lastPlaybackState = playbackState
     }
 
     override fun onEvents(player: Player, events: Player.Events) {
@@ -1315,6 +1456,9 @@ class MusicService : MediaLibraryService(),
     }
 
     companion object {
+        private const val LOCAL_LOUDNESS_SECTION_WAIT_TIMEOUT_MS = 1_000L
+        private const val LOCAL_LOUDNESS_REFERENCE_LUFS = -7.0
+
         const val ROOT = "root"
         const val SONG = "song"
         const val ARTIST = "artist"

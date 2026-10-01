@@ -82,6 +82,15 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Query("SELECT * FROM format WHERE id = :id")
     fun format(id: String?): Flow<FormatEntity?>
 
+    @Query("SELECT loudnessDb FROM format WHERE id = :id")
+    fun formatLoudnessDb(id: String): Double?
+
+    @Query("UPDATE format SET loudnessDb = :loudnessDb WHERE id = :id")
+    fun updateLoudnessDb(id: String, loudnessDb: Double)
+
+    @Query("UPDATE format SET loudnessDb = :loudnessDb WHERE id = :id AND loudnessDb IS NULL")
+    fun updateLoudnessDbIfAbsent(id: String, loudnessDb: Double)
+
     @Query("SELECT * FROM lyrics WHERE id = :id")
     fun lyrics(id: String?): Flow<LyricsEntity?>
 
