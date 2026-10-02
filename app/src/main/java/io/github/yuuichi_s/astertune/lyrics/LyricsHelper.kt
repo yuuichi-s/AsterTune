@@ -3,6 +3,8 @@ package io.github.yuuichi_s.astertune.lyrics
 import android.content.Context
 import android.util.Log
 import android.util.LruCache
+import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.yuuichi_s.astertune.constants.LYRICS_DEBUG
 import io.github.yuuichi_s.astertune.constants.LyricSourcePrefKey
 import io.github.yuuichi_s.astertune.constants.LyricTrimKey
 import io.github.yuuichi_s.astertune.constants.MultilineLrcKey
@@ -13,7 +15,6 @@ import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.reportException
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -39,12 +40,20 @@ enum class LyricsFetchRole(val log: String) {
     MANUAL("manual"),
 }
 
+/** Resolves and stores lyrics and collects manual-search candidates. */
 @Singleton
-class LyricsHelper @Inject constructor(
-    @ApplicationContext private val context: Context,
-    val database: MusicDatabase
+class LyricsHelper internal constructor(
+    private val context: Context,
+    val database: MusicDatabase,
+    private val lyricsProviders: List<LyricsProvider>,
 ) {
-    private val lyricsProviders =
+    @Inject
+    constructor(
+        @ApplicationContext context: Context,
+        database: MusicDatabase,
+    ) : this(
+        context,
+        database,
         listOf(
             SimpMusicLyricsProvider,
             BetterLyricsProvider,
@@ -52,7 +61,9 @@ class LyricsHelper @Inject constructor(
             KuGouLyricsProvider,
             YouTubeLyricsProvider,
             YouTubeSubtitleLyricsProvider,
-        )
+        ),
+    )
+
     private val cache = LruCache<String, List<LyricsResult>>(MAX_CACHE_SIZE)
 
     /**
@@ -68,14 +79,11 @@ class LyricsHelper @Inject constructor(
         fetchMutexesGuard.withLock { fetchMutexes.getOrPut(videoId) { Mutex() } }
 
     /**
-     * Resolve lyrics for a song from the stored database row, the local .lrc file and the remote
-     * providers, in an order controlled by the source preference (LyricSourcePrefKey): when local
-     * lyrics are preferred the local file is tried first; otherwise the stored row wins and
-     * LYRICS_NOT_FOUND resolves to null. When neither source has lyrics, a remote fetch runs and
-     * the freshly stored result is returned, falling back to the local file when remote lyrics
-     * are preferred but none are found.
-     *
-     * @param mediaMetadata song to resolve lyrics for
+     * Resolves stored, local, or remote lyrics according to the source preference.
+     * Tries local lyrics first when they are preferred; otherwise reuses stored lyrics.
+     * Queries remote providers only when [shouldFetch] requires it.
+     * Uses local lyrics as fallback when remote lyrics are preferred and no positive stored
+     * result is available.
      */
     suspend fun getLyrics(mediaMetadata: MediaMetadata): SemanticLyrics? {
         val parserOptions = getParserOptions()
@@ -113,11 +121,9 @@ class LyricsHelper @Inject constructor(
     }
 
     /**
-     * Determines whether it is time to perform a remote fetch for [videoId].
-     *
-     * Checks for cache expiration and provider settings are delegated to [shouldFetchLyrics].
-     * Unless [forceRefresh] is true, the cache is retained if it exists. If no entry exists,
-     * a fetch is always performed.
+     * Determines whether remote lyrics need fetching for [videoId].
+     * Found lyrics are reused unless [forceRefresh] is true.
+     * Missing entries and stale or invalid cached absence require a fetch.
      */
     suspend fun shouldFetch(videoId: String, forceRefresh: Boolean = false): Boolean {
         val entity = database.lyrics(videoId).first()
@@ -213,7 +219,7 @@ class LyricsHelper @Inject constructor(
         }
 
     /**
-     * Lookup lyrics from remote providers.
+     * Resolves lyrics from remote providers.
      *
      * Every provider in [selection] runs at once. Results are judged as they arrive: the first synced
      * result wins immediately and the remaining providers are cancelled; an unsynced result is kept as
@@ -345,9 +351,7 @@ class LyricsHelper @Inject constructor(
         }
     }
 
-    /**
-     * Lookup lyrics from local disk (.lrc) file
-     */
+    /** Loads and parses a local .lrc file. */
     fun getLocalLyrics(
         mediaMetadata: MediaMetadata,
         parserOptions: LrcUtils.LrcParserOptions
@@ -363,10 +367,11 @@ class LyricsHelper @Inject constructor(
     }
 
     /**
-     * Run a single provider's candidate search behind the manual-search isolation boundary. Each
-     * provider is tried even if an earlier one threw: a contract-breaking exception is swallowed (after
-     * re-throwing cancellation) so the sequential search continues to the next provider and any
-     * candidates already delivered by callback are kept.
+     * Runs one provider's manual search and reports whether it completed normally.
+     * Search exceptions yield false; cancellation is re-thrown.
+     * Candidates already delivered through [callback] are retained by the caller.
+     *
+     * @return true when the search completed normally, false when it failed
      */
     private suspend fun LyricsProvider.searchIsolated(
         mediaId: String,
@@ -374,16 +379,24 @@ class LyricsHelper @Inject constructor(
         songArtists: String,
         duration: Int,
         callback: (String) -> Unit,
-    ) {
+    ): Boolean =
         try {
             getAllLyrics(mediaId, songTitle, songArtists, duration, callback)
+            true
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            reportException(e)
+            if (e !is LyricsSearchFailedException || LYRICS_DEBUG) {
+                reportException(e)
+            }
+            false
         }
-    }
 
+    /**
+     * Searches every enabled provider for manual-search candidates, delivering each through
+     * [callback] as it arrives. The result is cached per title and artist only when no provider
+     * failed, so a search after a transient failure queries the providers again.
+     */
     suspend fun getAllLyrics(
         mediaId: String,
         songTitle: String,
@@ -399,16 +412,18 @@ class LyricsHelper @Inject constructor(
             return
         }
         val allResult = mutableListOf<LyricsResult>()
+        var anyFailed = false
         lyricsProviders.forEach { provider ->
             if (provider.isEnabled(context)) {
-                provider.searchIsolated(mediaId, songTitle, songArtists, duration) { lyrics ->
+                val succeeded = provider.searchIsolated(mediaId, songTitle, songArtists, duration) { lyrics ->
                     val result = LyricsResult(provider.name, lyrics)
                     allResult += result
                     callback(result)
                 }
+                if (!succeeded) anyFailed = true
             }
         }
-        cache.put(cacheKey, allResult)
+        if (!anyFailed) cache.put(cacheKey, allResult)
     }
 
     companion object {
@@ -449,6 +464,7 @@ internal fun shouldFetchLyrics(
     return now - lastChecked >= ttlMs
 }
 
+/** Lyrics candidate with its provider name. */
 data class LyricsResult(
     val providerName: String,
     val lyrics: String,

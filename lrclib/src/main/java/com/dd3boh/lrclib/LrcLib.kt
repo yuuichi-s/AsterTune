@@ -2,6 +2,7 @@ package com.dd3boh.lrclib
 
 import com.dd3boh.lrclib.models.Track
 import com.dd3boh.lrclib.models.bestMatchingFor
+import com.dd3boh.lrclib.models.selectCandidates
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -10,21 +11,20 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import kotlin.math.abs
 
 /**
  * Source: https://github.com/Malopieds/InnerTune
  */
 object LrcLib {
+    internal val jsonFormat = Json {
+        isLenient = true
+        ignoreUnknownKeys = true
+    }
+
     private val client by lazy {
         HttpClient {
             install(ContentNegotiation) {
-                json(
-                    Json {
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    },
-                )
+                json(jsonFormat)
             }
 
             defaultRequest {
@@ -61,6 +61,11 @@ object LrcLib {
         syncedTracks.bestMatchingFor(duration)?.syncedLyrics?.let(LrcLib::Lyrics)?.text
     }
 
+    /**
+     * Delivers manual-search lyrics candidates through [callback].
+     * Rows without a duration are excluded, even when [duration] is unknown (-1).
+     * Request and response-decoding failures are propagated.
+     */
     suspend fun getAllLyrics(
         title: String,
         artist: String,
@@ -68,29 +73,13 @@ object LrcLib {
         album: String? = null,
         callback: (String) -> Unit,
     ) {
-        val tracks = queryLyrics(artist, title, album)
-        var count = 0
-        var plain = 0
-        tracks.forEach {
-            if (count <= 4) {
-                if (it.syncedLyrics != null && duration == -1) {
-                    count++
-                    it.syncedLyrics.let(callback)
-                } else {
-                    if (it.syncedLyrics != null && abs(it.duration - duration) <= 2) {
-                        count++
-                        it.syncedLyrics.let(callback)
-                    }
-                    if (it.plainLyrics != null && abs(it.duration - duration) <= 2 && plain == 0) {
-                        count++
-                        plain++
-                        it.plainLyrics.let(callback)
-                    }
-                }
-            }
-        }
+        queryLyrics(artist, title, album).selectCandidates(duration).forEach(callback)
     }
 
+    /**
+     * Queries LRCLIB tracks without candidate filtering.
+     * Request and response-decoding failures are returned in [Result].
+     */
     suspend fun lyrics(
         artist: String,
         title: String,

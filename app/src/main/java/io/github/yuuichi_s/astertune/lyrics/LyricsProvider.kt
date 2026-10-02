@@ -18,8 +18,9 @@ sealed interface LyricsFetchResult {
 
 /**
  * Map a backing module result to a [LyricsFetchResult]. The module contract is: success with a
- * non-blank string is [Found], success with null/blank is a definitive [NotFound], and a failure is a
- * transient [Failed]. A cancellation is re-thrown so it is never recorded as a provider failure.
+ * non-blank string is [LyricsFetchResult.Found], success with null/blank is a definitive
+ * [LyricsFetchResult.NotFound], and a failure is a transient [LyricsFetchResult.Failed].
+ * A cancellation is re-thrown so it is never recorded as a provider failure.
  */
 internal fun Result<String?>.toFetchResult(): LyricsFetchResult =
     fold(
@@ -30,13 +31,30 @@ internal fun Result<String?>.toFetchResult(): LyricsFetchResult =
         }
     )
 
+/** Provider contract for lyric lookup and manual-search candidate delivery. */
 interface LyricsProvider {
     /** Stable identifier used to build the provider-configuration signature; never localized. */
     val id: String
     val name: String
     fun isEnabled(context: Context): Boolean
     suspend fun getLyrics(id: String, title: String, artist: String, duration: Int): LyricsFetchResult
+
+    /**
+     * Delivers manual-search candidates through [callback].
+     * Providers without a candidate search fall back to [getLyrics].
+     * [LyricsFetchResult.NotFound] returns normally without a candidate;
+     * [LyricsFetchResult.Failed] throws [LyricsSearchFailedException] so the caller can distinguish
+     * failure from an empty result.
+     */
     suspend fun getAllLyrics(id: String, title: String, artist: String, duration: Int, callback: (String) -> Unit) {
-        (getLyrics(id, title, artist, duration) as? LyricsFetchResult.Found)?.let { callback(it.raw) }
+        when (val result = getLyrics(id, title, artist, duration)) {
+            is LyricsFetchResult.Found -> callback(result.raw)
+            LyricsFetchResult.NotFound -> Unit
+            is LyricsFetchResult.Failed -> throw LyricsSearchFailedException(name, result.cause)
+        }
     }
 }
+
+/** Manual-search failure with an optional underlying [cause]. */
+class LyricsSearchFailedException(providerName: String, cause: Throwable?) :
+    Exception("$providerName search failed", cause)
