@@ -43,10 +43,10 @@ const val MAX_DL_JOBS = 5
 // maximum concurrent scanner jobs allowed
 const val MAX_LM_SCANNER_JOBS = 7 // 1 dispatcher + 6 workers
 
-// maximum concurrent scanner jobs allowed
+// parallelism limit for library/account sync
 const val MAX_YTM_SYNC_JOBS = 3
 
-// maximum concurrent scanner jobs allowed
+// parallelism limit for the YouTube Music content dispatcher
 const val MAX_YTM_CONTENT_JOBS = 16
 
 
@@ -54,14 +54,12 @@ const val MAX_YTM_CONTENT_JOBS = 16
  * Constants
  */
 
-/**
- * The minimum amount of time the automatic scanner in between successful auto scanner runs
- */
+/** Minimum interval between successful automatic scans. */
 const val AUTO_SCAN_COOLDOWN = 39600000L // 11 hours
 
 /**
- * The minimum amount of time the automatic scanner in between auto scanner runs, regardless of failure or success.
- * This value should always be less than AUTO_SCAN_COOLDOWN
+ * Minimum interval between automatic scan attempts, regardless of outcome.
+ * Must be less than [AUTO_SCAN_COOLDOWN].
  */
 const val AUTO_SCAN_SOFT_COOLDOWN = 7200000L // 2 hours
 const val LYRIC_FETCH_TIMEOUT = 60000L
@@ -132,3 +130,6 @@ const val POTOKEN_DEBUG = false
 
 // enable verbose debugging details for miscellaneous UI screens
 const val UI_DEBUG = false
+
+// enable verbose debugging details for manual lyrics searches
+const val LYRICS_DEBUG = false
