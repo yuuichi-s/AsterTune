@@ -1,0 +1,8 @@
+AsterTune 1.0.3
+
+- Add an Audio normalization switch for local media, off by default.
+- Play ALAC files in the core APK.
+- Show LRCLIB lyrics for some songs that previously showed none.
+- Fix artist names and missing results in search.
+- Fix several sorting issues, including sorting by Date released and sorting in the Add to playlist dialog.
+- Add missing translations and correct mistranslations.
