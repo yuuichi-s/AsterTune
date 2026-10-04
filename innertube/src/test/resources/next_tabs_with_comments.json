@@ -1,0 +1,43 @@
+[
+  {
+    "tabRenderer": {
+      "title": "Up next",
+      "content": {}
+    }
+  },
+  {
+    "tabRenderer": {
+      "title": "Lyrics",
+      "endpoint": {
+        "browseEndpoint": {
+          "browseId": "MPLYt_lyrics",
+          "browseEndpointContextSupportedConfigs": {
+            "browseEndpointContextMusicConfig": {
+              "pageType": "MUSIC_PAGE_TYPE_TRACK_LYRICS"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "tabRenderer": {
+      "title": "Comments"
+    }
+  },
+  {
+    "tabRenderer": {
+      "title": "Related",
+      "endpoint": {
+        "browseEndpoint": {
+          "browseId": "MPTRt_related",
+          "browseEndpointContextSupportedConfigs": {
+            "browseEndpointContextMusicConfig": {
+              "pageType": "MUSIC_PAGE_TYPE_TRACK_RELATED"
+            }
+          }
+        }
+      }
+    }
+  }
+]
