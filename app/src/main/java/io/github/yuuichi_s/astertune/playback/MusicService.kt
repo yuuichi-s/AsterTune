@@ -106,7 +106,6 @@ import io.github.yuuichi_s.astertune.constants.minPlaybackDurKey
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.Event
 import io.github.yuuichi_s.astertune.db.entities.FormatEntity
-import io.github.yuuichi_s.astertune.db.entities.RelatedSongMap
 import io.github.yuuichi_s.astertune.di.AppModule.PlayerCache
 import io.github.yuuichi_s.astertune.di.DownloadCache
 import io.github.yuuichi_s.astertune.extensions.SilentHandler
@@ -138,7 +137,6 @@ import io.github.yuuichi_s.astertune.utils.playerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
 import com.google.common.util.concurrent.MoreExecutors
 import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.SongItem
 import com.zionhuang.innertube.models.WatchEndpoint
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory
@@ -187,6 +185,7 @@ class MusicService : MediaLibraryService(),
 
     @Inject
     lateinit var database: MusicDatabase
+    private val relatedSongsSaver by lazy { RelatedSongsSaver(database) }
 
     // Parent of every service coroutine scope. Cancelled once in onDestroy() so no scope outlives the
     // service. Each scope owns a SupervisorJob child of this so a failure in one coroutine neither
@@ -527,22 +526,7 @@ class MusicService : MediaLibraryService(),
             if (song == null) insert(mediaMetadata.copy(duration = duration))
             else if (song.song.duration == -1) update(song.song.copy(duration = duration))
         }
-        if (!database.hasRelatedSongs(mediaId)) {
-            val relatedEndpoint = YouTube.next(WatchEndpoint(videoId = mediaId)).getOrNull()?.relatedEndpoint ?: return
-            val relatedPage = YouTube.related(relatedEndpoint).getOrNull() ?: return
-            database.query {
-                relatedPage.songs
-                    .map(SongItem::toMediaMetadata)
-                    .onEach(::insert)
-                    .map {
-                        RelatedSongMap(
-                            songId = mediaId,
-                            relatedSongId = it.id
-                        )
-                    }
-                    .forEach(::insert)
-            }
-        }
+        relatedSongsSaver.saveIfMissing(mediaId)
     }
 
     fun toggleLibrary() {

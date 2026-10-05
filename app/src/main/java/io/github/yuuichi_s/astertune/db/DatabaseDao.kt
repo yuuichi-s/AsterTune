@@ -49,6 +49,8 @@ import java.time.LocalDateTime
 @Dao
 interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao {
 
+    // GROUP BY may take songId from any row in the group.
+    // Use EXISTS to check all source songs.
     @Transaction
     @Query("""
         SELECT song.*
@@ -56,24 +58,27 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
               FROM related_song_map
               GROUP BY relatedSongId) map
                  JOIN song ON song.id = map.relatedSongId
-        WHERE songId IN (SELECT songId
-                         FROM (SELECT songId
-                               FROM event
-                               ORDER BY ROWID DESC
-                               LIMIT 5)
-                         UNION
-                         SELECT songId
-                         FROM (SELECT songId
-                               FROM event
-                               WHERE timestamp > :now - 86400000 * 7
-                               GROUP BY songId
-                               ORDER BY SUM(playTime) DESC
-                               LIMIT 5)
-                         UNION
-                         SELECT id
-                         FROM (SELECT id
-                               FROM song
-                               LIMIT 10))
+        WHERE EXISTS (SELECT 1
+                      FROM related_song_map eligible
+                      WHERE eligible.relatedSongId = map.relatedSongId
+                        AND eligible.songId IN (SELECT songId
+                                                FROM (SELECT songId
+                                                      FROM event
+                                                      ORDER BY ROWID DESC
+                                                      LIMIT 5)
+                                                UNION
+                                                SELECT songId
+                                                FROM (SELECT songId
+                                                      FROM event
+                                                      WHERE timestamp > :now - 86400000 * 7
+                                                      GROUP BY songId
+                                                      ORDER BY SUM(playTime) DESC
+                                                      LIMIT 5)
+                                                UNION
+                                                SELECT id
+                                                FROM (SELECT id
+                                                      FROM song
+                                                      LIMIT 10)))
         ORDER BY referredCount DESC
         LIMIT 100
     """)
@@ -114,13 +119,12 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Query(
         """
         SELECT song.*
-        FROM (SELECT *
+        FROM (SELECT DISTINCT relatedSongId
               FROM related_song_map
-              GROUP BY relatedSongId) map
+              WHERE songId = :songId) map
                  JOIN
              song
              ON song.id = map.relatedSongId
-        WHERE songId = :songId
         """
     )
     fun relatedSongs(songId: String): List<Song>

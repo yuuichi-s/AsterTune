@@ -5,12 +5,15 @@ import com.zionhuang.innertube.models.AlbumItem
 import com.zionhuang.innertube.models.Artist
 import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.BrowseEndpoint
+import com.zionhuang.innertube.models.BrowseEndpoint.BrowseEndpointContextSupportedConfigs.BrowseEndpointContextMusicConfig.Companion.MUSIC_PAGE_TYPE_TRACK_LYRICS
+import com.zionhuang.innertube.models.BrowseEndpoint.BrowseEndpointContextSupportedConfigs.BrowseEndpointContextMusicConfig.Companion.MUSIC_PAGE_TYPE_TRACK_RELATED
 import com.zionhuang.innertube.models.GridRenderer
 import com.zionhuang.innertube.models.MusicCarouselShelfRenderer
 import com.zionhuang.innertube.models.MusicShelfRenderer
 import com.zionhuang.innertube.models.PlaylistItem
 import com.zionhuang.innertube.models.SearchSuggestions
 import com.zionhuang.innertube.models.SongItem
+import com.zionhuang.innertube.models.Tabs
 import com.zionhuang.innertube.models.WatchEndpoint
 import com.zionhuang.innertube.models.WatchEndpoint.WatchEndpointMusicSupportedConfigs.WatchEndpointMusicConfig.Companion.MUSIC_VIDEO_TYPE_ATV
 import com.zionhuang.innertube.models.YTItem
@@ -738,6 +741,7 @@ object YouTube {
         }
         val songs = items.map { it.first }
         val currentIndex = items.indexOfFirst { it.second }.takeIf { it != -1 }
+        val tabs = response.contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer.watchNextTabbedResultsRenderer.tabs
 
         // load automix items
         playlistPanelRenderer.contents.lastOrNull()?.automixPreviewVideoRenderer?.content?.automixPlaylistVideoRenderer?.navigationEndpoint?.watchPlaylistEndpoint?.let { watchPlaylistEndpoint ->
@@ -745,8 +749,8 @@ object YouTube {
                 result.copy(
                     title = title,
                     items = songs + result.items,
-                    lyricsEndpoint = response.contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer.watchNextTabbedResultsRenderer.tabs.getOrNull(1)?.tabRenderer?.endpoint?.browseEndpoint,
-                    relatedEndpoint = response.contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer.watchNextTabbedResultsRenderer.tabs.getOrNull(2)?.tabRenderer?.endpoint?.browseEndpoint,
+                    lyricsEndpoint = tabEndpoint(tabs, MUSIC_PAGE_TYPE_TRACK_LYRICS),
+                    relatedEndpoint = tabEndpoint(tabs, MUSIC_PAGE_TYPE_TRACK_RELATED),
                     currentIndex = currentIndex,
                     endpoint = watchPlaylistEndpoint
                 )
@@ -756,12 +760,19 @@ object YouTube {
             title = title,
             items = songs,
             currentIndex = currentIndex,
-            lyricsEndpoint = response.contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer.watchNextTabbedResultsRenderer.tabs.getOrNull(1)?.tabRenderer?.endpoint?.browseEndpoint,
-            relatedEndpoint = response.contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer.watchNextTabbedResultsRenderer.tabs.getOrNull(2)?.tabRenderer?.endpoint?.browseEndpoint,
+            lyricsEndpoint = tabEndpoint(tabs, MUSIC_PAGE_TYPE_TRACK_LYRICS),
+            relatedEndpoint = tabEndpoint(tabs, MUSIC_PAGE_TYPE_TRACK_RELATED),
             continuation = playlistPanelRenderer.continuations?.getContinuation(),
             endpoint = endpoint
         )
     }
+
+    // Find tabs by page type; their positions in the response are not stable
+    internal fun tabEndpoint(tabs: List<Tabs.Tab>, pageType: String): BrowseEndpoint? =
+        tabs.firstOrNull {
+            it.tabRenderer.endpoint?.browseEndpoint?.browseEndpointContextSupportedConfigs
+                ?.browseEndpointContextMusicConfig?.pageType == pageType
+        }?.tabRenderer?.endpoint?.browseEndpoint
 
     suspend fun lyrics(endpoint: BrowseEndpoint): Result<String?> = runCatching {
         val response = innerTube.browse(WEB_REMIX, endpoint.browseId, endpoint.params).body<BrowseResponse>()
