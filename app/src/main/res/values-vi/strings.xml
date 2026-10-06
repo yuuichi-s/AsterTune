@@ -12,8 +12,7 @@
     <string name="stats">Thống kê</string>
     <string name="mood_and_genres">Tâm trạng và thể loại</string>
     <string name="account">Tài Khoản</string>
-    <string name="quick_picks">Lựa chọn nhanh</string>
-    <string name="quick_picks_empty">Hãy nghe các bài hát để tạo danh sách chọn nhanh của bạn</string>
+    <string name="quick_picks">Theo lịch sử nghe</string>
     <string name="new_release_albums">Các album mới phát hành</string>
     <string name="today">Hôm nay</string>
     <string name="yesterday">Hôm qua</string>
@@ -50,6 +49,7 @@
     <string name="edit">Chỉnh sửa</string>
     <string name="start_radio">Bắt đầu đài phát</string>
     <string name="play">Phát</string>
+    <string name="play_all">Phát tất cả</string>
     <string name="play_next">Phát bài tiếp theo</string>
     <string name="add_to_queue">Thêm vào hàng chờ</string>
     <string name="add_to_library">Thêm vào thư viện</string>

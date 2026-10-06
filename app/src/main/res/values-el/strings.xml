@@ -13,8 +13,7 @@
     <string name="stats">Στατιστικά</string>
     <string name="mood_and_genres">Διάθεση και Είδη</string>
     <string name="account">Λογαριασμός</string>
-    <string name="quick_picks">Γρήγορες επιλογές</string>
-    <string name="quick_picks_empty">Ακούστε σε τραγούδια για να δημιουργήσετε τις γρήγορες επιλογές σας</string>
+    <string name="quick_picks">Με βάση όσα ακούτε</string>
     <string name="forgotten_favorites">Ξεχασμένα αγαπημένα</string>
     <string name="keep_listening">Συνέχεια ακρόασης</string>
     <string name="similar_to">Παρόμοια με</string>
@@ -60,6 +59,7 @@
     <string name="edit">Επεξεργασία</string>
     <string name="start_radio">Έναρξη ραδιοφώνου</string>
     <string name="play">Αναπαραγωγή</string>
+    <string name="play_all">Αναπαραγωγή όλων</string>
     <string name="play_next">Αναπαραγωγή επόμενου</string>
     <string name="add_to_queue">Προσθήκη στην ουρά</string>
     <string name="add_to_library">Προσθήκη στη βιβλιοθήκη</string>

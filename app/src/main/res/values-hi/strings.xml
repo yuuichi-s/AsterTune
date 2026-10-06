@@ -9,8 +9,7 @@
         <item quantity="other">%d चुने गए</item>
     </plurals>
     <string name="account">खाता</string>
-    <string name="quick_picks">झटपट चलाने हेतु चुनिंदा गीत</string>
-    <string name="quick_picks_empty">झटपट सूची बनाने के लिए कुछ गीत सुनें</string>
+    <string name="quick_picks">सुनने के आधार पर</string>
     <string name="forgotten_favorites">भूले-बिछड़े पसंदीदा गीत</string>
     <string name="history">इतिहास</string>
     <string name="stats">आंकड़े</string>
@@ -48,6 +47,7 @@
     <string name="details">विवरण</string>
     <string name="edit">बदलाव</string>
     <string name="play">चलाएं</string>
+    <string name="play_all">सभी चलाएं</string>
     <string name="play_next">अगला इसे बजायें</string>
     <string name="add_to_queue">कतार में लगाएं</string>
     <string name="add_to_library">संग्रह में जोड़ें</string>

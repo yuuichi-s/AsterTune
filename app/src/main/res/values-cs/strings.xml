@@ -14,8 +14,7 @@
     <string name="stats">Statistiky</string>
     <string name="mood_and_genres">Nálada a žánry</string>
     <string name="account">Účet</string>
-    <string name="quick_picks">Rychlý výběr</string>
-    <string name="quick_picks_empty">Pro vytvoření rychlého výběru si nejprve poslechněte pár skladeb</string>
+    <string name="quick_picks">Podle poslechu</string>
     <string name="new_release_albums">Nově vydaná alba</string>
     <string name="today">Dnes</string>
     <string name="yesterday">Včera</string>
@@ -52,6 +51,7 @@
     <string name="edit">Upravit</string>
     <string name="start_radio">Spustit rádio</string>
     <string name="play">Přehrát</string>
+    <string name="play_all">Přehrát vše</string>
     <string name="play_next">Přehrát jako další</string>
     <string name="add_to_queue">Přidat do fronty</string>
     <string name="add_to_library">Přidat do knihovny</string>

@@ -13,8 +13,7 @@
     <string name="stats">স্টাটস</string>
     <string name="mood_and_genres">মুড ও জনরা</string>
     <string name="account">অ্যাকাউন্ট</string>
-    <string name="quick_picks">কুইক পিকস্</string>
-    <string name="quick_picks_empty">কুইক পিক তৈরি করতে আগে কিছু গান শুনুন</string>
+    <string name="quick_picks">আপনার শোনা গানের ভিত্তিতে</string>
     <string name="new_release_albums">নতুন অ্যালবাম ও সিঙ্গেল</string>
     <string name="today">আজ</string>
     <string name="yesterday">গতকাল</string>
@@ -51,6 +50,7 @@
     <string name="edit">এডিট</string>
     <string name="start_radio">রেডিও চালু করুন</string>
     <string name="play">প্লে</string>
+    <string name="play_all">সব চালান</string>
     <string name="play_next">পরবর্তী গান</string>
     <string name="add_to_queue">কিউতে অ্যাড করুন</string>
     <string name="add_to_library">লাইব্রেরি তে অ্যাড করুন</string>

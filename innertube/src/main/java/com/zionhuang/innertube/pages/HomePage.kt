@@ -1,16 +1,21 @@
 package com.zionhuang.innertube.pages
 
+import com.zionhuang.innertube.models.Album
 import com.zionhuang.innertube.models.AlbumItem
 import com.zionhuang.innertube.models.Artist
 import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.BrowseEndpoint
 import com.zionhuang.innertube.models.MusicCarouselShelfRenderer
+import com.zionhuang.innertube.models.MusicResponsiveListItemRenderer
 import com.zionhuang.innertube.models.MusicTwoRowItemRenderer
 import com.zionhuang.innertube.models.PlaylistItem
 import com.zionhuang.innertube.models.SectionListRenderer
 import com.zionhuang.innertube.models.SongItem
+import com.zionhuang.innertube.models.WatchEndpoint
 import com.zionhuang.innertube.models.YTItem
 import com.zionhuang.innertube.models.oddElements
+import com.zionhuang.innertube.models.splitBySeparator
+import com.zionhuang.innertube.utils.parseTime
 
 data class HomePage(
     val chips: List<Chip>?,
@@ -39,21 +44,72 @@ data class HomePage(
         val thumbnail: String?,
         val endpoint: BrowseEndpoint?,
         val items: List<YTItem>,
+        /** Playback endpoint provided by the shelf header, or null if none is available. */
+        val playEndpoint: WatchEndpoint? = null,
+        /** Whether the shelf contains only [MusicResponsiveListItemRenderer] items. */
+        val isListStyle: Boolean = false,
     ) {
         companion object {
             fun fromMusicCarouselShelfRenderer(renderer: MusicCarouselShelfRenderer): Section? {
+                val header = renderer.header?.musicCarouselShelfBasicHeaderRenderer
+                val headerButtonEndpoint = header?.moreContentButton?.buttonRenderer?.navigationEndpoint
                 return Section(
-                    title = renderer.header?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.firstOrNull()?.text ?: return null,
-                    label = renderer.header.musicCarouselShelfBasicHeaderRenderer.strapline?.runs?.firstOrNull()?.text,
-                    thumbnail = renderer.header.musicCarouselShelfBasicHeaderRenderer.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl(),
-                    endpoint = renderer.header.musicCarouselShelfBasicHeaderRenderer.moreContentButton?.buttonRenderer?.navigationEndpoint?.browseEndpoint,
-                    items = renderer.contents.mapNotNull {
-                        it.musicTwoRowItemRenderer
-                    }.mapNotNull {
-                        fromMusicTwoRowItemRenderer(it)
+                    title = header?.title?.runs?.firstOrNull()?.text ?: return null,
+                    label = header.strapline?.runs?.firstOrNull()?.text,
+                    thumbnail = header.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl(),
+                    endpoint = headerButtonEndpoint?.browseEndpoint,
+                    items = renderer.contents.mapNotNull { content ->
+                        content.musicTwoRowItemRenderer?.let { fromMusicTwoRowItemRenderer(it) }
+                            ?: content.musicResponsiveListItemRenderer?.let {
+                                fromMusicResponsiveListItemRenderer(it)
+                            }
                     }.ifEmpty {
                         return null
-                    }
+                    },
+                    playEndpoint = headerButtonEndpoint?.anyWatchEndpoint,
+                    isListStyle = renderer.contents.all { it.musicResponsiveListItemRenderer != null },
+                )
+            }
+
+            /**
+             * Converts a home shelf's list item into a [SongItem].
+             *
+             * Reads artists or the uploader from the second-column segment containing an artist
+             * or channel link, falling back to the first segment when neither link is present.
+             * Reads the duration from the final segment after " • " if it can be parsed as a time.
+             */
+            private fun fromMusicResponsiveListItemRenderer(renderer: MusicResponsiveListItemRenderer): SongItem? {
+                val secondColumnRuns = renderer.flexColumns.getOrNull(1)
+                    ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs.orEmpty()
+                val segments = secondColumnRuns.splitBySeparator()
+                val artistRuns = PageHelper.extractArtistRuns(secondColumnRuns)
+                    .ifEmpty { segments.firstOrNull()?.oddElements().orEmpty() }
+                return SongItem(
+                    id = renderer.playlistItemData?.videoId ?: return null,
+                    title = renderer.flexColumns.firstOrNull()
+                        ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.firstOrNull()
+                        ?.text ?: return null,
+                    artists = artistRuns.map {
+                        Artist(
+                            name = it.text,
+                            id = it.navigationEndpoint?.browseEndpoint?.browseId
+                        )
+                    },
+                    album = renderer.flexColumns.getOrNull(2)
+                        ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs
+                        ?.firstOrNull { it.navigationEndpoint?.browseEndpoint?.isAlbumEndpoint == true }
+                        ?.let {
+                            Album(
+                                name = it.text,
+                                id = it.navigationEndpoint!!.browseEndpoint!!.browseId
+                            )
+                        },
+                    duration = segments.takeIf { it.size > 1 }?.lastOrNull()
+                        ?.joinToString("") { it.text }?.parseTime(),
+                    thumbnail = renderer.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,
+                    explicit = renderer.badges?.find {
+                        it.musicInlineBadgeRenderer?.icon?.iconType == "MUSIC_EXPLICIT_BADGE"
+                    } != null
                 )
             }
 

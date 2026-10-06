@@ -11,8 +11,7 @@
     </plurals>
     <string name="stats">Statistikk</string>
     <string name="mood_and_genres">Stemning og sjangrer</string>
-    <string name="quick_picks">Hurtigvalg</string>
-    <string name="quick_picks_empty">Hør på sanger for å generere hurtigvalgene dine</string>
+    <string name="quick_picks">Basert på lyttingen din</string>
     <string name="your_youtube_playlists">YouTube-spillelistene dine</string>
     <string name="similar_to">Ligner på</string>
     <string name="new_release_albums">Nylig slupne album</string>
@@ -46,6 +45,7 @@
     <string name="details">Detaljer</string>
     <string name="edit">Rediger</string>
     <string name="play">Spill</string>
+    <string name="play_all">Spill av alle</string>
     <string name="add_all_to_library">Legg til alle i biblioteket</string>
     <string name="remove_from_library">Fjern fra biblioteket</string>
     <string name="remove_all_from_library">Fjern alle fra biblioteket</string>

@@ -14,8 +14,7 @@
     <string name="stats">Estadísticas</string>
     <string name="mood_and_genres">Estado de ánimo y géneros</string>
     <string name="account">Cuenta</string>
-    <string name="quick_picks">Selecciones rápidas</string>
-    <string name="quick_picks_empty">Escuche canciones para generar sus selecciones rápidas</string>
+    <string name="quick_picks">Según lo que escucha</string>
     <string name="forgotten_favorites">Favoritos olvidados</string>
     <string name="keep_listening">Seguir escuchando</string>
     <string name="similar_to">Similares a</string>
@@ -61,6 +60,7 @@
     <string name="edit">Editar</string>
     <string name="start_radio">Iniciar radio</string>
     <string name="play">Reproducir</string>
+    <string name="play_all">Reproducir todo</string>
     <string name="play_next">Reproducir a continuación</string>
     <string name="add_to_queue">Añadir a la cola</string>
     <string name="add_to_library">Añadir a la biblioteca</string>

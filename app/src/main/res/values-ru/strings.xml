@@ -15,8 +15,7 @@
     <string name="stats">Статистика</string>
     <string name="mood_and_genres">Настроение и жанры</string>
     <string name="account">Аккаунт</string>
-    <string name="quick_picks">Быстрый выбор</string>
-    <string name="quick_picks_empty">Послушайте несколько песен, чтобы создать ваш быстрый выбор</string>
+    <string name="quick_picks">На основе прослушиваний</string>
     <string name="forgotten_favorites">Забытые избранные</string>
     <string name="keep_listening">Продолжайте слушать</string>
     <string name="your_youtube_playlists">Ваши плейлисты YouTube</string>
@@ -64,6 +63,7 @@
     <string name="edit">Редактировать</string>
     <string name="start_radio">Запустить радио</string>
     <string name="play">Играть</string>
+    <string name="play_all">Воспроизвести все</string>
     <string name="play_next">Играть следующим</string>
     <string name="add_to_queue">Добавить в очередь</string>
     <string name="add_to_library">Добавить в библиотеку</string>

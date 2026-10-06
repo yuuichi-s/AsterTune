@@ -14,8 +14,7 @@
     <string name="stats">Statistiche</string>
     <string name="mood_and_genres">Umori e generi</string>
     <string name="account">Account</string>
-    <string name="quick_picks">Scelte rapide</string>
-    <string name="quick_picks_empty">Ascolta alcuni brani per generare le tue scelte rapide</string>
+    <string name="quick_picks">In base ai tuoi ascolti</string>
     <string name="new_release_albums">Nuovi album in uscita</string>
     <string name="today">Oggi</string>
     <string name="yesterday">Ieri</string>
@@ -52,6 +51,7 @@
     <string name="edit">Modifica</string>
     <string name="start_radio">Avvia radio</string>
     <string name="play">Riproduci</string>
+    <string name="play_all">Riproduci tutto</string>
     <string name="play_next">Riproduci come successiva</string>
     <string name="add_to_queue">Metti in coda</string>
     <string name="add_to_library">Aggiungi a libreria</string>

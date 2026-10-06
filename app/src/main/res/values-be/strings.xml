@@ -15,8 +15,7 @@
     <string name="stats">Статыстыка</string>
     <string name="mood_and_genres">Настроі і жанры</string>
     <string name="account">Уліковы запіс</string>
-    <string name="quick_picks">Хуткі выбар</string>
-    <string name="quick_picks_empty">Праслухайце якія-небудзь кампазіцыі, каб стварыць ваш хуткі выбар.</string>
+    <string name="quick_picks">На аснове праслуханага</string>
     <string name="new_release_albums">Новыя рэлізы альбомаў</string>
     <string name="today">Сёння</string>
     <string name="yesterday">Учора</string>
@@ -47,6 +46,7 @@
     <string name="edit">Змяніць</string>
     <string name="start_radio">Уключыць радыё</string>
     <string name="play">Прайграць</string>
+    <string name="play_all">Прайграць усе</string>
     <string name="play_next">Прайграць наступным</string>
     <string name="add_to_queue">Дадаць у чаргу</string>
     <string name="add_to_library">Дадаць у бібліятэку</string>

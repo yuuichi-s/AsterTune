@@ -29,6 +29,7 @@
     <string name="edit">എഡിറ്റ് ചെയ്യുക</string>
     <string name="start_radio">റേഡിയോ ആരംഭിക്കുക</string>
     <string name="play">പ്ലേ ചെയ്യുക</string>
+    <string name="play_all">എല്ലാം പ്ലേ ചെയ്യുക</string>
     <string name="play_next">അടുത്തത് പ്ലേ ചെയ്യുക</string>
     <string name="add_to_queue">ക്യൂവിൽ ചേർക്കുക</string>
     <string name="add_to_library">ലൈബ്രറിയിലേക്ക് ചേർക്കുക</string>
@@ -176,8 +177,7 @@
     <string name="stats">സ്റ്റാറ്റസ്</string>
     <string name="mood_and_genres">സംഗീത വിഭാഗങ്ങൾ</string>
     <string name="account">അക്കൗണ്ട്</string>
-    <string name="quick_picks">തിരഞ്ഞെടുത്തവ</string>
-    <string name="quick_picks_empty">ക്വിക്ക് പിക്‌സ് ജനറേറ്റ് ചെയ്യാൻ വേണ്ടി പാട്ടുകൾ കേൾക്കുക</string>
+    <string name="quick_picks">കേൾവി അനുസരിച്ച്</string>
     <string name="similar_to">സമാനമായത്</string>
     <string name="new_release_albums">പുതുതായി റിലീസ് ആയ ആൽബങ്ങൾ</string>
     <string name="today">ഇന്ന്</string>

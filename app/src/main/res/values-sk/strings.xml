@@ -15,8 +15,7 @@
     <string name="stats">Štatistiky</string>
     <string name="mood_and_genres">Nálada a žánre</string>
     <string name="account">Účet</string>
-    <string name="quick_picks">Rýchle výbery</string>
-    <string name="quick_picks_empty">Počúvajte skladby a vygenerujte si rýchle tipy</string>
+    <string name="quick_picks">Na základe počúvania</string>
     <string name="forgotten_favorites">Zabudnuté obľúbené</string>
     <string name="keep_listening">Počúvať ďalej</string>
     <string name="your_youtube_playlists">Vaše playlisty na YouTube</string>
@@ -64,6 +63,7 @@
     <string name="edit">Upraviť</string>
     <string name="start_radio">Spustiť rádio</string>
     <string name="play">Prehrať</string>
+    <string name="play_all">Prehrať všetko</string>
     <string name="play_next">Prehrať ďalšie</string>
     <string name="add_to_queue">Pridať do fronty</string>
     <string name="add_to_library">Pridať do knižnice</string>

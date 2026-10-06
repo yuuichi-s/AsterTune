@@ -12,8 +12,7 @@
     <string name="stats">統計</string>
     <string name="mood_and_genres">ムードとジャンル</string>
     <string name="account">アカウント</string>
-    <string name="quick_picks">おすすめ</string>
-    <string name="quick_picks_empty">何曲か再生するとおすすめを生成します</string>
+    <string name="quick_picks">よく聴く曲からおすすめ</string>
     <string name="new_release_albums">新作アルバム</string>
     <string name="forgotten_favorites">聴かなくなったお気に入り</string>
     <string name="keep_listening">続きを聴く</string>
@@ -61,6 +60,7 @@
     <string name="edit">編集</string>
     <string name="start_radio">ラジオを再生</string>
     <string name="play">再生</string>
+    <string name="play_all">すべて再生</string>
     <string name="play_next">次に再生</string>
     <string name="add_to_queue">キューに追加</string>
     <string name="add_to_library">ライブラリに追加</string>

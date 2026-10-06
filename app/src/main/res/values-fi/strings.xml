@@ -13,8 +13,7 @@
     <string name="stats">Tilastot</string>
     <string name="mood_and_genres">Mielialat ja genret</string>
     <string name="account">Tili</string>
-    <string name="quick_picks">Pikalista</string>
-    <string name="quick_picks_empty">Kuuntele kappaleita luodaksesi pikavalintasi</string>
+    <string name="quick_picks">Kuuntelusi perusteella</string>
     <string name="new_release_albums">Uusia julkaisuja albumeita</string>
     <string name="today">Tänään</string>
     <string name="yesterday">Eilen</string>
@@ -51,6 +50,7 @@
     <string name="edit">Muokkaa</string>
     <string name="start_radio">Käynnistä radio</string>
     <string name="play">Toista</string>
+    <string name="play_all">Toista kaikki</string>
     <string name="play_next">Toista seuraavaksi</string>
     <string name="add_to_queue">Lisää jonoon</string>
     <string name="add_to_library">Lisää kirjastoon</string>

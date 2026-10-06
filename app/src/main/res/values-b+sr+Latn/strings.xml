@@ -14,8 +14,7 @@
     <string name="stats">Statistike</string>
     <string name="mood_and_genres">Raspoloženje i Žanrovi</string>
     <string name="account">Račun</string>
-    <string name="quick_picks">Brzi izbori</string>
-    <string name="quick_picks_empty">Odslušaj pesme kako bi generisao tvoje brze izbore</string>
+    <string name="quick_picks">Na osnovu slušanja</string>
     <string name="forgotten_favorites">Zaboravljeni favoriti</string>
     <string name="keep_listening">Nastavi slušanje</string>
     <string name="your_youtube_playlists">Tvoje YouTube plejliste</string>
@@ -237,6 +236,7 @@
     <string name="filter_liked">Sviđa mi se</string>
     <string name="remove_download_playlist_confirm">Da li zaista želite da obrišete sve \"%s\" pesme sa plejliste iz skladišta Preuzetih Pesama?</string>
     <string name="play">Pusti</string>
+    <string name="play_all">Pusti sve</string>
     <string name="add_to_queue">Dodaj u red</string>
     <string name="play_next">Pusti sledeće</string>
     <string name="add_to_library">Dodaj u biblioteku</string>

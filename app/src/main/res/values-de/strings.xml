@@ -13,8 +13,7 @@
     <string name="stats">Statistiken</string>
     <string name="mood_and_genres">Stimmungen und Genres</string>
     <string name="account">Konto</string>
-    <string name="quick_picks">Schnellauswahl</string>
-    <string name="quick_picks_empty">Höre dir Songs an, um deine Schnellauswahl zu erstellen</string>
+    <string name="quick_picks">Nach deinem Hörverlauf</string>
     <string name="new_release_albums">Neu veröffentlichte Alben</string>
     <string name="today">Heute</string>
     <string name="yesterday">Gestern</string>
@@ -50,6 +49,7 @@
     <string name="edit">Bearbeiten</string>
     <string name="start_radio">Radio starten</string>
     <string name="play">Wiedergabe</string>
+    <string name="play_all">Alle abspielen</string>
     <string name="play_next">Als nächstes abspielen</string>
     <string name="add_to_queue">Zur Warteschlange hinzufügen</string>
     <string name="add_to_library">Zur Bibliothek hinzufügen</string>

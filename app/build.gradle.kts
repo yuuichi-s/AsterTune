@@ -281,6 +281,17 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
 }
 
+// Runs JVM tests, then device tests; the device test step installs the app and leaves it installed.
+listOf("Core", "Full").forEach { flavor ->
+    val unitTest = "test${flavor}DebugUnitTest"
+    val deviceTest = "connected${flavor}DebugAndroidTest"
+    tasks.matching { it.name == deviceTest }.configureEach { mustRunAfter(unitTest) }
+    tasks.register("testAndInstall${flavor}Debug") {
+        group = "verification"
+        dependsOn(unitTest, deviceTest)
+    }
+}
+
 afterEvaluate {
     dependencies {
         add("fullImplementation", files("../prebuilt/ffMetadataEx-release.aar"))

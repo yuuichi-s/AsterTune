@@ -12,8 +12,7 @@
     <string name="stats">통계</string>
     <string name="mood_and_genres">분위기 및 장르</string>
     <string name="account">계정</string>
-    <string name="quick_picks">빠른 선곡</string>
-    <string name="quick_picks_empty">빠른 선곡을 생성하기 위해 몇 곡을 들어보세요</string>
+    <string name="quick_picks">자주 듣는 곡 기반 추천</string>
     <string name="new_release_albums">최신 앨범</string>
     <string name="today">오늘</string>
     <string name="yesterday">어제</string>
@@ -50,6 +49,7 @@
     <string name="edit">수정</string>
     <string name="start_radio">라디오 시작</string>
     <string name="play">재생</string>
+    <string name="play_all">모두 재생</string>
     <string name="play_next">다음 노래 재생</string>
     <string name="add_to_queue">목록에 추가</string>
     <string name="add_to_library">보관함에 추가</string>

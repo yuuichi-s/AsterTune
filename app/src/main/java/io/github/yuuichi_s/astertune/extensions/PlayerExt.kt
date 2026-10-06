@@ -18,6 +18,19 @@ fun Player.togglePlayPause() {
     playWhenReady = !playWhenReady
 }
 
+/**
+ * Plays or pauses the current item, or restarts it from the beginning when playback has ended,
+ * which [togglePlayPause] alone cannot do.
+ */
+fun Player.togglePlayPauseOrReplay() {
+    if (playbackState == Player.STATE_ENDED) {
+        seekTo(0L)
+        playWhenReady = true
+    } else {
+        togglePlayPause()
+    }
+}
+
 fun Player.toggleRepeatMode() {
     repeatMode = when (repeatMode) {
         REPEAT_MODE_OFF -> REPEAT_MODE_ALL

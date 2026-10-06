@@ -5,7 +5,6 @@
     <string name="stats">Statistika</string>
     <string name="mood_and_genres">Meeleolu ja žanrid</string>
     <string name="account">Kasutajakonto</string>
-    <string name="quick_picks_empty">Kiirvalikute loomiseks kuula lugusid</string>
     <string name="forgotten_favorites">Unustatud lemmikud</string>
     <string name="new_release_albums">Uued avaldatud albumid</string>
     <string name="today">Täna</string>
@@ -60,7 +59,7 @@
         <item quantity="one">%d valitud</item>
         <item quantity="other">%d valitud</item>
     </plurals>
-    <string name="quick_picks">Kiirvalikud</string>
+    <string name="quick_picks">Kuulamise põhjal</string>
     <string name="your_youtube_playlists">Sinu YouTube\'i esitusloendid</string>
     <string name="keep_listening">Jätka kuulamist</string>
     <string name="similar_to">Sarnane nagu</string>
@@ -79,6 +78,7 @@
     <string name="reset">Lähtesta</string>
     <string name="details">Üksikasjad</string>
     <string name="play">Esita</string>
+    <string name="play_all">Esita kõik</string>
     <string name="play_next">Esita järgmisena</string>
     <string name="refetch">Laadi uuesti</string>
     <string name="add_to_queue">Lisa esitusjärjekorda</string>

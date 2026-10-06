@@ -15,8 +15,8 @@
     <string name="stats">Statistika</string>
     <string name="mood_and_genres">Razpoloženje in žanri</string>
     <string name="account">Račun</string>
-    <string name="quick_picks">Hitri izbori</string>
-    <string name="quick_picks_empty">Poslušajte skladbe in ustvarite hitre izbire</string>
+    <string name="quick_picks">Glede na poslušanje</string>
+    <string name="play_all">Predvajaj vse</string>
     <string name="forgotten_favorites">Pozabljene priljubljene</string>
     <string name="your_youtube_playlists">Vaši seznami predvajanja YouTube</string>
     <string name="similar_to">Podobno kot</string>
