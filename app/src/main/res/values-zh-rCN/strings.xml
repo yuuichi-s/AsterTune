@@ -12,8 +12,7 @@
     <string name="stats">统计</string>
     <string name="mood_and_genres">曲调和流派</string>
     <string name="account">账号</string>
-    <string name="quick_picks">歌曲快选</string>
-    <string name="quick_picks_empty">听一些歌曲来生成歌曲快选</string>
+    <string name="quick_picks">根据收听记录推荐</string>
     <string name="new_release_albums">新专辑</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
@@ -50,6 +49,7 @@
     <string name="edit">编辑</string>
     <string name="start_radio">收听电台</string>
     <string name="play">播放</string>
+    <string name="play_all">全部播放</string>
     <string name="play_next">接下来播放</string>
     <string name="add_to_queue">加入播放队列</string>
     <string name="add_to_library">加入媒体库</string>

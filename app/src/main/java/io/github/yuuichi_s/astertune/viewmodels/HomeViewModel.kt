@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
@@ -61,7 +62,11 @@ class HomeViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val allLocalItems = MutableStateFlow<List<LocalItem>>(emptyList())
-    val allYtItems = MutableStateFlow<List<YTItem>>(emptyList())
+    /** Items from similar recommendations and home sections used for random playback. */
+    val allYtItems = combine(similarRecommendations, homePage) { recommendations, page ->
+        recommendations?.flatMap { it.items }.orEmpty() +
+                page?.sections?.flatMap { it.items }.orEmpty()
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private suspend fun load(manual: Boolean) =
         try {
@@ -159,9 +164,6 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
-
-            allYtItems.value = similarRecommendations.value?.flatMap { it.items }.orEmpty() +
-                    homePage.value?.sections?.flatMap { it.items }.orEmpty()
         } finally {
             isLoading.value = false
         }

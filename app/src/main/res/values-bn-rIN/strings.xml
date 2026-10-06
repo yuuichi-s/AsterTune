@@ -13,8 +13,7 @@
     <string name="stats">পরিসংখ্যান</string>
     <string name="mood_and_genres">মেজাজ এবং শৈলী</string>
     <string name="account">অ্যাকাউন্ট</string>
-    <string name="quick_picks">দ্রুত পছন্দ</string>
-    <string name="quick_picks_empty">আপনার নিজের শর্টকাট তৈরি করতে কিছু টিউন শুনুন</string>
+    <string name="quick_picks">আপনার শোনা গানের ভিত্তিতে</string>
     <string name="new_release_albums">নতুন অ্যালবাম ও সিঙ্গেল</string>
     <string name="today">আজ</string>
     <string name="yesterday">গতকাল</string>
@@ -46,6 +45,7 @@
     <string name="edit">সম্পাদনা</string>
     <string name="start_radio">বেতার খুলুন</string>
     <string name="play">গান বাজান</string>
+    <string name="play_all">সব চালান</string>
     <string name="play_next">পরবর্তী গান বাজান</string>
     <string name="add_to_queue">পরবর্তী গান যোগ করুন</string>
     <string name="add_to_library">লাইব্রেরি তে যোগ করুন</string>

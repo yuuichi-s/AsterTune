@@ -2,8 +2,7 @@
 <resources>
     <string name="mood_and_genres">Estado de ánimo y géneros</string>
     <string name="account">Cuenta</string>
-    <string name="quick_picks">Selecciones rápidas</string>
-    <string name="quick_picks_empty">Escucha canciones para generar tus selecciones rápidas</string>
+    <string name="quick_picks">Según lo que escuchas</string>
     <string name="forgotten_favorites">Favoritos olvidados</string>
     <string name="keep_listening">Sigue escuchando</string>
     <string name="your_youtube_playlists">Tus listas de reproducción de YouTube</string>
@@ -65,6 +64,7 @@
     <string name="sort_by_name">Nombre</string>
     <string name="start_radio">Iniciar radio</string>
     <string name="play">Reproducir</string>
+    <string name="play_all">Reproducir todo</string>
     <string name="play_next">Reproducir siguiente</string>
     <string name="add_to_queue">Añadir a la cola</string>
     <string name="add_to_library">Añadir a la biblioteca</string>

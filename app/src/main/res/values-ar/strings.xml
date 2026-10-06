@@ -5,7 +5,7 @@
     <string name="history">السجل</string>
     <string name="stats">إحصائيات</string>
     <string name="account">حساب</string>
-    <string name="quick_picks">إختيارات سريعة</string>
+    <string name="quick_picks">بناءً على ما تستمع إليه</string>
     <string name="forgotten_favorites">مفضلات مهملة</string>
     <string name="your_youtube_playlists">قوائم أغانيك على YouTube</string>
     <string name="similar_to">تشبه</string>
@@ -34,7 +34,6 @@
     <string name="songs">أغاني</string>
     <string name="playlists">قوائم الأغاني</string>
     <string name="mood_and_genres">الأوضاع والتصنيف</string>
-    <string name="quick_picks_empty">استمع إلى الأغاني لتوليد قائمة السريعة</string>
     <string name="search">ابحث</string>
     <string name="keep_listening">تابع الاستماع</string>
     <string name="this_week">الأسبوع الحالي</string>
@@ -66,6 +65,7 @@
     <string name="edit">عدل</string>
     <string name="start_radio">بدء الراديو</string>
     <string name="play">شغل</string>
+    <string name="play_all">تشغيل الكل</string>
     <string name="play_next">تشغيل التالي</string>
     <string name="add_to_library">ضف إلى المكتبة</string>
     <string name="add_to_queue">ضف إلى قائمة الانتظار</string>

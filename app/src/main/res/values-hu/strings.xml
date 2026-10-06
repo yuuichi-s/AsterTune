@@ -13,8 +13,7 @@
     <string name="stats">Statisztikák</string>
     <string name="mood_and_genres">Hangulatok és Műfajok</string>
     <string name="account">Fiók</string>
-    <string name="quick_picks">Gyors választások</string>
-    <string name="quick_picks_empty">Hallgasson zeneszámokat a gyors választások generálásához</string>
+    <string name="quick_picks">Hallgatásai alapján</string>
     <string name="new_release_albums">Újonnan megjelent albumok</string>
     <string name="today">Ma</string>
     <string name="yesterday">Tegnap</string>
@@ -51,6 +50,7 @@
     <string name="edit">Szerkesztés</string>
     <string name="start_radio">Rádió indítása</string>
     <string name="play">Lejátszás</string>
+    <string name="play_all">Összes lejátszása</string>
     <string name="play_next">Következő</string>
     <string name="add_to_queue">Listához ad</string>
     <string name="add_to_library">Könyvtárhoz ad</string>

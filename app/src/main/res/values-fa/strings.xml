@@ -13,8 +13,7 @@
     <string name="stats">آمار</string>
     <string name="mood_and_genres">حالت و سبک</string>
     <string name="account">حساب</string>
-    <string name="quick_picks">انتخاب‌های سریع</string>
-    <string name="quick_picks_empty">به ترانه‌ها گوش دهید تا انتخاب سریع خود ساخته شود</string>
+    <string name="quick_picks">بر اساس شنیده‌های شما</string>
     <string name="new_release_albums">مجموعه‌های منتشرشده‌ی جدید</string>
     <string name="today">امروز</string>
     <string name="yesterday">دیروز</string>
@@ -51,6 +50,7 @@
     <string name="edit">ویرایش</string>
     <string name="start_radio">شروع رادیو</string>
     <string name="play">پخش</string>
+    <string name="play_all">پخش همه</string>
     <string name="play_next">پخش بعدی</string>
     <string name="add_to_queue">اضافه‌کردن به صف</string>
     <string name="add_to_library">اضافه‌کردن به کتاب‌خانه</string>

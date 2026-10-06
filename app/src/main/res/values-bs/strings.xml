@@ -89,9 +89,8 @@
     <string name="from_your_library">Iz vaše biblioteke</string>
     <string name="stats">Statistike</string>
     <string name="mood_and_genres">Raspoloženje i Žanrovi</string>
-    <string name="quick_picks">Brzi izbori</string>
+    <string name="quick_picks">Na osnovu slušanja</string>
     <string name="account">Račun</string>
-    <string name="quick_picks_empty">Odslušaj pjesme kako bi generisali vaše brze odabire</string>
     <string name="keep_listening">Nastavite da slušate</string>
     <string name="your_youtube_playlists">Vaši YouTube spisci za reprodukciju</string>
     <string name="most_played_albums">Najslušaniji albumi</string>
@@ -130,6 +129,7 @@
     <string name="add_to_queue">Dodaj u red</string>
     <string name="edit">Uredi</string>
     <string name="play">Pokreni</string>
+    <string name="play_all">Pusti sve</string>
     <string name="play_next">Pokreni sljedeće</string>
     <string name="add_to_library">Dodaj u biblioteku</string>
     <string name="add_all_to_library">Dodaj u sve biblioteke</string>

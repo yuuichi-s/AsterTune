@@ -18,10 +18,9 @@
     <string name="history">История</string>
     <string name="mood_and_genres">Настроения и жанрове</string>
     <string name="stats">Статистика</string>
-    <string name="quick_picks">Бърз избор</string>
+    <string name="quick_picks">Според слушаното</string>
     <string name="keep_listening">Продължи да слушаш</string>
     <string name="account">Профил</string>
-    <string name="quick_picks_empty">Слушай песни, за да генерираш своя бърз избор</string>
     <string name="forgotten_favorites">Забравени любими</string>
     <string name="your_youtube_playlists">Вашите плейлисти в YouTube</string>
     <string name="most_played_songs">Най-пускани песни</string>
@@ -36,6 +35,7 @@
     <string name="playlist_is_empty">Плейлистът е празен</string>
     <string name="from_your_library">От вашата библиотека</string>
     <string name="play">Изпълни</string>
+    <string name="play_all">Пусни всички</string>
     <string name="remove_download_playlist_confirm">Наистина ли искате да премахнете всички \"%s\" плейлист песни от хранилището за изтеглени песни?</string>
     <string name="library_song_empty">Песните от библиотеката ще се показват тук</string>
     <string name="retry">Опитай отново</string>

@@ -12,8 +12,7 @@
     <string name="stats">統計</string>
     <string name="mood_and_genres">情境與類型</string>
     <string name="account">帳號</string>
-    <string name="quick_picks">歌曲快選</string>
-    <string name="quick_picks_empty">聽一些音樂讓我們知道您的喜好</string>
+    <string name="quick_picks">根據收聽記錄推薦</string>
     <string name="forgotten_favorites">重溫舊愛</string>
     <string name="keep_listening">再聽一次</string>
     <string name="your_youtube_playlists">你的 YouTube 播放清單</string>
@@ -61,6 +60,7 @@
     <string name="edit">編輯</string>
     <string name="start_radio">開啟電台</string>
     <string name="play">播放</string>
+    <string name="play_all">全部播放</string>
     <string name="play_next">接著播放</string>
     <string name="add_to_queue">加入待播清單</string>
     <string name="add_to_library">加入媒體庫</string>

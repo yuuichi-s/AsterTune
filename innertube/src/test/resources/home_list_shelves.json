@@ -1,0 +1,586 @@
+{
+  "quickPicks": {
+    "header": {
+      "musicCarouselShelfBasicHeaderRenderer": {
+        "title": {
+          "runs": [
+            {
+              "text": "Quick picks"
+            }
+          ]
+        },
+        "moreContentButton": {
+          "buttonRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "Play all"
+                }
+              ]
+            },
+            "navigationEndpoint": {
+              "watchEndpoint": {
+                "videoId": "v1",
+                "playlistId": "RDAMVMv1",
+                "params": "p"
+              }
+            }
+          }
+        }
+      }
+    },
+    "itemSize": "COLLECTION_STYLE_ITEM_SIZE_SMALL",
+    "numItemsPerColumn": "4",
+    "contents": [
+      {
+        "musicResponsiveListItemRenderer": {
+          "thumbnail": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/v1",
+                    "width": 60,
+                    "height": 60
+                  }
+                ]
+              }
+            }
+          },
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Song One"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Artist A",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "UCa",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "text": " • "
+                    },
+                    {
+                      "text": "1.2M plays"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Album X",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "MPREx",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "playlistItemData": {
+            "videoId": "v1"
+          },
+          "badges": [
+            {
+              "musicInlineBadgeRenderer": {
+                "icon": {
+                  "iconType": "MUSIC_EXPLICIT_BADGE"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "musicResponsiveListItemRenderer": {
+          "thumbnail": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/v2",
+                    "width": 60,
+                    "height": 60
+                  }
+                ]
+              }
+            }
+          },
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Song Two"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Artist A",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "UCa",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "text": " & "
+                    },
+                    {
+                      "text": "Artist B",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "UCb",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "text": " • "
+                    },
+                    {
+                      "text": "35K plays"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Album Y",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "MPREy",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "playlistItemData": {
+            "videoId": "v2"
+          }
+        }
+      }
+    ]
+  },
+  "longListens": {
+    "header": {
+      "musicCarouselShelfBasicHeaderRenderer": {
+        "title": {
+          "runs": [
+            {
+              "text": "Long listens"
+            }
+          ]
+        }
+      }
+    },
+    "itemSize": "COLLECTION_STYLE_ITEM_SIZE_SMALL",
+    "numItemsPerColumn": "4",
+    "contents": [
+      {
+        "musicResponsiveListItemRenderer": {
+          "thumbnail": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/v3",
+                    "width": 60,
+                    "height": 60
+                  }
+                ]
+              }
+            }
+          },
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Long Mix"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "louisette"
+                    },
+                    {
+                      "text": " • "
+                    },
+                    {
+                      "text": "2:03:04"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "playlistItemData": {
+            "videoId": "v3"
+          },
+          "fixedColumns": [
+            {
+              "musicResponsiveListItemFixedColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "2:03:04"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "cardShelf": {
+    "header": {
+      "musicCarouselShelfBasicHeaderRenderer": {
+        "title": {
+          "runs": [
+            {
+              "text": "New releases"
+            }
+          ]
+        },
+        "moreContentButton": {
+          "buttonRenderer": {
+            "text": {
+              "runs": [
+                {
+                  "text": "More"
+                }
+              ]
+            },
+            "navigationEndpoint": {
+              "browseEndpoint": {
+                "browseId": "FEmusic_new_releases"
+              }
+            }
+          }
+        }
+      }
+    },
+    "itemSize": "COLLECTION_STYLE_ITEM_SIZE_MEDIUM",
+    "contents": [
+      {
+        "musicTwoRowItemRenderer": {
+          "title": {
+            "runs": [
+              {
+                "text": "Card One"
+              }
+            ]
+          },
+          "subtitle": {
+            "runs": [
+              {
+                "text": "Artist C"
+              }
+            ]
+          },
+          "thumbnailRenderer": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/c1",
+                    "width": 226,
+                    "height": 226
+                  }
+                ]
+              }
+            }
+          },
+          "navigationEndpoint": {
+            "watchEndpoint": {
+              "videoId": "c1"
+            }
+          }
+        }
+      },
+      {
+        "musicTwoRowItemRenderer": {
+          "title": {
+            "runs": [
+              {
+                "text": "Card Two"
+              }
+            ]
+          },
+          "subtitle": {
+            "runs": [
+              {
+                "text": "Artist C"
+              }
+            ]
+          },
+          "thumbnailRenderer": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/c2",
+                    "width": 226,
+                    "height": 226
+                  }
+                ]
+              }
+            }
+          },
+          "navigationEndpoint": {
+            "watchEndpoint": {
+              "videoId": "c2"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "mixedShelf": {
+    "header": {
+      "musicCarouselShelfBasicHeaderRenderer": {
+        "title": {
+          "runs": [
+            {
+              "text": "Mixed"
+            }
+          ]
+        }
+      }
+    },
+    "itemSize": "COLLECTION_STYLE_ITEM_SIZE_MEDIUM",
+    "contents": [
+      {
+        "musicTwoRowItemRenderer": {
+          "title": {
+            "runs": [
+              {
+                "text": "Card One"
+              }
+            ]
+          },
+          "subtitle": {
+            "runs": [
+              {
+                "text": "Artist C"
+              }
+            ]
+          },
+          "thumbnailRenderer": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/c1",
+                    "width": 226,
+                    "height": 226
+                  }
+                ]
+              }
+            }
+          },
+          "navigationEndpoint": {
+            "watchEndpoint": {
+              "videoId": "c1"
+            }
+          }
+        }
+      },
+      {
+        "musicResponsiveListItemRenderer": {
+          "thumbnail": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/v1",
+                    "width": 60,
+                    "height": 60
+                  }
+                ]
+              }
+            }
+          },
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "List Song"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Artist A",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "UCa",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "text": " • "
+                    },
+                    {
+                      "text": "1.2M plays"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": {
+                  "runs": [
+                    {
+                      "text": "Album X",
+                      "navigationEndpoint": {
+                        "browseEndpoint": {
+                          "browseId": "MPREx",
+                          "browseEndpointContextSupportedConfigs": {
+                            "browseEndpointContextMusicConfig": {
+                              "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "playlistItemData": {
+            "videoId": "v4"
+          },
+          "badges": [
+            {
+              "musicInlineBadgeRenderer": {
+                "icon": {
+                  "iconType": "MUSIC_EXPLICIT_BADGE"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "musicTwoRowItemRenderer": {
+          "title": {
+            "runs": [
+              {
+                "text": "Card Two"
+              }
+            ]
+          },
+          "subtitle": {
+            "runs": [
+              {
+                "text": "Artist C"
+              }
+            ]
+          },
+          "thumbnailRenderer": {
+            "musicThumbnailRenderer": {
+              "thumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://i/c2",
+                    "width": 226,
+                    "height": 226
+                  }
+                ]
+              }
+            }
+          },
+          "navigationEndpoint": {
+            "watchEndpoint": {
+              "videoId": "c2"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

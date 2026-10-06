@@ -12,8 +12,7 @@
     <string name="playlists">Llistes de reproducció</string>
     <string name="mood_and_genres">Estats d’ànim i gèneres</string>
     <string name="account">Compte</string>
-    <string name="quick_picks">Selecció ràpida</string>
-    <string name="quick_picks_empty">Escolta cançons per generar la teva selecció ràpida</string>
+    <string name="quick_picks">Segons el que escoltes</string>
     <string name="keep_listening">Continua escoltant</string>
     <string name="your_youtube_playlists">Llistes de reproducció de YouTube</string>
     <string name="similar_to">Similar a</string>
@@ -56,6 +55,7 @@
     <string name="edit">Edita</string>
     <string name="start_radio">Inicia la ràdio</string>
     <string name="play">Reprodueix</string>
+    <string name="play_all">Reprodueix-ho tot</string>
     <string name="shuffle">Mescla</string>
     <string name="add_all_to_library">Afegeix-ho tot a la col·lecció</string>
     <string name="play_next">Reprodueix a continuació</string>

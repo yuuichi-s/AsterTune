@@ -12,8 +12,7 @@
     <string name="stats">Estatísticas</string>
     <string name="mood_and_genres">Tom e Géneros</string>
     <string name="account">Conta</string>
-    <string name="quick_picks">Escolhas rápidas</string>
-    <string name="quick_picks_empty">Ouça músicas para gerar as escolhas rápidas</string>
+    <string name="quick_picks">Com base no que ouve</string>
     <string name="forgotten_favorites">Favoritas esquecidas</string>
     <string name="keep_listening">Continuar a ouvir</string>
     <string name="your_youtube_playlists">Listas de reprodução YouTube</string>
@@ -48,6 +47,7 @@
     <string name="edit">Editar</string>
     <string name="start_radio">Iniciar rádio</string>
     <string name="play">Reproduzir</string>
+    <string name="play_all">Reproduzir tudo</string>
     <string name="play_next">Seguinte</string>
     <string name="add_to_queue">Adicionar à fila</string>
     <string name="remove_all_from_library">Remover tudo da biblioteca</string>

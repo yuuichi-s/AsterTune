@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -31,6 +33,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Casino
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
@@ -40,6 +45,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -70,7 +76,7 @@ import io.github.yuuichi_s.astertune.db.entities.LocalItem
 import io.github.yuuichi_s.astertune.db.entities.Playlist
 import io.github.yuuichi_s.astertune.db.entities.RecentActivityType
 import io.github.yuuichi_s.astertune.db.entities.Song
-import io.github.yuuichi_s.astertune.extensions.togglePlayPause
+import io.github.yuuichi_s.astertune.extensions.togglePlayPauseOrReplay
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeAlbumRadio
@@ -86,6 +92,7 @@ import io.github.yuuichi_s.astertune.ui.component.items.SongGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeCardItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeGridItem
+import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.GridItemPlaceHolder
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerHost
 import io.github.yuuichi_s.astertune.ui.component.shimmer.TextPlaceholder
@@ -188,7 +195,7 @@ fun HomeScreen(
                     .combinedClickable(
                         onClick = {
                             if (it.id == mediaMetadata?.id) {
-                                playerConnection.player.togglePlayPause()
+                                playerConnection.player.togglePlayPauseOrReplay()
                             } else {
                                 val song = it.toMediaMetadata()
                                 if (song.isLocal) {
@@ -271,6 +278,21 @@ fun HomeScreen(
         }
     }
 
+    // Shared by the YouTube song cards and list rows so that both react to a tap the same way.
+    val playYouTubeSong: (SongItem) -> Unit = { song ->
+        if (song.id == mediaMetadata?.id) {
+            playerConnection.player.togglePlayPauseOrReplay()
+        } else {
+            playerConnection.playQueue(
+                YouTubeQueue(
+                    song.endpoint ?: WatchEndpoint(videoId = song.id),
+                    song.toMediaMetadata()
+                ),
+                isRadio = true,
+            )
+        }
+    }
+
     val ytGridItem: @Composable (YTItem) -> Unit = { item ->
         YouTubeGridItem(
             item = item,
@@ -282,14 +304,7 @@ fun HomeScreen(
                 .combinedClickable(
                     onClick = {
                         when (item) {
-                            is SongItem -> playerConnection.playQueue(
-                                YouTubeQueue(
-                                    item.endpoint ?: WatchEndpoint(
-                                        videoId = item.id
-                                    ), item.toMediaMetadata()
-                                ),
-                                isRadio = true,
-                            )
+                            is SongItem -> playYouTubeSong(item)
 
                             is AlbumItem -> navController.navigate("album/${item.id}")
                             is ArtistItem -> navController.navigate("artist/${item.id}")
@@ -330,6 +345,39 @@ fun HomeScreen(
         )
     }
 
+    val ytSongListItem: @Composable (SongItem, Modifier) -> Unit = { song, modifier ->
+        val showMenu = {
+            menuState.show {
+                YouTubeSongMenu(
+                    song = song,
+                    navController = navController,
+                    onDismiss = menuState::dismiss
+                )
+            }
+        }
+        YouTubeListItem(
+            item = song,
+            isActive = song.id == mediaMetadata?.id,
+            isPlaying = isPlaying,
+            trailingContent = {
+                IconButton(onClick = showMenu) {
+                    Icon(
+                        imageVector = Icons.Rounded.MoreVert,
+                        contentDescription = null
+                    )
+                }
+            },
+            modifier = modifier
+                .combinedClickable(
+                    onClick = { playYouTubeSong(song) },
+                    onLongClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        showMenu()
+                    }
+                )
+        )
+    }
+
     LaunchedEffect(quickPicks) {
         quickPicksLazyGridState.scrollToItem(0)
     }
@@ -358,30 +406,12 @@ fun HomeScreen(
         val horizontalLazyGridItemWidthFactor = if (maxWidth * 0.475f >= 320.dp) 0.475f else 0.9f
         val horizontalLazyGridItemWidth = maxWidth * horizontalLazyGridItemWidthFactor
         val recentActivityItemWidth = (maxWidth - 12.dp) / 2
-        val quickPicksSnapLayoutInfoProvider = remember(quickPicksLazyGridState) {
-            SnapLayoutInfoProvider(
-                lazyGridState = quickPicksLazyGridState,
-                positionInLayout = { layoutSize, itemSize ->
-                    (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
-                }
-            )
-        }
-        val forgottenFavoritesSnapLayoutInfoProvider = remember(forgottenFavoritesLazyGridState) {
-            SnapLayoutInfoProvider(
-                lazyGridState = forgottenFavoritesLazyGridState,
-                positionInLayout = { layoutSize, itemSize ->
-                    (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
-                }
-            )
-        }
-        val recentActivitySnapLayoutInfoProvider = remember(recentActivityGridState) {
-            SnapLayoutInfoProvider(
-                lazyGridState = recentActivityGridState,
-                positionInLayout = { layoutSize, itemSize ->
-                    (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
-                }
-            )
-        }
+        val quickPicksSnapLayoutInfoProvider =
+            rememberGridItemSnapLayoutInfoProvider(quickPicksLazyGridState, horizontalLazyGridItemWidthFactor)
+        val forgottenFavoritesSnapLayoutInfoProvider =
+            rememberGridItemSnapLayoutInfoProvider(forgottenFavoritesLazyGridState, horizontalLazyGridItemWidthFactor)
+        val recentActivitySnapLayoutInfoProvider =
+            rememberGridItemSnapLayoutInfoProvider(recentActivityGridState, horizontalLazyGridItemWidthFactor)
 
         ScrollToTopManager(navController, lazylistState)
         LazyColumn(
@@ -698,19 +728,61 @@ fun HomeScreen(
                                     navController.navigate("browse/$browseId")
                             }
                         },
+                        onPlayClick = if (!it.isListStyle) null else it.playEndpoint?.let { playEndpoint ->
+                            {
+                                // No preload item: playQueue() would replace the fetched queue's
+                                // first song with it.
+                                playerConnection.playQueue(YouTubeQueue(playEndpoint))
+                            }
+                        },
                         modifier = Modifier.animateItem()
                     )
                 }
 
-                item {
-                    LazyRow(
-                        contentPadding = WindowInsets.systemBars
-                            .only(WindowInsetsSides.Horizontal)
-                            .asPaddingValues(),
-                        modifier = Modifier.animateItem()
-                    ) {
-                        items(it.items) { item ->
-                            ytGridItem(item)
+                if (it.isListStyle) {
+                    item {
+                        val songs = remember(it.items) { it.items.filterIsInstance<SongItem>() }
+                        val songIds = remember(songs) { songs.map { song -> song.id } }
+                        val rows = min(4, songs.size)
+                        // Don't carry the scroll position over to a different shelf.
+                        key(it.title, songIds) {
+                            val lazyGridState = rememberLazyGridState()
+                            val snapLayoutInfoProvider =
+                                rememberGridItemSnapLayoutInfoProvider(lazyGridState, horizontalLazyGridItemWidthFactor)
+                            LazyHorizontalGrid(
+                                state = lazyGridState,
+                                rows = GridCells.Fixed(rows),
+                                flingBehavior = rememberSnapFlingBehavior(snapLayoutInfoProvider),
+                                contentPadding = WindowInsets.systemBars
+                                    .only(WindowInsetsSides.Horizontal)
+                                    .asPaddingValues(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(ListItemHeight * rows)
+                                    .animateItem()
+                            ) {
+                                items(songs) { song ->
+                                    ytSongListItem(song, Modifier.width(horizontalLazyGridItemWidth))
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    item {
+                        val itemIds = remember(it.items) { it.items.map { item -> item.id } }
+                        // Don't carry the scroll position over to a different shelf.
+                        key(it.title, itemIds) {
+                            LazyRow(
+                                state = rememberLazyListState(),
+                                contentPadding = WindowInsets.systemBars
+                                    .only(WindowInsetsSides.Horizontal)
+                                    .asPaddingValues(),
+                                modifier = Modifier.animateItem()
+                            ) {
+                                items(it.items) { item ->
+                                    ytGridItem(item)
+                                }
+                            }
                         }
                     }
                 }
@@ -857,4 +929,22 @@ fun HomeScreen(
                 .padding(LocalPlayerAwareWindowInsets.current.asPaddingValues()),
         )
     }
+}
+
+/**
+ * Remembers a [SnapLayoutInfoProvider] that snaps an item so that its center sits at
+ * [itemWidthFactor] / 2 of the viewport width, excluding content padding.
+ */
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun rememberGridItemSnapLayoutInfoProvider(
+    lazyGridState: LazyGridState,
+    itemWidthFactor: Float,
+): SnapLayoutInfoProvider = remember(lazyGridState, itemWidthFactor) {
+    SnapLayoutInfoProvider(
+        lazyGridState = lazyGridState,
+        positionInLayout = { layoutSize, itemSize ->
+            (layoutSize * itemWidthFactor / 2f - itemSize / 2f)
+        }
+    )
 }

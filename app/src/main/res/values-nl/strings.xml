@@ -13,8 +13,7 @@
     <string name="stats">Statistieken</string>
     <string name="mood_and_genres">Stemmingen en genres</string>
     <string name="account">Account</string>
-    <string name="quick_picks">Snelle keuzes</string>
-    <string name="quick_picks_empty">Beluister een aantal nummers om je snelle keuzes te genereren</string>
+    <string name="quick_picks">Op basis van luisteren</string>
     <string name="new_release_albums">Nieuwe albums</string>
     <string name="today">Vandaag</string>
     <string name="yesterday">Gisteren</string>
@@ -51,6 +50,7 @@
     <string name="edit">Bewerken</string>
     <string name="start_radio">Radio starten</string>
     <string name="play">Afspelen</string>
+    <string name="play_all">Alles afspelen</string>
     <string name="play_next">Volgende afspelen</string>
     <string name="add_to_queue">Voeg toe aan wachtrij</string>
     <string name="add_to_library">Voeg toe aan bibliotheek</string>

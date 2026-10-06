@@ -13,8 +13,7 @@
     <string name="stats">ਅੰਕੜੇ</string>
     <string name="mood_and_genres">ਮੂਡ ਅਤੇ ਸ਼ੈਲੀ</string>
     <string name="account">ਖਾਤਾ</string>
-    <string name="quick_picks">ਉਂਗਲਾਂ ਤੇ ਚੁਣੇ ਗੀਤ</string>
-    <string name="quick_picks_empty">ਉਂਗਲਾਂ ਤੇ ਚੁਣੇ ਗੀਤ ਪਾਉਣ ਲਈ ਗੀਤ ਸੁਣਨੇ ਆਰੰਭ ਕਰੋ</string>
+    <string name="quick_picks">ਤੁਹਾਡੇ ਸੁਣੇ ਗੀਤਾਂ ਅਨੁਸਾਰ</string>
     <string name="new_release_albums">ਨਵੀਆਂ ਜਾਰੀ ਐਲਬਮਾਂ</string>
     <string name="today">ਅੱਜ</string>
     <string name="yesterday">ਕੱਲ੍ਹ</string>
@@ -51,6 +50,7 @@
     <string name="edit">ਸੰਪਾਦਿਤ ਕਰੋ</string>
     <string name="start_radio">ਰੇਡੀਓ ਸ਼ੁਰੂ ਕਰੋ</string>
     <string name="play">ਚਲਾਓ</string>
+    <string name="play_all">ਸਾਰੇ ਚਲਾਓ</string>
     <string name="play_next">ਅਗਲਾ ਚਲਾਓ</string>
     <string name="add_to_queue">ਕਤਾਰ ਵਿੱਚ ਜੋੜ੍ਹੋ</string>
     <string name="add_to_library">ਲਾਇਬ੍ਰੇਰੀ ਵਿੱਚ ਸ਼ਾਮਿਲ ਕਰੋ</string>

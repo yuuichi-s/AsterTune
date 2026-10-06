@@ -12,8 +12,7 @@
     <string name="stats">Statistik</string>
     <string name="mood_and_genres">Suasana Hati dan Genre</string>
     <string name="account">Akun</string>
-    <string name="quick_picks">Pilihan cepat</string>
-    <string name="quick_picks_empty">Dengarkan lagu untuk menghasilkan pilihan cepat Anda</string>
+    <string name="quick_picks">Dari riwayat dengar</string>
     <string name="new_release_albums">Album yang baru dirilis</string>
     <string name="today">Hari ini</string>
     <string name="yesterday">Kemarin</string>
@@ -50,6 +49,7 @@
     <string name="edit">Ubah</string>
     <string name="start_radio">Mulai radio</string>
     <string name="play">Putar</string>
+    <string name="play_all">Putar semua</string>
     <string name="play_next">Putar berikutnya</string>
     <string name="add_to_queue">Tambahkan ke antrean</string>
     <string name="add_to_library">Tambahkan ke pustaka</string>

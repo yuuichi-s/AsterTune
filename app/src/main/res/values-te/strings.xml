@@ -80,6 +80,7 @@
     <string name="song_title">పాట పేరు</string>
     <string name="no_results_found">ఏమి దొరకలేదు</string>
     <string name="play">మొదలు పెట్టు</string>
+    <string name="play_all">అన్నీ ప్లే చేయండి</string>
     <string name="sort_by_create_date">జోడించిన తేదీ</string>
     <string name="sort_by_song_count">పాటల లెక్క</string>
     <plurals name="minute">
@@ -99,8 +100,7 @@
         <item quantity="other">%d ఎంచుకోబడినవి</item>
     </plurals>
     <string name="mood_and_genres">మూడ్ మరియు కళా ప్రక్రియలు</string>
-    <string name="quick_picks">త్వరిత ఎంపికలు</string>
-    <string name="quick_picks_empty">మీ త్వరిత ఎంపికలను రూపొందించడానికి పాటలను వినండి</string>
+    <string name="quick_picks">మీరు వినే వాటి ఆధారంగా</string>
     <string name="your_youtube_playlists">మీ యూట్యూబ్ప్లేజాబితాలు</string>
     <string name="similar_to">దీనికి సమానమైనది</string>
     <string name="search_yt_music">యూట్యూబ్ మ్యూజిక్‌లో వెతకండి…</string>

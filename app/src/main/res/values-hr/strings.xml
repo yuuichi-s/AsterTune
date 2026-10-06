@@ -52,8 +52,7 @@
     <string name="history">Povijest</string>
     <string name="mood_and_genres">Ugođaj i žanrovi</string>
     <string name="account">Račun</string>
-    <string name="quick_picks">Brzi odabiri</string>
-    <string name="quick_picks_empty">Slušajte pjesme za generiranje brzih odabira</string>
+    <string name="quick_picks">Na temelju slušanja</string>
     <string name="your_youtube_playlists">Vaše YouTube playliste</string>
     <string name="similar_to">Slično kao</string>
     <string name="new_release_albums">Nova izdanja albuma</string>
@@ -237,6 +236,7 @@
     <string name="shuffle">Promiješaj</string>
     <string name="remove_download_playlist_confirm">Zaista želite ukloniti sve pjesme playliste „%s“ iz spremišta „Preuzete pjesme“?</string>
     <string name="play">Reproduciraj</string>
+    <string name="play_all">Reproduciraj sve</string>
     <string name="play_next">Reproduciraj sljedeću</string>
     <string name="radio">Radio</string>
     <string name="start_radio">Pokreni radio</string>
