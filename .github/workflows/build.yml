@@ -27,6 +27,19 @@ jobs:
       - name: Accept SDK licenses
         run: yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
+      - name: Run library regression tests
+        run: |
+          ./gradlew \
+            :innertube:test \
+            --tests com.zionhuang.innertube.AccountMenuResponseTest \
+            --tests com.zionhuang.innertube.NextTabEndpointTest \
+            --tests com.zionhuang.innertube.HomeListShelfTest \
+            :lrclib:test \
+            --tests com.dd3boh.lrclib.LrcLibSelectionTest \
+            :simpmusic:test \
+            --tests com.dd3boh.simpmusic.SimpMusicSelectionTest \
+            --stacktrace -DskipFormatKtlint
+
       - name: Build debug APK and run jvm tests
         run: ./gradlew assembleCoreDebug lintCoreDebug testCoreDebugUnitTest --stacktrace -DskipFormatKtlint
 
