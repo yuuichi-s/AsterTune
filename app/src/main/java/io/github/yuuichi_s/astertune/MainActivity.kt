@@ -32,7 +32,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -43,7 +42,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
@@ -1027,34 +1025,6 @@ class MainActivity : ComponentActivity() {
                             LaunchedEffect(Unit) {
                                 if (oobeStatus < OOBE_VERSION) {
                                     navController.navigate("setup_wizard")
-                                }
-                            }
-
-                            if (BuildConfig.DEBUG) {
-                                val debugColour = Color.Red
-                                Column(
-                                    modifier = Modifier.padding(start = 50.dp, top = 100.dp)
-                                ) {
-                                    Text(
-                                        text = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) | ${BuildConfig.FLAVOR}",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = debugColour
-                                    )
-                                    Text(
-                                        text = "${BuildConfig.APPLICATION_ID} | ${BuildConfig.BUILD_TYPE}",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = debugColour
-                                    )
-                                    Text(
-                                        text = "${Build.BRAND} ${Build.DEVICE} (${Build.MODEL})",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = debugColour
-                                    )
-                                    Text(
-                                        text = "${Build.VERSION.SDK_INT} (${Build.ID})",
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = debugColour
-                                    )
                                 }
                             }
                         }

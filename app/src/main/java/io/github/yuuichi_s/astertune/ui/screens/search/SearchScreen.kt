@@ -39,6 +39,7 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -55,6 +56,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
@@ -68,6 +72,7 @@ import androidx.compose.ui.util.fastAny
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import io.github.yuuichi_s.astertune.BuildConfig
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -405,11 +410,30 @@ private fun TopIconBar(
             .padding(horizontal = SearchBarHorizontalPadding, vertical = SearchBarVerticalPadding)
             .height(InputFieldHeight)
     ) {
-        Image(
-            painter = painterResource(R.drawable.app_logo),
-            contentDescription = null,
-            modifier = Modifier.size(36.dp)
-        )
+        Row(verticalAlignment = Alignment.Bottom) {
+            Image(
+                painter = painterResource(R.drawable.app_logo),
+                contentDescription = null,
+                modifier = Modifier.size(36.dp)
+            )
+            if (BuildConfig.DEBUG) {
+                Text(
+                    text = "Debug",
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        // app_logo leaves about 3dp of empty space below the mark at 36dp
+                        .padding(bottom = 3.dp)
+                        // End the measured height at the baseline so the letters sit on the logo's bottom edge
+                        .layout { measurable, constraints ->
+                            val placeable = measurable.measure(constraints)
+                            layout(placeable.width, placeable[FirstBaseline]) {
+                                placeable.place(0, 0)
+                            }
+                        }
+                )
+            }
+        }
         Spacer(Modifier.weight(1f))
         IconButton(onClick = onSearchClick) {
             Icon(
