@@ -83,7 +83,6 @@ import io.github.yuuichi_s.astertune.playback.queues.YouTubeAlbumRadio
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.HideOnScrollFAB
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumGridItem
@@ -861,9 +860,6 @@ fun HomeScreen(
                 }
             }
         }
-        LazyColumnScrollbar(
-            state = lazylistState,
-        )
 
         HideOnScrollFAB(
             visible = allLocalItems.isNotEmpty() || allYtItems.isNotEmpty(),

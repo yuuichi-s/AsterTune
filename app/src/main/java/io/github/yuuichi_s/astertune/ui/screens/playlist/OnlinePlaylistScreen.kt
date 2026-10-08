@@ -114,7 +114,6 @@ import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
 import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
@@ -698,9 +697,6 @@ fun OnlinePlaylistScreen(
                 }
             }
         }
-        LazyColumnScrollbar(
-            state = lazyListState,
-        )
 
         TopAppBar(
             title = {

@@ -53,7 +53,6 @@ import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.SearchBarIconOffsetX
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
@@ -281,9 +280,6 @@ fun OnlineSearchScreen(
             }
         }
     }
-    LazyColumnScrollbar(
-        state = lazyListState,
-    )
 
     Box(
         modifier = Modifier.fillMaxSize()

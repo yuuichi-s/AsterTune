@@ -100,8 +100,6 @@ import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
-import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.LibraryAlbumGridItem
 import io.github.yuuichi_s.astertune.ui.component.LibraryAlbumListItem
 import io.github.yuuichi_s.astertune.ui.component.LibraryArtistGridItem
@@ -467,9 +465,6 @@ fun LocalScreen(
                     )
                 }
             }
-            LazyColumnScrollbar(
-                state = lazyListState,
-            )
         } else when (viewType) {
             LibraryViewType.LIST -> {
                 LazyColumn(
@@ -644,9 +639,6 @@ fun LocalScreen(
                         }
                     }
                 }
-                LazyColumnScrollbar(
-                    state = lazyListState,
-                )
             }
 
             LibraryViewType.GRID -> {
@@ -822,9 +814,6 @@ fun LocalScreen(
                         }
                     }
                 }
-                LazyVerticalGridScrollbar(
-                    state = lazyGridState,
-                )
             }
         }
 

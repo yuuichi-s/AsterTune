@@ -58,8 +58,6 @@ import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
-import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
@@ -252,9 +250,6 @@ fun ArtistItemsScreen(
                 }
             }
         }
-        LazyColumnScrollbar(
-            state = lazyListState,
-        )
     } else {
         LazyVerticalGrid(
             state = lazyGridState,
@@ -333,9 +328,6 @@ fun ArtistItemsScreen(
                 }
             }
         }
-        LazyVerticalGridScrollbar(
-            state = lazyGridState,
-        )
     }
 
     TopAppBar(
