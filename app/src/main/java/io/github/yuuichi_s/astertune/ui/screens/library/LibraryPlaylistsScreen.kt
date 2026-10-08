@@ -77,8 +77,6 @@ import io.github.yuuichi_s.astertune.constants.ShowLikedAndDownloadedPlaylist
 import io.github.yuuichi_s.astertune.db.entities.PlaylistEntity
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
-import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.LibraryPlaylistGridItem
 import io.github.yuuichi_s.astertune.ui.component.LibraryPlaylistListItem
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
@@ -343,9 +341,6 @@ fun LibraryPlaylistsScreen(
                         }
                     }
                 }
-                LazyColumnScrollbar(
-                    state = lazyListState,
-                )
             }
 
             LibraryViewType.GRID -> {
@@ -431,9 +426,6 @@ fun LibraryPlaylistsScreen(
                         }
                     }
                 }
-                LazyVerticalGridScrollbar(
-                    state = lazyGridState,
-                )
             }
         }
 

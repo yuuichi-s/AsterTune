@@ -52,7 +52,6 @@ import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumListItem
 import io.github.yuuichi_s.astertune.ui.component.items.ArtistListItem
 import io.github.yuuichi_s.astertune.ui.component.items.PlaylistListItem
@@ -246,9 +245,6 @@ fun LocalSearchScreen(
             }
         }
     }
-    LazyColumnScrollbar(
-        state = lazyListState,
-    )
 
     Box(
         modifier = Modifier.fillMaxSize()

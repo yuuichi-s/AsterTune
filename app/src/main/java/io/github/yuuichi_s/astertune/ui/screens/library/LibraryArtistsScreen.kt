@@ -67,8 +67,6 @@ import io.github.yuuichi_s.astertune.constants.LibraryViewTypeKey
 import io.github.yuuichi_s.astertune.constants.LocalLibraryEnableKey
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
-import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.LibraryArtistGridItem
 import io.github.yuuichi_s.astertune.ui.component.LibraryArtistListItem
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
@@ -292,9 +290,6 @@ fun LibraryArtistsScreen(
                         }
                     }
                 }
-                LazyColumnScrollbar(
-                    state = lazyListState,
-                )
             }
 
             LibraryViewType.GRID -> {
@@ -344,9 +339,6 @@ fun LibraryArtistsScreen(
                         }
                     }
                 }
-                LazyVerticalGridScrollbar(
-                    state = lazyGridState,
-                )
             }
         }
 

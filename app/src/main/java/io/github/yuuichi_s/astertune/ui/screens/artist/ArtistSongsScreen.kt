@@ -56,7 +56,6 @@ import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
@@ -224,9 +223,6 @@ fun ArtistSongsScreen(
                 )
             }
         }
-        LazyColumnScrollbar(
-            state = lazyListState,
-        )
 
         TopAppBar(
             title = { Text(artist?.artist?.name.orEmpty()) },

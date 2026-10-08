@@ -89,7 +89,6 @@ import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
 import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
 import io.github.yuuichi_s.astertune.ui.component.HideOnScrollFAB
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
@@ -538,9 +537,6 @@ fun ArtistScreen(
                 }
             }
         }
-        LazyColumnScrollbar(
-            state = lazyListState,
-        )
 
         HideOnScrollFAB(
             visible = librarySongs.isNotEmpty() && libraryArtist?.artist?.isLocal != true,

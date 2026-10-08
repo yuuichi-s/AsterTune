@@ -144,7 +144,6 @@ import io.github.yuuichi_s.astertune.playback.PlayerConnection
 import io.github.yuuichi_s.astertune.ui.component.BottomSheet
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
@@ -659,9 +658,6 @@ fun BoxScope.QueueContent(
                 }
             }
         }
-        LazyColumnScrollbar(
-            state = lazyQueuesListState,
-        )
     }
 
     val songHeader: @Composable ColumnScope.(Modifier) -> Unit = { modifier ->
@@ -867,9 +863,6 @@ fun BoxScope.QueueContent(
                 }
             }
         }
-        LazyColumnScrollbar(
-            state = lazySongsListState,
-        )
     }
 
     val searchBar: @Composable ColumnScope.() -> Unit = {

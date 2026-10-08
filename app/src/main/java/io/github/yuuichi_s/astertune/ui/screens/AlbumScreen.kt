@@ -97,7 +97,6 @@ import io.github.yuuichi_s.astertune.ui.component.AsyncImageLocal
 import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
 import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
-import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
@@ -542,9 +541,6 @@ fun AlbumScreen(
             }
         }
     }
-    LazyColumnScrollbar(
-        state = state,
-    )
 
     TopAppBar(
         title = { },
