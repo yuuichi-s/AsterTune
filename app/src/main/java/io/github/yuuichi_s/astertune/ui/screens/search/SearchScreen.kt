@@ -76,6 +76,7 @@ import io.github.yuuichi_s.astertune.BuildConfig
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
+import io.github.yuuichi_s.astertune.LocalTabMode
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.AppBarHeight
 import io.github.yuuichi_s.astertune.constants.DEFAULT_ENABLED_TABS
@@ -86,7 +87,6 @@ import io.github.yuuichi_s.astertune.constants.SearchSource
 import io.github.yuuichi_s.astertune.constants.SearchSourceKey
 import io.github.yuuichi_s.astertune.constants.UpdateAvailableKey
 import io.github.yuuichi_s.astertune.db.entities.SearchHistory
-import io.github.yuuichi_s.astertune.extensions.tabMode
 import io.github.yuuichi_s.astertune.ui.component.AccountAvatar
 import io.github.yuuichi_s.astertune.ui.component.InputFieldHeight
 import io.github.yuuichi_s.astertune.ui.component.SearchBar
@@ -210,7 +210,7 @@ fun SearchBarContainer(
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-        val searchBarInset = if (!context.tabMode()) {
+        val searchBarInset = if (!LocalTabMode.current) {
             WindowInsets.safeDrawing.union(LocalPlayerAwareWindowInsets.current.only(WindowInsetsSides.Start))
         }
         else {
@@ -358,7 +358,7 @@ fun SearchBarContainer(
         enter = fadeIn(),
         exit = fadeOut()
     ) {
-        val iconRowInset = if (!context.tabMode()) {
+        val iconRowInset = if (!LocalTabMode.current) {
             WindowInsets.safeDrawing.union(LocalPlayerAwareWindowInsets.current.only(WindowInsetsSides.Start))
         } else {
             WindowInsets.systemBars.only(WindowInsetsSides.Top)

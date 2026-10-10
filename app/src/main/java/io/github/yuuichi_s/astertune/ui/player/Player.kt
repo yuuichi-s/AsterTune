@@ -11,7 +11,6 @@
 package io.github.yuuichi_s.astertune.ui.player
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
@@ -119,6 +118,7 @@ import coil3.request.allowHardware
 import coil3.toBitmap
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
+import io.github.yuuichi_s.astertune.LocalTabMode
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.DEFAULT_PLAYER_BACKGROUND
 import io.github.yuuichi_s.astertune.constants.DarkMode
@@ -141,7 +141,7 @@ import io.github.yuuichi_s.astertune.constants.SwipeToSkipKey
 import io.github.yuuichi_s.astertune.extensions.isPowerSaver
 import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.supportsWideScreen
-import io.github.yuuichi_s.astertune.extensions.tabMode
+import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
@@ -178,7 +178,6 @@ fun BottomSheetPlayer(
     val TAG = "BottomSheetPlayer"
     if (PLAYER_DEBUG) Log.v(TAG, "PLR-1")
 
-    val context = LocalContext.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val queueBoard by playerConnection.service.queueBoard.collectAsState()
 
@@ -227,7 +226,7 @@ fun BottomSheetPlayer(
     ) {
         if (PLAYER_DEBUG) Log.v(TAG, "PLR-3.0")
 
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE && !context.tabMode() && context.supportsWideScreen()) {
+        if (usesLandscapePlayer(LocalConfiguration.current, LocalTabMode.current)) {
             LandscapePlayer(state, navController, queueBoard)
         } else {
             PortraitPlayer(state, navController, queueBoard)
