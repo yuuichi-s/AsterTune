@@ -14,8 +14,12 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.AnimationVector
 import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.TwoWayConverter
 import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.VectorizedAnimationSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.DraggableState
@@ -205,14 +209,14 @@ class BottomSheetState(
     fun collapse(animationSpec: AnimationSpec<Dp>) {
         onAnchorChanged(collapsedAnchor)
         coroutineScope.launch {
-            animatable.animateTo(collapsedBound, animationSpec)
+            animatable.animateToPreservingStart(collapsedBound, animationSpec)
         }
     }
 
     fun expand(animationSpec: AnimationSpec<Dp>) {
         onAnchorChanged(expandedAnchor)
         coroutineScope.launch {
-            animatable.animateTo(animatable.upperBound!!, animationSpec)
+            animatable.animateToPreservingStart(animatable.upperBound!!, animationSpec)
         }
     }
 
@@ -235,7 +239,7 @@ class BottomSheetState(
     fun dismiss() {
         onAnchorChanged(dismissedAnchor)
         coroutineScope.launch {
-            animatable.animateTo(animatable.lowerBound!!)
+            animatable.animateToPreservingStart(animatable.lowerBound!!, spring())
         }
     }
 
@@ -330,6 +334,37 @@ class BottomSheetState(
         }
 }
 
+private suspend fun Animatable<Dp, AnimationVector1D>.animateToPreservingStart(
+    targetValue: Dp,
+    animationSpec: AnimationSpec<Dp>,
+) {
+    animateTo(targetValue, animationSpec.preservingStartValue())
+}
+
+/**
+ * Wraps this animation spec to preserve the initial value for the first millisecond.
+ *
+ * Spring animations round play time down to milliseconds. Floating-point rounding at time zero
+ * can move the value outside [Animatable] bounds and end the animation with `BoundReached`.
+ */
+private fun <T> AnimationSpec<T>.preservingStartValue(): AnimationSpec<T> = StartValuePreservingSpec(this)
+
+private class StartValuePreservingSpec<T>(private val spec: AnimationSpec<T>) : AnimationSpec<T> {
+    override fun <V : AnimationVector> vectorize(converter: TwoWayConverter<T, V>): VectorizedAnimationSpec<V> =
+        StartValuePreservingVectorizedSpec(spec.vectorize(converter))
+}
+
+private class StartValuePreservingVectorizedSpec<V : AnimationVector>(
+    private val spec: VectorizedAnimationSpec<V>,
+) : VectorizedAnimationSpec<V> by spec {
+    override fun getValueFromNanos(playTimeNanos: Long, initialValue: V, targetValue: V, initialVelocity: V): V {
+        if (playTimeNanos < 1_000_000L) {
+            return initialValue
+        }
+        return spec.getValueFromNanos(playTimeNanos, initialValue, targetValue, initialVelocity)
+    }
+}
+
 const val expandedAnchor = 2
 const val collapsedAnchor = 1
 const val dismissedAnchor = 0
@@ -361,7 +396,7 @@ fun rememberBottomSheetState(
 
         animatable.updateBounds(dismissedBound.coerceAtMost(expandedBound), expandedBound)
         coroutineScope.launch {
-            animatable.animateTo(initialValue, NavigationBarAnimationSpec)
+            animatable.animateToPreservingStart(initialValue, NavigationBarAnimationSpec)
         }
 
         BottomSheetState(
