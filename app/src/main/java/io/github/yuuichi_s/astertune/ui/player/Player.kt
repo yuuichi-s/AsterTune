@@ -157,6 +157,7 @@ import io.github.yuuichi_s.astertune.ui.component.rememberBottomSheetState
 import io.github.yuuichi_s.astertune.ui.menu.PlayerMenu
 import io.github.yuuichi_s.astertune.ui.menu.SleepTimerDialog
 import io.github.yuuichi_s.astertune.ui.theme.extractGradientColors
+import io.github.yuuichi_s.astertune.ui.theme.rememberPlayerButtonColors
 import io.github.yuuichi_s.astertune.ui.utils.SnapLayoutInfoProvider
 import io.github.yuuichi_s.astertune.utils.coilCoroutine
 import io.github.yuuichi_s.astertune.utils.makeTimeString
@@ -570,6 +571,7 @@ fun ActionButtons(
 
     val currentSong by playerConnection.currentSong.collectAsState(initial = null)
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
+    val (buttonContainerColor, buttonContentColor) = rememberPlayerButtonColors()
 
     var showLyrics by rememberPreference(ShowLyricsKey, defaultValue = false)
 
@@ -616,14 +618,14 @@ fun ActionButtons(
                     .offset(y = 5.dp)
                     .height(36.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(buttonContainerColor)
                     .clickable { showSleepTimerDialog = true }
                     .padding(horizontal = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = makeTimeString(sleepTimerTimeLeft),
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = buttonContentColor,
                     style = MaterialTheme.typography.labelLarge,
                     maxLines = 1
                 )
@@ -634,11 +636,11 @@ fun ActionButtons(
                     .offset(y = 5.dp)
                     .size(36.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(buttonContainerColor)
             ) {
                 ResizableIconButton(
                     icon = Icons.Rounded.Bedtime,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = buttonContentColor,
                     modifier = Modifier
                         .align(Alignment.Center)
                         .size(24.dp),
@@ -655,11 +657,11 @@ fun ActionButtons(
             .offset(y = 5.dp)
             .size(36.dp)
             .clip(RoundedCornerShape(24.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(buttonContainerColor)
     ) {
         ResizableIconButton(
             icon = if (showLyrics) Icons.Rounded.LyricsRounded else Icons.Outlined.LyricsOutlined,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = buttonContentColor,
             modifier = Modifier
                 .align(Alignment.Center)
                 .size(24.dp),
@@ -674,11 +676,11 @@ fun ActionButtons(
             .offset(y = 5.dp)
             .size(36.dp)
             .clip(RoundedCornerShape(24.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(buttonContainerColor)
     ) {
         ResizableIconButton(
             icon = if (currentSong?.song?.liked == true) R.drawable.favorite else R.drawable.favorite_border,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = buttonContentColor,
             modifier = Modifier
                 .align(Alignment.Center)
                 .size(24.dp),
@@ -693,11 +695,11 @@ fun ActionButtons(
             .offset(y = 5.dp)
             .size(36.dp)
             .clip(RoundedCornerShape(24.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(buttonContainerColor)
     ) {
         ResizableIconButton(
             icon = Icons.Rounded.MoreVert,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = buttonContentColor,
             modifier = Modifier
                 .size(24.dp)
                 .align(Alignment.Center),
@@ -768,6 +770,8 @@ fun ControlsContent(
         defaultValue = DEFAULT_SLIDER_STYLE
     )
 
+    val (buttonContainerColor, buttonContentColor) = rememberPlayerButtonColors()
+
 
     val onBackgroundColor = when (playerBackground) {
         PlayerBackgroundStyle.FOLLOW_THEME -> MaterialTheme.colorScheme.secondary
@@ -779,6 +783,9 @@ fun ControlsContent(
                 c.copy(alpha = 1f, red = c.red - 0.2f, green = c.green - 0.2f, blue = c.blue - 0.2f)
             }
     }
+
+    // In the dark theme, the skip and seek buttons around play/pause share its content color.
+    val skipButtonColor = if (useDarkTheme) buttonContentColor else onBackgroundColor
 
 
     val playbackState by playerConnection.playbackState.collectAsState()
@@ -976,7 +983,7 @@ fun ControlsContent(
                         modifier = Modifier
                             .size(32.dp)
                             .align(Alignment.Center),
-                        color = onBackgroundColor,
+                        color = skipButtonColor,
                         onClick = {
                             if (playerConnection.player.currentMediaItem == null) {
                                 queueBoard.setCurrQueue()
@@ -994,7 +1001,7 @@ fun ControlsContent(
                             modifier = Modifier
                                 .size(32.dp)
                                 .align(Alignment.Center),
-                            color = onBackgroundColor,
+                            color = skipButtonColor,
                             enabled = playerConnection.player.currentMediaItem != null,
                             onClick = {
                                 playerConnection.player.seekTo(playerConnection.player.currentPosition - seekIncrement.millisec)
@@ -1010,7 +1017,7 @@ fun ControlsContent(
                         .size(if (maxW >= 320.dp) if (showLyrics) 56.dp else 72.dp else 42.dp)
                         .animateContentSize()
                         .clip(RoundedCornerShape(playPauseRoundness))
-                        .background(MaterialTheme.colorScheme.primary)
+                        .background(buttonContainerColor)
                         .clickable {
                             if (playerConnection.player.currentMediaItem == null) {
                                 queueBoard.setCurrQueue()
@@ -1028,7 +1035,7 @@ fun ControlsContent(
                     Image(
                         imageVector = if (playbackState == STATE_ENDED) Icons.Rounded.Replay else if (isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                        colorFilter = ColorFilter.tint(buttonContentColor),
                         modifier = Modifier
                             .align(Alignment.Center)
                             .size(36.dp)
@@ -1044,7 +1051,7 @@ fun ControlsContent(
                             modifier = Modifier
                                 .size(32.dp)
                                 .align(Alignment.Center),
-                            color = onBackgroundColor,
+                            color = skipButtonColor,
                             enabled = playerConnection.player.currentMediaItem != null,
                             onClick = {
                                 //ExoPlayer seek increment can only be set in builder
@@ -1064,7 +1071,7 @@ fun ControlsContent(
                         modifier = Modifier
                             .size(32.dp)
                             .align(Alignment.Center),
-                        color = onBackgroundColor,
+                        color = skipButtonColor,
                         onClick = {
                             playerConnection.player.seekToNext()
                             haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)

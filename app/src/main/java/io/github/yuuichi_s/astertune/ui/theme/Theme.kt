@@ -192,6 +192,27 @@ fun rememberSystemHighContrast(context: Context): Boolean {
     return highContrast
 }
 
+/**
+ * Colors for the filled buttons on the player screen. The light theme uses the primary container
+ * color with a near-black content color; the dark theme uses the primary color at a mid tone with
+ * the primary container's content color.
+ *
+ * @return the container color and the content color
+ */
+@Composable
+fun rememberPlayerButtonColors(): Pair<Color, Color> {
+    val colorScheme = MaterialTheme.colorScheme
+    val isDark = colorScheme.surface.luminance() < 0.5f
+    if (!isDark) {
+        return colorScheme.primaryContainer to colorScheme.onPrimaryFixed
+    }
+    val container = remember(colorScheme.primary) {
+        val hct = Hct.fromInt(colorScheme.primary.toArgb())
+        Color(Hct.from(hct.hue, hct.chroma, 50.0).toInt())
+    }
+    return container to colorScheme.onPrimaryContainer
+}
+
 fun Bitmap.extractThemeColor(): Color {
     val colorsToPopulation = Palette.from(this)
         .maximumColorCount(8)
