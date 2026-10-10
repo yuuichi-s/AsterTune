@@ -29,7 +29,9 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -46,6 +48,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -58,6 +61,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Lyrics as LyricsOutlined
 import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.ExpandLess
+import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.FastForward
 import androidx.compose.material.icons.rounded.FastRewind
 import androidx.compose.material.icons.rounded.Lyrics as LyricsRounded
@@ -69,6 +73,7 @@ import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Slider
@@ -100,8 +105,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.media3.common.C
@@ -149,7 +156,6 @@ import io.github.yuuichi_s.astertune.playback.QueueBoard
 import io.github.yuuichi_s.astertune.ui.component.BottomSheet
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
 import io.github.yuuichi_s.astertune.ui.component.PlayerSliderTrack
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
 import io.github.yuuichi_s.astertune.ui.component.collapsedAnchor
 import io.github.yuuichi_s.astertune.ui.component.dismissedAnchor
@@ -228,9 +234,9 @@ fun BottomSheetPlayer(
         if (PLAYER_DEBUG) Log.v(TAG, "PLR-3.0")
 
         if (usesLandscapePlayer(LocalConfiguration.current, LocalTabMode.current)) {
-            LandscapePlayer(state, navController, queueBoard)
+            LandscapePlayer(state, navController, queueBoard, onCollapse = state::collapseSoft)
         } else {
-            PortraitPlayer(state, navController, queueBoard)
+            PortraitPlayer(state, navController, queueBoard, onCollapse = state::collapseSoft)
         }
     }
 }
@@ -242,6 +248,7 @@ fun PortraitPlayer(
     navController: NavController,
     queueBoard: QueueBoard,
     enableQueueSheet: Boolean = true,
+    onCollapse: (() -> Unit)? = null,
 ) {
     val TAG = "BottomSheetPlayer"
     if (PLAYER_DEBUG) Log.v(TAG, "PLR-3.1b")
@@ -277,6 +284,13 @@ fun PortraitPlayer(
             val canSkipNext by playerConnection.canSkipNext.collectAsState()
 
             val swipeToSkip by rememberPreference(SwipeToSkipKey, defaultValue = DEFAULT_SWIPE_TO_SKIP)
+
+            val statusBarTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+            val collapseButtonClearance = collapseButtonClearance(
+                onCollapse = onCollapse,
+                topInset = statusBarTop,
+                verticalPadding = if (swipeToSkip) QueuePeekHeight / 2 else 0.dp,
+            )
             val showLyricsOnClick by rememberPreference(ShowLyricsOnClickKey, defaultValue = DEFAULT_SHOW_LYRICS_ON_CLICK)
             val previousMediaMetadata = if (swipeToSkip && playerConnection.player.hasPreviousMediaItem()) {
                 val previousIndex = playerConnection.player.previousMediaItemIndex
@@ -301,6 +315,7 @@ fun PortraitPlayer(
             if (!swipeToSkip) {
                 Thumbnail(
                     modifier = Modifier
+                        .padding(collapseButtonClearance)
 //                                .width(horizontalLazyGridItemWidth)
                         .animateContentSize(),
                     sliderPositionProvider = { sliderPosition },
@@ -348,7 +363,9 @@ fun PortraitPlayer(
                     rows = GridCells.Fixed(1),
                     flingBehavior = rememberSnapFlingBehavior(thumbnailSnapLayoutInfoProvider),
                     userScrollEnabled = playerSheetState.isExpanded,
-                    modifier = Modifier.padding(vertical = QueuePeekHeight / 2)
+                    modifier = Modifier
+                        .padding(collapseButtonClearance)
+                        .padding(vertical = QueuePeekHeight / 2)
                 ) {
                     items(
                         items = mediaItems,
@@ -365,6 +382,8 @@ fun PortraitPlayer(
                     }
                 }
             }
+
+            PlayerCollapseButton(onCollapse = onCollapse, topInset = statusBarTop)
         }
 
         ControlsContent(playerSheetState, queueSheetState, navController, queueBoard)
@@ -395,6 +414,7 @@ fun LandscapePlayer(
     navController: NavController,
     queueBoard: QueueBoard,
     enableQueueSheet: Boolean = true,
+    onCollapse: (() -> Unit)? = null,
 ) {
     val TAG = "BottomSheetPlayer"
 
@@ -457,10 +477,17 @@ fun LandscapePlayer(
                 .nestedScroll(playerSheetState.preUpPostDownNestedScrollConnection)
         ) {
             if (PLAYER_DEBUG) Log.v(TAG, "PLR-3.1a")
+            val collapseButtonClearance = collapseButtonClearance(
+                onCollapse = onCollapse,
+                topInset = 0.dp,
+                verticalPadding = if (swipeToSkip) 16.dp else 0.dp,
+            )
+
             if (!swipeToSkip) {
                 Thumbnail(
                     sliderPositionProvider = { sliderPosition },
                     modifier = Modifier
+                        .padding(collapseButtonClearance)
 //                                .width(horizontalLazyGridItemWidth)
                         .animateContentSize(),
                     showLyricsOnClick = showLyricsOnClick,
@@ -508,7 +535,8 @@ fun LandscapePlayer(
                     rows = GridCells.Fixed(1),
                     contentPadding = PaddingValues(vertical = 16.dp),
                     flingBehavior = rememberSnapFlingBehavior(thumbnailSnapLayoutInfoProvider),
-                    userScrollEnabled = playerSheetState.isExpanded
+                    userScrollEnabled = playerSheetState.isExpanded,
+                    modifier = Modifier.padding(collapseButtonClearance)
                 ) {
                     items(
                         items = mediaItems,
@@ -525,6 +553,8 @@ fun LandscapePlayer(
                     }
                 }
             }
+
+            PlayerCollapseButton(onCollapse = onCollapse, topInset = 0.dp)
         }
 
         Column(
@@ -556,6 +586,60 @@ fun LandscapePlayer(
     }
 }
 
+/**
+ * Displays a button that collapses the expanded player into the mini player.
+ */
+@Composable
+private fun BoxScope.PlayerCollapseButton(
+    onCollapse: (() -> Unit)?,
+    topInset: Dp,
+) {
+    if (onCollapse == null) return
+    IconButton(
+        onClick = onCollapse,
+        modifier = Modifier
+            .align(Alignment.TopStart)
+            .padding(start = CollapseButtonStartPadding, top = topInset)
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.ExpandMore,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            contentDescription = stringResource(R.string.minimize_player),
+        )
+    }
+}
+
+// Minimum touch target of a Material 3 icon button
+private val CollapseButtonSize = 48.dp
+
+private val CollapseButtonStartPadding = PlayerHorizontalPadding - 12.dp
+
+/**
+ * Returns the thumbnail padding that keeps the thumbnail clear of [PlayerCollapseButton].
+ */
+private fun BoxWithConstraintsScope.collapseButtonClearance(
+    onCollapse: (() -> Unit)?,
+    topInset: Dp,
+    verticalPadding: Dp,
+): PaddingValues {
+    if (onCollapse == null) return PaddingValues()
+
+    val areaWidth = maxWidth - PlayerHorizontalPadding * 2
+    val areaTop = topInset + verticalPadding
+    val areaHeight = maxHeight - areaTop - verticalPadding
+    val size = minOf(areaWidth, areaHeight).coerceAtLeast(0.dp)
+    val left = PlayerHorizontalPadding + (areaWidth - size) / 2
+    val top = areaTop + (areaHeight - size) / 2
+    val buttonBottom = topInset + CollapseButtonSize
+
+    if (left >= CollapseButtonStartPadding + CollapseButtonSize || top >= buttonBottom) {
+        return PaddingValues()
+    }
+    return PaddingValues(
+        top = (buttonBottom - areaTop).coerceAtLeast(0.dp),
+        bottom = (maxHeight - verticalPadding - (top + size)).coerceAtLeast(0.dp),
+    )
+}
 
 @Composable
 fun ActionButtons(

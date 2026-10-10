@@ -242,6 +242,7 @@ We recycle translations from upstream, they are pulled periodically. -->
     <string name="pure_black">Pure black</string>
     <string name="customize_navigation_tabs">Customize navigation tabs</string>
     <string name="player">Player</string>
+    <string name="minimize_player">Minimize player</string>
     <string name="player_text_alignment">Player text alignment</string>
     <string name="lyrics_text_position">Lyrics text position</string>
     <string name="sided">Sided</string>

@@ -184,6 +184,7 @@
     <string name="pure_black">ピュアブラック</string>
     <string name="customize_navigation_tabs">ナビゲーションタブのカスタマイズ</string>
     <string name="player">プレーヤー</string>
+    <string name="minimize_player">プレーヤーを最小化</string>
     <string name="player_text_alignment">プレーヤーの文字揃え</string>
     <string name="lyrics_text_position">歌詞テキストの位置</string>
     <string name="sided">端</string>

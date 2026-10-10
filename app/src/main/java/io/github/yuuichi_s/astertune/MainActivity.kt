@@ -866,8 +866,6 @@ class MainActivity : ComponentActivity() {
                                     containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
                                     modifier = Modifier
                                         .align(alignment)
-                                        .fillMaxHeight()
-                                        .verticalScroll(rememberScrollState())
                                         .offset {
                                             if (navigationBarHeight == 0.dp) {
                                                 IntOffset(
@@ -885,7 +883,9 @@ class MainActivity : ComponentActivity() {
                                                     y = 0
                                                 )
                                             }
-                                        },
+                                        }
+                                        .fillMaxHeight()
+                                        .verticalScroll(rememberScrollState()),
                                 ) {
                                     navigationItems.fastForEach { screen ->
                                         // TODO: display selection when based on root page user entered
