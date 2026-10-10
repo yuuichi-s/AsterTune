@@ -40,7 +40,7 @@ val AlbumCornerRadius = 16.dp
 val MenuCornerRadius = 16.dp
 val DialogCornerRadius = 32.dp
 
-val PlayerHorizontalPadding = 32.dp
+val PlayerHorizontalPadding = 16.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 val TopBarInsets: WindowInsets
