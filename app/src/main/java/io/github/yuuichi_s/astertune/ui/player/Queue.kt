@@ -10,7 +10,6 @@
 
 package io.github.yuuichi_s.astertune.ui.player
 
-import android.content.res.Configuration
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -116,6 +115,7 @@ import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
+import io.github.yuuichi_s.astertune.LocalTabMode
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.CONTENT_TYPE_SONG
 import io.github.yuuichi_s.astertune.constants.InsetsSafeE
@@ -134,8 +134,7 @@ import io.github.yuuichi_s.astertune.constants.SeekIncrementKey
 import io.github.yuuichi_s.astertune.constants.ShowQueueTitleKey
 import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.move
-import io.github.yuuichi_s.astertune.extensions.supportsWideScreen
-import io.github.yuuichi_s.astertune.extensions.tabMode
+import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
 import io.github.yuuichi_s.astertune.models.MediaMetadata
@@ -303,10 +302,8 @@ fun BoxScope.QueueContent(
     )
 
     // ui
-    val tabMode = context.tabMode()
-    val wideScreen = context.supportsWideScreen()
-    val landscape =
-        LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE && wideScreen && !tabMode
+    val tabMode = LocalTabMode.current
+    val landscape = usesLandscapePlayer(LocalConfiguration.current, tabMode)
 
     val insets = LocalPlayerAwareWindowInsets.current
     val insetsSTE = if (!tabMode) {

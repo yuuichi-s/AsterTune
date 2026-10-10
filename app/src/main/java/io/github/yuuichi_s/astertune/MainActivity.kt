@@ -82,6 +82,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -103,7 +104,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.window.core.layout.WindowSizeClass
 import io.github.yuuichi_s.astertune.constants.AppBarHeight
 import io.github.yuuichi_s.astertune.constants.DEFAULT_ENABLED_TABS
 import io.github.yuuichi_s.astertune.constants.CustomThemeColorKey
@@ -122,8 +122,10 @@ import io.github.yuuichi_s.astertune.constants.OOBE_VERSION
 import io.github.yuuichi_s.astertune.constants.OobeStatusKey
 import io.github.yuuichi_s.astertune.constants.PureBlackKey
 import io.github.yuuichi_s.astertune.constants.SlimNavBarKey
+import io.github.yuuichi_s.astertune.constants.TabletUiKey
 import io.github.yuuichi_s.astertune.db.MusicDatabase
-import io.github.yuuichi_s.astertune.extensions.tabMode
+import io.github.yuuichi_s.astertune.extensions.isTabMode
+import io.github.yuuichi_s.astertune.extensions.usesNavRail
 import io.github.yuuichi_s.astertune.playback.DownloadUtil
 import io.github.yuuichi_s.astertune.playback.MediaControllerViewModel
 import io.github.yuuichi_s.astertune.playback.MusicService
@@ -272,11 +274,11 @@ class MainActivity : ComponentActivity() {
             }
 
             val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-            val tabMode = this@MainActivity.tabMode()
-            val useNavRail by remember {
-                derivedStateOf {
-                    windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND) && !tabMode
-                }
+            val configuration = LocalConfiguration.current
+            val tabletUi by rememberPreference(TabletUiKey, defaultValue = false)
+            val tabMode = isTabMode(configuration, tabletUi)
+            val useNavRail = remember(windowSizeClass, configuration, tabMode) {
+                this@MainActivity.usesNavRail(windowSizeClass, configuration, tabMode)
             }
 
 
@@ -383,6 +385,8 @@ class MainActivity : ComponentActivity() {
                         remember(
                             bottomInset,
                             playerBottomSheetState.isDismissed,
+                            useNavRail,
+                            tabMode,
                         ) {
                             // TODO: Navbar is shown in all screens except for oobe (which doesn't use these insets). Idk what do to tbh
                             var bottom = bottomInset + if (!useNavRail) NavigationBarHeight else 0.dp
@@ -439,6 +443,7 @@ class MainActivity : ComponentActivity() {
                         LocalMenuState provides MenuState(rememberModalBottomSheetState()),
                         LocalPlayerConnection provides playerConnection,
                         LocalPlayerAwareWindowInsets provides playerAwareWindowInsets,
+                        LocalTabMode provides tabMode,
                         LocalDownloadUtil provides downloadUtil,
                         LocalShimmerTheme provides ShimmerTheme,
                         LocalSyncUtils provides syncUtils,
@@ -1058,6 +1063,7 @@ val LocalDatabase = staticCompositionLocalOf<MusicDatabase> { error("No database
 val LocalMenuState = staticCompositionLocalOf<MenuState> { error("No menu state provided") }
 val LocalPlayerConnection = staticCompositionLocalOf<PlayerConnection?> { error("No PlayerConnection provided") }
 val LocalPlayerAwareWindowInsets = compositionLocalOf<WindowInsets> { error("No player WindowInsets provided") }
+val LocalTabMode = compositionLocalOf { false }
 val LocalDownloadUtil = staticCompositionLocalOf<DownloadUtil> { error("No DownloadUtil provided") }
 val LocalSyncUtils = staticCompositionLocalOf<SyncUtils> { error("No SyncUtils provided") }
 val LocalAccountImageFetcher = staticCompositionLocalOf<AccountImageFetcher> { error("No AccountImageFetcher provided") }

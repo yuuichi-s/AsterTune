@@ -1,7 +1,6 @@
 package io.github.yuuichi_s.astertune.ui.screens
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.util.Log
 import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,19 +14,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
+import io.github.yuuichi_s.astertune.LocalTabMode
 import io.github.yuuichi_s.astertune.constants.DEFAULT_PLAYER_BACKGROUND
 import io.github.yuuichi_s.astertune.constants.DarkMode
 import io.github.yuuichi_s.astertune.constants.DarkModeKey
 import io.github.yuuichi_s.astertune.constants.MiniPlayerHeight
 import io.github.yuuichi_s.astertune.constants.PlayerBackgroundStyleKey
 import io.github.yuuichi_s.astertune.constants.ShowLyricsKey
-import io.github.yuuichi_s.astertune.extensions.supportsWideScreen
-import io.github.yuuichi_s.astertune.extensions.tabMode
+import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.ui.component.expandedAnchor
 import io.github.yuuichi_s.astertune.ui.component.rememberBottomSheetState
 import io.github.yuuichi_s.astertune.ui.player.LandscapePlayer
@@ -46,7 +44,6 @@ fun PlayerScreen(
 ) {
     val TAG = "PlayerScreen"
 
-    val context = LocalContext.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val queueBoard by playerConnection.queueBoard.collectAsState()
 
@@ -84,8 +81,7 @@ fun PlayerScreen(
             initialAnchor = expandedAnchor,
         )
 
-        val tabMode = context.tabMode()
-        if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE && !tabMode && context.supportsWideScreen()) {
+        if (usesLandscapePlayer(LocalConfiguration.current, LocalTabMode.current)) {
             LandscapePlayer(state, navController, queueBoard)
         } else {
             PortraitPlayer(state, navController, queueBoard)
