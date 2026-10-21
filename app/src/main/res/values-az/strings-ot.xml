@@ -67,4 +67,12 @@
     <string name="help_bug_report_action">Xəta bildir</string>
     <string name="help_support_forum">Dəstək</string>
     <string name="off">Deaktiv</string>
+    <string name="home_sections_title">Ana səhifə bölmələri</string>
+    <string name="home_sections_chips">Kateqoriya düymələri</string>
+    <string name="home_sections_chips_description">Ana səhifənin yuxarısında YouTube Music bölmələrini süzmək üçün düymələr göstərir</string>
+    <string name="home_sections_ytm">YouTube Music bölmələri</string>
+    <string name="home_sections_ytm_description">Tövsiyələr, kitabxananızdakı elementlər, tövsiyə olunan mikslər, gündəlik tövsiyələr və s. daxildir</string>
+    <string name="home_sections_mood">Əhval və janrlar</string>
+    <string name="home_sections_mood_description">Ana səhifənin aşağısında musiqiyə əhvala və ya janra görə baxmaq üçün düymələr göstərir</string>
+    <string name="home_sections_keep_one">Ən azı bir elementi aktiv saxlayın.</string>
 </resources>

@@ -123,6 +123,14 @@
     <string name="tablet_ui_title">Força la interfície de tauleta</string>
     <string name="tablet_ui_title_description">Força una interfície dividida optimitzada per a pantalles grans. Aquesta configuració no té efecte si no es compleixen els requisits mínims d’amplària</string>
     <string name="filter_arrangement">Organitza els filtres</string>
+    <string name="home_sections_title">Seccions de l’inici</string>
+    <string name="home_sections_chips">Botons de categories</string>
+    <string name="home_sections_chips_description">Mostra botons a la part superior de l’inici per a filtrar les seccions de YouTube Music</string>
+    <string name="home_sections_ytm">Seccions de YouTube Music</string>
+    <string name="home_sections_ytm_description">Inclou recomanacions, elements de la teua biblioteca, mixos recomanats, recomanacions diàries i més</string>
+    <string name="home_sections_mood">Estats d’ànim i gèneres</string>
+    <string name="home_sections_mood_description">Mostra botons a la part inferior de l’inici per a explorar música per estat d’ànim o gènere</string>
+    <string name="home_sections_keep_one">Mantín almenys un element activat.</string>
     <string name="like_autodownload">Descarrega automàticament les cançons que t’agraden</string>
     <string name="action_logout_tooltip">Per a tancar la sessió completament, inicia sessió fora del teu compte de YouTube al portal web abans d’utilitzar este botó de tancament de sessió</string>
     <string name="token_adv_login_description">Aquest és un mètode d’inici de sessió AVANÇAT. Com a alternativa al portal web, pots introduir o actualitzar directament ací el teu token d’inici de sessió. Per exemple, això pot accelerar l’inici de sessió en diversos dispositius. Tingues en compte que qualsevol format de token no vàlid que l’aplicació no puga interpretar no serà acceptat</string>

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Isključeno</string>
+    <string name="home_sections_title">Sekcije početne stranice</string>
+    <string name="home_sections_chips">Dugmad kategorija</string>
+    <string name="home_sections_chips_description">Prikazuje dugmad na vrhu početne stranice za filtriranje YouTube Music sekcija</string>
+    <string name="home_sections_ytm">YouTube Music sekcije</string>
+    <string name="home_sections_ytm_description">Uključuje preporuke, stavke iz vaše biblioteke, preporučene mikseve, dnevne preporuke i još mnogo toga</string>
+    <string name="home_sections_mood">Raspoloženje i Žanrovi</string>
+    <string name="home_sections_mood_description">Prikazuje dugmad na dnu početne stranice za pregledanje muzike po raspoloženju ili žanru</string>
+    <string name="home_sections_keep_one">Ostavite uključenu barem jednu stavku.</string>
 </resources>

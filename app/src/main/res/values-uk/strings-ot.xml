@@ -143,6 +143,14 @@
     <string name="swipe_to_skip_description">Увімкніть горизонтальне гортання в плеєрі для перемикання пісень</string>
     <string name="restart_to_apply_changes">Перезапустіть застосунок, щоби зміни набули чинності</string>
     <string name="filter_arrangement">Упорядкувати фільтри</string>
+    <string name="home_sections_title">Розділи головної</string>
+    <string name="home_sections_chips">Кнопки категорій</string>
+    <string name="home_sections_chips_description">Показує вгорі головної кнопки для фільтрування розділів YouTube Music</string>
+    <string name="home_sections_ytm">Розділи YouTube Music</string>
+    <string name="home_sections_ytm_description">Містить рекомендації, елементи з вашої бібліотеки, рекомендовані мікси, щоденні рекомендації тощо</string>
+    <string name="home_sections_mood">Настрій та жанри</string>
+    <string name="home_sections_mood_description">Показує внизу головної кнопки для перегляду музики за настроєм або жанром</string>
+    <string name="home_sections_keep_one">Залиште ввімкненим принаймні один елемент.</string>
     <string name="android_auto">Android Auto</string>
     <string name="more_settings">Більше налаштувань</string>
     <string name="sync_mode_rw">Читати, записувати (також дозволити змінювати віддалений вміст)</string>

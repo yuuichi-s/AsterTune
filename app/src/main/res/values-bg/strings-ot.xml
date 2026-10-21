@@ -171,6 +171,14 @@
     <string name="dl_migrate_title">Преместване на изтеглянията към външна памет…</string>
     <string name="m3u_ytm_lookup">Търсене в YouTube Music за песни, които не са намерени в базата данни на приложението</string>
     <string name="filter_arrangement">Подреждане на филтри</string>
+    <string name="home_sections_title">Секции на началната страница</string>
+    <string name="home_sections_chips">Бутони за категории</string>
+    <string name="home_sections_chips_description">Показва бутони в горната част на началната страница за филтриране на секциите от YouTube Music</string>
+    <string name="home_sections_ytm">Секции от YouTube Music</string>
+    <string name="home_sections_ytm_description">Включва препоръки, елементи от библиотеката ви, препоръчани миксове, ежедневни препоръки и други</string>
+    <string name="home_sections_mood">Настроения и жанрове</string>
+    <string name="home_sections_mood_description">Показва бутони в долната част на началната страница за разглеждане на музика по настроение или жанр</string>
+    <string name="home_sections_keep_one">Оставете поне един елемент включен.</string>
     <string name="queues_title">Опашки</string>
     <string name="queues_empty">Няма опашки</string>
     <string name="tablet_ui_title_description">Принудително разделяне на интерфейса, оптимизирано за големи екрани. Тази настройка няма ефект, ако не са спазени минималните изисквания за ширина.</string>

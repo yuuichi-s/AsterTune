@@ -66,6 +66,14 @@ import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.GridThumbnailHeight
+import io.github.yuuichi_s.astertune.constants.HomeAccountPlaylistsKey
+import io.github.yuuichi_s.astertune.constants.HomeChipsKey
+import io.github.yuuichi_s.astertune.constants.HomeForgottenFavKey
+import io.github.yuuichi_s.astertune.constants.HomeKeepListeningKey
+import io.github.yuuichi_s.astertune.constants.HomeMoodKey
+import io.github.yuuichi_s.astertune.constants.HomeQuickPicksKey
+import io.github.yuuichi_s.astertune.constants.HomeSimilarToKey
+import io.github.yuuichi_s.astertune.constants.HomeYtmSectionsKey
 import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
 import io.github.yuuichi_s.astertune.constants.ListItemHeight
 import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
@@ -163,10 +171,26 @@ fun HomeScreen(
         "SAPISID" in parseCookieString(innerTubeCookie)
     }
 
+    val showQuickPicks by rememberPreference(HomeQuickPicksKey, true)
+    val showForgottenFav by rememberPreference(HomeForgottenFavKey, true)
+    val showKeepListening by rememberPreference(HomeKeepListeningKey, true)
+    val showAccountPlaylists by rememberPreference(HomeAccountPlaylistsKey, true)
+    val showSimilarTo by rememberPreference(HomeSimilarToKey, true)
+    val showChips by rememberPreference(HomeChipsKey, true)
+    val showYtmSections by rememberPreference(HomeYtmSectionsKey, true)
+    val showMood by rememberPreference(HomeMoodKey, true)
+
     val scope = rememberCoroutineScope()
     val lazylistState = rememberLazyListState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(showChips) {
+        if (!showChips) viewModel.clearChipSelection()
+    }
+
+    LaunchedEffect(showYtmSections) {
+        if (!showYtmSections){
+            return@LaunchedEffect
+        }
         snapshotFlow { lazylistState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleIndex ->
                 val len = lazylistState.layoutInfo.totalItemsCount
@@ -416,14 +440,16 @@ fun HomeScreen(
             state = lazylistState,
             contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
         ) {
-            item {
-                ChipsRow(
-                    chips = homePage?.chips?.mapNotNull { it to it.title } ?: emptyList(),
-                    currentValue = selectedChip,
-                    onValueUpdate = {
-                        viewModel.toggleChip(it)
-                    }
-                )
+            if (showChips) {
+                item {
+                    ChipsRow(
+                        chips = homePage?.chips?.mapNotNull { it to it.title } ?: emptyList(),
+                        currentValue = selectedChip,
+                        onValueUpdate = {
+                            viewModel.toggleChip(it)
+                        }
+                    )
+                }
             }
 
             if (isLoggedIn && !recentActivity.isNullOrEmpty()) {
@@ -493,7 +519,7 @@ fun HomeScreen(
 
 
 
-            quickPicks?.takeIf { it.isNotEmpty() }?.let { quickPicks ->
+            quickPicks?.takeIf { showQuickPicks && it.isNotEmpty() }?.let { quickPicks ->
                 item {
                     NavigationTitle(
                         title = stringResource(R.string.quick_picks),
@@ -543,7 +569,7 @@ fun HomeScreen(
                 }
             }
 
-            forgottenFavorites?.takeIf { it.isNotEmpty() }?.let { forgottenFavorites ->
+            forgottenFavorites?.takeIf { showForgottenFav && it.isNotEmpty() }?.let { forgottenFavorites ->
                 item {
                     NavigationTitle(
                         title = stringResource(R.string.forgotten_favorites),
@@ -599,7 +625,7 @@ fun HomeScreen(
                 }
             }
 
-            keepListening?.takeIf { it.isNotEmpty() }?.let { keepListening ->
+            keepListening?.takeIf { showKeepListening && it.isNotEmpty() }?.let { keepListening ->
                 item {
                     NavigationTitle(
                         title = stringResource(R.string.keep_listening),
@@ -627,7 +653,7 @@ fun HomeScreen(
                 }
             }
 
-            accountPlaylists?.takeIf { it.isNotEmpty() }?.let { accountPlaylists ->
+            accountPlaylists?.takeIf { showAccountPlaylists && it.isNotEmpty() }?.let { accountPlaylists ->
                 item {
                     NavigationTitle(
                         title = stringResource(R.string.your_youtube_playlists),
@@ -655,7 +681,7 @@ fun HomeScreen(
                 }
             }
 
-            similarRecommendations?.forEach {
+            similarRecommendations?.takeIf { showSimilarTo }?.forEach {
                 item {
                     NavigationTitle(
                         label = stringResource(R.string.similar_to),
@@ -701,7 +727,7 @@ fun HomeScreen(
                 }
             }
 
-            homePage?.sections?.forEach {
+            homePage?.sections?.takeIf { showYtmSections }?.forEach {
                 item {
                     NavigationTitle(
                         title = it.title,
@@ -789,7 +815,7 @@ fun HomeScreen(
                 }
             }
 
-            if (homePage?.continuation != null && homePage?.sections?.isNotEmpty() == true) {
+            if (showYtmSections && homePage?.continuation != null && homePage?.sections?.isNotEmpty() == true) {
                 item {
                     ShimmerHost(
                         modifier = Modifier.animateItem()
@@ -809,7 +835,7 @@ fun HomeScreen(
                 }
             }
 
-            explorePage?.moodAndGenres?.let { moodAndGenres ->
+            explorePage?.moodAndGenres?.takeIf { showMood }?.let { moodAndGenres ->
                 item {
                     NavigationTitle(
                         title = stringResource(R.string.mood_and_genres),

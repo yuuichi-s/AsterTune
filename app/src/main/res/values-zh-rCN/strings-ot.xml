@@ -190,6 +190,14 @@
     <string name="tablet_ui_title">强制使用平板布局</string>
     <string name="tablet_ui_title_description">强制启用针对大屏幕优化的分屏界面。如果不满足最小宽度要求，则此设置无效</string>
     <string name="filter_arrangement">设置筛选</string>
+    <string name="home_sections_title">首页版块</string>
+    <string name="home_sections_chips">分类按钮</string>
+    <string name="home_sections_chips_description">在首页顶部显示用于筛选 YouTube Music 版块的按钮</string>
+    <string name="home_sections_ytm">YouTube Music 版块</string>
+    <string name="home_sections_ytm_description">包括推荐、媒体库中的内容、推荐合辑、每日推荐等</string>
+    <string name="home_sections_mood">心情和流派</string>
+    <string name="home_sections_mood_description">在首页底部显示按心情或流派浏览音乐的按钮</string>
+    <string name="home_sections_keep_one">请至少保留一项处于开启状态。</string>
     <string name="sync_conflict_add_only">保留所有本地内容并添加来自远程的新内容</string>
     <string name="sync_conflict_overwrite">用远程内容覆盖本地内容</string>
     <string name="sync_conflict_title">解决冲突</string>

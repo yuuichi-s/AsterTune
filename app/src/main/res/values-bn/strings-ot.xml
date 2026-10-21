@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">বন্ধ আছে</string>
+    <string name="home_sections_title">হোমের বিভাগসমূহ</string>
+    <string name="home_sections_chips">ক্যাটাগরি বোতাম</string>
+    <string name="home_sections_chips_description">YouTube Music-এর বিভাগগুলো ফিল্টার করার জন্য হোমের উপরে বোতাম দেখায়</string>
+    <string name="home_sections_ytm">YouTube Music-এর বিভাগসমূহ</string>
+    <string name="home_sections_ytm_description">সুপারিশ, আপনার লাইব্রেরির আইটেম, প্রস্তাবিত মিক্স, দৈনিক সুপারিশ এবং আরও অনেক কিছু অন্তর্ভুক্ত</string>
+    <string name="home_sections_mood">মুড ও জনরা</string>
+    <string name="home_sections_mood_description">মুড বা জনরা অনুযায়ী গান খোঁজার জন্য হোমের নিচে বোতাম দেখায়</string>
+    <string name="home_sections_keep_one">অন্তত একটি আইটেম চালু রাখুন।</string>
 </resources>

@@ -168,6 +168,7 @@ import io.github.yuuichi_s.astertune.ui.screens.settings.AppearanceSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.AttributionScreen
 import io.github.yuuichi_s.astertune.ui.screens.settings.BackupAndRestore
 import io.github.yuuichi_s.astertune.ui.screens.settings.ExperimentalSettings
+import io.github.yuuichi_s.astertune.ui.screens.settings.HomeSectionsSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.LibrariesScreen
 import io.github.yuuichi_s.astertune.ui.screens.settings.LibrarySettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.LocalPlayerSettings
@@ -702,6 +703,9 @@ class MainActivity : ComponentActivity() {
                                     }
                                     composable("settings/appearance") {
                                         AppearanceSettings(navController, scrollBehavior)
+                                    }
+                                    composable("settings/home_sections") {
+                                        HomeSectionsSettings(navController, scrollBehavior)
                                     }
                                     composable("settings/library") {
                                         LibrarySettings(navController, scrollBehavior)

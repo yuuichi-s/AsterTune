@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Vypnuté</string>
+    <string name="home_sections_title">Sekcie domovskej stránky</string>
+    <string name="home_sections_chips">Tlačidlá kategórií</string>
+    <string name="home_sections_chips_description">Zobrazí v hornej časti domovskej stránky tlačidlá na filtrovanie sekcií YouTube Music</string>
+    <string name="home_sections_ytm">Sekcie YouTube Music</string>
+    <string name="home_sections_ytm_description">Zahŕňa odporúčania, položky z vašej knižnice, odporúčané mixy, denné odporúčania a ďalšie</string>
+    <string name="home_sections_mood">Nálada a žánre</string>
+    <string name="home_sections_mood_description">Zobrazí v dolnej časti domovskej stránky tlačidlá na prehliadanie hudby podľa nálady alebo žánru</string>
+    <string name="home_sections_keep_one">Ponechajte zapnutú aspoň jednu položku.</string>
 </resources>

@@ -138,6 +138,14 @@
     <string name="lyrics_prefer_local_description">Priorizar la resolución de archivos de letras locales antes de utilizar todos los proveedores de nube. Desactiva esta opción para dar prioridad a los proveedores de nube</string>
     <string name="local_library_enable_title">Habilitar medios locales</string>
     <string name="filter_arrangement">Organizar filtros</string>
+    <string name="home_sections_title">Secciones de Inicio</string>
+    <string name="home_sections_chips">Botones de categorías</string>
+    <string name="home_sections_chips_description">Muestra botones en la parte superior de Inicio para filtrar las secciones de YouTube Music</string>
+    <string name="home_sections_ytm">Secciones de YouTube Music</string>
+    <string name="home_sections_ytm_description">Incluye recomendaciones, elementos de tu biblioteca, mixes recomendados, recomendaciones diarias y más</string>
+    <string name="home_sections_mood">Estado de ánimo y géneros</string>
+    <string name="home_sections_mood_description">Muestra botones en la parte inferior de Inicio para explorar música por estado de ánimo o género</string>
+    <string name="home_sections_keep_one">Mantén al menos un elemento activado.</string>
     <string name="swipe_to_skip_title">Desliza horizontalmente para cambiar de canción</string>
     <string name="android_auto">Android Auto</string>
     <string name="swipe_to_skip_description">Habilitar deslizar horizontalmente en el reproductor para cambiar de canción</string>

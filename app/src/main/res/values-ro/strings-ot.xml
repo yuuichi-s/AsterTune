@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Dezactivat</string>
+    <string name="home_sections_title">Secțiunile paginii de pornire</string>
+    <string name="home_sections_chips">Butoane de categorii</string>
+    <string name="home_sections_chips_description">Afișează în partea de sus a paginii de pornire butoane pentru filtrarea secțiunilor YouTube Music</string>
+    <string name="home_sections_ytm">Secțiuni YouTube Music</string>
+    <string name="home_sections_ytm_description">Include recomandări, elemente din biblioteca ta, mixuri recomandate, recomandări zilnice și multe altele</string>
+    <string name="home_sections_mood">Stare de spirit și genuri</string>
+    <string name="home_sections_mood_description">Afișează în partea de jos a paginii de pornire butoane pentru explorarea muzicii după stare de spirit sau gen</string>
+    <string name="home_sections_keep_one">Păstrează activat cel puțin un element.</string>
 </resources>

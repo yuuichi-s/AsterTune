@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">ஆஃப்</string>
+    <string name="home_sections_title">முகப்புத் திரையின் பிரிவுகள்</string>
+    <string name="home_sections_chips">வகைப்பாடு பொத்தான்கள்</string>
+    <string name="home_sections_chips_description">YouTube Music பிரிவுகளை வடிகட்ட முகப்புத் திரையின் மேற்பகுதியில் பொத்தான்களைக் காட்டும்</string>
+    <string name="home_sections_ytm">YouTube Music பிரிவுகள்</string>
+    <string name="home_sections_ytm_description">பரிந்துரைகள், உங்கள் நூலகத்திலுள்ள உருப்படிகள், பரிந்துரைக்கப்பட்ட கலவைகள், தினசரி பரிந்துரைகள் மற்றும் பலவற்றை உள்ளடக்கியது</string>
+    <string name="home_sections_mood">மனநிலை மற்றும் வகைகள்</string>
+    <string name="home_sections_mood_description">மனநிலை அல்லது வகையின்படி இசையைப் பார்க்க முகப்புத் திரையின் கீழ்ப்பகுதியில் பொத்தான்களைக் காட்டும்</string>
+    <string name="home_sections_keep_one">குறைந்தது ஒரு உருப்படியையாவது இயக்கத்தில் வைத்திருக்கவும்.</string>
 </resources>

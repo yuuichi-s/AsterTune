@@ -97,6 +97,14 @@
     <string name="player_background_gradient">グラデーション効果</string>
     <string name="slim_navbar_title">細いナビバー</string>
     <string name="slim_navbar_description">テキストラベルを削除してナビバーの高さを減らす</string>
+    <string name="home_sections_title">ホームのセクション</string>
+    <string name="home_sections_chips">カテゴリボタン</string>
+    <string name="home_sections_chips_description">ホーム上部に、YouTube Musicのセクションを絞り込むボタンを表示します</string>
+    <string name="home_sections_ytm">YouTube Musicのセクション</string>
+    <string name="home_sections_ytm_description">「おすすめ」「ライブラリから」「おすすめのミックス」「毎日のおすすめ」などが含まれます</string>
+    <string name="home_sections_mood">ムードとジャンル</string>
+    <string name="home_sections_mood_description">ホーム下部に、気分やジャンルから音楽を探すボタンを表示します</string>
+    <string name="home_sections_keep_one">少なくとも1項目はオンにしてください。</string>
     <string name="slider_style_title">スライダーの形式</string>
     <string name="slider_style_squiggly">波状</string>
     <string name="slider_style_default">標準</string>

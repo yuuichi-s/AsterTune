@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home">வீடு</string>
+    <string name="home">முகப்பு</string>
     <string name="songs">பாடல்கள்</string>
     <string name="artists">கலைஞர்கள்</string>
     <string name="quick_picks">கேட்டதன் அடிப்படையில்</string>

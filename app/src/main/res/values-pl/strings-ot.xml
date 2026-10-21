@@ -18,6 +18,14 @@
     <string name="tab_arrangement_disable_tip">--- Przeciągnij poniżej tego miejsca, aby wyłączyć ---</string>
     <string name="slim_navbar_description">Usuń etykiety aby zmniejszyć wysokość paska nawigacji</string>
     <string name="filter_arrangement">Ułóż filtry</string>
+    <string name="home_sections_title">Sekcje ekranu głównego</string>
+    <string name="home_sections_chips">Przyciski kategorii</string>
+    <string name="home_sections_chips_description">Wyświetla u góry ekranu głównego przyciski do filtrowania sekcji YouTube Music</string>
+    <string name="home_sections_ytm">Sekcje YouTube Music</string>
+    <string name="home_sections_ytm_description">Obejmuje rekomendacje, elementy z Twojej biblioteki, polecane miksy, codzienne rekomendacje i nie tylko</string>
+    <string name="home_sections_mood">Nastroje i gatunki</string>
+    <string name="home_sections_mood_description">Wyświetla u dołu ekranu głównego przyciski do przeglądania muzyki według nastroju lub gatunku</string>
+    <string name="home_sections_keep_one">Pozostaw włączony co najmniej jeden element.</string>
     <string name="audio_offload_description">Użyj zewnętrznej drogi audio do odtwarzania dźwięku. Włączenie tej funkcji może zmniejszyć zużycie baterii, ale może też powodować problemy z odtwarzaniem dźwięku lub post processingiem. Ta preferencja nie ma żadnego efektu dla nie wspieranych algorytmów lub urządzeń</string>
     <string name="attrib_zhuang">Zion Huang dla InnerTune</string>
     <string name="library">Biblioteka</string>

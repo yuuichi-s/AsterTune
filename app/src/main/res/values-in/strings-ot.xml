@@ -92,6 +92,14 @@
     <string name="tablet_ui_title">Paksa tampilan tablet</string>
     <string name="tablet_ui_title_description">Paksa antarmuka terbagi yang dioptimalkan untuk layar besar. Pengaturan ini tidak berpengaruh jika persyaratan lebar minimum tidak terpenuhi</string>
     <string name="filter_arrangement">Pengaturan filter</string>
+    <string name="home_sections_title">Bagian Beranda</string>
+    <string name="home_sections_chips">Tombol kategori</string>
+    <string name="home_sections_chips_description">Menampilkan tombol di bagian atas Beranda untuk memfilter bagian YouTube Music</string>
+    <string name="home_sections_ytm">Bagian YouTube Music</string>
+    <string name="home_sections_ytm_description">Mencakup rekomendasi, item dari koleksi Anda, mix yang direkomendasikan, rekomendasi harian, dan lainnya</string>
+    <string name="home_sections_mood">Suasana Hati dan Genre</string>
+    <string name="home_sections_mood_description">Menampilkan tombol di bagian bawah Beranda untuk menjelajahi musik berdasarkan suasana hati atau genre</string>
+    <string name="home_sections_keep_one">Biarkan setidaknya satu item tetap aktif.</string>
     <string name="like_autodownload">Unduh otomatis lagu yang disukai</string>
     <string name="token_adv_login_description">Ini adalah metode masuk TINGKAT LANJUT. Sebagai alternatif dari portal web, Anda dapat langsung memasukkan atau memperbarui token masuk Anda di sini. Contohnya, ini dapat mempercepat proses masuk di beberapa perangkat. Perlu diingat bahwa format token apa pun yang tidak valid dan gagal diurai oleh aplikasi tidak akan diterima</string>
     <string name="token_hidden">Ketuk untuk menampilkan token</string>

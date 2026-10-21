@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">ఆఫ్‌లో ఉంది</string>
+    <string name="home_sections_title">హోమ్ స్క్రీన్‌లోని విభాగాలు</string>
+    <string name="home_sections_chips">వర్గం బటన్‌లు</string>
+    <string name="home_sections_chips_description">YouTube Music విభాగాలను ఫిల్టర్ చేయడానికి హోమ్ స్క్రీన్ పైభాగంలో బటన్‌లను చూపుతుంది</string>
+    <string name="home_sections_ytm">YouTube Music విభాగాలు</string>
+    <string name="home_sections_ytm_description">సిఫార్సులు, మీ లైబ్రరీలోని అంశాలు, సిఫార్సు చేసిన మిక్స్‌లు, రోజువారీ సిఫార్సులు మరియు మరిన్ని ఉంటాయి</string>
+    <string name="home_sections_mood">మూడ్ మరియు కళా ప్రక్రియలు</string>
+    <string name="home_sections_mood_description">మూడ్ లేదా శైలి ప్రకారం సంగీతాన్ని బ్రౌజ్ చేయడానికి హోమ్ స్క్రీన్ దిగువన బటన్‌లను చూపుతుంది</string>
+    <string name="home_sections_keep_one">కనీసం ఒక అంశాన్ని ఆన్‌లో ఉంచండి.</string>
 </resources>

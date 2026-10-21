@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="songs">गीत</string>
-    <string name="home">मुख्य स्थान</string>
+    <string name="home">होम</string>
     <string name="artists">कलाकार</string>
     <string name="albums">एलबम</string>
     <plurals name="n_selected">

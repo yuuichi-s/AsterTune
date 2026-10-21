@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Desactivado</string>
+    <string name="home_sections_title">Secciones de Inicio</string>
+    <string name="home_sections_chips">Botones de categorías</string>
+    <string name="home_sections_chips_description">Muestra botones en la parte superior de Inicio para filtrar las secciones de YouTube Music</string>
+    <string name="home_sections_ytm">Secciones de YouTube Music</string>
+    <string name="home_sections_ytm_description">Incluye recomendaciones, elementos de tu biblioteca, mixes recomendados, recomendaciones diarias y más</string>
+    <string name="home_sections_mood">Estado de ánimo y géneros</string>
+    <string name="home_sections_mood_description">Muestra botones en la parte inferior de Inicio para explorar música por estado de ánimo o género</string>
+    <string name="home_sections_keep_one">Mantén al menos un elemento activado.</string>
 </resources>

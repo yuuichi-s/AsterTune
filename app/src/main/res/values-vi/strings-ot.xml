@@ -51,6 +51,14 @@
     <string name="sort_by_play_count">Số lần nghe</string>
     <string name="attrib_zhuang">Zion Huang về InnerTune</string>
     <string name="filter_arrangement">Sắp xếp bộ lọc</string>
+    <string name="home_sections_title">Các mục trên Trang chủ</string>
+    <string name="home_sections_chips">Nút danh mục</string>
+    <string name="home_sections_chips_description">Hiển thị các nút ở đầu Trang chủ để lọc các mục của YouTube Music</string>
+    <string name="home_sections_ytm">Các mục của YouTube Music</string>
+    <string name="home_sections_ytm_description">Bao gồm đề xuất, mục từ thư viện của bạn, tuyển tập được đề xuất, đề xuất hằng ngày và nhiều nội dung khác</string>
+    <string name="home_sections_mood">Tâm trạng và thể loại</string>
+    <string name="home_sections_mood_description">Hiển thị các nút ở cuối Trang chủ để duyệt nhạc theo tâm trạng hoặc thể loại</string>
+    <string name="home_sections_keep_one">Hãy bật ít nhất một mục.</string>
     <string name="settings_debug">Gỡ lỗi</string>
     <string name="playlist_add_local_to_synced_note">Note: Thêm bài hát có sẵn ở trong máy vào danh sách phát đã được đồng bộ / từ bên ngoài (remote) sẽ không được hỗ trợ. Còn lại đều là hợp lệ</string>
     <string name="grp_interface">Giao diện</string>

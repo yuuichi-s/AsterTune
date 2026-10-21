@@ -140,6 +140,14 @@
     <string name="swipe_to_skip_description">Deslize horizontalmente no reprodutor para mudar de música</string>
     <string name="swipe_to_skip_title">Deslizar horizontalmente para mudar de música</string>
     <string name="filter_arrangement">Organizar filtros</string>
+    <string name="home_sections_title">Seções do Início</string>
+    <string name="home_sections_chips">Botões de categorias</string>
+    <string name="home_sections_chips_description">Mostra botões no topo do Início para filtrar as seções do YouTube Music</string>
+    <string name="home_sections_ytm">Seções do YouTube Music</string>
+    <string name="home_sections_ytm_description">Inclui recomendações, itens da sua biblioteca, mixes recomendados, recomendações diárias e muito mais</string>
+    <string name="home_sections_mood">Momentos e Gêneros</string>
+    <string name="home_sections_mood_description">Mostra botões na parte inferior do Início para explorar músicas por momento ou gênero</string>
+    <string name="home_sections_keep_one">Mantenha pelo menos um item ativado.</string>
     <string name="restart_to_apply_changes">Reinicie o app para que as alterações tomem efeito</string>
     <string name="android_auto">Android Auto</string>
     <string name="sync_conflict_overwrite">Sobrescrever conteúdo local com o conteúdo remoto</string>

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Uit</string>
+    <string name="home_sections_title">Secties op Home</string>
+    <string name="home_sections_chips">Categorieknoppen</string>
+    <string name="home_sections_chips_description">Toont knoppen bovenaan Home om de secties van YouTube Music te filteren</string>
+    <string name="home_sections_ytm">Secties van YouTube Music</string>
+    <string name="home_sections_ytm_description">Omvat aanbevelingen, items uit je bibliotheek, aanbevolen mixen, dagelijkse aanbevelingen en meer</string>
+    <string name="home_sections_mood">Stemmingen en genres</string>
+    <string name="home_sections_mood_description">Toont knoppen onderaan Home om muziek te verkennen op stemming of genre</string>
+    <string name="home_sections_keep_one">Laat minstens één item ingeschakeld.</string>
 </resources>
