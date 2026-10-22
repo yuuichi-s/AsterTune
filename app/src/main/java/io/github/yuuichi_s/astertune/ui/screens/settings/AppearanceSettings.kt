@@ -20,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +37,7 @@ import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.SlimNavBarKey
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.ui.component.ColumnWithContentPadding
+import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.component.SwitchPreference
 import io.github.yuuichi_s.astertune.ui.component.button.IconButton
@@ -99,6 +101,11 @@ fun AppearanceSettings(
                 icon = { Icon(Icons.Rounded.MoreHoriz, null) },
                 checked = slimNav,
                 onCheckedChange = onSlimNavChange
+            )
+            PreferenceEntry(
+                title = { Text(stringResource(R.string.home_sections_title)) },
+                icon = { Icon(Icons.Rounded.Home, null) },
+                onClick = { navController.navigate("settings/home_sections") }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))

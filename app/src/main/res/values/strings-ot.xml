@@ -146,6 +146,14 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="tablet_ui_title">Force tablet UI</string>
     <string name="tablet_ui_title_description">Force a split interface optimized for large screens. This setting has no effect if minimum width requirements are not met</string>
     <string name="filter_arrangement">Arrange filters</string>
+    <string name="home_sections_title">Home sections</string>
+    <string name="home_sections_chips">Category buttons</string>
+    <string name="home_sections_chips_description">Shows buttons at the top of Home for filtering YouTube Music sections</string>
+    <string name="home_sections_ytm">YouTube Music sections</string>
+    <string name="home_sections_ytm_description">Includes recommendations, items from your library, recommended mixes, daily recommendations, and more</string>
+    <string name="home_sections_mood">Mood and Genres</string>
+    <string name="home_sections_mood_description">Shows buttons at the bottom of Home for browsing music by mood or genre</string>
+    <string name="home_sections_keep_one">Keep at least one item enabled.</string>
 
 <!-- Content settings -->
     <string name="like_autodownload">Automatically download your liked songs</string>

@@ -152,6 +152,14 @@
     <string name="slim_navbar_title">Napp tööriistariba</string>
     <string name="tab_arrangement">Muuda vahekaartide järjekorda</string>
     <string name="filter_arrangement">Muuda filtreid</string>
+    <string name="home_sections_title">Avalehe jaotised</string>
+    <string name="home_sections_chips">Kategooria nupud</string>
+    <string name="home_sections_chips_description">Näitab avalehe ülaosas nuppe YouTube Musicu jaotiste filtreerimiseks</string>
+    <string name="home_sections_ytm">YouTube Musicu jaotised</string>
+    <string name="home_sections_ytm_description">Sisaldab soovitusi, üksusi sinu kogust, soovitatud mikse, igapäevaseid soovitusi ja muud</string>
+    <string name="home_sections_mood">Meeleolu ja žanrid</string>
+    <string name="home_sections_mood_description">Näitab avalehe allosas nuppe muusika sirvimiseks meeleolu või žanri järgi</string>
+    <string name="home_sections_keep_one">Vähemalt üks üksus peab jääma sisselülitatuks.</string>
     <string name="sync_conflict_title">Sisukonfliktide lahendus</string>
     <string name="flat_subfolders_title">Pane alamkaustad kokku</string>
     <string name="auto_scanner_title">Skaneeri automaatselt</string>

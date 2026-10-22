@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="home">Thuis</string>
+    <string name="home">Home</string>
     <string name="songs">Nummers</string>
     <string name="artists">Artiesten</string>
     <string name="albums">Albums</string>

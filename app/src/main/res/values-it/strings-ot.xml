@@ -138,6 +138,14 @@
     <string name="queues_title">Code</string>
     <string name="queues_empty">Nessuna coda</string>
     <string name="filter_arrangement">Organizzare i filtri</string>
+    <string name="home_sections_title">Sezioni della Home</string>
+    <string name="home_sections_chips">Pulsanti delle categorie</string>
+    <string name="home_sections_chips_description">Mostra in alto nella Home i pulsanti per filtrare le sezioni di YouTube Music</string>
+    <string name="home_sections_ytm">Sezioni di YouTube Music</string>
+    <string name="home_sections_ytm_description">Include consigli, elementi della tua libreria, mix consigliati, consigli giornalieri e altro</string>
+    <string name="home_sections_mood">Umori e generi</string>
+    <string name="home_sections_mood_description">Mostra in basso nella Home i pulsanti per esplorare la musica per umore o genere</string>
+    <string name="home_sections_keep_one">Mantieni attivo almeno un elemento.</string>
     <string name="restart_to_apply_changes">Riavviare l\'app per applicare le modifiche</string>
     <string name="swipe_to_skip_title">Scorri orizzontalmente per cambiare canzone</string>
     <string name="swipe_to_skip_description">Abilita lo scorrimento orizzontale nel lettore per cambiare canzone</string>

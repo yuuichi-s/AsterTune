@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Av</string>
+    <string name="home_sections_title">Seksjoner på startsiden</string>
+    <string name="home_sections_chips">Kategoriknapper</string>
+    <string name="home_sections_chips_description">Viser knapper øverst på startsiden for å filtrere seksjonene fra YouTube Music</string>
+    <string name="home_sections_ytm">Seksjoner fra YouTube Music</string>
+    <string name="home_sections_ytm_description">Omfatter anbefalinger, elementer fra biblioteket ditt, anbefalte mikser, daglige anbefalinger og mer</string>
+    <string name="home_sections_mood">Stemning og sjangrer</string>
+    <string name="home_sections_mood_description">Viser knapper nederst på startsiden for å utforske musikk etter stemning eller sjanger</string>
+    <string name="home_sections_keep_one">Minst ett element må være slått på.</string>
 </resources>

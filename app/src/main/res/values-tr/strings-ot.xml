@@ -146,6 +146,14 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="tablet_ui_title">Tablet arayüzünü zorla</string>
     <string name="tablet_ui_title_description">Büyük ekranlar için iyileştirilmiş bölünmüş arayüzü zorla. En düşük genişlik gereksinimleri karşılanmıyorsa bu ayarın etkisi olmaz</string>
     <string name="filter_arrangement">Filtreleri düzenle</string>
+    <string name="home_sections_title">Ana Sayfa bölümleri</string>
+    <string name="home_sections_chips">Kategori düğmeleri</string>
+    <string name="home_sections_chips_description">Ana Sayfanın üst kısmında YouTube Music bölümlerini filtrelemek için düğmeler gösterir</string>
+    <string name="home_sections_ytm">YouTube Music bölümleri</string>
+    <string name="home_sections_ytm_description">Öneriler, kitaplığınızdaki öğeler, önerilen miksler, günlük öneriler ve daha fazlasını içerir</string>
+    <string name="home_sections_mood">Ruh Hali ve Türler</string>
+    <string name="home_sections_mood_description">Ana Sayfanın alt kısmında müziğe ruh hâline veya türe göre göz atmak için düğmeler gösterir</string>
+    <string name="home_sections_keep_one">En az bir öğeyi açık tutun.</string>
 
 <!-- Content settings -->
     <string name="like_autodownload">Beğenilen şarkıları otomatik indir</string>

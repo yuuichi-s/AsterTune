@@ -141,6 +141,14 @@
     <string name="swipe_to_skip_title">Balayer horizontalement pour changer de titre</string>
     <string name="swipe_to_skip_description">Activer le balayage horizontal dans le lecteur pour changer de titre</string>
     <string name="filter_arrangement">Organiser les filtres</string>
+    <string name="home_sections_title">Sections de l’accueil</string>
+    <string name="home_sections_chips">Boutons de catégories</string>
+    <string name="home_sections_chips_description">Affiche en haut de l’accueil des boutons pour filtrer les sections de YouTube Music</string>
+    <string name="home_sections_ytm">Sections de YouTube Music</string>
+    <string name="home_sections_ytm_description">Comprend les recommandations, les éléments de votre bibliothèque, les mix recommandés, les recommandations quotidiennes et plus encore</string>
+    <string name="home_sections_mood">Humeurs et Genres</string>
+    <string name="home_sections_mood_description">Affiche en bas de l’accueil des boutons pour parcourir la musique par humeur ou par genre</string>
+    <string name="home_sections_keep_one">Gardez au moins un élément activé.</string>
     <string name="restart_to_apply_changes">Redémarrez l\'application afin que les modifications prennent effet</string>
     <string name="android_auto">Android Auto</string>
     <string name="missing_media_permission_warning">Des autorisations de stockage sont requises pour les médias locaux. Cliquez pour accorder l\'autorisation.</string>

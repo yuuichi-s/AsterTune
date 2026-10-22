@@ -92,6 +92,14 @@
     <string name="tab_arrangement_disable_tip">--- اسحب أدناه للتعطيل ---</string>
     <string name="tab_arrangement_home_required">علامة تبويب الصفحة الرئيسية مطلوبة.</string>
     <string name="filter_arrangement">ترتيب المرشحات</string>
+    <string name="home_sections_title">أقسام الصفحة الرئيسية</string>
+    <string name="home_sections_chips">أزرار الفئات</string>
+    <string name="home_sections_chips_description">يعرض أزرارًا أعلى الصفحة الرئيسية لتصفية أقسام YouTube Music</string>
+    <string name="home_sections_ytm">أقسام YouTube Music</string>
+    <string name="home_sections_ytm_description">تشمل التوصيات والعناصر من مكتبتك والمزيجات المقترحة والتوصيات اليومية وغيرها</string>
+    <string name="home_sections_mood">الحالات المزاجية والأنواع الموسيقية</string>
+    <string name="home_sections_mood_description">يعرض أزرارًا أسفل الصفحة الرئيسية لتصفح الموسيقى حسب الحالة المزاجية أو النوع</string>
+    <string name="home_sections_keep_one">أبقِ عنصرًا واحدًا على الأقل مفعّلًا.</string>
     <string name="like_autodownload">تنزيل الأغاني المعجب بها تلقائيًا</string>
     <string name="token_adv_login_description">هذه طريقة متقدمة لتسجيل الدخول. كبديل لبوابة الويب، يمكنك إدخال رمز تسجيل الدخول الخاص بك مباشرة أو تحديثه هنا. على سبيل المثال، يمكن أن يؤدي ذلك إلى تسريع تسجيل الدخول على أجهزة متعددة. يرجى ملاحظة أنه لن يتم قبول أي تنسيقات رمزية غير صالحة يفشل التطبيق في تحليلها.</string>
     <string name="token_shown">انقر مرة أخرى للنسخ أو التحرير</string>

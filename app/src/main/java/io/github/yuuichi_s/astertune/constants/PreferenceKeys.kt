@@ -27,6 +27,15 @@ val DefaultOpenTabKey = stringPreferencesKey("defaultOpenTab")
 val SlimNavBarKey = booleanPreferencesKey("slimNavBar")
 val SliderStyleKey = stringPreferencesKey("sliderStyle")
 
+val HomeQuickPicksKey = booleanPreferencesKey("homeQuickPicks")
+val HomeForgottenFavKey = booleanPreferencesKey("homeForgottenFav")
+val HomeKeepListeningKey = booleanPreferencesKey("homeKeepListening")
+val HomeAccountPlaylistsKey = booleanPreferencesKey("homeAccountPlaylists")
+val HomeSimilarToKey = booleanPreferencesKey("homeSimilarTo")
+val HomeChipsKey = booleanPreferencesKey("homeChips")
+val HomeYtmSectionsKey = booleanPreferencesKey("homeYtmSections")
+val HomeMoodKey = booleanPreferencesKey("homeMood")
+
 /**
  * Content
  */

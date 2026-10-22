@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Pois päältä</string>
+    <string name="home_sections_title">Kotinäkymän osiot</string>
+    <string name="home_sections_chips">Luokkapainikkeet</string>
+    <string name="home_sections_chips_description">Näyttää kotinäkymän yläosassa painikkeet YouTube Musicin osioiden suodattamiseen</string>
+    <string name="home_sections_ytm">YouTube Musicin osiot</string>
+    <string name="home_sections_ytm_description">Sisältää suositukset, kohteet kirjastostasi, suositellut mixit, päivittäiset suositukset ja muuta</string>
+    <string name="home_sections_mood">Mielialat ja genret</string>
+    <string name="home_sections_mood_description">Näyttää kotinäkymän alaosassa painikkeet musiikin selaamiseen mielialan tai genren mukaan</string>
+    <string name="home_sections_keep_one">Pidä vähintään yksi kohde käytössä.</string>
 </resources>

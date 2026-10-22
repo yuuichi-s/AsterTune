@@ -69,6 +69,14 @@
     <string name="tab_arrangement">टैब्स को व्यवस्थित करें</string>
     <string name="tab_arrangement_home_required">होम टैब आवश्यक है।</string>
     <string name="filter_arrangement">फ़िल्टर्स व्यवस्थित करें</string>
+    <string name="home_sections_title">होम के अनुभाग</string>
+    <string name="home_sections_chips">श्रेणी बटन</string>
+    <string name="home_sections_chips_description">होम स्क्रीन पर सबसे ऊपर YouTube Music के अनुभागों को फ़िल्टर करने के लिए बटन दिखाता है</string>
+    <string name="home_sections_ytm">YouTube Music के अनुभाग</string>
+    <string name="home_sections_ytm_description">इसमें सुझाव, आपकी लाइब्रेरी के आइटम, सुझाए गए मिक्स, रोज़ाना के सुझाव और बहुत कुछ शामिल हैं</string>
+    <string name="home_sections_mood">मूड और शैलियां</string>
+    <string name="home_sections_mood_description">होम स्क्रीन पर सबसे नीचे मूड या शैली के अनुसार संगीत ब्राउज़ करने के लिए बटन दिखाता है</string>
+    <string name="home_sections_keep_one">कम से कम एक आइटम चालू रखें।</string>
     <string name="like_autodownload">आपके पसंद किए गए गीत अपने-आप डाउनलोड होंगे</string>
     <string name="token_hidden">टोकन दिखाने के लिए टैप करें</string>
     <string name="token_shown">कॉपी या संपादित करने के लिए फिर से टैप करें</string>

@@ -52,6 +52,14 @@
     <string name="show_liked_and_downloaded_playlist">Εμφάνιση αγαπημένων και κατεβασμένων playlists στη βιβλιοθήκη</string>
     <string name="slim_navbar_title">Λεπτή γραμμή πλοήγησης</string>
     <string name="slim_navbar_description">Αφαίρεση ετικετών κειμένου για τη μείωση ύψους της γραμμής πλοήγησης</string>
+    <string name="home_sections_title">Ενότητες αρχικής</string>
+    <string name="home_sections_chips">Κουμπιά κατηγοριών</string>
+    <string name="home_sections_chips_description">Εμφανίζει κουμπιά στο πάνω μέρος της αρχικής για φιλτράρισμα των ενοτήτων του YouTube Music</string>
+    <string name="home_sections_ytm">Ενότητες του YouTube Music</string>
+    <string name="home_sections_ytm_description">Περιλαμβάνει προτάσεις, στοιχεία από τη βιβλιοθήκη σας, προτεινόμενες μίξεις, καθημερινές προτάσεις και άλλα</string>
+    <string name="home_sections_mood">Διάθεση και Είδη</string>
+    <string name="home_sections_mood_description">Εμφανίζει κουμπιά στο κάτω μέρος της αρχικής για περιήγηση στη μουσική ανά διάθεση ή είδος</string>
+    <string name="home_sections_keep_one">Αφήστε ενεργοποιημένο τουλάχιστον ένα στοιχείο.</string>
     <string name="queues_title">Ουρές</string>
     <string name="queues_empty">Καμία ουρά</string>
     <string name="tab_arrangement">Αναδιάταξη καρτελών</string>

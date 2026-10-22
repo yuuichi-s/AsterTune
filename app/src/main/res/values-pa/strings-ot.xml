@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">ਬੰਦ ਹੈ</string>
+    <string name="home_sections_title">ਹੋਮ ਦੇ ਭਾਗ</string>
+    <string name="home_sections_chips">ਸ਼੍ਰੇਣੀ ਬਟਨ</string>
+    <string name="home_sections_chips_description">YouTube Music ਦੇ ਭਾਗਾਂ ਨੂੰ ਫਿਲਟਰ ਕਰਨ ਲਈ ਹੋਮ ਸਕ੍ਰੀਨ ਦੇ ਉੱਪਰਲੇ ਹਿੱਸੇ ਵਿੱਚ ਬਟਨ ਦਿਖਾਉਂਦਾ ਹੈ</string>
+    <string name="home_sections_ytm">YouTube Music ਦੇ ਭਾਗ</string>
+    <string name="home_sections_ytm_description">ਇਸ ਵਿੱਚ ਸਿਫ਼ਾਰਸ਼ਾਂ, ਤੁਹਾਡੀ ਲਾਇਬ੍ਰੇਰੀ ਦੀਆਂ ਆਈਟਮਾਂ, ਸਿਫ਼ਾਰਸ਼ ਕੀਤੇ ਮਿਕਸ, ਰੋਜ਼ਾਨਾ ਸਿਫ਼ਾਰਸ਼ਾਂ ਅਤੇ ਹੋਰ ਸ਼ਾਮਲ ਹਨ</string>
+    <string name="home_sections_mood">ਮੂਡ ਅਤੇ ਸ਼ੈਲੀ</string>
+    <string name="home_sections_mood_description">ਮੂਡ ਜਾਂ ਸ਼ੈਲੀ ਅਨੁਸਾਰ ਸੰਗੀਤ ਦੇਖਣ ਲਈ ਹੋਮ ਸਕ੍ਰੀਨ ਦੇ ਹੇਠਲੇ ਹਿੱਸੇ ਵਿੱਚ ਬਟਨ ਦਿਖਾਉਂਦਾ ਹੈ</string>
+    <string name="home_sections_keep_one">ਘੱਟੋ-ਘੱਟ ਇੱਕ ਆਈਟਮ ਚਾਲੂ ਰੱਖੋ।</string>
 </resources>

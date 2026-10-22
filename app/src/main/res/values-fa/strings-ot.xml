@@ -74,6 +74,14 @@
     <string name="tablet_ui_title">رابط تبلت اجباری</string>
     <string name="tablet_ui_title_description">یک رابط تقسیم‌شده بهینه‌شده برای صفحه‌نمایش‌های بزرگ را اجباری کنید. اگر الزامات حداقل عرض برآورده نشود، این تنظیم اثری ندارد</string>
     <string name="filter_arrangement">مرتب سازی فیلترها</string>
+    <string name="home_sections_title">بخش‌های خانه</string>
+    <string name="home_sections_chips">دکمه‌های دسته‌بندی</string>
+    <string name="home_sections_chips_description">دکمه‌هایی در بالای خانه برای فیلتر کردن بخش‌های YouTube Music نمایش می‌دهد</string>
+    <string name="home_sections_ytm">بخش‌های YouTube Music</string>
+    <string name="home_sections_ytm_description">شامل پیشنهادها، موارد کتابخانهٔ شما، میکس‌های پیشنهادی، پیشنهادهای روزانه و موارد دیگر</string>
+    <string name="home_sections_mood">حالت و سبک</string>
+    <string name="home_sections_mood_description">دکمه‌هایی در پایین خانه برای مرور موسیقی بر اساس حالت یا سبک نمایش می‌دهد</string>
+    <string name="home_sections_keep_one">دست‌کم یک مورد را روشن نگه دارید.</string>
     <string name="like_autodownload">دانلود خودکار آهنگ های پسندیده شده شما</string>
     <string name="token_adv_login_description">این یک روش ورود پیشرفته است. به عنوان جایگزینی برای پورتال وب، می‌توانید توکن ورود خود را مستقیماً در اینجا وارد یا به‌روزرسانی کنید. به عنوان مثال، این می‌تواند سرعت ورود به سیستم را در چندین دستگاه افزایش دهد. لطفاً توجه داشته باشید که هرگونه فرمت توکن نامعتبر که برنامه نتواند آن را تجزیه کند، پذیرفته نخواهد شد</string>
     <string name="token_hidden">برای نمایش توکن ضربه بزنید</string>

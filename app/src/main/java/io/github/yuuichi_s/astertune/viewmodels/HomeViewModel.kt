@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -209,11 +210,13 @@ class HomeViewModel @Inject constructor(
             null
         }
 
+    /**
+     * Loads Home content for [chip], or clears the selection when [chip] is null.
+     * Selecting the current chip again restores the saved Home page when available.
+     */
     fun toggleChip(chip: HomePage.Chip?) {
         if (chip == null || chip == selectedChip.value && previousHomePage.value != null) {
-            homePage.value = previousHomePage.value
-            previousHomePage.value = null
-            selectedChip.value = null
+            clearChipSelection()
             return
         }
 
@@ -221,8 +224,15 @@ class HomeViewModel @Inject constructor(
             // store the actual homepage for deselecting chips
             previousHomePage.value = homePage.value
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            val nextSections = YouTube.home(params = chip.endpoint?.params).getOrNull() ?: return@launch
+        val generation = chipSelectionGeneration
+        viewModelScope.launch {
+            val nextSections = withContext(Dispatchers.IO) {
+                YouTube.home(params = chip.endpoint?.params).getOrNull()
+            } ?: return@launch
+
+            if (generation != chipSelectionGeneration) {
+                return@launch
+            }
             homePage.value = nextSections.copy(
                 chips = homePage.value?.chips,
                 sections = nextSections.sections,
@@ -230,6 +240,20 @@ class HomeViewModel @Inject constructor(
             )
             selectedChip.value = chip
         }
+    }
+
+    /** Bumped on every deselection so that chip responses requested before it are dropped. */
+    private var chipSelectionGeneration = 0
+
+    /**
+     * Clears the selected chip and ignores results from chip requests already in progress.
+     * Restores the saved home page, or keeps the current page if none was saved.
+     */
+    fun clearChipSelection() {
+        chipSelectionGeneration++
+        previousHomePage.value?.let { homePage.value = it }
+        previousHomePage.value = null
+        selectedChip.value = null
     }
 
     /**

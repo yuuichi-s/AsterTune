@@ -94,6 +94,14 @@
     <string name="tablet_ui_title">Impor interface de tablet</string>
     <string name="tablet_ui_title_description">Forçar uma interface dividida otimizada para ecrãs grandes. Esta definição não tem efeito se os requisitos de largura mínima não forem cumpridos</string>
     <string name="filter_arrangement">Organizar filtros</string>
+    <string name="home_sections_title">Secções do Início</string>
+    <string name="home_sections_chips">Botões de categorias</string>
+    <string name="home_sections_chips_description">Mostra botões no topo do Início para filtrar as secções do YouTube Music</string>
+    <string name="home_sections_ytm">Secções do YouTube Music</string>
+    <string name="home_sections_ytm_description">Inclui recomendações, itens da sua biblioteca, Mixes recomendadas, recomendações diárias e muito mais</string>
+    <string name="home_sections_mood">Estados de espírito e géneros</string>
+    <string name="home_sections_mood_description">Mostra botões no fundo do Início para explorar música por estado de espírito ou género</string>
+    <string name="home_sections_keep_one">Mantenha pelo menos um item ativado.</string>
     <string name="like_autodownload">Transferir músicas favoritas automaticamente</string>
     <string name="token_adv_login_description">Este é um método avançado para iniciar a sessão. Em alternativa ao acesso via web, pode introduzir ou atualizar o seu \'token\' de acesso aqui. Este método pode melhorar o acesso caso esteja a utilizar vários dispositivos. Tenha em atenção que se introduzir um formato de \"token\" inválido, o acesso não será válido.</string>
     <string name="token_hidden">Toque para mostrar o \"token\"</string>

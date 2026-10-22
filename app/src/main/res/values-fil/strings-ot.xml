@@ -10,4 +10,12 @@
     <string name="library_filter">Silid-aklatan filter</string>
     <string name="library_empty">ang iyong library contents ay lalabas dito</string>
     <string name="off">Naka-off</string>
+    <string name="home_sections_title">Mga seksyon ng Home</string>
+    <string name="home_sections_chips">Mga button ng kategorya</string>
+    <string name="home_sections_chips_description">Nagpapakita ng mga button sa itaas ng Home para i-filter ang mga seksyon ng YouTube Music</string>
+    <string name="home_sections_ytm">Mga seksyon ng YouTube Music</string>
+    <string name="home_sections_ytm_description">Kasama ang mga rekomendasyon, mga item mula sa iyong library, mga inirerekomendang mix, mga pang-araw-araw na rekomendasyon, at iba pa</string>
+    <string name="home_sections_mood">Mood at mga Genre</string>
+    <string name="home_sections_mood_description">Nagpapakita ng mga button sa ibaba ng Home para mag-browse ng musika ayon sa mood o genre</string>
+    <string name="home_sections_keep_one">Panatilihing naka-on ang kahit isang item.</string>
 </resources>

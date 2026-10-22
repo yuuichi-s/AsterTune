@@ -47,6 +47,14 @@
     <string name="tab_arrangement">סידור טאבים</string>
     <string name="tab_arrangement_disable_tip">--- גרור למטה לכאן כדי להשבית ---</string>
     <string name="filter_arrangement">סידור מסננים</string>
+    <string name="home_sections_title">מקטעי דף הבית</string>
+    <string name="home_sections_chips">כפתורי קטגוריות</string>
+    <string name="home_sections_chips_description">מציג כפתורים בחלק העליון של דף הבית לסינון המקטעים של YouTube Music</string>
+    <string name="home_sections_ytm">מקטעים של YouTube Music</string>
+    <string name="home_sections_ytm_description">כולל המלצות, פריטים מהספרייה שלך, מיקסים מומלצים, המלצות יומיות ועוד</string>
+    <string name="home_sections_mood">מצב רוח וז\'אנרים</string>
+    <string name="home_sections_mood_description">מציג כפתורים בחלק התחתון של דף הבית לעיון במוזיקה לפי מצב רוח או ז\'אנר</string>
+    <string name="home_sections_keep_one">יש להשאיר לפחות פריט אחד מופעל.</string>
     <string name="like_autodownload">הורד אוטומטית את השירים שאהבת</string>
     <string name="token_hidden">הקש כדי לצפות בטוקן</string>
     <string name="token_shown">הקש שוב כדי להעתיק או לערוך</string>

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">ഓഫാണ്</string>
+    <string name="home_sections_title">ഹോം വിഭാഗങ്ങൾ</string>
+    <string name="home_sections_chips">കാറ്റഗറി ബട്ടണുകൾ</string>
+    <string name="home_sections_chips_description">YouTube Music വിഭാഗങ്ങൾ ഫിൽട്ടർ ചെയ്യാനുള്ള ബട്ടണുകൾ ഹോമിന്റെ മുകളിൽ കാണിക്കുന്നു</string>
+    <string name="home_sections_ytm">YouTube Music വിഭാഗങ്ങൾ</string>
+    <string name="home_sections_ytm_description">ശുപാർശകൾ, നിങ്ങളുടെ ലൈബ്രറിയിലെ ഇനങ്ങൾ, ശുപാർശ ചെയ്ത മിക്സുകൾ, ദിവസേനയുള്ള ശുപാർശകൾ തുടങ്ങിയവ ഉൾപ്പെടുന്നു</string>
+    <string name="home_sections_mood">മൂഡും സംഗീത വിഭാഗങ്ങളും</string>
+    <string name="home_sections_mood_description">മൂഡ് അല്ലെങ്കിൽ ജോണർ അനുസരിച്ച് സംഗീതം ബ്രൗസ് ചെയ്യാനുള്ള ബട്ടണുകൾ ഹോമിന്റെ താഴെ കാണിക്കുന്നു</string>
+    <string name="home_sections_keep_one">കുറഞ്ഞത് ഒരു ഇനമെങ്കിലും ഓണാക്കി വയ്ക്കുക.</string>
 </resources>

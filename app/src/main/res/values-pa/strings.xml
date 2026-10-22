@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="home">ਘਰ</string>
+    <string name="home">ਹੋਮ</string>
     <string name="songs">ਗੀਤ</string>
     <string name="artists">ਕਲਾਕਾਰ</string>
     <string name="albums">ਐਲਬਮ</string>

@@ -88,6 +88,14 @@
     <string name="tablet_ui_title">Prisilno koristi tablet interfejs</string>
     <string name="tablet_ui_title_description">Prisilno koristi podeljeni interfejs optimizovan za velike ekrane. Ovo podešavanje nema efekta ako nisu ispunjeni zahtevi za minimalnu širinu</string>
     <string name="filter_arrangement">Rasporedi filtere</string>
+    <string name="home_sections_title">Odeljci početne stranice</string>
+    <string name="home_sections_chips">Dugmad kategorija</string>
+    <string name="home_sections_chips_description">Prikazuje dugmad na vrhu početne stranice za filtriranje YouTube Music odeljaka</string>
+    <string name="home_sections_ytm">YouTube Music odeljci</string>
+    <string name="home_sections_ytm_description">Uključuje preporuke, stavke iz vaše biblioteke, preporučene mikseve, dnevne preporuke i još mnogo toga</string>
+    <string name="home_sections_mood">Raspoloženje i žanrovi</string>
+    <string name="home_sections_mood_description">Prikazuje dugmad na dnu početne stranice za pregledanje muzike po raspoloženju ili žanru</string>
+    <string name="home_sections_keep_one">Ostavite uključenu bar jednu stavku.</string>
     <string name="like_autodownload">Automatski preuzmi pesme koje ti se sviđaju</string>
     <string name="token_adv_login_description">Ovo je NAPREDNI metod prijavljivanja. Kao alternativa veb portalu, možete direktno uneti ili ažurirati svoj token za prijavu ovde. Na primer, ovo može ubrzati prijavljivanje na više uređaja. Imajte na umu da svi nevažeći formati tokena koje aplikacija ne uspe da analizira neće biti prihvaćeni</string>
     <string name="token_hidden">Dodirni za prikaz tokena</string>

@@ -93,6 +93,14 @@
     <string name="tablet_ui_title">強制使用平板佈局</string>
     <string name="tablet_ui_title_description">強制使用針對大螢幕最佳化的分割介面。如果不符合最小寬度要求，此設定不會生效</string>
     <string name="filter_arrangement">修改篩選順序</string>
+    <string name="home_sections_title">首頁區塊</string>
+    <string name="home_sections_chips">分類按鈕</string>
+    <string name="home_sections_chips_description">在首頁頂端顯示用來篩選 YouTube Music 區塊的按鈕</string>
+    <string name="home_sections_ytm">YouTube Music 區塊</string>
+    <string name="home_sections_ytm_description">包括推薦內容、媒體庫中的項目、推薦合輯、每日推薦等</string>
+    <string name="home_sections_mood">情境與類型</string>
+    <string name="home_sections_mood_description">在首頁底部顯示依情境或類型瀏覽音樂的按鈕</string>
+    <string name="home_sections_keep_one">請至少保留一個項目為開啟狀態。</string>
     <string name="like_autodownload">自動下載你喜歡的歌曲</string>
     <string name="action_logout_tooltip">為了全面登出賬號，請先按下用戶名打開網頁端登出後再返回應用登出</string>
     <string name="token_adv_login_description">這是一個進階的登入方法，一個在網頁端登入的替代方法。你可以直接輸入或更新你的登錄令牌。這樣就可以加速你在多個裝置的登入速度。請確認任何錯誤的登入令牌格式都不被接受</string>

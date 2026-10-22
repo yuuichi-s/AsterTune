@@ -6,4 +6,12 @@
     <string name="recent_activity">Senaste aktiviteten</string>
     <string name="local_history">Lokal</string>
     <string name="off">Av</string>
+    <string name="home_sections_title">Avsnitt på startsidan</string>
+    <string name="home_sections_chips">Kategoriknappar</string>
+    <string name="home_sections_chips_description">Visar knappar högst upp på startsidan för att filtrera avsnitten från YouTube Music</string>
+    <string name="home_sections_ytm">Avsnitt från YouTube Music</string>
+    <string name="home_sections_ytm_description">Omfattar rekommendationer, objekt från ditt bibliotek, rekommenderade mixar, dagliga rekommendationer och mer</string>
+    <string name="home_sections_mood">Stämningar och genrer</string>
+    <string name="home_sections_mood_description">Visar knappar längst ned på startsidan för att utforska musik efter stämning eller genre</string>
+    <string name="home_sections_keep_one">Minst ett objekt måste vara aktiverat.</string>
 </resources>

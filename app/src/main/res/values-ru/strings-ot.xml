@@ -143,6 +143,14 @@
     <string name="swipe_to_skip_description">Использовать горизонтальные свайпы в плеере для переключения треков</string>
     <string name="restart_to_apply_changes">Перезапустите приложение, чтобы изменения вступили в силу</string>
     <string name="filter_arrangement">Порядок фильтров</string>
+    <string name="home_sections_title">Разделы главной</string>
+    <string name="home_sections_chips">Кнопки категорий</string>
+    <string name="home_sections_chips_description">Показывает вверху главной кнопки для фильтрации разделов YouTube Music</string>
+    <string name="home_sections_ytm">Разделы YouTube Music</string>
+    <string name="home_sections_ytm_description">Включает рекомендации, элементы из вашей библиотеки, рекомендуемые миксы, ежедневные рекомендации и многое другое</string>
+    <string name="home_sections_mood">Настроение и жанры</string>
+    <string name="home_sections_mood_description">Показывает внизу главной кнопки для поиска музыки по настроению или жанру</string>
+    <string name="home_sections_keep_one">Оставьте включённым хотя бы один элемент.</string>
     <string name="android_auto">Android Auto</string>
     <string name="grp_account_sync">Аккаунт и синхронизация</string>
     <string name="more_settings">Больше настроек</string>

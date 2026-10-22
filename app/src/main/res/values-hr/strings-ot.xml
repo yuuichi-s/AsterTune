@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Isključeno</string>
+    <string name="home_sections_title">Odjeljci početne stranice</string>
+    <string name="home_sections_chips">Gumbi kategorija</string>
+    <string name="home_sections_chips_description">Prikazuje gumbe na vrhu početne stranice za filtriranje odjeljaka servisa YouTube Music</string>
+    <string name="home_sections_ytm">Odjeljci servisa YouTube Music</string>
+    <string name="home_sections_ytm_description">Uključuje preporuke, stavke iz vaše zbirke, preporučene mikseve, dnevne preporuke i još mnogo toga</string>
+    <string name="home_sections_mood">Ugođaj i žanrovi</string>
+    <string name="home_sections_mood_description">Prikazuje gumbe na dnu početne stranice za pregledavanje glazbe prema ugođaju ili žanru</string>
+    <string name="home_sections_keep_one">Ostavite uključenu barem jednu stavku.</string>
 </resources>

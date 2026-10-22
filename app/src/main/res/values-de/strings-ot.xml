@@ -26,6 +26,14 @@
     <string name="token_adv_login_description">Dies ist eine erweiterte Anmeldemethode. Als Alternative zum Webportal kannst du hier dein Anmeldetoken direkt eingeben oder aktualisieren. Dies kann zum Beispiel die Anmeldung auf mehreren Geräten beschleunigen. Ungültige Tokenformate, die die App nicht verarbeiten kann, werden nicht akzeptiert</string>
     <string name="grp_sync">Synchronisation</string>
     <string name="filter_arrangement">Filter anordnen</string>
+    <string name="home_sections_title">Abschnitte der Startseite</string>
+    <string name="home_sections_chips">Kategorie-Schaltflächen</string>
+    <string name="home_sections_chips_description">Zeigt oben auf der Startseite Schaltflächen zum Filtern der YouTube-Music-Abschnitte</string>
+    <string name="home_sections_ytm">YouTube-Music-Abschnitte</string>
+    <string name="home_sections_ytm_description">Umfasst Empfehlungen, Inhalte aus deiner Mediathek, empfohlene Mixe, tägliche Empfehlungen und mehr</string>
+    <string name="home_sections_mood">Stimmungen und Genres</string>
+    <string name="home_sections_mood_description">Zeigt unten auf der Startseite Schaltflächen, um Musik nach Stimmung oder Genre zu entdecken</string>
+    <string name="home_sections_keep_one">Mindestens ein Eintrag muss aktiviert bleiben.</string>
     <string name="ytm_sync">Automatisch mit deinem YouTube Music-Konto synchronisieren</string>
     <string name="missing_media_permission_warning">Speicherzugriff ist nötig für lokale Medien. Klicken, um Berechtigung zu erteilen.</string>
     <string name="more_settings">Weitere Einstellungen</string>

@@ -43,4 +43,12 @@
     <string name="play_count">จำนวนครั้งการเล่น</string>
     <string name="playlist_add_local_to_synced_note">หมายเหตุ: การเพิ่มเพลงในเครื่องลงในเพลย์ลิสต์ที่ซิงค์/ระยะไกลไม่ได้รับการสนับสนุน การผสมผสานแบบอื่น ๆ สามารถใช้งานได้</string>
     <string name="off">ปิดอยู่</string>
+    <string name="home_sections_title">ส่วนต่างๆ ของหน้าแรก</string>
+    <string name="home_sections_chips">ปุ่มหมวดหมู่</string>
+    <string name="home_sections_chips_description">แสดงปุ่มที่ด้านบนของหน้าแรกเพื่อกรองส่วนต่างๆ ของ YouTube Music</string>
+    <string name="home_sections_ytm">ส่วนต่างๆ ของ YouTube Music</string>
+    <string name="home_sections_ytm_description">รวมถึงรายการแนะนำ รายการจากคลังเพลงของคุณ มิกซ์แนะนำ รายการแนะนำประจำวัน และอื่นๆ</string>
+    <string name="home_sections_mood">อารมณ์และแนวเพลง</string>
+    <string name="home_sections_mood_description">แสดงปุ่มที่ด้านล่างของหน้าแรกเพื่อเลือกดูเพลงตามอารมณ์หรือแนวเพลง</string>
+    <string name="home_sections_keep_one">ต้องเปิดไว้อย่างน้อยหนึ่งรายการ</string>
 </resources>

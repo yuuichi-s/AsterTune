@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="off">Ki</string>
+    <string name="home_sections_title">A kezdőlap szakaszai</string>
+    <string name="home_sections_chips">Kategóriagombok</string>
+    <string name="home_sections_chips_description">Gombokat jelenít meg a kezdőlap tetején a YouTube Music-szakaszok szűréséhez</string>
+    <string name="home_sections_ytm">YouTube Music-szakaszok</string>
+    <string name="home_sections_ytm_description">Tartalmazza az ajánlásokat, a könyvtáradban lévő elemeket, az ajánlott mixeket, a napi ajánlásokat és még sok mást</string>
+    <string name="home_sections_mood">Hangulatok és Műfajok</string>
+    <string name="home_sections_mood_description">Gombokat jelenít meg a kezdőlap alján a zenék hangulat vagy műfaj szerinti böngészéséhez</string>
+    <string name="home_sections_keep_one">Legalább egy elemnek bekapcsolva kell maradnia.</string>
 </resources>
