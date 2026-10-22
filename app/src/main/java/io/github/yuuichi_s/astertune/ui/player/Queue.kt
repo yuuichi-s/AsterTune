@@ -580,7 +580,7 @@ fun BoxScope.QueueContent(
             ) { index, mq ->
                 ReorderableItem(
                     state = reorderableStateEx,
-                    key = mq.hashCode()
+                    key = mq.id
                 ) {
                     Row( // wrapper
                         modifier = Modifier
