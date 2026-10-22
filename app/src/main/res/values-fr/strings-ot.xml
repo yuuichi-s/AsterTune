@@ -52,7 +52,7 @@
     <string name="scanner_sensitivity_L3">Correspondance titre, artistes, albums</string>
     <string name="scanner_variant_rescan">Réanalyser l\'intégralité de la bibliothèque et recharger les métadonnées de tous les titres</string>
     <string name="scanner_online_artist_linking">Essayer de lier les artistes des fichiers locaux avec ceux de YouTube Music</string>
-    <string name="import_failed_songs">Impossible d\'importer :</string>
+    <string name="import_failed_songs">Impossible d\'importer</string>
     <string name="experimental_settings_title">Expérimental</string>
     <string name="dev_settings_title">Activer les paramètres du développeur</string>
     <string name="oobe_welcome_message">Bienvenue sur AsterTune</string>
@@ -146,7 +146,7 @@
     <string name="home_sections_chips_description">Affiche en haut de l’accueil des boutons pour filtrer les sections de YouTube Music</string>
     <string name="home_sections_ytm">Sections de YouTube Music</string>
     <string name="home_sections_ytm_description">Comprend les recommandations, les éléments de votre bibliothèque, les mix recommandés, les recommandations quotidiennes et plus encore</string>
-    <string name="home_sections_mood">Humeurs et Genres</string>
+    <string name="home_sections_mood">Ambiance et Genres</string>
     <string name="home_sections_mood_description">Affiche en bas de l’accueil des boutons pour parcourir la musique par humeur ou par genre</string>
     <string name="home_sections_keep_one">Gardez au moins un élément activé.</string>
     <string name="restart_to_apply_changes">Redémarrez l\'application afin que les modifications prennent effet</string>
@@ -204,7 +204,7 @@
     <string name="oobe_downloads_title">Téléchargements de chansons</string>
     <string name="oobe_downloads_subtitle">Choisissez un dossier dans lequel les titres téléchargés seront enregistrés.</string>
     <string name="oobe_complete_title">Vous êtes prêt !</string>
-    <string name="scan_paths_description">Sélectionnez les dossiers sur votre stockage local pour rechercher des titres</string>
+    <string name="scan_paths_description">Sélectionnez les dossiers de votre espace de stockage local dans lesquels rechercher des morceaux</string>
     <string name="oobe_interface_subtitle">Personnalisez l\'apparence d\'AsterTune et le contenu qu\'il vous montre.</string>
     <string name="scanner_rejected_dir">Sélection non valide. Un dossier d\'analyse ne peut pas être un sous-répertoire du dossier de téléchargement, ni le dossier de téléchargement lui-même.</string>
     <string name="clear_downloads_confirm">Voulez-vous vraiment supprimer tous les téléchargements ? Seuls les téléchargements du dossier principal seront supprimés.</string>
@@ -222,7 +222,7 @@
     <string name="dl_size_used_cache">Interne : %s utilisés</string>
     <string name="dl_size_used_main">Externe : %s utilisés</string>
     <string name="dl_size_used_extra">Importations supplémentaires : %s utilisés</string>
-    <string name="dl_storage_tooltip">"Les téléchargements internes sont enregistrés dans le stockage privé de l\'application et ne sont pas accessibles sans root.\n\nLes téléchargements externes sont enregistrés sur le stockage externe de votre appareil (par exemple, une carte SD ou une carte micro SD) et sont accessibles et modifiables directement via un explorateur de fichiers. Pour le dossier « Téléchargements externes », nous vous recommandons de choisir un dossier vide spécifiquement destiné aux téléchargements de chansons, car AsterTune peut modifier ou supprimer des fichiers de ce dossier.\n\nLes dossiers « Importation supplémentaire » sont en lecture seule et servent au chargement de chansons supplémentaires. AsterTune ne modifiera ni ne supprimera jamais les fichiers de ces dossiers. Vous pouvez sélectionner ces dossiers dans la section avancée.\n\nLorsque vous effacez les téléchargements, seules les chansons internes sont supprimées. Les téléchargements externes et les chansons « Importation supplémentaire » doivent être supprimés manuellement, soit via le menu de la chanson, soit via un explorateur de fichiers.\n\nRéanalyser les dossiers de téléchargement : Les téléchargements de chansons dans les dossiers « Téléchargements externes » et « Importation supplémentaire » ne sont PAS mis à jour automatiquement. Si vous ajoutez, supprimez ou modifiez manuellement des fichiers à l\'aide d\'un explorateur de fichiers, vous devrez peut-être réanalyser les dossiers de téléchargement pour mettre à jour la base de données de l\'application.  Cette option est disponible dans la section avancée."</string>
+    <string name="dl_storage_tooltip">Les téléchargements internes sont enregistrés dans la mémoire privée de l’application et ne sont pas accessibles sans accès root. \n\nLes téléchargements externes sont enregistrés sur le stockage externe de votre appareil (par exemple, /sdcard ou sur des cartes micro SD) et peuvent être consultés ou modifiés directement à l’aide d’un explorateur de fichiers. Pour le dossier « Téléchargements externes », nous vous recommandons de choisir un dossier vide dédié aux téléchargements de morceaux, car AsterTune peut modifier ou supprimer des fichiers dans ce dossier. \n\nLes dossiers « Importations supplémentaires » sont en lecture seule et servent à charger des morceaux supplémentaires. AsterTune ne modifiera ni ne supprimera jamais les fichiers contenus dans ces dossiers. Vous pouvez sélectionner ces dossiers dans la section « Avancé ». \n\nLorsque vous effacez les téléchargements, seuls les morceaux internes sont supprimés. Les téléchargements externes et les morceaux des « Importations supplémentaires » doivent être supprimés manuellement, soit via le menu du morceau, soit à l\'aide d\'un explorateur de fichiers. \n\nRéanalyser les dossiers de téléchargement : les morceaux téléchargés dans les dossiers « Téléchargements externes » et « Importations supplémentaires » ne sont PAS mis à jour automatiquement. Si vous ajoutez, supprimez ou modifiez manuellement des fichiers à l’aide d’un explorateur de fichiers, vous devrez peut-être réanalyser les dossiers de téléchargement pour mettre à jour la base de données de l’application. Cette option est disponible dans la section « Avancé ».</string>
     <string name="scanner_sensitivity_L0">Prendre le premier résultat fourni par YouTube lorsque la recherche sur YouTube est activée, sinon faire correspondre le titre.</string>
     <string name="app_info_title">Informations sur l\'application</string>
     <string name="device_info_title">Informations sur l\'appareil</string>
