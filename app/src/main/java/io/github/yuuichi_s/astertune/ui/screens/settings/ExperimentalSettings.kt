@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.ConfirmationNumber
 import androidx.compose.material.icons.rounded.Coronavirus
@@ -39,7 +38,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -71,15 +69,12 @@ import io.github.yuuichi_s.astertune.constants.DevSettingsKey
 import io.github.yuuichi_s.astertune.constants.MaxQueuesKey
 import io.github.yuuichi_s.astertune.constants.OobeStatusKey
 import io.github.yuuichi_s.astertune.constants.TabletUiKey
-import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.constants.VisitorDataKey
 import io.github.yuuichi_s.astertune.ui.component.ColumnWithContentPadding
 import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.component.SwitchPreference
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.dialog.CounterDialog
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import kotlinx.coroutines.Dispatchers
@@ -592,20 +587,9 @@ fun ExperimentalSettings(
         }
     }
 
-    TopAppBar(
-        title = { Text(stringResource(R.string.experimental_settings_title)) },
-        navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = null
-                )
-            }
-        },
-        windowInsets = TopBarInsets,
+    SettingsTopAppBar(
+        title = stringResource(R.string.experimental_settings_title),
+        navController = navController,
         scrollBehavior = scrollBehavior
     )
 }

@@ -12,14 +12,10 @@ package io.github.yuuichi_s.astertune.ui.screens.settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Autorenew
 import androidx.compose.material.icons.rounded.SdCard
 import androidx.compose.material3.ElevatedCard
@@ -28,7 +24,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,16 +42,13 @@ import io.github.yuuichi_s.astertune.constants.DEFAULT_ENABLED_TABS
 import io.github.yuuichi_s.astertune.constants.EnabledFiltersKey
 import io.github.yuuichi_s.astertune.constants.EnabledTabsKey
 import io.github.yuuichi_s.astertune.constants.LocalLibraryEnableKey
-import io.github.yuuichi_s.astertune.constants.TopBarInsets
-import io.github.yuuichi_s.astertune.ui.component.ColumnWithContentPadding
+import io.github.yuuichi_s.astertune.constants.SettingsGroupSpacing
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.component.SwitchPreference
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalScannerExtraFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalScannerFrag
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 
 
@@ -87,11 +79,10 @@ fun LocalPlayerSettings(
         mutableStateOf(false)
     }
 
-    ColumnWithContentPadding(
-        modifier = Modifier.fillMaxHeight(),
-        columnModifier = Modifier
-            .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState())
+    SettingsScaffold(
+        title = stringResource(R.string.local_player_settings_title),
+        navController = navController,
+        scrollBehavior = scrollBehavior,
     ) {
         SwitchPreference(
             title = { Text(stringResource(R.string.local_library_enable_title)) },
@@ -124,7 +115,7 @@ fun LocalPlayerSettings(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(SettingsGroupSpacing))
 
         AnimatedVisibility(localLibEnable) {
             Column {
@@ -137,7 +128,7 @@ fun LocalPlayerSettings(
                 ) {
                     LocalScannerFrag()
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(SettingsGroupSpacing))
 
                 PreferenceGroupTitle(
                     title = stringResource(R.string.grp_extra_scanner_settings)
@@ -147,7 +138,7 @@ fun LocalPlayerSettings(
                 ) {
                     LocalScannerExtraFrag()
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(SettingsGroupSpacing))
             }
         }
     }
@@ -185,21 +176,4 @@ fun LocalPlayerSettings(
             }
         )
     }
-
-    TopAppBar(
-        title = { Text(stringResource(R.string.local_player_settings_title)) },
-        navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = null
-                )
-            }
-        },
-        windowInsets = TopBarInsets,
-        scrollBehavior = scrollBehavior
-    )
 }

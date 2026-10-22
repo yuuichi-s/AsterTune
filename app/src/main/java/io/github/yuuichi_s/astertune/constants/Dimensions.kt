@@ -42,6 +42,10 @@ val DialogCornerRadius = 32.dp
 
 val PlayerHorizontalPadding = 16.dp
 
+val SettingsHorizontalPadding = 16.dp
+val SettingsGroupSpacing = 16.dp
+val SettingsBottomSpacing = 96.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 val TopBarInsets: WindowInsets
     @Composable
