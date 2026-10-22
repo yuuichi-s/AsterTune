@@ -29,6 +29,7 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
@@ -85,11 +86,9 @@ import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.DateAgo
 import io.github.yuuichi_s.astertune.viewmodels.HistoryViewModel
@@ -476,11 +475,6 @@ fun HistoryScreen(
                         query = TextFieldValue()
                     } else {
                         navController.navigateUp()
-                    }
-                },
-                onLongClick = {
-                    if (!isSearching) {
-                        navController.backToMain()
                     }
                 }
             ) {

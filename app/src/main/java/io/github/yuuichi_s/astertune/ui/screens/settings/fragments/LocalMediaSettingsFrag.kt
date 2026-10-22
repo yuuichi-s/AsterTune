@@ -40,6 +40,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Switch
@@ -81,7 +82,6 @@ import io.github.yuuichi_s.astertune.constants.ThumbnailCornerRadius
 import io.github.yuuichi_s.astertune.ui.component.EnumListPreference
 import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
 import io.github.yuuichi_s.astertune.ui.component.SwitchPreference
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.dialog.ActionPromptDialog
 import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
 import io.github.yuuichi_s.astertune.ui.utils.MEDIA_PERMISSION_LEVEL

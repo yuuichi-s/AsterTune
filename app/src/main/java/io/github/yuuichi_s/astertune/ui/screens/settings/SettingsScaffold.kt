@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -28,14 +29,9 @@ import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.constants.SettingsHorizontalPadding
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.ui.component.ColumnWithContentPadding
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 
 /**
  * Top app bar for settings screens.
- *
- * Tapping the back button goes back one screen.
- * Long-pressing it returns to the main screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,10 +43,7 @@ fun SettingsTopAppBar(
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
+            IconButton(onClick = navController::navigateUp) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = null

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -29,7 +30,6 @@ import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ListItemPlaceHolder
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerHost
@@ -37,7 +37,6 @@ import io.github.yuuichi_s.astertune.ui.menu.YouTubeAlbumMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeArtistMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubePlaylistMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.viewmodels.YouTubeBrowseViewModel
 import com.zionhuang.innertube.models.AlbumItem
 import com.zionhuang.innertube.models.ArtistItem
@@ -156,10 +155,7 @@ fun YouTubeBrowseScreen(
     TopAppBar(
         title = { Text(browseResult?.title.orEmpty()) },
         navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
+            IconButton(onClick = navController::navigateUp) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = null

@@ -14,13 +14,9 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -84,28 +80,6 @@ fun ResizableIconButton(
             .alpha(if (enabled) 1f else 0.5f)
             .then(modifier)
     )
-}
-
-@Composable
-fun IconButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    onLongClick: (() -> Unit)? = null,
-    enabled: Boolean = true,
-    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit,
-) = IconButton(
-    onClick = onClick,
-    modifier = modifier.combinedClickable(
-        onClick = { },
-        onLongClick = onLongClick,
-    ),
-    enabled = enabled,
-    colors = colors,
-    interactionSource = interactionSource
-) {
-    content()
 }
 
 @Composable

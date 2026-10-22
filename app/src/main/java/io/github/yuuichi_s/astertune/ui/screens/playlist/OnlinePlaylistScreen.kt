@@ -40,6 +40,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -117,7 +118,6 @@ import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ButtonPlaceholder
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ListItemPlaceHolder
@@ -126,7 +126,6 @@ import io.github.yuuichi_s.astertune.ui.component.shimmer.TextPlaceholder
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.ui.menu.YouTubePlaylistMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.utils.getDownloadState
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.OnlinePlaylistViewModel
@@ -736,11 +735,6 @@ fun OnlinePlaylistScreen(
                             query = TextFieldValue()
                         } else {
                             navController.navigateUp()
-                        }
-                    },
-                    onLongClick = {
-                        if (!isSearching) {
-                            navController.backToMain()
                         }
                     }
                 ) {

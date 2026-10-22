@@ -26,6 +26,7 @@ import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -71,7 +72,6 @@ import io.github.yuuichi_s.astertune.ui.component.LibraryArtistGridItem
 import io.github.yuuichi_s.astertune.ui.component.LibraryArtistListItem
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.menu.ActionDropdown
 import io.github.yuuichi_s.astertune.ui.menu.DropdownItem
 import io.github.yuuichi_s.astertune.ui.utils.MEDIA_PERMISSION_LEVEL

@@ -34,6 +34,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -99,7 +100,6 @@ import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
 import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeGridItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ButtonPlaceholder
@@ -108,7 +108,6 @@ import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerHost
 import io.github.yuuichi_s.astertune.ui.component.shimmer.TextPlaceholder
 import io.github.yuuichi_s.astertune.ui.menu.AlbumMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeAlbumMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.ui.utils.getNSongsString
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPath
 import io.github.yuuichi_s.astertune.utils.getDownloadState
@@ -545,10 +544,7 @@ fun AlbumScreen(
     TopAppBar(
         title = { },
         navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
+            IconButton(onClick = navController::navigateUp) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = null

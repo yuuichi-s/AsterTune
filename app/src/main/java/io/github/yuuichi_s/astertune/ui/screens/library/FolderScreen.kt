@@ -33,6 +33,7 @@ import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
@@ -99,7 +100,6 @@ import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.button.IconTextButton
 import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
 import io.github.yuuichi_s.astertune.ui.component.items.SongFolderItem
@@ -110,8 +110,6 @@ import io.github.yuuichi_s.astertune.ui.menu.FolderMenu
 import io.github.yuuichi_s.astertune.ui.screens.Screens
 import io.github.yuuichi_s.astertune.ui.utils.MEDIA_PERMISSION_LEVEL
 import io.github.yuuichi_s.astertune.ui.utils.STORAGE_ROOT
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
-import io.github.yuuichi_s.astertune.ui.utils.canNavigateUp
 import io.github.yuuichi_s.astertune.utils.fixFilePath
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
@@ -162,13 +160,9 @@ fun FolderScreen(
     LaunchedEffect(lastLocalScan) {
         if (viewModel.uiInit && !currDir.isSkeleton && viewModel.lastLocalScan != lastLocalScan) {
             viewModel.lastLocalScan = lastLocalScan
-            if (navController.canNavigateUp) {
-                navController.backToMain()
-            } else {
-                coroutineScope.launch(Dispatchers.IO) {
-                    viewModel.getLocalSongs()
-                    viewModel.getSongCount()
-                }
+            coroutineScope.launch(Dispatchers.IO) {
+                viewModel.getLocalSongs()
+                viewModel.getSongCount()
             }
         }
     }
@@ -575,12 +569,7 @@ fun FolderScreen(
                         } else {
                             navController.navigateUp()
                         }
-                    },
-                    onLongClick = {
-                        if (!isSearching) {
-                            navController.backToMain()
-                        }
-                    },
+                    }
                 ) {
                     Icon(
                         Icons.AutoMirrored.Rounded.ArrowBack,
