@@ -37,6 +37,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -91,7 +92,6 @@ import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
 import io.github.yuuichi_s.astertune.ui.component.HideOnScrollFAB
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeGridItem
@@ -102,7 +102,6 @@ import io.github.yuuichi_s.astertune.ui.menu.YouTubeAlbumMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeArtistMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubePlaylistMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.ui.utils.fadingEdge
 import io.github.yuuichi_s.astertune.ui.utils.resize
 import io.github.yuuichi_s.astertune.utils.rememberPreference
@@ -562,10 +561,7 @@ fun ArtistScreen(
         TopAppBar(
             title = { if (!transparentAppBar) Text(artistPage?.artist?.title.orEmpty()) },
             navigationIcon = {
-                IconButton(
-                    onClick = navController::navigateUp,
-                    onLongClick = navController::backToMain
-                ) {
+                IconButton(onClick = navController::navigateUp) {
                     Icon(
                         Icons.AutoMirrored.Rounded.ArrowBack,
                         contentDescription = null

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
@@ -49,8 +50,6 @@ import io.github.yuuichi_s.astertune.constants.CONTENT_TYPE_HEADER
 import io.github.yuuichi_s.astertune.constants.GridThumbnailHeight
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.ui.component.LibraryAlbumGridItem
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.viewmodels.ArtistAlbumsViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -135,10 +134,7 @@ fun ArtistAlbumsScreen(
         TopAppBar(
             title = { Text(artist?.artist?.name.orEmpty()) },
             navigationIcon = {
-                IconButton(
-                    onClick = navController::navigateUp,
-                    onLongClick = navController::backToMain
-                ) {
+                IconButton(onClick = navController::navigateUp) {
                     Icon(
                         Icons.AutoMirrored.Rounded.ArrowBack,
                         contentDescription = null

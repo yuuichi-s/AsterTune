@@ -42,6 +42,7 @@ import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -96,7 +97,6 @@ import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.BigSeekBar
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
 import io.github.yuuichi_s.astertune.ui.dialog.ArtistDialog

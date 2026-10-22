@@ -23,6 +23,7 @@ import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -64,7 +65,6 @@ import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.DirectoryTree
 import io.github.yuuichi_s.astertune.ui.component.PlayingIndicatorBox
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.menu.FolderMenu
 import io.github.yuuichi_s.astertune.ui.menu.MenuState
 import io.github.yuuichi_s.astertune.ui.menu.SongMenu

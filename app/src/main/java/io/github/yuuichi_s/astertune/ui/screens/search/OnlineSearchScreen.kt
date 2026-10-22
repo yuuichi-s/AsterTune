@@ -22,6 +22,7 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,7 +56,6 @@ import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.SearchBarIconOffsetX
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeAlbumMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeArtistMenu

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,10 +39,8 @@ import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ListItemPlaceHolder
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerHost
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.viewmodels.MoodAndGenresViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,10 +107,7 @@ fun MoodAndGenresScreen(
     TopAppBar(
         title = { Text(stringResource(R.string.mood_and_genres)) },
         navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
+            IconButton(onClick = navController::navigateUp) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = null

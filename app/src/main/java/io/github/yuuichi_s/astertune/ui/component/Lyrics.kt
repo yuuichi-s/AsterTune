@@ -36,6 +36,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -91,7 +92,6 @@ import io.github.yuuichi_s.astertune.constants.Speed
 import io.github.yuuichi_s.astertune.db.entities.LyricsEntity
 import io.github.yuuichi_s.astertune.db.entities.LyricsEntity.Companion.uninitializedLyric
 import io.github.yuuichi_s.astertune.extensions.isPowerSaver
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerHost
 import io.github.yuuichi_s.astertune.ui.component.shimmer.TextPlaceholder
 import io.github.yuuichi_s.astertune.ui.menu.LyricsMenu

@@ -17,6 +17,7 @@ import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -48,7 +49,6 @@ import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.ExoDownloadService
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumListItem
 import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -84,7 +85,6 @@ import io.github.yuuichi_s.astertune.ui.component.LibraryPlaylistGridItem
 import io.github.yuuichi_s.astertune.ui.component.LibraryPlaylistListItem
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.AutoPlaylistGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.AutoPlaylistListItem
 import io.github.yuuichi_s.astertune.ui.screens.Screens

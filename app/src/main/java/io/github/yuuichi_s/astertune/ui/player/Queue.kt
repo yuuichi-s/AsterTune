@@ -65,6 +65,7 @@ import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SwipeToDismissBox
@@ -144,7 +145,6 @@ import io.github.yuuichi_s.astertune.ui.component.BottomSheet
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
 import io.github.yuuichi_s.astertune.ui.component.items.MediaMetadataListItem
 import io.github.yuuichi_s.astertune.ui.menu.PlayerMenu

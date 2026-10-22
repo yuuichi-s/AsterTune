@@ -41,6 +41,7 @@ import androidx.compose.material.icons.rounded.Shuffle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
@@ -94,13 +95,11 @@ import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.ItemThumbnail
 import io.github.yuuichi_s.astertune.ui.component.items.ListItem
 import io.github.yuuichi_s.astertune.ui.dialog.ListDialog
 import io.github.yuuichi_s.astertune.ui.menu.AlbumMenu
 import io.github.yuuichi_s.astertune.ui.menu.SongMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.utils.joinByBullet
 import io.github.yuuichi_s.astertune.utils.makeTimeString
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
@@ -344,10 +343,7 @@ fun LocalArtistScreen(
         TopAppBar(
             title = { },
             navigationIcon = {
-                IconButton(
-                    onClick = navController::navigateUp,
-                    onLongClick = navController::backToMain
-                ) {
+                IconButton(onClick = navController::navigateUp) {
                     Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
                 }
             },

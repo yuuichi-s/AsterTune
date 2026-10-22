@@ -29,6 +29,7 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material.icons.rounded.SyncAlt
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -59,7 +60,6 @@ import io.github.yuuichi_s.astertune.extensions.isInternetConnected
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.component.SettingsClickToReveal
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.ui.dialog.ListDialog
 import io.github.yuuichi_s.astertune.ui.dialog.TextFieldDialog

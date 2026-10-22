@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -39,13 +40,11 @@ import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.ArtistGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.menu.AlbumMenu
 import io.github.yuuichi_s.astertune.ui.menu.ArtistMenu
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.StatsViewModel
 import kotlin.math.roundToInt
@@ -217,10 +216,7 @@ fun StatsScreen(
     TopAppBar(
         title = { Text(stringResource(R.string.stats)) },
         navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
+            IconButton(onClick = navController::navigateUp) {
                 Icon(
                     Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = null
