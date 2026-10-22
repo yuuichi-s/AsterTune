@@ -27,15 +27,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
@@ -57,23 +53,19 @@ import io.github.yuuichi_s.astertune.constants.LYRIC_FETCH_TIMEOUT
 import io.github.yuuichi_s.astertune.constants.MAX_LM_SCANNER_JOBS
 import io.github.yuuichi_s.astertune.constants.OOBE_VERSION
 import io.github.yuuichi_s.astertune.constants.SNACKBAR_VERY_SHORT
-import io.github.yuuichi_s.astertune.constants.TopBarInsets
+import io.github.yuuichi_s.astertune.constants.SettingsGroupSpacing
+import io.github.yuuichi_s.astertune.constants.SettingsHorizontalPadding
 import io.github.yuuichi_s.astertune.ui.component.ColumnWithContentPadding
 import io.github.yuuichi_s.astertune.ui.component.ContributorCard
 import io.github.yuuichi_s.astertune.ui.component.ContributorInfo
 import io.github.yuuichi_s.astertune.ui.component.ContributorType.CUSTOM
 import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
 import io.github.yuuichi_s.astertune.ui.component.SettingsClickToReveal
-import io.github.yuuichi_s.astertune.ui.component.button.IconButton
 import io.github.yuuichi_s.astertune.ui.component.button.IconLabelButton
-import io.github.yuuichi_s.astertune.ui.utils.backToMain
 import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.FfmpegLibrary
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -160,7 +152,7 @@ fun AboutScreen(
         Spacer(Modifier.height(96.dp))
 
         Column(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = SettingsHorizontalPadding)
         ) {
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth()
@@ -178,7 +170,7 @@ fun AboutScreen(
                     }
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(SettingsGroupSpacing))
 
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth()
@@ -190,7 +182,7 @@ fun AboutScreen(
                     }
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(SettingsGroupSpacing))
 
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth()
@@ -255,7 +247,7 @@ fun AboutScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(SettingsGroupSpacing))
 
             if (ENABLE_FFMETADATAEX) {
                 ContributorCard(
@@ -271,20 +263,9 @@ fun AboutScreen(
 
     }
 
-    TopAppBar(
-        title = { Text(stringResource(R.string.about)) },
-        navigationIcon = {
-            IconButton(
-                onClick = navController::navigateUp,
-                onLongClick = navController::backToMain
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = null
-                )
-            }
-        },
-        windowInsets = TopBarInsets,
+    SettingsTopAppBar(
+        title = stringResource(R.string.about),
+        navController = navController,
         scrollBehavior = scrollBehavior
     )
 }
@@ -293,9 +274,7 @@ fun AboutScreen(
 @Preview(showBackground = true)
 @Composable
 private fun AboutScreenPreview() {
-    CompositionLocalProvider(
-        LocalPlayerAwareWindowInsets provides WindowInsets(0, 0, 0, 0),
-    ) {
+    SettingsPreview {
         AboutScreen(
             navController = rememberNavController(),
             scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
