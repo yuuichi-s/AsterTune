@@ -820,6 +820,9 @@ class MainActivity : ComponentActivity() {
                                                     navController.currentBackStackEntry?.savedStateHandle?.set("scrollToTop", true)
                                                     scrollBehavior.state.heightOffset = 0f
                                                     scrollBehavior.state.contentOffset = 0f
+                                                } else if (screen.route == Screens.Home.route && isInCurrentTabStack) {
+                                                    // Keep the Home entry and its lifecycle for the chip BackHandler
+                                                    navController.popBackStack(screen.route, inclusive = false, saveState = true)
                                                 } else if (screen.route == Screens.Home.route) {
                                                     navController.navigate(screen.route) {
                                                         popUpTo(navController.graph.startDestinationId) {
@@ -920,6 +923,9 @@ class MainActivity : ComponentActivity() {
                                                     navController.currentBackStackEntry?.savedStateHandle?.set("scrollToTop", true)
                                                     scrollBehavior.state.heightOffset = 0f
                                                     scrollBehavior.state.contentOffset = 0f
+                                                } else if (screen.route == Screens.Home.route && isInCurrentTabStack) {
+                                                    // Keep the Home entry and its lifecycle for the chip BackHandler
+                                                    navController.popBackStack(screen.route, inclusive = false, saveState = true)
                                                 } else if (screen.route == Screens.Home.route) {
                                                     navController.navigate(screen.route) {
                                                         popUpTo(navController.graph.startDestinationId) {
