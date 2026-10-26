@@ -6,12 +6,12 @@
     <string name="recent_activity">Aktivitas terbaru</string>
     <string name="local_history">Lokal</string>
     <string name="queue_local_history">Riwayat (lokal)</string>
-    <string name="queue_remote_history">Riwayat Pemutaran (Online)</string>
+    <string name="queue_remote_history">Riwayat (jarak jauh)</string>
     <string name="remote_history">Jarak jauh</string>
     <string name="library_empty">Isi koleksi Anda akan ditampilkan di sini</string>
     <string name="missing_media_permission_warning">Izin penyimpanan diperlukan untuk media lokal. Klik untuk memberikan izin.</string>
     <string name="queues_title">Antrean</string>
-    <string name="create_queue">Antrean Baru</string>
+    <string name="create_queue">Antrean baru</string>
     <string name="queue_searched_songs_ot">Cari:</string>
     <string name="song_added_to_queue">\"%s\" ditambahkan ke antrean</string>
     <string name="song_added_to_queue_end">\"%s\" ditambahkan ke akhir antrean</string>
@@ -177,7 +177,7 @@
     <string name="scanner_variant_rescan">Pindai ulang seluruh koleksi dan muat ulang semua metadata lagu</string>
     <string name="scanner_online_artist_linking">Coba tautkan artis dari file lokal dengan yang ada di YouTube Music</string>
     <string name="clear_downloads_confirm">Apakah Anda yakin ingin menghapus semua unduhan? Hanya unduhan di folder unduhan utama yang akan dihapus.</string>
-    <string name="clear_image_cache_confirm">Apakah Anda yakin ingin membersihkan cache gambar? Semua gambar mini album yang sudah ada akan dihapus.</string>
+    <string name="clear_image_cache_confirm">Apakah Anda yakin ingin menghapus cache gambar? Semua gambar thumbnail album yang sudah ada akan dihapus.</string>
     <string name="clear_song_cache_confirm">Apakah Anda yakin ingin membersihkan cache lagu?</string>
     <string name="dl_calculate_size">Ketuk untuk menghitung ukuran unduhan</string>
     <string name="dl_extra_path_title">Konfigurasi lokasi impor tambahan…</string>
@@ -247,7 +247,7 @@
     <plurals name="second">
         <item quantity="other">%d detik</item>
     </plurals>
-    <string name="library_filter">Filter koleksi</string>
+    <string name="library_filter">Saring koleksi</string>
     <string name="toggle_lyrics">Tampilkan/sembunyikan lirik</string>
     <string name="grp_more_settings">Pengaturan lebih lanjut</string>
     <string name="action_logout_tooltip">Untuk keluar sepenuhnya, silahkan logout akun YouTube-mu lewat web terlebih dahulu sebelum memakai tombol logout ini</string>
