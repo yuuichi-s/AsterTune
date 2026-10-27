@@ -1,0 +1,11 @@
+AsterTune 1.0.5
+
+Features
+- Add a page for local artists.
+- Add settings to show or hide each Home section.
+- Show the current song's position in the queue in the player.
+
+Fixes
+- Fix old tags remaining after rescanning the library.
+- Stop sending likes of local songs to YouTube Music.
+- Allow reordering queues by dragging.
