@@ -46,6 +46,7 @@ import io.github.yuuichi_s.astertune.constants.VisitorDataKey
 import io.github.yuuichi_s.astertune.extensions.toEnum
 import io.github.yuuichi_s.astertune.extensions.toInetSocketAddress
 import io.github.yuuichi_s.astertune.utils.CoilBitmapLoader
+import io.github.yuuichi_s.astertune.utils.LocalArtworkPathInterceptor
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathKeyer
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathSizeMapper
 import io.github.yuuichi_s.astertune.utils.dataStore
@@ -165,6 +166,7 @@ class App : Application(), SingletonImageLoader.Factory {
                     add(LocalArtworkPathSizeMapper())
                     add(CoilBitmapLoader.Factory(this@App))
                     add(LocalArtworkPathKeyer())
+                    add(LocalArtworkPathInterceptor())
                 }
                 .crossfade(true)
                 .allowHardware(false)
@@ -182,6 +184,7 @@ class App : Application(), SingletonImageLoader.Factory {
                 add(LocalArtworkPathSizeMapper())
                 add(CoilBitmapLoader.Factory(this@App))
                 add(LocalArtworkPathKeyer())
+                add(LocalArtworkPathInterceptor())
             }
             .crossfade(true)
             .allowHardware(false)

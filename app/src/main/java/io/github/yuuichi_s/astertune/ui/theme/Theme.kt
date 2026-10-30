@@ -24,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -50,7 +49,7 @@ import com.materialkolor.hct.Hct
 import com.materialkolor.scheme.SchemeTonalSpot
 import com.materialkolor.score.Score
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 val DefaultThemeColor = Color(0xFFED5564)
 
@@ -84,7 +83,6 @@ fun AsterTuneTheme(
     customThemeColor: Color = DefaultThemeColor,
     content: @Composable () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val highContrast = rememberSystemHighContrast(context)
 
     var themeColor by rememberSaveable(stateSaver = ColorSaver) {
@@ -103,7 +101,7 @@ fun AsterTuneTheme(
             return@LaunchedEffect
         }
                 playerConnection.service.currentMediaMetadata.collectLatest { song ->
-                    coroutineScope.launch(coilCoroutine) {
+                    themeColor = withContext(coilCoroutine) {
                         var ret = DefaultThemeColor
                         if (song != null) {
                             val uri = (if (song.isLocal) song.localPath else song.thumbnailUrl)?.toUri()
@@ -124,7 +122,7 @@ fun AsterTuneTheme(
                                 ret = result.image?.toBitmap()?.extractThemeColor() ?: DefaultThemeColor
                             }
                         }
-                        themeColor = ret
+                        ret
                     }
                 }
     }
