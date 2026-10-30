@@ -28,11 +28,13 @@ import coil3.fetch.FetchResult
 import coil3.fetch.Fetcher
 import coil3.fetch.ImageFetchResult
 import coil3.imageLoader
+import coil3.intercept.Interceptor
 import coil3.key.Keyer
 import coil3.map.Mapper
 import coil3.request.CachePolicy
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
+import coil3.request.ImageResult
 import coil3.request.Options
 import coil3.request.allowHardware
 import coil3.size.Scale
@@ -41,7 +43,10 @@ import coil3.toBitmap
 import com.google.common.util.concurrent.ListenableFuture
 import io.github.yuuichi_s.astertune.R
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.guava.future
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 import kotlin.math.min
@@ -260,15 +265,41 @@ class LocalArtworkPathSizeMapper : Mapper<LocalArtworkPath, LocalArtworkPath> {
     }
 }
 
+/**
+ * Creates memory cache keys for local artwork.
+ *
+ * Includes the audio file's last-modified time so later requests do not reuse outdated artwork.
+ */
 class LocalArtworkPathKeyer : Keyer<LocalArtworkPath> {
     override fun key(
         data: LocalArtworkPath,
         options: Options
-    ): String? {
-        val key = data.path + ";" + data.x + ";" + data.y
-        return if (data.x > 0 || data.y > 0) key + ";" + options.scale else key
-    }
+    ): String {
+        val lastModified = data.path?.let { File(it).lastModified() } ?: 0L
+        val key = "${data.path};${data.x};${data.y};$lastModified"
 
+        return if (data.x > 0 || data.y > 0) {
+            "$key;${options.scale}"
+        } else {
+            key
+        }
+    }
+}
+
+/**
+ * Runs the interceptor chain for local artwork on [Dispatchers.IO].
+ *
+ * Coil creates memory cache keys before switching to the fetcher dispatcher, so this keeps
+ * [LocalArtworkPathKeyer]'s file metadata lookup off the main thread.
+ */
+class LocalArtworkPathInterceptor : Interceptor {
+    override suspend fun intercept(chain: Interceptor.Chain): ImageResult {
+        if (chain.request.data !is LocalArtworkPath) {
+            return chain.proceed()
+        }
+
+        return withContext(Dispatchers.IO) { chain.proceed() }
+    }
 }
 
 data class LocalArtworkPath(val path: String?, val x: Int = -1, val y: Int = -1)
