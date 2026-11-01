@@ -86,7 +86,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="grp_audio">Audio</string>
     <string name="grp_behavior">Behavior</string>
     <string name="grp_display">Display</string>
-    <string name="grp_extra_scanner_settings">Additional scanner settings</string>
+    <string name="grp_extra_scanner_settings">Song matching criteria</string>
     <string name="grp_general">General</string>
     <string name="grp_interface">Interface</string>
     <string name="grp_layout">Layout</string>
@@ -216,27 +216,32 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Local player settings -->
     <string name="local_library_enable_title">Enable local media</string>
-    <string name="local_library_enable_description">Disabling will hide local library from the app</string>
+    <string name="local_library_enable_description">Enable scanning for songs on your device and browsing folders</string>
     <string name="local_player_settings_title">Local media</string>
     <string name="flat_subfolders_title">Flatten subfolders</string>
     <string name="flat_subfolders_description">Disable to preserve the file structure as on disk</string>
-    <string name="disable_lm_confirm">Are you sure you want to disable local media features? Your library contents will not be affected.</string>
+    <string name="disable_lm_confirm">Disable local media? Your music files and data for songs already in your library will not be deleted.</string>
 
 <!-- Scanner settings -->
     <string name="auto_scanner_title">Scan automatically</string>
     <string name="auto_scanner_description">Periodically refresh local media songs and custom downloads folders when opening the app</string>
-    <string name="auto_scanner_tooltip">For local media, automatic scanning does not reload the metadata of existing songs. Use the manual scanner with the rescan checkbox selected if you also wish to refresh metadata.</string>
+    <string name="auto_scanner_tooltip">Automatic scans pick up added and removed songs. To also update metadata for previously scanned songs, select the rescan checkbox under Manual scanner.</string>
 
     <string name="scan_paths_title">Configure scan locations…</string>
-    <string name="scan_paths_description">Select folders on your local storage to scan for songs</string>
-    <string name="scan_paths_tooltip">All subdirectories will also be affected</string>
+    <string name="scan_paths_dialog_title">Configure scan locations</string>
+    <string name="scan_paths_description">Choose folders to scan</string>
+    <string name="scan_paths_excluded_description">Choose folders to exclude from scans</string>
+    <string name="scan_paths_tooltip">Subfolders are also scanned</string>
     <string name="scan_paths_add_folder">Add new folder</string>
-    <string name="scan_paths_incl">Scan paths</string>
-    <string name="scan_paths_excl">Excluded scan paths</string>
+    <string name="scan_paths_incl">Scan folders</string>
+    <string name="scan_paths_excl">Excluded folders</string>
+    <string name="scan_paths_already_excluded">This folder is already excluded from scanning. Remove it from one of the lists.</string>
+    <string name="scan_paths_already_included">This folder is already included in scanning. Remove it from one of the lists.</string>
     <string name="scanner_local_title">Local scanner</string>
     <string name="scanner_manual_btn">Trigger manual sync</string>
     <string name="scanner_rejected_dir">Invalid selection. A scan folder cannot be a subdirectory of the download folder, or the download folder itself</string>
-    <string name="scanner_warning">By default, the scanner will NOT reload any metadata of existing songs unless you specify otherwise above. Depending on the size of your library, it may take a while.</string>
+    <string name="scan_paths_rejected_dir">The download folder and its subfolders cannot be selected</string>
+    <string name="scanner_warning">Select the rescan checkbox to reread song titles, artist names, and other metadata from files, including previously scanned songs. This may take time depending on the number of songs.</string>
 
 <!-- Scanner progress strings-->
     <string name="scanner_missing_storage_perm">The local media scanner requires storage permissions to function</string>
@@ -267,48 +272,51 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Scanner parameter settings-->
     <string name="scanner_strict_file_name_title">Strict file names</string>
-    <string name="scanner_strict_file_name_description">When enabled, file names will NOT be ignored. Ex. "Song.ogg" will be a different song from "Song.flac". Scanner sensitivity preference will still apply</string>
+    <string name="scanner_strict_file_name_description">Treat files with different names, including extensions, as separate songs even if their song information matches</string>
     <string name="scanner_strict_file_paths_title">Match file paths instead of metadata</string>
-    <string name="scanner_strict_file_paths_description">Disables all smart matching of metadata. This can cause issues if files are moved in your local storage, but allows for the same song in different folders</string>
-    <string name="scanner_sensitivity_title">Configure scanner sensitivity</string>
+    <string name="scanner_strict_file_paths_description">Treat files at different paths as separate songs. Moving or renaming a file may add it as a separate song in your library</string>
+    <string name="scanner_sensitivity_title">Criteria for matching songs</string>
     <string name="scanner_sensitivity_L0">Take first result provided by YouTube when searching on YouTube is enabled, otherwise match title</string>
     <string name="scanner_sensitivity_L1">Match title</string>
     <string name="scanner_sensitivity_L2">Match title and artists</string>
     <string name="scanner_sensitivity_L3">Match title, artists, albums</string>
 
 
-    <string name="scanner_variant_rescan">Rescan the entire library and reload all songs\' metadata</string>
+    <string name="scanner_variant_rescan">Also reload information for existing songs</string>
     <string name="scanner_online_artist_linking">Try to link local files\' artists with ones on YouTube Music</string>
 
 <!-- Storage setting -->
     <string name="download_on_wifi_only_title">Download only on Wi-Fi</string>
-    <string name="download_on_wifi_only_description">Don\'t download over mobile data. Songs queued while on mobile data start downloading automatically once Wi-Fi is available</string>
+    <string name="download_on_wifi_only_description">Wait on mobile data and start downloading when connected to Wi-Fi.</string>
     <string name="download_waiting_for_wifi">Will download once connected to Wi-Fi</string>
-    <string name="clear_downloads_confirm">Are you sure you want to remove all downloads? Only downloads in the main download folder will be removed.</string>
-    <string name="clear_image_cache_confirm">Are you sure you want to clear image cache? All existing album thumbnails will be removed.</string>
-    <string name="clear_song_cache_confirm">Are you sure you want to clear song cache?</string>
-    <string name="dl_calculate_size">Tap to calculate download size</string>
-    <string name="dl_extra_path_title">Configure extra import locations…</string>
-    <string name="dl_extra_path_description">Songs from these folders will only appear in the app if you\'ve played them before or added them to a playlist</string>
-    <string name="dl_migrate_title">Migrate downloads to external storage…</string>
-    <string name="dl_migrate_description">Move downloads from the app\'s internal storage to the device\'s external storage</string>
-    <string name="dl_migrate_confirm">This will migrate ALL internal downloads to \"%s\", and this action cannot be undone. Continue?</string>
-    <string name="dl_main_path_title">Set external download folder…</string>
-    <string name="dl_main_path_description">Select downloads storage location</string>
-    <string name="dl_oobe_tooltip">Songs are download to the app\'s private internal storage. To download songs to the external storage, you need to choose a folder first. You can add, change or remove folders, or migrate Internal Downloads to External Downloads later in Settings.</string>
-    <string name="dl_rescan_title">Rescan download folders…</string>
-    <string name="dl_rescan_description">Update the database and refresh the download registry if any files or folders have changed</string>
-	<string name="dl_rescan_confirm">Rescan all download folders now? This can take a few minutes depending on the size of your library.</string>
-    <string name="dl_size_used_cache">Internal: %s used</string>
-    <string name="dl_size_used_main">External: %s used</string>
-    <string name="dl_size_used_extra">Extra imports: %s used</string>
-    <string name="dl_storage_tooltip">Internal Downloads are saved in the app’s private storage and aren’t accessible without root.
-        \n\nExternal Downloads are saved to your device’s external storage (e.g., /sdcard or micro SD cards) and can be accessed or edited directly with a file explorer. For the External Downloads folder, we recommend choosing an empty folder specifically for song downloads, as AsterTune may modify or delete files in that folder.
-        \n\nExtra Import folders are read-only and used for loading additional songs. AsterTune will never change or delete files in these folders. You can select these folders in the advanced section.
-        \n\nWhen you clear downloads, only internal songs are deleted. External Downloads and Extra Import songs must be removed manually, either through the song’s menu or manually via a file explorer.
-        \n\nRescan download folders: Song downloads in the External Downloads and Extra Imports folders are NOT updated automatically. If you manually add, remove, or change files using a file explorer, you may need to rescan the download folders to update the app’s database. This option is available in the advanced section.
-    </string>
-    <string name="restart_to_apply_changes">An app restart is required for changes to take effect</string>
+    <string name="clear_downloads_confirm">Delete all downloaded songs from app-private storage?\nFiles in the folders will be kept.</string>
+    <string name="clear_downloads_description">Files in the destination and additional source folders will be kept.</string>
+    <string name="clear_image_cache_confirm">Clear the entire image cache?</string>
+    <string name="clear_song_cache_confirm">Clear the entire song cache?</string>
+    <string name="dl_calculate_size">Calculate folder storage usage</string>
+    <string name="dl_extra_path_title">Additional source folders</string>
+    <string name="dl_extra_path_description">Load downloaded songs stored outside the destination folder.</string>
+    <string name="dl_extra_path_dialog_description">Add folders containing previously downloaded songs. Only songs already registered in the app are included. After adding folders, select Rescan folders.</string>
+    <string name="dl_migrate_title">Move downloaded songs to folder</string>
+    <string name="dl_migrate_description">Move downloaded songs out of app-private storage.</string>
+    <string name="dl_migrate_confirm">Move downloaded songs to this folder?\n\n%s\n\nThe original data in app-private storage will be deleted.</string>
+    <string name="dl_migrate_action">Move</string>
+    <string name="dl_main_path_title">Destination for downloaded songs</string>
+    <string name="dl_main_path_description">After selecting a folder, use \"Move downloaded songs to folder\". New downloads will still be saved in app-private storage.</string>
+    <string name="dl_path_not_set">Not set</string>
+    <string name="dl_add_folder">Add folder</string>
+    <string name="dl_select_folder">Select folder</string>
+    <string name="dl_subfolders_tooltip">Subfolders are also included.</string>
+    <string name="dl_oobe_tooltip">New downloads are saved in app-private storage. Selecting a folder does not move songs. To move them later, use \"Move downloaded songs to folder\" in Settings → Storage.</string>
+    <string name="dl_rescan_title">Rescan folders</string>
+    <string name="dl_rescan_description">Check the destination and additional source folders to update which songs are downloaded.</string>
+    <string name="dl_rescan_confirm">Rescan the destination and additional source folders?\nThis may take a few minutes, depending on the number of files.</string>
+    <string name="dl_rescan_action">Rescan</string>
+    <string name="dl_size_used_cache">App-private storage: %s</string>
+    <string name="dl_size_used_main">Destination for downloaded songs: %s</string>
+    <string name="dl_size_used_extra">Additional source folders: %s</string>
+    <string name="dl_storage_tooltip">App-private storage\nNewly downloaded songs are saved here. Standard file managers cannot access them directly.\n\nDestination for downloaded songs\nSongs are moved here with \"Move downloaded songs to folder\". After moving, they can still be played in AsterTune and accessed with a file manager. Choose an empty folder dedicated to these songs.\n\nAdditional source folders\nUse downloaded songs stored outside the destination folder. For example, after restoring app data, add the folders and select Rescan folders. Only songs already registered in the app are included.</string>
+    <string name="restart_to_apply_changes">An app restart is required for changes to take effect.</string>
 
 <!-- Privacy settings -->
     <string name="pause_remote_listen_history">Pause sharing listen history with YouTube Music</string>
@@ -361,7 +369,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="oobe_cache_title">Song cache</string>
     <string name="oobe_cache_subtitle">Choose a song cache size. This can help reduce internet or YouTube API playback issues</string>
     <string name="oobe_downloads_title">Song downloads</string>
-    <string name="oobe_downloads_subtitle">Choose a folder where downloaded songs will be saved.</string>
+    <string name="oobe_downloads_subtitle">Choose a destination for moving downloaded songs (optional).</string>
 
     <!-- Setup complete -->
     <string name="oobe_complete_title">You\'re All Set!</string>
@@ -392,4 +400,5 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="speed_medium">Medium</string>
     <string name="speed_fast">Fast</string>
     <string name="speed_very_fast">Very fast</string>
+    <string name="dl_saved_files_title">Load saved files</string>
 </resources>

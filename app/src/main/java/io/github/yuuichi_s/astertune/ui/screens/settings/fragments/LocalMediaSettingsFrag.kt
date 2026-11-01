@@ -18,12 +18,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.GraphicEq
 import androidx.compose.material.icons.rounded.MoreHoriz
 import androidx.compose.material.icons.rounded.TextFields
@@ -42,8 +43,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.Switch
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -61,8 +63,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat.requestPermissions
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -105,9 +108,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import androidx.compose.ui.tooling.preview.Preview
 
-
+/**
+ * Manual scan controls for local music files.
+ *
+ * Opens the folder selection dialog when no scan folders are configured.
+ */
 @Composable
 fun ColumnScope.LocalScannerFrag() {
     val context = LocalContext.current
@@ -303,8 +309,7 @@ fun ColumnScope.LocalScannerFrag() {
         Spacer(Modifier.width(8.dp))
 
         CircularProgressIndicator(
-            modifier = Modifier
-                .size(32.dp),
+            modifier = Modifier.size(32.dp),
             color = MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )
@@ -321,7 +326,7 @@ fun ColumnScope.LocalScannerFrag() {
                     else -> stringResource(R.string.scanner_progress_processing)
                 },
                 color = MaterialTheme.colorScheme.secondary,
-                fontSize = 12.sp
+                style = MaterialTheme.typography.bodySmall
             )
             Text(
                 text = "${if (scannerProgressCurrent >= 0) "$scannerProgressCurrent" else "—"}/${
@@ -340,7 +345,7 @@ fun ColumnScope.LocalScannerFrag() {
                     }
                 }",
                 color = MaterialTheme.colorScheme.secondary,
-                fontSize = 12.sp
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }
@@ -348,7 +353,7 @@ fun ColumnScope.LocalScannerFrag() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 10.dp)
+            .padding(horizontal = 20.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -359,16 +364,45 @@ fun ColumnScope.LocalScannerFrag() {
             )
             Text(
                 stringResource(R.string.scanner_variant_rescan), color = MaterialTheme.colorScheme.secondary,
-                fontSize = 14.sp
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.weight(1f)
             )
         }
     }
 
     // file path selector
     PreferenceEntry(
-        title = { Text(stringResource(R.string.scan_paths_title)) },
-        onClick = {
-            showAddFolderDialog = true
+        title = {
+            Text(
+                text = stringResource(R.string.scan_paths_title),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        icon = { Icon(Icons.Rounded.Folder, null) },
+        alignIconToTitle = true,
+        onClick = { showAddFolderDialog = true },
+        content = {
+            listOf(
+                R.string.scan_paths_incl to scanPaths,
+                R.string.scan_paths_excl to excludedScanPaths,
+            ).forEach { (label, paths) ->
+                val pathDescription = remember(context, paths) {
+                    uriListFromString(paths).joinToString("\n") {
+                        absoluteFilePathFromUri(context, it) ?: it.toString()
+                    }
+                }
+                Text(
+                    text = stringResource(label),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
+                Text(
+                    text = pathDescription.ifEmpty { stringResource(R.string.dl_path_not_set) },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                )
+            }
         },
     )
 
@@ -385,7 +419,7 @@ fun ColumnScope.LocalScannerFrag() {
         Text(
             stringResource(R.string.scanner_warning),
             color = MaterialTheme.colorScheme.secondary,
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
     }
@@ -399,47 +433,32 @@ fun ColumnScope.LocalScannerFrag() {
 
 
     if (showAddFolderDialog != null) {
-        var tempScanPaths = remember { mutableStateListOf<Uri>() }
-        LaunchedEffect(showAddFolderDialog, scanPaths, excludedScanPaths) {
-            tempScanPaths.clear()
-            tempScanPaths.addAll(
-                uriListFromString(if (showAddFolderDialog == true) scanPaths else excludedScanPaths)
-            )
+        val isIncludeTabSelected = showAddFolderDialog == true
+        // Switching tabs discards unsaved changes. OK saves changes in the current tab only.
+        val tempScanPaths = remember(isIncludeTabSelected, scanPaths, excludedScanPaths) {
+            mutableStateListOf<Uri>().apply {
+                addAll(uriListFromString(if (isIncludeTabSelected) scanPaths else excludedScanPaths))
+            }
         }
+
+        val oppositeScanPaths = remember(isIncludeTabSelected, scanPaths, excludedScanPaths) {
+            uriListFromString(if (isIncludeTabSelected) excludedScanPaths else scanPaths).toSet()
+        }
+        val hasConflictingPaths = tempScanPaths.any { it in oppositeScanPaths }
 
         ActionPromptDialog(
             titleBar = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(
-                            if (showAddFolderDialog as Boolean) R.string.scan_paths_incl
-                            else R.string.scan_paths_excl
-                        ),
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-
-                    // switch between include and exclude
-                    Row(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Switch(
-                            checked = showAddFolderDialog!!,
-                            onCheckedChange = {
-                                showAddFolderDialog = !showAddFolderDialog!!
-                            },
-                        )
-                    }
-                }
+                Text(
+                    text = stringResource(R.string.scan_paths_dialog_title),
+                    style = MaterialTheme.typography.titleLarge,
+                )
             },
             onDismiss = {
                 showAddFolderDialog = null
                 tempScanPaths.clear()
             },
             onConfirm = {
-                if (showAddFolderDialog as Boolean) {
+                if (isIncludeTabSelected) {
                     onScanPathsChange(stringFromUriList(tempScanPaths.toList()))
                 } else {
                     onExcludedScanPathsChange(stringFromUriList(tempScanPaths.toList()))
@@ -456,14 +475,38 @@ fun ColumnScope.LocalScannerFrag() {
                 showAddFolderDialog = null
                 tempScanPaths.clear()
             },
-            isInputValid = tempScanPaths.toList().all {
+            isInputValid = !hasConflictingPaths && (tempScanPaths.toList().all {
                 // scan path cannot be the download directory or subdir of download directory
                 !it.toString().contains(uriListFromString(downloadPath).firstOrNull().toString())
                         && uriListFromString(dlPathExtra).none { f -> it.toString().contains(f.toString()) }
-            } || tempScanPaths.isEmpty(),
+            } || tempScanPaths.isEmpty()),
             modifier = Modifier
                 .verticalScroll(rememberScrollState()),
         ) {
+            SecondaryTabRow(
+                selectedTabIndex = if (isIncludeTabSelected) 0 else 1,
+                modifier = Modifier.padding(top = 12.dp, bottom = 16.dp)
+            ) {
+                listOf(
+                    R.string.scan_paths_incl,
+                    R.string.scan_paths_excl
+                ).forEachIndexed { index, label ->
+                    val isIncludeTab = index == 0
+                    Tab(
+                        selected = isIncludeTabSelected == isIncludeTab,
+                        onClick = { showAddFolderDialog = isIncludeTab },
+                        modifier = Modifier.heightIn(min = 48.dp)
+                    ) {
+                        Text(
+                            text = stringResource(label),
+                            style = MaterialTheme.typography.labelLarge,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 4.dp, vertical = 12.dp)
+                        )
+                    }
+                }
+            }
+
             val dirPickerLauncher = rememberLauncherForActivityResult(
                 ActivityResultContracts.OpenDocumentTree()
             ) { uri ->
@@ -478,7 +521,13 @@ fun ColumnScope.LocalScannerFrag() {
             }
 
             Text(
-                text = stringResource(R.string.scan_paths_description),
+                text = stringResource(
+                    if (isIncludeTabSelected) {
+                        R.string.scan_paths_description
+                    } else {
+                        R.string.scan_paths_excluded_description
+                    }
+                ),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
@@ -495,9 +544,8 @@ fun ColumnScope.LocalScannerFrag() {
                     )
             ) {
                 tempScanPaths.forEach {
-                    !it.toString().contains(uriListFromString(downloadPath).firstOrNull().toString())
-                            && uriListFromString(dlPathExtra).none { f -> it.toString().contains(f.toString()) }
-                    val valid = !it.toString().contains(uriListFromString(downloadPath).firstOrNull().toString())
+                    val valid = it !in oppositeScanPaths
+                            && !it.toString().contains(uriListFromString(downloadPath).firstOrNull().toString())
                             && uriListFromString(dlPathExtra).none { f -> it.toString().contains(f.toString()) }
                     Row(
                         modifier = Modifier
@@ -531,16 +579,33 @@ fun ColumnScope.LocalScannerFrag() {
                     Text(stringResource(R.string.scan_paths_add_folder))
                 }
 
-                InfoLabel(
-                    text = stringResource(R.string.scan_paths_tooltip),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                if (hasConflictingPaths) {
+                    InfoLabel(
+                        text = stringResource(
+                            if (isIncludeTabSelected) {
+                                R.string.scan_paths_already_excluded
+                            }
+                            else {
+                                R.string.scan_paths_already_included
+                            }
+                        ),
+                        isError = true,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+
+                if (isIncludeTabSelected) {
+                    InfoLabel(
+                        text = stringResource(R.string.scan_paths_tooltip),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
 
                 if (tempScanPaths.toList().any {
                         it.toString() == uriListFromString(downloadPath).firstOrNull().toString()
                     }) {
                     InfoLabel(
-                        text = stringResource(R.string.scanner_rejected_dir),
+                        text = stringResource(R.string.scan_paths_rejected_dir),
                         isError = true,
                         modifier = Modifier.padding(top = 8.dp)
                     )
@@ -577,7 +642,7 @@ fun ColumnScope.LocalScannerExtraFrag() {
         },
         isEnabled = !strictFilePaths,
     )
-    // strict file ext
+    // strict file names
     SwitchPreference(
         title = { Text(stringResource(R.string.scanner_strict_file_name_title)) },
         description = stringResource(R.string.scanner_strict_file_name_description),

@@ -86,7 +86,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="grp_audio">Ses</string>
     <string name="grp_behavior">Davranış</string>
     <string name="grp_display">Ekran</string>
-    <string name="grp_extra_scanner_settings">Ek tarayıcı ayarları</string>
+    <string name="grp_extra_scanner_settings">Şarkı eşleştirme ölçütleri</string>
     <string name="grp_general">Genel</string>
     <string name="grp_interface">Arayüz</string>
     <string name="grp_layout">Düzen</string>
@@ -216,27 +216,27 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Local player settings -->
     <string name="local_library_enable_title">Yerel medyayı etkinleştir</string>
-    <string name="local_library_enable_description">Devre dışı bırakıldığında yerel kütüphane uygulamada gizlenir</string>
+    <string name="local_library_enable_description">Cihazdaki şarkıların taranmasını ve klasör görünümünü etkinleştirir</string>
     <string name="local_player_settings_title">Yerel medya</string>
     <string name="flat_subfolders_title">Alt klasörleri düzleştir</string>
     <string name="flat_subfolders_description">Diskteki dosya yapısını korumak için devre dışı bırakın</string>
-    <string name="disable_lm_confirm">Yerel medya özelliklerini devre dışı bırakmak istiyor musunuz? Kütüphane içeriğiniz etkilenmeyecektir.</string>
+    <string name="disable_lm_confirm">Yerel medya devre dışı bırakılsın mı? Müzik dosyaları ve kütüphaneye daha önce eklenmiş şarkıların verileri silinmez.</string>
 
 <!-- Scanner settings -->
     <string name="auto_scanner_title">Otomatik tara</string>
     <string name="auto_scanner_description">Uygulama açıldığında yerel şarkıları ve özel indirme klasörlerini düzenli olarak yenile</string>
-    <string name="auto_scanner_tooltip">Yerel medyada otomatik tarama, mevcut şarkıların meta verilerini yeniden yüklemez. Meta verileri de yenilemek istiyorsanız yeniden tarama kutusunu işaretleyerek elle taramayı kullanın.</string>
+    <string name="auto_scanner_tooltip">Otomatik tarama, eklenen ve kaldırılan şarkıları yansıtır. Daha önce taranmış şarkıların meta verilerini de güncellemek için Elle tarama bölümünde yeniden tarama kutusunu işaretleyin.</string>
 
     <string name="scan_paths_title">Tarama konumlarını yapılandır…</string>
-    <string name="scan_paths_description">Şarkı taraması için yerel depolamadaki klasörleri seçin</string>
-    <string name="scan_paths_tooltip">Tüm alt klasörler de etkilenecektir</string>
+    <string name="scan_paths_description">Taranacak klasörleri seçin</string>
+    <string name="scan_paths_tooltip">Alt klasörler de taranır</string>
     <string name="scan_paths_add_folder">Yeni klasör ekle</string>
-    <string name="scan_paths_incl">Tarama yolları</string>
-    <string name="scan_paths_excl">Taramadan hariç tutulan yollar</string>
+    <string name="scan_paths_incl">Taranacak klasörler</string>
+    <string name="scan_paths_excl">Hariç tutulan klasörler</string>
     <string name="scanner_local_title">Yerel tarayıcı</string>
     <string name="scanner_manual_btn">Elle eşitlemeyi başlat</string>
     <string name="scanner_rejected_dir">Geçersiz seçim. Tarama klasörü, indirme klasörünün alt klasörü veya indirme klasörünün kendisi olamaz</string>
-    <string name="scanner_warning">Varsayılan olarak tarayıcı, yukarıda aksi belirtilmedikçe mevcut şarkıların meta verilerini YENİDEN YÜKLEMEZ. Kütüphanenizin boyutuna bağlı olarak bu işlem biraz zaman alabilir.</string>
+    <string name="scanner_warning">Yeniden tarama kutusunu işaretlediğinizde, daha önce taranmış şarkılar da dahil olmak üzere şarkı adları, sanatçı adları ve diğer meta veriler dosyalardan yeniden okunur. Şarkı sayısına bağlı olarak bu işlem zaman alabilir.</string>
 
 <!-- Scanner progress strings-->
     <string name="scanner_missing_storage_perm">Yerel medya tarayıcısının çalışması için depolama izni gereklidir</string>
@@ -267,43 +267,43 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Scanner parameter settings-->
     <string name="scanner_strict_file_name_title">Dosya adlarını kesin eşleştir</string>
-    <string name="scanner_strict_file_name_description">Etkinleştirildiğinde dosya adları göz ardı EDİLMEZ. Örneğin \"Song.ogg\", \"Song.flac\" dosyasından farklı bir şarkı sayılır. Tarayıcı duyarlılığı ayarı uygulanmaya devam eder</string>
+    <string name="scanner_strict_file_name_description">Şarkı bilgileri eşleşse bile uzantıları dahil dosya adları farklıysa dosyalar ayrı şarkılar olarak değerlendirilir</string>
     <string name="scanner_strict_file_paths_title">Meta veriler yerine dosya yollarını eşleştir</string>
-    <string name="scanner_strict_file_paths_description">Meta verilerin tüm akıllı eşleştirmelerini devre dışı bırakır. Dosyalar yerel depolamada taşınırsa sorunlara neden olabilir, ancak aynı şarkının farklı klasörlerde bulunmasına izin verir</string>
-    <string name="scanner_sensitivity_title">Tarayıcı duyarlılığını yapılandır</string>
+    <string name="scanner_strict_file_paths_description">Farklı yollardaki dosyalar ayrı şarkılar olarak değerlendirilir. Bir dosyayı taşımak veya yeniden adlandırmak, dosyanın kütüphaneye ayrı bir şarkı olarak eklenmesine neden olabilir</string>
+    <string name="scanner_sensitivity_title">Şarkıların aynı sayılma koşulları</string>
     <string name="scanner_sensitivity_L0">YouTube\'da arama etkinse YouTube\'un sağladığı ilk sonucu kullan, değilse başlığı eşleştir</string>
     <string name="scanner_sensitivity_L1">Başlığı eşleştir</string>
     <string name="scanner_sensitivity_L2">Başlığı ve sanatçıları eşleştir</string>
     <string name="scanner_sensitivity_L3">Başlığı, sanatçıları ve albümleri eşleştir</string>
 
 
-    <string name="scanner_variant_rescan">Tüm kütüphaneyi yeniden tara ve tüm şarkıların meta verilerini yeniden yükle</string>
+    <string name="scanner_variant_rescan">Kayıtlı şarkıların bilgilerini de yeniden yükle</string>
     <string name="scanner_online_artist_linking">Yerel dosyalardaki sanatçıları YouTube Music\'teki sanatçılarla bağlamayı dene</string>
 
 <!-- Storage setting -->
     <string name="download_on_wifi_only_title">Yalnızca Wi-Fi üzerinden indir</string>
-    <string name="download_on_wifi_only_description">Mobil veri üzerinden indirme. Mobil veri kullanırken sıraya alınan şarkılar, Wi-Fi kullanılabilir olduğunda otomatik olarak indirilmeye başlar</string>
+    <string name="download_on_wifi_only_description">Mobil veride bekle, Wi-Fi bağlantısı kurulduğunda indirmeye başla.</string>
     <string name="download_waiting_for_wifi">Wi-Fi bağlantısı kurulduğunda indirilecek</string>
-    <string name="clear_downloads_confirm">Tüm indirmeleri kaldırmak istiyor musunuz? Yalnızca ana indirme klasöründeki indirmeler kaldırılacaktır.</string>
-    <string name="clear_image_cache_confirm">Görüntü önbelleğini temizlemek istiyor musunuz? Mevcut tüm albüm küçük resimleri kaldırılacaktır.</string>
-    <string name="clear_song_cache_confirm">Şarkı önbelleğini temizlemek istiyor musunuz?</string>
-    <string name="dl_calculate_size">İndirme boyutunu hesaplamak için dokunun</string>
-    <string name="dl_extra_path_title">Ek içe aktarma konumlarını yapılandır…</string>
-    <string name="dl_extra_path_description">Bu klasörlerdeki şarkılar yalnızca daha önce çalınmışsa veya bir çalma listesine eklenmişse uygulamada görünür</string>
-    <string name="dl_migrate_title">İndirmeleri harici depolamaya taşı…</string>
-    <string name="dl_migrate_description">İndirmeleri uygulamanın dahili depolamasından cihazın harici depolamasına taşı</string>
-    <string name="dl_migrate_confirm">TÜM dahili indirmeler \"%s\" konumuna taşınacak ve bu işlem geri alınamaz. Devam edilsin mi?</string>
-    <string name="dl_main_path_title">Harici indirme klasörünü ayarla…</string>
-    <string name="dl_main_path_description">İndirmelerin kaydedileceği konumu seçin</string>
-    <string name="dl_oobe_tooltip">Şarkılar uygulamanın özel dahili depolamasına indirilir. Şarkıları harici depolamaya indirmek için önce bir klasör seçmelisiniz. Daha sonra Ayarlar\'dan klasör ekleyebilir, değiştirebilir veya kaldırabilir ya da Dahili İndirmeleri Harici İndirmelere taşıyabilirsiniz.</string>
-    <string name="dl_rescan_title">İndirme klasörlerini yeniden tara…</string>
-    <string name="dl_rescan_description">Dosya veya klasörler değiştiyse veritabanını ve indirme kaydını güncelle</string>
-	<string name="dl_rescan_confirm">Tüm indirme klasörleri şimdi yeniden taransın mı? Kütüphanenizin boyutuna bağlı olarak bu işlem birkaç dakika sürebilir.</string>
-    <string name="dl_size_used_cache">Dahili: %s kullanıldı</string>
-    <string name="dl_size_used_main">Harici: %s kullanıldı</string>
-    <string name="dl_size_used_extra">Ek içe aktarımlar: %s kullanıldı</string>
-    <string name="dl_storage_tooltip">Dahili İndirmeler uygulamanın özel depolamasına kaydedilir ve root olmadan bunlara erişilemez.\n\nHarici İndirmeler cihazınızın harici depolamasına (ör. /sdcard veya micro SD kartlar) kaydedilir ve bir dosya yöneticisiyle doğrudan erişilebilir veya düzenlenebilir. AsterTune bu klasördeki dosyaları değiştirebileceği veya silebileceği için Harici İndirmeler klasörü olarak yalnızca şarkı indirmelerine ayrılmış boş bir klasör seçmenizi öneririz.\n\nEk İçe Aktarma klasörleri salt okunurdur ve ek şarkıları yüklemek için kullanılır. AsterTune bu klasörlerdeki dosyaları asla değiştirmez veya silmez. Bu klasörleri gelişmiş bölümünden seçebilirsiniz.\n\nİndirmeleri temizlediğinizde yalnızca dahili şarkılar silinir. Harici İndirmeler ve Ek İçe Aktarma şarkıları, şarkı menüsünden veya bir dosya yöneticisiyle elle kaldırılmalıdır.\n\nİndirme klasörlerini yeniden tara: Harici İndirmeler ve Ek İçe Aktarma klasörlerindeki şarkı indirmeleri otomatik olarak GÜNCELLENMEZ. Bir dosya yöneticisiyle dosyaları elle ekler, kaldırır veya değiştirirseniz uygulamanın veritabanını güncellemek için indirme klasörlerini yeniden taramanız gerekebilir. Bu seçenek gelişmiş bölümündedir.</string>
-    <string name="restart_to_apply_changes">Değişikliklerin uygulanması için uygulama yeniden başlatılmalıdır</string>
+    <string name="clear_downloads_confirm">Uygulamanın özel depolama alanındaki indirilen tüm şarkılar silinsin mi?\nKlasörlerdeki dosyalar korunur.</string>
+    <string name="clear_image_cache_confirm">Görsel önbelleğinin tamamı temizlensin mi?</string>
+    <string name="clear_song_cache_confirm">Şarkı önbelleğinin tamamı temizlensin mi?</string>
+    <string name="dl_calculate_size">Klasörlerin kullandığı alanı hesapla</string>
+    <string name="dl_extra_path_title">Ek kaynak klasörleri</string>
+    <string name="dl_extra_path_description">Hedef klasör dışında saklanan indirilmiş şarkıları yükle.</string>
+    <string name="dl_migrate_title">İndirilen şarkıları klasöre taşı</string>
+    <string name="dl_migrate_description">İndirilen şarkıları uygulamanın özel depolama alanından taşı.</string>
+    <string name="dl_migrate_confirm">İndirilen şarkılar bu klasöre taşınsın mı?\n\n%s\n\nUygulamanın özel depolama alanındaki özgün veriler silinir.</string>
+    <string name="dl_main_path_title">İndirilen şarkılar için hedef klasör</string>
+    <string name="dl_main_path_description">Klasör seçtikten sonra “İndirilen şarkıları klasöre taşı” seçeneğini kullanın. Yeni indirmeler uygulamanın özel depolama alanına kaydedilmeye devam eder.</string>
+    <string name="dl_oobe_tooltip">Yeni indirmeler uygulamanın özel depolama alanına kaydedilir. Klasör seçmek şarkıları taşımaz. Daha sonra taşımak için Ayarlar → Depolama bölümündeki “İndirilen şarkıları klasöre taşı” seçeneğini kullanın.</string>
+    <string name="dl_rescan_title">Klasörleri yeniden tara</string>
+    <string name="dl_rescan_description">Hangi şarkıların indirilmiş olduğunu güncellemek için hedef klasörü ve ek kaynak klasörlerini kontrol et.</string>
+	<string name="dl_rescan_confirm">Hedef klasör ve ek kaynak klasörleri yeniden taransın mı?\nDosya sayısına bağlı olarak bu işlem birkaç dakika sürebilir.</string>
+    <string name="dl_size_used_cache">Uygulamanın özel depolama alanı: %s</string>
+    <string name="dl_size_used_main">İndirilen şarkılar için hedef klasör: %s</string>
+    <string name="dl_size_used_extra">Ek kaynak klasörleri: %s</string>
+    <string name="dl_storage_tooltip">Uygulamanın özel depolama alanı\nYeni indirilen şarkılar buraya kaydedilir. Standart dosya yöneticileri bunlara doğrudan erişemez.\n\nİndirilen şarkılar için hedef klasör\nŞarkılar “İndirilen şarkıları klasöre taşı” ile buraya taşınır. Taşıdıktan sonra şarkıları AsterTune’da dinlemeye devam edebilir ve bir dosya yöneticisiyle açabilirsiniz. Yalnızca bu şarkılar için boş bir klasör seçin.\n\nEk kaynak klasörleri\nHedef klasör dışında saklanan indirilmiş şarkıları yüklemek için kullanılır. Örneğin uygulama verilerini geri yükledikten sonra klasörleri ekleyip “Klasörleri yeniden tara” seçeneğini kullanın. Yalnızca uygulamada zaten kayıtlı olan şarkılar dikkate alınır.</string>
+    <string name="restart_to_apply_changes">Değişiklikleri uygulamak için uygulamayı yeniden başlatın.</string>
 
 <!-- Privacy settings -->
     <string name="pause_remote_listen_history">Dinleme geçmişini YouTube Music ile paylaşmayı duraklat</string>
@@ -356,7 +356,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="oobe_cache_title">Şarkı önbelleği</string>
     <string name="oobe_cache_subtitle">Şarkı önbelleği boyutunu seçin. Bu, internet veya YouTube API\'sinden kaynaklanan çalma sorunlarını azaltmaya yardımcı olabilir</string>
     <string name="oobe_downloads_title">Şarkı indirmeleri</string>
-    <string name="oobe_downloads_subtitle">İndirilen şarkıların kaydedileceği bir klasör seçin.</string>
+    <string name="oobe_downloads_subtitle">İndirilen şarkıları taşımak için bir hedef klasör seçin (isteğe bağlı).</string>
 
     <!-- Setup complete -->
     <string name="oobe_complete_title">Her şey hazır!</string>
@@ -387,4 +387,18 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="speed_medium">Orta</string>
     <string name="speed_fast">Hızlı</string>
     <string name="speed_very_fast">Çok hızlı</string>
+    <string name="clear_downloads_description">Hedef klasördeki ve ek kaynak klasörlerindeki dosyalar korunur.</string>
+    <string name="dl_extra_path_dialog_description">Daha önce indirilmiş şarkıların bulunduğu klasörleri ekleyin. Yalnızca uygulamada zaten kayıtlı olan şarkılar dikkate alınır. Ardından “Klasörleri yeniden tara” seçeneğini kullanın.</string>
+    <string name="dl_migrate_action">Taşı</string>
+    <string name="dl_path_not_set">Ayarlanmadı</string>
+    <string name="dl_add_folder">Klasör ekle</string>
+    <string name="dl_subfolders_tooltip">Alt klasörler de dahildir.</string>
+    <string name="dl_rescan_action">Yeniden tara</string>
+    <string name="dl_saved_files_title">Kayıtlı dosyaları yükle</string>
+    <string name="scan_paths_dialog_title">Tarama konumlarını yapılandır</string>
+    <string name="scan_paths_excluded_description">Tarama dışında tutulacak klasörleri seçin</string>
+    <string name="scan_paths_already_excluded">Bu klasör zaten tarama dışında tutuluyor. Listelerden birinden kaldırın.</string>
+    <string name="scan_paths_already_included">Bu klasör zaten taramaya dahil edilmiş. Listelerden birinden kaldırın.</string>
+    <string name="scan_paths_rejected_dir">İndirme klasörü ve alt klasörleri seçilemez</string>
+    <string name="dl_select_folder">Klasör seç</string>
 </resources>

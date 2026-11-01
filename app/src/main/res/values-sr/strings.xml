@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="max_cache_size">Ograničenje veličine keša</string>
+    <string name="clear_all_downloads">Obriši iz privatne memorije aplikacije</string>
+    <string name="clear_image_cache">Obriši keš</string>
+    <string name="clear_song_cache">Obriši keš</string>
+    <string name="size_used">Zauzeti prostor: %s</string>
+</resources>

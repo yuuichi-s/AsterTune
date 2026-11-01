@@ -133,6 +133,7 @@ import io.github.yuuichi_s.astertune.utils.dlCoroutine
 import io.github.yuuichi_s.astertune.utils.formatFileSize
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
+import io.github.yuuichi_s.astertune.utils.scanners.absoluteFilePathFromUri
 import io.github.yuuichi_s.astertune.utils.scanners.stringFromUriList
 import io.github.yuuichi_s.astertune.utils.scanners.uriListFromString
 import com.zionhuang.innertube.utils.parseCookieString
@@ -603,6 +604,9 @@ fun SetupWizard(
                         ) {
                             PreferenceEntry(
                                 title = { Text(stringResource(R.string.dl_main_path_title)) },
+                                description = uriListFromString(downloadPath).firstOrNull()
+                                    ?.let { absoluteFilePathFromUri(context, it) ?: it.toString() }
+                                    ?: stringResource(R.string.dl_path_not_set),
                                 onClick = {
                                     showDlPathDialog = true
                                 },
@@ -744,25 +748,19 @@ fun SetupWizard(
                                         )
                                         .background(if (valid) Color.Transparent else MaterialTheme.colorScheme.errorContainer)
                                 ) {
-                                    tempFilePath?.let {
-                                        Text(
-                                            text = it.toString(),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            modifier = Modifier.padding(8.dp)
-                                        )
-                                    }
+                                    Text(
+                                        text = tempFilePath?.let { absoluteFilePathFromUri(context, it) ?: it.toString() }
+                                            ?: stringResource(R.string.dl_path_not_set),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        modifier = Modifier.padding(8.dp)
+                                    )
                                 }
 
-                                // add folder button
+                                // select folder button
                                 Column {
                                     Button(onClick = { dirPickerLauncher.launch(null) }) {
-                                        Text(stringResource(R.string.scan_paths_add_folder))
+                                        Text(stringResource(R.string.dl_select_folder))
                                     }
-
-                                    InfoLabel(
-                                        text = stringResource(R.string.scan_paths_tooltip),
-                                        modifier = Modifier.padding(vertical = 16.dp)
-                                    )
 
                                     if (!valid) {
                                         InfoLabel(

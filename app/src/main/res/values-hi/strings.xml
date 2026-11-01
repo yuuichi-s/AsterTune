@@ -197,7 +197,7 @@
     <string name="player_slider_style">प्लेयर स्लाइडर का प्रकार</string>
     <string name="small">छोटा</string>
     <string name="big">बड़ा</string>
-    <string name="clear_all_downloads">सभी डाउनलोड हटाएँ</string>
+    <string name="clear_all_downloads">ऐप के निजी स्टोरेज से मिटाएँ</string>
     <string name="misc">विविध</string>
     <string name="default_open_tab">डिफ़ॉल्ट खुला टैब</string>
     <string name="default_">डिफॉल्ट</string>
@@ -241,13 +241,13 @@
     <string name="cache">कैश</string>
     <string name="image_cache">इमेज कैश</string>
     <string name="song_cache">गीत कैश</string>
-    <string name="max_cache_size">अधिकतम कैश आकार</string>
+    <string name="max_cache_size">कैश के आकार की सीमा</string>
     <string name="unlimited">असीमित</string>
     <string name="max_image_cache_size">अधिकतम इमेज कैश आकार</string>
-    <string name="clear_image_cache">इमेज कैश साफ़ करें</string>
+    <string name="clear_image_cache">कैश साफ़ करें</string>
     <string name="max_song_cache_size">अधिकतम गीत कैश आकार</string>
-    <string name="clear_song_cache">गीत कैश साफ़ करें</string>
-    <string name="size_used">%s प्रयुक्त</string>
+    <string name="clear_song_cache">कैश साफ़ करें</string>
+    <string name="size_used">इस्तेमाल किया गया स्टोरेज: %s</string>
     <string name="privacy">गोपनीयता</string>
     <string name="listen_history">सुनने का इतिहास</string>
     <string name="pause_listen_history">सुनने का इतिहास रोकें</string>
