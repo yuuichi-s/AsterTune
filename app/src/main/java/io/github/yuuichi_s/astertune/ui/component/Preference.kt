@@ -23,11 +23,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.github.yuuichi_s.astertune.ui.dialog.ListDialog
 import io.github.yuuichi_s.astertune.ui.dialog.TextFieldDialog
+
+private val PreferenceTitleCenter = HorizontalAlignmentLine { first, second -> minOf(first, second) }
 
 @Composable
 fun PreferenceEntry(
@@ -39,6 +43,7 @@ fun PreferenceEntry(
     trailingContent: (@Composable () -> Unit)? = null,
     onClick: () -> Unit,
     isEnabled: Boolean = true,
+    alignIconToTitle: Boolean = false,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -53,7 +58,9 @@ fun PreferenceEntry(
     ) {
         if (icon != null) {
             Box(
-                modifier = Modifier.padding(horizontal = 4.dp)
+                modifier = Modifier
+                    .then(if (alignIconToTitle) Modifier.alignBy { it.measuredHeight / 2 } else Modifier)
+                    .padding(horizontal = 4.dp)
             ) {
                 icon()
             }
@@ -63,10 +70,29 @@ fun PreferenceEntry(
 
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .then(if (alignIconToTitle) Modifier.alignBy(PreferenceTitleCenter) else Modifier)
         ) {
             ProvideTextStyle(MaterialTheme.typography.titleMedium) {
-                title()
+                if (alignIconToTitle) {
+                    Box(
+                        modifier = Modifier.layout { measurable, constraints ->
+                            val placeable = measurable.measure(constraints)
+                            layout(
+                                placeable.width,
+                                placeable.height,
+                                mapOf(PreferenceTitleCenter to placeable.height / 2),
+                            ) {
+                                placeable.placeRelative(0, 0)
+                            }
+                        }
+                    ) {
+                        title()
+                    }
+                } else {
+                    title()
+                }
             }
 
             if (description != null) {

@@ -200,7 +200,7 @@
     <string name="image_cache">Memòria cau d’imatges</string>
     <string name="song_cache">Memòria cau de cançons</string>
     <string name="unlimited">Il·limitada</string>
-    <string name="clear_all_downloads">Neteja totes les baixades</string>
+    <string name="clear_all_downloads">Suprimeix de l’emmagatzematge privat de l’aplicació</string>
     <string name="privacy">Privadesa</string>
     <string name="clear_listen_history_confirm">Segur que voleu netejar tot l’historial d’escoltes?</string>
     <string name="search_history">Historial de cerques</string>
@@ -268,12 +268,12 @@
     <string name="auto_skip_next_on_error">Continua automàticament amb la següent cancço si ocórre un error</string>
     <string name="auto_skip_next_on_error_desc">Assegura\'t una expreiència de reproducció continua</string>
     <string name="stop_music_on_task_clear">Atura la música al netejar les tasques</string>
-    <string name="max_cache_size">Mida màxima del cache</string>
+    <string name="max_cache_size">Límit de la memòria cau</string>
     <string name="max_image_cache_size">Mida màxima del cache de les imatges</string>
-    <string name="clear_image_cache">Neteja el cache de les imatges</string>
+    <string name="clear_image_cache">Buida la memòria cau</string>
     <string name="max_song_cache_size">Mida màxima del cache de les cançons</string>
-    <string name="clear_song_cache">Neteja el cache de les cançons</string>
-    <string name="size_used">%s utilitzat</string>
+    <string name="clear_song_cache">Buida la memòria cau</string>
+    <string name="size_used">Espai utilitzat: %s</string>
     <string name="listen_history">Historial de reproducció</string>
     <string name="pause_listen_history">Atura la recopliació del historial de reproducció</string>
     <string name="clear_listen_history">Neteja l\'historial de reproducció</string>

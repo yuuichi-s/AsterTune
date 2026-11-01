@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="max_cache_size">Keş ölçüsü həddi</string>
+    <string name="clear_all_downloads">Tətbiqin şəxsi yaddaşından sil</string>
+    <string name="clear_image_cache">Keşi təmizlə</string>
+    <string name="clear_song_cache">Keşi təmizlə</string>
+    <string name="size_used">İstifadə olunan yer: %s</string>
+</resources>

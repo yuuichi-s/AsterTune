@@ -48,7 +48,7 @@
     <string name="from_your_library">ライブラリから</string>
     <string name="other_versions">別のバージョン</string>
     <string name="liked_songs">いいねした曲</string>
-    <string name="downloaded_songs">ダウンロードした曲</string>
+    <string name="downloaded_songs">ダウンロード済みの曲</string>
     <string name="playlist_is_empty">再生リストが空です</string>
     <string name="remove_download_playlist_confirm">｢%s｣の再生リスト上の全曲をダウンロード済みから削除しますか？</string>
     <string name="delete_playlist_confirm">｢%s｣の再生リストを削除してもよろしいですか？</string>
@@ -85,7 +85,7 @@
     <string name="remove_from_queue">キューから削除</string>
     <string name="search_online">オンラインで検索</string>
     <string name="action_sync">同期</string>
-    <string name="advanced">高度</string>
+    <string name="advanced">詳細設定</string>
     <string name="tempo_and_pitch">速度とピッチ</string>
     <string name="sort_by_create_date">追加日時</string>
     <string name="sort_by_name">名前</string>
@@ -232,14 +232,14 @@
     <string name="cache">キャッシュ</string>
     <string name="image_cache">画像のキャッシュ</string>
     <string name="song_cache">曲のキャッシュ</string>
-    <string name="max_cache_size">最大キャッシュサイズ</string>
+    <string name="max_cache_size">キャッシュ容量の上限</string>
     <string name="unlimited">無制限</string>
-    <string name="clear_all_downloads">すべてのダウンロードを消去</string>
+    <string name="clear_all_downloads">アプリ専用領域から削除</string>
     <string name="max_image_cache_size">画像の最大キャッシュサイズ</string>
-    <string name="clear_image_cache">画像のキャッシュを消去</string>
+    <string name="clear_image_cache">キャッシュを削除</string>
     <string name="max_song_cache_size">曲の最大キャッシュサイズ</string>
-    <string name="clear_song_cache">曲のキャッシュを消去</string>
-    <string name="size_used">%s 使用中</string>
+    <string name="clear_song_cache">キャッシュを削除</string>
+    <string name="size_used">使用容量：%s</string>
     <string name="privacy">プライバシー</string>
     <string name="listen_history">再生履歴</string>
     <string name="pause_listen_history">再生履歴の記録を一時停止</string>

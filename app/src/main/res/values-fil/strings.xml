@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="max_cache_size">Limitasyon sa laki ng cache</string>
+    <string name="clear_all_downloads">I-delete sa pribadong storage ng app</string>
+    <string name="clear_image_cache">I-clear ang cache</string>
+    <string name="clear_song_cache">I-clear ang cache</string>
+    <string name="size_used">Espasyong nagamit: %s</string>
 </resources>

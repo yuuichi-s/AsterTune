@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="max_cache_size">ขนาดแคชสูงสุด</string>
+    <string name="clear_all_downloads">ลบออกจากพื้นที่เก็บข้อมูลส่วนตัวของแอป</string>
+    <string name="clear_image_cache">ล้างแคช</string>
+    <string name="clear_song_cache">ล้างแคช</string>
+    <string name="size_used">พื้นที่ที่ใช้: %s</string>
+</resources>

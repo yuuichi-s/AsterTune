@@ -41,4 +41,9 @@
     <string name="filter_albums">Albumi</string>
     <string name="filter_artists">Izvajalci</string>
     <string name="filter_playlists">Seznami predvajanja</string>
+    <string name="max_cache_size">Omejitev velikosti predpomnilnika</string>
+    <string name="clear_all_downloads">Izbriši iz zasebnega prostora aplikacije</string>
+    <string name="clear_image_cache">Počisti predpomnilnik</string>
+    <string name="clear_song_cache">Počisti predpomnilnik</string>
+    <string name="size_used">Zasedeni prostor: %s</string>
 </resources>

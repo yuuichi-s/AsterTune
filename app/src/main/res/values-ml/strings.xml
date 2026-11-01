@@ -108,7 +108,7 @@
     <string name="persistent_queue">പെർസിസ്റ്റന്റ് കീ</string>
     <string name="equalizer">ഇക്വലൈസർ</string>
     <string name="unlimited">പരിധിയില്ലാത്ത</string>
-    <string name="clear_all_downloads">ഡൗൺലോഡുകൾ എല്ലാം നീക്കം ചെയ്യുക</string>
+    <string name="clear_all_downloads">ആപ്പിന്റെ സ്വകാര്യ സ്റ്റോറേജിൽനിന്ന് നീക്കുക</string>
     <string name="privacy">സ്വകാര്യത</string>
     <string name="pause_search_history">തിരയൽ ചരിത്രം താൽക്കാലികമായി നിർത്തുക</string>
     <string name="clear_search_history">തിരയൽ ചരിത്രം മായ്‌ക്കുക</string>
@@ -258,12 +258,12 @@
     <string name="cache">കാച്ഛ്</string>
     <string name="image_cache">ചിത്രത്തിന്റെ കാച്ഛ്</string>
     <string name="song_cache">പാട്ടിന്റെ കാച്ഛ്</string>
-    <string name="max_cache_size">പരമാവധി കാച്ഛ് വലുപ്പം</string>
+    <string name="max_cache_size">കാഷെ വലുപ്പത്തിന്റെ പരിധി</string>
     <string name="max_image_cache_size">പരമാവധി ചിത്രത്തിന്റെ കാച്ഛ് വലുപ്പം</string>
-    <string name="clear_image_cache">ചിത്രത്തിന്റെ കാച്ഛ് കളയുക</string>
+    <string name="clear_image_cache">കാഷെ മായ്ക്കുക</string>
     <string name="max_song_cache_size">പരമാവധി പാട്ടിന്റെ കാച്ഛ് വലുപ്പം</string>
-    <string name="clear_song_cache">പാട്ടിന്റെ കാച്ഛ് കളയുക</string>
-    <string name="size_used">%s ഉപയോഗിച്ചു</string>
+    <string name="clear_song_cache">കാഷെ മായ്ക്കുക</string>
+    <string name="size_used">ഉപയോഗിച്ച സ്റ്റോറേജ്: %s</string>
     <string name="listen_history">കേട്ടതിന്റെ ചരിത്രം</string>
     <string name="pause_listen_history">കേട്ടതിന്റെ ചരിത്രം നിർത്തുക</string>
     <string name="clear_listen_history">കേട്ടതിന്റെ ചരിത്രം കളയുക</string>

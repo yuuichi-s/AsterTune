@@ -23,7 +23,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.rounded.Backup
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Downloading
+import androidx.compose.material.icons.rounded.Folder
 import androidx.compose.material.icons.rounded.FolderCopy
 import androidx.compose.material.icons.rounded.Restore
 import androidx.compose.material.icons.rounded.Sync
@@ -72,7 +74,6 @@ import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.extensions.tryOrNull
 import io.github.yuuichi_s.astertune.ui.component.ListPreference
 import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
-import io.github.yuuichi_s.astertune.ui.component.SettingsClickToReveal
 import io.github.yuuichi_s.astertune.ui.component.SwitchPreference
 import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
 import io.github.yuuichi_s.astertune.ui.dialog.ActionPromptDialog
@@ -204,15 +205,6 @@ fun ColumnScope.DownloadsFrag() {
         }
     )
 
-    PreferenceEntry(
-        title = { Text(stringResource(R.string.dl_main_path_title)) },
-        description = if (downloadPath != "") uriListFromString(downloadPath).firstOrNull()
-            ?.let { absoluteFilePathFromUri(context, it) } ?: downloadPath else null,
-        onClick = {
-            showDlPathDialog = true
-        },
-    )
-
     Text(
         text = stringResource(R.string.dl_size_used_cache, formatFileSize(downloadCacheSize)),
         style = MaterialTheme.typography.bodyMedium,
@@ -227,7 +219,10 @@ fun ColumnScope.DownloadsFrag() {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(stringResource(R.string.dl_calculate_size))
+                    Text(
+                        text = stringResource(R.string.dl_calculate_size),
+                        modifier = Modifier.weight(1f)
+                    )
                     ResizableIconButton(
                         icon = Icons.Outlined.Info,
                         onClick = { showDlInfoDialog = true },
@@ -285,64 +280,80 @@ fun ColumnScope.DownloadsFrag() {
     }
 
     PreferenceEntry(
+        title = { Text(stringResource(R.string.dl_main_path_title)) },
+        icon = { Icon(Icons.Rounded.Folder, null) },
+        description = if (downloadPath != "") uriListFromString(downloadPath).firstOrNull()
+            ?.let { absoluteFilePathFromUri(context, it) } ?: downloadPath else stringResource(R.string.dl_path_not_set),
+        onClick = {
+            showDlPathDialog = true
+        },
+    )
+
+    PreferenceEntry(
+        title = { Text(stringResource(R.string.dl_migrate_title)) },
+        description = stringResource(R.string.dl_migrate_description),
+        icon = {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(28.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                )
+            } else {
+                Icon(Icons.Rounded.Downloading, null)
+            }
+        },
+        onClick = {
+            showMigrationDialog = true
+        },
+        isEnabled = !isLoading && !downloadPath.isEmpty()
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+    Text(
+        text = stringResource(R.string.dl_saved_files_title),
+        style = MaterialTheme.typography.titleSmall,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
+
+    PreferenceEntry(
+        title = { Text(stringResource(R.string.dl_extra_path_title)) },
+        description = stringResource(R.string.dl_extra_path_description),
+        icon = { Icon(Icons.Rounded.FolderCopy, null) },
+        onClick = {
+            showPathsDialog = true
+        },
+        isEnabled = !isLoading
+    )
+
+    PreferenceEntry(
+        title = { Text(stringResource(R.string.dl_rescan_title)) },
+        description = stringResource(R.string.dl_rescan_description),
+        icon = {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(28.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                )
+            } else {
+                Icon(Icons.Rounded.Sync, null)
+            }
+        },
+        onClick = {
+            showImportDialog = true
+        },
+        isEnabled = !isLoading && !(downloadPath.isEmpty() && dlPathExtra.isEmpty())
+    )
+
+    PreferenceEntry(
         title = { Text(stringResource(R.string.clear_all_downloads)) },
+        description = stringResource(R.string.clear_downloads_description),
+        icon = { Icon(Icons.Rounded.Delete, null) },
         onClick = {
             showClearConfirmDialog = true
         },
     )
-
-    SettingsClickToReveal(stringResource(R.string.advanced)) {
-        PreferenceEntry(
-            title = { Text(stringResource(R.string.dl_extra_path_title)) },
-            description = stringResource(R.string.dl_extra_path_description),
-            icon = { Icon(Icons.Rounded.FolderCopy, null) },
-            onClick = {
-                showPathsDialog = true
-            },
-            isEnabled = !isLoading
-        )
-
-        PreferenceEntry(
-            title = { Text(stringResource(R.string.dl_rescan_title)) },
-            description = stringResource(R.string.dl_rescan_description),
-            icon = {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(28.dp),
-                        color = MaterialTheme.colorScheme.secondary,
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                    )
-                } else {
-                    Icon(Icons.Rounded.Sync, null)
-                }
-            },
-            onClick = {
-                showImportDialog = true
-            },
-            isEnabled = !isLoading && !(downloadPath.isEmpty() && dlPathExtra.isEmpty())
-        )
-
-        PreferenceEntry(
-            title = { Text(stringResource(R.string.dl_migrate_title)) },
-            description = stringResource(R.string.dl_migrate_description),
-            icon = {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(28.dp),
-                        color = MaterialTheme.colorScheme.secondary,
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                    )
-                } else {
-                    Icon(Icons.Rounded.Downloading, null)
-                }
-            },
-            onClick = {
-                showMigrationDialog = true
-            },
-            isEnabled = !isLoading && !downloadPath.isEmpty()
-        )
-    }
-
 
     /**
      * ---------------------------
@@ -434,25 +445,19 @@ fun ColumnScope.DownloadsFrag() {
                     )
                     .background(if (valid) Color.Transparent else MaterialTheme.colorScheme.errorContainer)
             ) {
-                tempFilePath?.let {
-                    Text(
-                        text = absoluteFilePathFromUri(context, it) ?: it.toString(),
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
+                Text(
+                    text = tempFilePath?.let { absoluteFilePathFromUri(context, it) ?: it.toString() }
+                        ?: stringResource(R.string.dl_path_not_set),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(8.dp)
+                )
             }
 
-            // add folder button
+            // select folder button
             Column {
                 Button(onClick = { dirPickerLauncher.launch(null) }) {
-                    Text(stringResource(R.string.scan_paths_add_folder))
+                    Text(stringResource(R.string.dl_select_folder))
                 }
-
-                InfoLabel(
-                    text = stringResource(R.string.scan_paths_tooltip),
-                    modifier = Modifier.padding(vertical = 16.dp)
-                )
 
                 if (!valid) {
                     InfoLabel(
@@ -504,7 +509,7 @@ fun ColumnScope.DownloadsFrag() {
                         }
                     }
                 ) {
-                    Text(text = stringResource(android.R.string.ok))
+                    Text(text = stringResource(R.string.delete))
                 }
             }
         )
@@ -546,7 +551,7 @@ fun ColumnScope.DownloadsFrag() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(R.string.scan_paths_incl),
+                        text = stringResource(R.string.dl_extra_path_title),
                         style = MaterialTheme.typography.titleLarge,
                     )
                 }
@@ -592,6 +597,12 @@ fun ColumnScope.DownloadsFrag() {
                 tempScanPaths.add(uri)
             }
 
+            Text(
+                text = stringResource(R.string.dl_extra_path_dialog_description),
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 4.dp)
+            )
+
             // folders list
             Column(
                 modifier = Modifier
@@ -635,11 +646,11 @@ fun ColumnScope.DownloadsFrag() {
             // add folder button
             Column {
                 Button(onClick = { dirPickerLauncher.launch(null) }) {
-                    Text(stringResource(R.string.scan_paths_add_folder))
+                    Text(stringResource(R.string.dl_add_folder))
                 }
 
                 InfoLabel(
-                    text = stringResource(R.string.scan_paths_tooltip),
+                    text = stringResource(R.string.dl_subfolders_tooltip),
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
@@ -684,7 +695,7 @@ fun ColumnScope.DownloadsFrag() {
                         }
                     }
                 ) {
-                    Text(text = stringResource(android.R.string.ok))
+                    Text(text = stringResource(R.string.dl_rescan_action))
                 }
             }
         )
@@ -721,7 +732,7 @@ fun ColumnScope.DownloadsFrag() {
                         }
                     }
                 ) {
-                    Text(text = stringResource(android.R.string.ok))
+                    Text(text = stringResource(R.string.dl_migrate_action))
                 }
             }
         )

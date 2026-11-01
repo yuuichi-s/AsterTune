@@ -51,7 +51,7 @@
     <string name="grp_account_sync">Compte i sincronització</string>
     <string name="grp_audio">Àudio</string>
     <string name="grp_behavior">Comportament</string>
-    <string name="grp_extra_scanner_settings">Configuració addicional de l’escàner</string>
+    <string name="grp_extra_scanner_settings">Criteris de coincidència de cançons</string>
     <string name="grp_interface">Interfície</string>
     <string name="grp_layout">Disposició</string>
     <string name="grp_library_and_content">Biblioteca i contingut</string>
@@ -106,7 +106,7 @@
     <string name="import_failed_songs">No s’ha pogut importar</string>
     <string name="oobe_complete">AsterTune està configurat i llest per a utilitzar-se. Explora la teua música, descobreix noves cançons i gaudeix de l’experiència!</string>
     <string name="oobe_complete_title">Ja està tot a punt!</string>
-    <string name="oobe_downloads_subtitle">Tria una carpeta on es desaran les cançons descarregades.</string>
+    <string name="oobe_downloads_subtitle">Tria una carpeta de destinació per moure-hi les cançons baixades (opcional).</string>
     <string name="oobe_downloads_title">Descàrregues de cançons</string>
     <string name="grp_general">General</string>
     <string name="new_interface">Nou disseny de la interfície</string>
@@ -182,24 +182,24 @@
     <string name="lyrics_synced_clickable">Lletres clicables</string>
     <string name="lyrics_trim_title">Elimina els espais al voltant de les lletres</string>
     <string name="local_library_enable_title">Activa els fitxers multimèdia locals</string>
-    <string name="local_library_enable_description">Desactivar-ho ocultarà la biblioteca local de l’aplicació</string>
+    <string name="local_library_enable_description">Activa l’escaneig de cançons del dispositiu i la visualització de carpetes</string>
     <string name="local_player_settings_title">Multimèdia local</string>
     <string name="flat_subfolders_title">Aplana les subcarpetes</string>
     <string name="flat_subfolders_description">Desactiva-ho per a mantindre l’estructura de fitxers tal com està al disc</string>
-    <string name="disable_lm_confirm">Segur que vols desactivar les funcions de multimèdia local? El contingut de la teua biblioteca no es veurà afectat.</string>
+    <string name="disable_lm_confirm">Vols desactivar la multimèdia local? No se suprimiran els fitxers de música ni les dades de les cançons que ja tens a la biblioteca.</string>
     <string name="auto_scanner_title">Escanejar automàticament</string>
     <string name="auto_scanner_description">Actualitza periòdicament les cançons de multimèdia local i les carpetes de descàrregues personalitzades en obrir l’aplicació</string>
-    <string name="auto_scanner_tooltip">Per a la multimèdia local, l’escaneig automàtic no torna a carregar les metadades de les cançons existents. Utilitza l’escàner manual amb la casella de “rescan” seleccionada si també vols actualitzar les metadades.</string>
+    <string name="auto_scanner_tooltip">L’escaneig automàtic reflectix les cançons afegides i eliminades. Per a actualitzar també les metadades de les cançons ja escanejades, marca la casella per a tornar a escanejar en «Escàner manual».</string>
     <string name="scan_paths_title">Configura les ubicacions d’escaneig…</string>
-    <string name="scan_paths_description">Selecciona carpetes de l’emmagatzematge local per a buscar cançons</string>
-    <string name="scan_paths_tooltip">Tots els subdirectoris també es veuran afectats</string>
+    <string name="scan_paths_description">Tria les carpetes que vols escanejar</string>
+    <string name="scan_paths_tooltip">També s’escanegen les subcarpetes</string>
     <string name="scan_paths_add_folder">Afig una carpeta nova</string>
-    <string name="scan_paths_incl">Rutes d’escaneig</string>
-    <string name="scan_paths_excl">Rutes d’escaneig excloses</string>
+    <string name="scan_paths_incl">Carpetes a escanejar</string>
+    <string name="scan_paths_excl">Carpetes excloses</string>
     <string name="scanner_local_title">Escàner local</string>
     <string name="scanner_manual_btn">Inicia la sincronització manual</string>
     <string name="scanner_rejected_dir">Selecció no vàlida. Una carpeta d’escaneig no pot ser un subdirectori de la carpeta de descàrregues ni la mateixa carpeta de descàrregues</string>
-    <string name="scanner_warning">Per defecte, l’escàner NO tornarà a carregar les metadades de les cançons existents, llevat que ho especifiques més amunt. Depenent de la mida de la teua biblioteca, pot tardar una estona.</string>
+    <string name="scanner_warning">Si marques la casella per a tornar a escanejar, es tornaran a llegir dels fitxers els títols, els noms dels artistes i altres metadades, també de les cançons ja escanejades. Pot tardar una estona segons el nombre de cançons.</string>
     <string name="scanner_missing_storage_perm">L’escàner de multimèdia local necessita permisos d’emmagatzematge per a funcionar</string>
     <string name="scanner_auto_end">S’ha completat l’actualització de la multimèdia local i de les descàrregues de cançons!</string>
     <string name="scanner_auto_start">S’estan actualitzant les carpetes de multimèdia local i de descàrregues de cançons…</string>
@@ -224,6 +224,12 @@
         <item quantity="other">%d cançons trobades</item>
     </plurals>
     <string name="scanner_strict_file_name_title">Noms de fitxer estrictes</string>
-    <string name="scanner_strict_file_name_description">Quan està activat, els noms de fitxer NO s’ignoraran. Per exemple, Song.ogg serà una cançó diferent de Song.flac. La sensibilitat de l’escàner encara s’aplicarà</string>
+    <string name="scanner_strict_file_name_description">Els fitxers amb noms diferents, inclosa l’extensió, es consideren cançons diferents encara que la informació de les cançons coincidisca</string>
     <string name="off">Desactivat</string>
+    <string name="scan_paths_dialog_title">Configura les ubicacions d’escaneig</string>
+    <string name="scan_paths_excluded_description">Tria les carpetes que vols excloure de l’escaneig</string>
+    <string name="scan_paths_already_excluded">Aquesta carpeta ja està exclosa de l’escaneig. Elimina-la d’una de les dues llistes.</string>
+    <string name="scan_paths_already_included">Aquesta carpeta ja està inclosa en l’escaneig. Elimina-la d’una de les dues llistes.</string>
+    <string name="scan_paths_rejected_dir">No es pot seleccionar la carpeta de descàrregues ni les seues subcarpetes</string>
+    <string name="dl_select_folder">Selecciona una carpeta</string>
 </resources>

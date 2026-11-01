@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="max_cache_size">Gräns för cachestorlek</string>
+    <string name="clear_all_downloads">Ta bort från appens privata lagring</string>
+    <string name="clear_image_cache">Töm cache</string>
+    <string name="clear_song_cache">Töm cache</string>
+    <string name="size_used">Använt utrymme: %s</string>
+</resources>

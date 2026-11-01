@@ -30,10 +30,10 @@
     <string name="cache">Predmemorija</string>
     <string name="image_cache">Predmemorija slika</string>
     <string name="pause_listen_history">Pauziraj povijest slušanja</string>
-    <string name="clear_all_downloads">Izbriši sva preuzimanja</string>
-    <string name="size_used">%s korišćeno</string>
+    <string name="clear_all_downloads">Izbriši iz privatne pohrane aplikacije</string>
+    <string name="size_used">Zauzeti prostor: %s</string>
     <string name="max_image_cache_size">Maksimalna veličina predmemorije slika</string>
-    <string name="clear_song_cache">Izbriši predmemoriju pjesama</string>
+    <string name="clear_song_cache">Očisti predmemoriju</string>
     <string name="listen_history">Povijest slušanja</string>
     <string name="clear_listen_history">Izbriši povijest slušanja</string>
     <string name="clear_search_history_confirm">Jeste li sigurni da želite izbrisati svu povijest pretrage?</string>
@@ -182,9 +182,9 @@
     <string name="auto_skip_next_on_error_desc">Osigurajte vaše kontinuirano iskustvo reprodukcije</string>
     <string name="stop_music_on_task_clear">Zaustavi glazbu nakon brisanja zadatka</string>
     <string name="song_cache">Predmemorija pjesama</string>
-    <string name="max_cache_size">Maksimalna veličina predmemorije</string>
+    <string name="max_cache_size">Ograničenje veličine predmemorije</string>
     <string name="unlimited">Neograničeno</string>
-    <string name="clear_image_cache">Izbriši predmemoriju slika</string>
+    <string name="clear_image_cache">Očisti predmemoriju</string>
     <string name="max_song_cache_size">Maksimalna veličina predmemorije pjesama</string>
     <string name="privacy">Privatnost</string>
     <string name="clear_listen_history_confirm">Jeste li sigurni da želite izbrisati svu povijest slušanja?</string>
