@@ -18,7 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -40,7 +40,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -84,8 +83,6 @@ import io.github.yuuichi_s.astertune.constants.FlatSubfoldersKey
 import io.github.yuuichi_s.astertune.constants.FolderSongSortDescendingKey
 import io.github.yuuichi_s.astertune.constants.FolderSongSortType
 import io.github.yuuichi_s.astertune.constants.FolderSongSortTypeKey
-import io.github.yuuichi_s.astertune.constants.FolderSortType
-import io.github.yuuichi_s.astertune.constants.FolderSortTypeKey
 import io.github.yuuichi_s.astertune.constants.LastLocalScanKey
 import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
 import io.github.yuuichi_s.astertune.constants.LocalLibraryEnableKey
@@ -125,7 +122,6 @@ import kotlin.math.roundToInt
 @Composable
 fun FolderScreen(
     navController: NavController,
-    scrollBehavior: TopAppBarScrollBehavior,
     viewModel: LibraryFoldersViewModel = hiltViewModel(),
     isRoot: Boolean = false,
     libraryFilterContent: @Composable (() -> Unit)? = null
@@ -145,7 +141,6 @@ fun FolderScreen(
 
     val (sortType, onSortTypeChange) = rememberEnumPreference(FolderSongSortTypeKey, FolderSongSortType.TRACK_NUMBER)
     val (sortDescending, onSortDescendingChange) = rememberPreference(FolderSongSortDescendingKey, false)
-    val (folderSortType, onFolderSortTypeChange) = rememberEnumPreference(FolderSortTypeKey, FolderSortType.NAME)
     val swipeEnabled by rememberPreference(SwipeToQueueKey, true)
 
     val lazyListState = rememberLazyListState()
@@ -465,11 +460,11 @@ fun FolderScreen(
 
 
                 // all subdirectories listed here
-                itemsIndexed(
+                items(
                     items = if (flatSubfolders) mutableFlatSubdirs else mutableSubdirs,
-                    key = { _, item -> item.uid },
-                    contentType = { _, _ -> CONTENT_TYPE_FOLDER }
-                ) { index, folder ->
+                    key = { it.uid },
+                    contentType = { CONTENT_TYPE_FOLDER }
+                ) { folder ->
                     if (!flatSubfolders || folder.getFullSquashedDir() != fixFilePath(currDir.getFullPath())) // rm dupe dir hax
                         SongFolderItem(
                             folder = folder,
@@ -513,11 +508,11 @@ fun FolderScreen(
 
             // all songs get listed here
             val thumbnailSize = (ListThumbnailSize.value * density.density).roundToInt()
-            itemsIndexed(
+            items(
                 items = listedSongs,
-                key = { _, item -> item.id },
-                contentType = { _, _ -> CONTENT_TYPE_SONG }
-            ) { index, listedSong ->
+                key = { it.id },
+                contentType = { CONTENT_TYPE_SONG }
+            ) { listedSong ->
                 val song = latestSongs[listedSong.id] ?: listedSong
                 SongListItem(
                     song = song,
