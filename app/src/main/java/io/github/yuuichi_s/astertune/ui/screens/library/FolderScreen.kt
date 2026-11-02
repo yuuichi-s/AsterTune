@@ -526,11 +526,12 @@ fun FolderScreen(
 
                     thumbnailSize = thumbnailSize,
                     onPlay = {
+                        val queueSongs = if (isSearching) filteredSongs else mutableSongs
                         playerConnection.playQueue(
                             ListQueue(
                                 title = currDir.currentDir.substringAfterLast('/'),
-                                items = mutableSongs.map { it.toMediaMetadata() },
-                                startIndex = mutableSongs.indexOfFirst { it.id == song.id }
+                                items = queueSongs.map { it.toMediaMetadata() },
+                                startIndex = queueSongs.indexOfFirst { it.id == song.id }
                             )
                         )
                     },
