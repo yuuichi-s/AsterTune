@@ -73,6 +73,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -191,15 +192,19 @@ class LocalLibraryViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    private var searchJob: Job? = null
+
     fun search(query: String) {
+        searchJob?.cancel()
         if (query.isBlank()) {
             filteredSongs.clear()
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = database.searchSongsAllLocal(query).first()
-            filteredSongs.clear()
-            filteredSongs.addAll(result)
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
+            database.searchSongsAllLocal(query).collect { result ->
+                filteredSongs.clear()
+                filteredSongs.addAll(result)
+            }
         }
     }
 }
@@ -216,6 +221,14 @@ class LibraryFoldersViewModel @Inject constructor(
     val localSongDirectoryTree: MutableStateFlow<DirectoryTree> = MutableStateFlow(getDirectoryTree(path))
     val localSongDtSongCount = MutableStateFlow(0)
     val filteredSongs = mutableStateListOf<Song>()
+    private var searchJob: Job? = null
+
+    /**
+     * Latest songs directly in [path], keyed by song ID
+     */
+    val latestSongs: StateFlow<Map<String, Song>> = database.localSongsDirectlyInDir(path)
+        .map { songs -> songs.associateBy { it.id } }
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyMap())
 
     var uiInit = false
     var lastLocalScan = 0L
@@ -243,11 +256,13 @@ class LibraryFoldersViewModel @Inject constructor(
      * Update filteredSongs with search query
      */
     fun searchInDir(query: String, dir: String = path) {
+        searchJob?.cancel()
         if (query.isNotBlank()) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val dbSongs = database.searchSongsAllLocalInDir(dir, query).first()
-                filteredSongs.clear()
-                filteredSongs.addAll(dbSongs)
+            searchJob = viewModelScope.launch(Dispatchers.IO) {
+                database.searchSongsAllLocalInDir(dir, query).collect { dbSongs ->
+                    filteredSongs.clear()
+                    filteredSongs.addAll(dbSongs)
+                }
             }
         }
     }

@@ -449,6 +449,10 @@ fun LocalScreen(
                         isSelected = false,
                         onSelectedChange = {},
                         swipeEnabled = swipeEnabled,
+                        showLikedIcon = false,
+                        showInLibraryIcon = false,
+                        showAlbumInSubtitle = true,
+                        showLikeButton = true,
                         thumbnailSize = thumbnailSize,
                         onPlay = {
                             playerConnection.playQueue(
@@ -517,6 +521,10 @@ fun LocalScreen(
                                         isSelected = false,
                                         onSelectedChange = {},
                                         swipeEnabled = swipeEnabled,
+                                        showLikedIcon = false,
+                                        showInLibraryIcon = false,
+                                        showAlbumInSubtitle = true,
+                                        showLikeButton = true,
                                         thumbnailSize = thumbnailSize,
                                         onPlay = {
                                             playerConnection.playQueue(

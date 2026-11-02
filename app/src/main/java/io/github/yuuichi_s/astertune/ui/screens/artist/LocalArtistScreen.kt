@@ -32,7 +32,6 @@ import androidx.compose.material.icons.rounded.Album
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -88,20 +87,16 @@ import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
 import io.github.yuuichi_s.astertune.constants.SwipeToQueueKey
 import io.github.yuuichi_s.astertune.constants.ThumbnailCornerRadius
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
-import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
-import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
-import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
 import io.github.yuuichi_s.astertune.ui.component.items.ItemThumbnail
 import io.github.yuuichi_s.astertune.ui.component.items.ListItem
+import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
 import io.github.yuuichi_s.astertune.ui.dialog.ListDialog
 import io.github.yuuichi_s.astertune.ui.menu.AlbumMenu
-import io.github.yuuichi_s.astertune.ui.menu.SongMenu
 import io.github.yuuichi_s.astertune.utils.joinByBullet
-import io.github.yuuichi_s.astertune.utils.makeTimeString
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.LocalArtistAlbum
@@ -314,29 +309,32 @@ fun LocalArtistScreen(
                 items = visibleSongs,
                 key = { _, song -> song.id }
             ) { index, song ->
-                SwipeToQueueBox(
-                    item = song.toMediaItem(),
+                SongListItem(
+                    song = song,
+                    navController = navController,
+                    snackbarHostState = snackbarHostState,
+                    isActive = song.id == mediaMetadata?.id,
+                    isPlaying = isPlaying,
+                    inSelectMode = null,
+                    isSelected = false,
+                    onSelectedChange = {},
                     swipeEnabled = swipeEnabled,
-                    snackbarHostState = snackbarHostState
-                ) {
-                    LocalArtistSongItem(
-                        song = song,
-                        thumbnailSize = thumbnailSize,
-                        isActive = song.id == mediaMetadata?.id,
-                        isPlaying = isPlaying,
-                        navController = navController,
-                        onPlay = {
-                            playerConnection.playQueue(
-                                ListQueue(
-                                    title = artistName,
-                                    items = visibleSongs.map { it.toMediaMetadata() },
-                                    startIndex = index,
-                                )
+                    showLikedIcon = false,
+                    showInLibraryIcon = false,
+                    showAlbumInSubtitle = true,
+                    showLikeButton = true,
+                    thumbnailSize = thumbnailSize,
+                    onPlay = {
+                        playerConnection.playQueue(
+                            ListQueue(
+                                title = artistName,
+                                items = visibleSongs.map { it.toMediaMetadata() },
+                                startIndex = index,
                             )
-                        },
-                        modifier = Modifier.animateItem()
-                    )
-                }
+                        )
+                    },
+                    modifier = Modifier.animateItem()
+                )
             }
         }
 
@@ -573,82 +571,6 @@ private fun LocalArtistAlbums(
             )
         }
     }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun LocalArtistSongItem(
-    song: Song,
-    thumbnailSize: Int,
-    isActive: Boolean,
-    isPlaying: Boolean,
-    navController: NavController,
-    onPlay: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val database = LocalDatabase.current
-    val menuState = LocalMenuState.current
-    val playerConnection = LocalPlayerConnection.current ?: return
-
-    val showMenu = {
-        menuState.show {
-            SongMenu(
-                originalSong = song,
-                navController = navController,
-                onDismiss = menuState::dismiss
-            )
-        }
-    }
-
-    ListItem(
-        title = song.song.title,
-        subtitle = {
-            Text(
-                text = joinByBullet(
-                    song.album?.title ?: song.song.albumName,
-                    makeTimeString(song.song.duration * 1000L)
-                ),
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        },
-        thumbnailContent = {
-            ItemThumbnail(
-                thumbnailUrl = song.song.thumbnailUrl,
-                preferredSize = thumbnailSize,
-                isActive = isActive,
-                isPlaying = isPlaying,
-                shape = RoundedCornerShape(ThumbnailCornerRadius),
-                modifier = Modifier.size(ListThumbnailSize)
-            )
-        },
-        trailingContent = {
-            IconButton(
-                onClick = {
-                    val updated = if (song.song.isLocal) song.song.localToggleLike() else song.song.toggleLike()
-                    database.query { update(updated) }
-                }
-            ) {
-                Icon(
-                    painter = painterResource(if (song.song.liked) R.drawable.favorite else R.drawable.favorite_border),
-                    tint = if (song.song.liked) MaterialTheme.colorScheme.error else LocalContentColor.current,
-                    contentDescription = null
-                )
-            }
-            IconButton(onClick = showMenu) {
-                Icon(Icons.Rounded.MoreVert, contentDescription = null)
-            }
-        },
-        isActive = isActive,
-        modifier = modifier.combinedClickable(
-            onClick = {
-                if (isActive) playerConnection.player.togglePlayPause() else onPlay()
-            },
-            onLongClick = showMenu
-        )
-    )
 }
 
 @Composable
