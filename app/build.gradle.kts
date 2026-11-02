@@ -1,8 +1,16 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.android.apksig.ApkSigner
+import com.android.apksig.KeyConfig
+import com.android.apksig.SigningCertificateLineage
+import com.android.build.api.artifact.ArtifactTransformationRequest
+import com.android.build.api.artifact.SingleArtifact
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
+import java.security.KeyStore
+import java.security.PrivateKey
+import java.security.cert.X509Certificate
 import java.util.Properties
 
 
@@ -196,6 +204,112 @@ android {
 
     androidResources {
         generateLocaleConfig = true
+    }
+}
+
+// Re-signs APKs with the old and new keys and their signing lineage, so devices on Android 9+
+// accept the new key as an update, while older devices keep verifying the old key.
+abstract class RotateSigningKeyTask : DefaultTask() {
+    @get:InputFiles
+    abstract val inputApks: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val outputApks: DirectoryProperty
+
+    @get:Internal
+    abstract val transformationRequest: Property<ArtifactTransformationRequest<RotateSigningKeyTask>>
+
+    @get:Input
+    abstract val missingSettings: ListProperty<String>
+
+    @get:Optional
+    @get:InputFile
+    abstract val oldStoreFile: RegularFileProperty
+
+    @get:Optional
+    @get:Input
+    abstract val oldKeyAlias: Property<String>
+
+    @get:Internal
+    abstract val oldStorePassword: Property<String>
+
+    @get:Optional
+    @get:InputFile
+    abstract val newStoreFile: RegularFileProperty
+
+    @get:Optional
+    @get:Input
+    abstract val newKeyAlias: Property<String>
+
+    @get:Internal
+    abstract val newStorePassword: Property<String>
+
+    @get:Optional
+    @get:InputFile
+    abstract val lineageFile: RegularFileProperty
+
+    @TaskAction
+    fun sign() {
+        if (missingSettings.get().isNotEmpty()) {
+            throw GradleException("keystore.properties is missing: ${missingSettings.get().joinToString()}")
+        }
+        val signers = listOf(
+            signerConfig(oldStoreFile, oldKeyAlias, oldStorePassword),
+            signerConfig(newStoreFile, newKeyAlias, newStorePassword),
+        )
+        val lineage = SigningCertificateLineage.readFromFile(lineageFile.get().asFile)
+        transformationRequest.get().submit(this) { artifact ->
+            val input = File(artifact.outputFile)
+            val output = outputApks.file(input.name).get().asFile
+            ApkSigner.Builder(signers)
+                .setSigningCertificateLineage(lineage)
+                // apksig applies the rotated key from Android 13 unless told otherwise
+                .setMinSdkVersionForRotation(28)
+                .setInputApk(input)
+                .setOutputApk(output)
+                .build()
+                .sign()
+            output
+        }
+    }
+
+    private fun signerConfig(
+        storeFile: RegularFileProperty,
+        keyAlias: Property<String>,
+        storePassword: Property<String>,
+    ): ApkSigner.SignerConfig {
+        // PKCS12 key stores protect the key with the store password
+        val password = storePassword.get().toCharArray()
+        val keyStore = KeyStore.getInstance(storeFile.get().asFile, password)
+        val key = keyStore.getKey(keyAlias.get(), password) as PrivateKey
+        val certificates = keyStore.getCertificateChain(keyAlias.get()).map { it as X509Certificate }
+        return ApkSigner.SignerConfig.Builder(keyAlias.get(), KeyConfig.Jca(key), certificates).build()
+    }
+}
+
+// release builds fail when keystore.properties lacks any of these, rather than shipping APKs without the new key
+val rotationSettings = listOf(
+    "storeFile", "keyAlias", "storePassword", "newStoreFile", "newKeyAlias", "newStorePassword", "lineageFile"
+)
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variant ->
+        val task = tasks.register<RotateSigningKeyTask>(
+            "rotateSigningKey${variant.name.replaceFirstChar { it.uppercase() }}"
+        ) {
+            missingSettings.set(rotationSettings.filterNot { keystoreProperties.containsKey(it) })
+            keystoreProperties.getProperty("storeFile")?.let { oldStoreFile.set(file(it)) }
+            oldKeyAlias.set(keystoreProperties.getProperty("keyAlias"))
+            oldStorePassword.set(keystoreProperties.getProperty("storePassword"))
+            keystoreProperties.getProperty("newStoreFile")?.let { newStoreFile.set(file(it)) }
+            newKeyAlias.set(keystoreProperties.getProperty("newKeyAlias"))
+            newStorePassword.set(keystoreProperties.getProperty("newStorePassword"))
+            keystoreProperties.getProperty("lineageFile")?.let { lineageFile.set(file(it)) }
+        }
+        val request = variant.artifacts.use(task)
+            .wiredWithDirectories(RotateSigningKeyTask::inputApks, RotateSigningKeyTask::outputApks)
+            .toTransformMany(SingleArtifact.APK)
+        task.configure { transformationRequest.set(request) }
     }
 }
 
