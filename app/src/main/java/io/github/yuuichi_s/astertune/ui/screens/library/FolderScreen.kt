@@ -2,7 +2,6 @@ package io.github.yuuichi_s.astertune.ui.screens.library
 
 import android.content.pm.PackageManager
 import android.util.Log
-import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -41,7 +40,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -85,14 +83,12 @@ import io.github.yuuichi_s.astertune.constants.FlatSubfoldersKey
 import io.github.yuuichi_s.astertune.constants.FolderSongSortDescendingKey
 import io.github.yuuichi_s.astertune.constants.FolderSongSortType
 import io.github.yuuichi_s.astertune.constants.FolderSongSortTypeKey
-import io.github.yuuichi_s.astertune.constants.FolderSortType
-import io.github.yuuichi_s.astertune.constants.FolderSortTypeKey
 import io.github.yuuichi_s.astertune.constants.LastLocalScanKey
 import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
 import io.github.yuuichi_s.astertune.constants.LocalLibraryEnableKey
 import io.github.yuuichi_s.astertune.constants.SwipeToQueueKey
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
-import io.github.yuuichi_s.astertune.db.entities.Song
+import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import io.github.yuuichi_s.astertune.models.DirectoryTree
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
@@ -126,7 +122,6 @@ import kotlin.math.roundToInt
 @Composable
 fun FolderScreen(
     navController: NavController,
-    scrollBehavior: TopAppBarScrollBehavior,
     viewModel: LibraryFoldersViewModel = hiltViewModel(),
     isRoot: Boolean = false,
     libraryFilterContent: @Composable (() -> Unit)? = null
@@ -146,7 +141,6 @@ fun FolderScreen(
 
     val (sortType, onSortTypeChange) = rememberEnumPreference(FolderSongSortTypeKey, FolderSongSortType.TRACK_NUMBER)
     val (sortDescending, onSortDescendingChange) = rememberPreference(FolderSongSortDescendingKey, false)
-    val (folderSortType, onFolderSortTypeChange) = rememberEnumPreference(FolderSortTypeKey, FolderSortType.NAME)
     val swipeEnabled by rememberPreference(SwipeToQueueKey, true)
 
     val lazyListState = rememberLazyListState()
@@ -174,6 +168,10 @@ fun FolderScreen(
         }
         if (!currDir.isSkeleton) {
             viewModel.uiInit = true
+            // the cached tree does not carry the song count
+            coroutineScope.launch(Dispatchers.IO) {
+                viewModel.getSongCount()
+            }
         }
 
         if (!viewModel.uiInit) {
@@ -185,9 +183,6 @@ fun FolderScreen(
         }
     }
 
-    val mutableSongs = remember {
-        mutableStateListOf<Song>()
-    }
     val mutableSubdirs = remember {
         mutableStateListOf<DirectoryTree>()
     }
@@ -222,20 +217,41 @@ fun FolderScreen(
             restore = { it.toMutableStateList() }
         )
     ) { mutableStateListOf() }
+    val selectedSongs = viewModel.selectedSongs
     val onExitSelectionMode = {
         inSelectMode = false
         selection.clear()
+        selectedSongs.clear()
     }
 
     if (inSelectMode) {
         BackHandler(onBack = onExitSelectionMode)
     } else if (isSearching) {
-        BackHandler(onBack = { isSearching = false })
+        BackHandler(onBack = {
+            isSearching = false
+            query = TextFieldValue()
+        })
+    }
+
+    // sort songs
+    val dirSongs = remember(currDir, sortType, sortDescending) {
+        sortLocalSongs(currDir.files, sortType, sortDescending).distinctBy { it.id }
+    }
+    val searchedSongs = remember(filteredSongs.toList(), sortType, sortDescending) {
+        sortLocalSongs(filteredSongs, sortType, sortDescending)
+    }
+    val listedSongs = if (isSearching) searchedSongs else dirSongs
+
+    // keep selected songs operable after they leave the list
+    LaunchedEffect(listedSongs) {
+        listedSongs.forEach { song ->
+            if (selection.contains(song.id)) {
+                selectedSongs[song.id] = song
+            }
+        }
     }
 
     LaunchedEffect(sortType, sortDescending, currDir) {
-        // sort songs
-        val sortedSongs = sortLocalSongs(currDir.files, sortType, sortDescending)
         // sort folders
         val newSubdirs: ArrayList<DirectoryTree> = ArrayList()
         newSubdirs.addAll(currDir.subdirs.sortedBy { it.currentDir.lowercase() }) // only sort by name
@@ -253,11 +269,6 @@ fun FolderScreen(
         mutableFlatSubdirs.apply {
             clear()
             addAll(if (sortDescending) newFlatSubdirs.reversed() else newFlatSubdirs)
-        }
-
-        mutableSongs.apply {
-            clear()
-            mutableSongs.addAll(sortedSongs.distinctBy { it.id })
         }
     }
 
@@ -399,7 +410,9 @@ fun FolderScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = pluralStringResource(R.plurals.n_song, subDirSongCount, subDirSongCount),
+                                text = (if (isSearching) listedSongs.size else subDirSongCount).let { count ->
+                                    pluralStringResource(R.plurals.n_song, count, count)
+                                },
                                 style = MaterialTheme.typography.titleSmall,
                                 color = MaterialTheme.colorScheme.secondary,
                                 modifier = Modifier.padding(end = 8.dp)
@@ -447,11 +460,11 @@ fun FolderScreen(
 
 
                 // all subdirectories listed here
-                itemsIndexed(
+                items(
                     items = if (flatSubfolders) mutableFlatSubdirs else mutableSubdirs,
-                    key = { _, item -> item.uid },
-                    contentType = { _, _ -> CONTENT_TYPE_FOLDER }
-                ) { index, folder ->
+                    key = { it.uid },
+                    contentType = { CONTENT_TYPE_FOLDER }
+                ) { folder ->
                     if (!flatSubfolders || folder.getFullSquashedDir() != fixFilePath(currDir.getFullPath())) // rm dupe dir hax
                         SongFolderItem(
                             folder = folder,
@@ -470,7 +483,7 @@ fun FolderScreen(
                 }
 
                 // separator
-                if (currDir.subdirs.isNotEmpty() && mutableSongs.isNotEmpty()) {
+                if (currDir.subdirs.isNotEmpty() && dirSongs.isNotEmpty()) {
                     item(
                         key = "folder_songs_divider",
                     ) {
@@ -495,11 +508,11 @@ fun FolderScreen(
 
             // all songs get listed here
             val thumbnailSize = (ListThumbnailSize.value * density.density).roundToInt()
-            itemsIndexed(
-                items = if (isSearching) filteredSongs else mutableSongs,
-                key = { _, item -> item.id },
-                contentType = { _, _ -> CONTENT_TYPE_SONG }
-            ) { index, listedSong ->
+            items(
+                items = listedSongs,
+                key = { it.id },
+                contentType = { CONTENT_TYPE_SONG }
+            ) { listedSong ->
                 val song = latestSongs[listedSong.id] ?: listedSong
                 SongListItem(
                     song = song,
@@ -514,8 +527,10 @@ fun FolderScreen(
                         inSelectMode = true
                         if (it) {
                             selection.add(song.id)
+                            selectedSongs[song.id] = song
                         } else {
                             selection.remove(song.id)
+                            selectedSongs.remove(song.id)
                         }
                     },
                     swipeEnabled = swipeEnabled,
@@ -526,12 +541,11 @@ fun FolderScreen(
 
                     thumbnailSize = thumbnailSize,
                     onPlay = {
-                        val queueSongs = if (isSearching) filteredSongs else mutableSongs
                         playerConnection.playQueue(
                             ListQueue(
                                 title = currDir.currentDir.substringAfterLast('/'),
-                                items = queueSongs.map { it.toMediaMetadata() },
-                                startIndex = queueSongs.indexOfFirst { it.id == song.id }
+                                items = listedSongs.map { it.toMediaMetadata() },
+                                startIndex = listedSongs.indexOfFirst { it.id == song.id }
                             )
                         )
                     },
@@ -587,17 +601,26 @@ fun FolderScreen(
         }
 
         FloatingFooter(inSelectMode) {
+            val listedIds = listedSongs.mapTo(HashSet()) { it.id }
+            val selectedItems = selection.mapNotNull { songId ->
+                listedSongs.find { it.id == songId } ?: selectedSongs[songId]
+            }
             SelectHeader(
                 navController = navController,
-                selectedItems = selection.mapNotNull { songId ->
-                    mutableSongs.find { it.id == songId }
-                }.map { it.toMediaMetadata() },
-                totalItemCount = mutableSongs.size,
+                selectedItems = selectedItems.map { it.toMediaMetadata() },
+                totalItemCount = listedSongs.size + selectedItems.count { it.id !in listedIds },
                 onSelectAll = {
-                    selection.clear()
-                    selection.addAll(mutableSongs.map { it.id }.distinctBy { it })
+                    listedSongs.forEach { song ->
+                        if (!selection.contains(song.id)) {
+                            selection.add(song.id)
+                        }
+                        selectedSongs[song.id] = song
+                    }
                 },
-                onDeselectAll = { selection.clear() },
+                onDeselectAll = {
+                    selection.clear()
+                    selectedSongs.clear()
+                },
                 menuState = menuState,
                 onDismiss = onExitSelectionMode
             )

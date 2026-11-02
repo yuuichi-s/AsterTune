@@ -523,7 +523,7 @@ class MainActivity : ComponentActivity() {
                                         LibrarySongsScreen(navController)
                                     }
                                     composable(Screens.Folders.route) {
-                                        LibraryFoldersScreen(navController, scrollBehavior)
+                                        LibraryFoldersScreen(navController)
                                     }
                                     composable(
                                         route = "${Screens.Folders.route}/{path}",
@@ -533,7 +533,7 @@ class MainActivity : ComponentActivity() {
                                             }
                                         )
                                     ) {
-                                        FolderScreen(navController, scrollBehavior)
+                                        FolderScreen(navController)
                                     }
                                     composable(Screens.LocalFiles.route) {
                                         LocalScreen(navController)
@@ -548,7 +548,7 @@ class MainActivity : ComponentActivity() {
                                         LibraryPlaylistsScreen(navController)
                                     }
                                     composable(Screens.Library.route) {
-                                        LibraryScreen(navController, scrollBehavior)
+                                        LibraryScreen(navController)
                                     }
                                     composable(Screens.Player.route) {
                                         PlayerScreen(navController, bottomPadding = getNavPadding())

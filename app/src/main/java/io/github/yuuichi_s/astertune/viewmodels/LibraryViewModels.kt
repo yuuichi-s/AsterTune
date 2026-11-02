@@ -15,6 +15,7 @@ package io.github.yuuichi_s.astertune.viewmodels
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -224,6 +225,11 @@ class LibraryFoldersViewModel @Inject constructor(
     private var searchJob: Job? = null
 
     /**
+     * Selected songs keyed by song ID, kept while they are outside the listed songs
+     */
+    val selectedSongs = mutableStateMapOf<String, Song>()
+
+    /**
      * Latest songs directly in [path], keyed by song ID
      */
     val latestSongs: StateFlow<Map<String, Song>> = database.localSongsDirectlyInDir(path)
@@ -257,12 +263,14 @@ class LibraryFoldersViewModel @Inject constructor(
      */
     fun searchInDir(query: String, dir: String = path) {
         searchJob?.cancel()
-        if (query.isNotBlank()) {
-            searchJob = viewModelScope.launch(Dispatchers.IO) {
-                database.searchSongsAllLocalInDir(dir, query).collect { dbSongs ->
-                    filteredSongs.clear()
-                    filteredSongs.addAll(dbSongs)
-                }
+        if (query.isBlank()) {
+            filteredSongs.clear()
+            return
+        }
+        searchJob = viewModelScope.launch {
+            database.searchSongsAllLocalInDir(dir, query).collect { dbSongs ->
+                filteredSongs.clear()
+                filteredSongs.addAll(dbSongs)
             }
         }
     }
