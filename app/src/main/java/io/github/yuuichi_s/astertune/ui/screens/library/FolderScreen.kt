@@ -156,6 +156,7 @@ fun FolderScreen(
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
     val currDir: DirectoryTree by viewModel.localSongDirectoryTree.collectAsState()
     val subDirSongCount by viewModel.localSongDtSongCount.collectAsState()
+    val latestSongs by viewModel.latestSongs.collectAsState()
 
     LaunchedEffect(lastLocalScan) {
         if (viewModel.uiInit && !currDir.isSkeleton && viewModel.lastLocalScan != lastLocalScan) {
@@ -498,7 +499,8 @@ fun FolderScreen(
                 items = if (isSearching) filteredSongs else mutableSongs,
                 key = { _, item -> item.id },
                 contentType = { _, _ -> CONTENT_TYPE_SONG }
-            ) { index, song ->
+            ) { index, listedSong ->
+                val song = latestSongs[listedSong.id] ?: listedSong
                 SongListItem(
                     song = song,
                     navController = navController,
@@ -517,14 +519,19 @@ fun FolderScreen(
                         }
                     },
                     swipeEnabled = swipeEnabled,
+                    showLikedIcon = false,
+                    showInLibraryIcon = false,
+                    showAlbumInSubtitle = true,
+                    showLikeButton = true,
 
                     thumbnailSize = thumbnailSize,
                     onPlay = {
+                        val queueSongs = if (isSearching) filteredSongs else mutableSongs
                         playerConnection.playQueue(
                             ListQueue(
                                 title = currDir.currentDir.substringAfterLast('/'),
-                                items = mutableSongs.map { it.toMediaMetadata() },
-                                startIndex = mutableSongs.indexOf(song)
+                                items = queueSongs.map { it.toMediaMetadata() },
+                                startIndex = queueSongs.indexOfFirst { it.id == song.id }
                             )
                         )
                     },

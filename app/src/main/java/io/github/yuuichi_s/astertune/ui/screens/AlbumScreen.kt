@@ -444,6 +444,7 @@ fun AlbumScreen(
                         }
                     },
                     swipeEnabled = swipeEnabled,
+                    showLikeButton = albumWithSongsLocal.album.isLocal,
 
                     thumbnailSize = thumbnailSize,
                     onPlay = {

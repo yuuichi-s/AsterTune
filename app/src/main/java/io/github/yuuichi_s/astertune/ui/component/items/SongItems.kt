@@ -24,6 +24,7 @@ import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -45,6 +46,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -97,12 +99,15 @@ fun SongListItem(
     showLikedIcon: Boolean = true,
     showInLibraryIcon: Boolean = true,
     showDownloadIcon: Boolean = true,
+    showAlbumInSubtitle: Boolean = false,
+    showLikeButton: Boolean = false,
 
     thumbnailSize: Int,
     onPlay: () -> Unit,
     dragHandleModifier: Modifier? = null,
     modifier: Modifier = Modifier,
 ) {
+    val database = LocalDatabase.current
     val menuState = LocalMenuState.current
     val haptic = LocalHapticFeedback.current
     val playerConnection = LocalPlayerConnection.current ?: return
@@ -110,11 +115,18 @@ fun SongListItem(
     val listItem: @Composable () -> Unit = {
         ListItem(
             title = song.song.title,
-            subtitle = joinByBullet(
-                (if (BuildConfig.DEBUG) song.song.id else ""),
-                song.artists.joinToString { it.name },
-                makeTimeString(song.song.duration * 1000L)
-            ),
+            subtitle = if (showAlbumInSubtitle) {
+                joinByBullet(
+                    song.album?.title ?: song.song.albumName,
+                    makeTimeString(song.song.duration * 1000L)
+                )
+            } else {
+                joinByBullet(
+                    (if (BuildConfig.DEBUG) song.song.id else ""),
+                    song.artists.joinToString { it.name },
+                    makeTimeString(song.song.duration * 1000L)
+                )
+            },
             badges = {
                 if (showLikedIcon && song.song.liked) {
                     Icon.Favorite()
@@ -148,6 +160,20 @@ fun SongListItem(
                         onCheckedChange = onSelectedChange
                     )
                 } else {
+                    if (showLikeButton) {
+                        IconButton(
+                            onClick = {
+                                val updated = song.song.toggleLike()
+                                database.query { update(updated) }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(if (song.song.liked) R.drawable.favorite else R.drawable.favorite_border),
+                                tint = if (song.song.liked) MaterialTheme.colorScheme.error else LocalContentColor.current,
+                                contentDescription = stringResource(if (song.song.liked) R.string.action_remove_like else R.string.action_like)
+                            )
+                        }
+                    }
                     IconButton(
                         onClick = {
                             if (showMenu) {

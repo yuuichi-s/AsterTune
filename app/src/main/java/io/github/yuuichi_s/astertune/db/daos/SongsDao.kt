@@ -187,6 +187,21 @@ interface SongsDao {
     """)
     fun _localSongsInDirShallow(filter: String): List<Song>
 
+    /**
+     * Songs directly in the directory, excluding subdirectories. Does not include unavailable songs
+     */
+    fun localSongsDirectlyInDir(dir: String): Flow<List<Song>> {
+        return _localSongsDirectlyInDir(fixFilePath(dir))
+    }
+
+    @Transaction
+    @Query("""
+        SELECT * FROM song
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localpath LIKE :dir || '%'
+        AND instr(substr(localpath, length(:dir) + 1), '/') = 0
+    """)
+    fun _localSongsDirectlyInDir(dir: String): Flow<List<Song>>
+
     fun localSongsInDirDeep(filter: String): List<Song> {
         return _localSongsInDirDeep(fixFilePath(filter))
     }
