@@ -12,13 +12,6 @@ package io.github.yuuichi_s.astertune.utils
 import android.net.ConnectivityManager
 import android.util.Log
 import androidx.media3.common.PlaybackException
-import io.github.yuuichi_s.astertune.constants.AudioQuality
-import io.github.yuuichi_s.astertune.utils.YTPlayerUtils.MAIN_CLIENT
-import io.github.yuuichi_s.astertune.utils.YTPlayerUtils.STREAM_CLIENTS
-import io.github.yuuichi_s.astertune.utils.YTPlayerUtils.validateStatus
-import io.github.yuuichi_s.astertune.utils.cipher.SignatureCipherManager
-import io.github.yuuichi_s.astertune.utils.potoken.PoTokenGenerator
-import io.github.yuuichi_s.astertune.utils.potoken.PoTokenResult
 import com.zionhuang.innertube.NewPipeUtils
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.YouTubeClient
@@ -31,7 +24,14 @@ import com.zionhuang.innertube.models.YouTubeClient.Companion.TVHTML5
 import com.zionhuang.innertube.models.YouTubeClient.Companion.VISIONOS
 import com.zionhuang.innertube.models.YouTubeClient.Companion.WEB_REMIX
 import com.zionhuang.innertube.models.response.PlayerResponse
+import io.github.yuuichi_s.astertune.constants.AudioQuality
+import io.github.yuuichi_s.astertune.utils.YTPlayerUtils.STREAM_CLIENTS
+import io.github.yuuichi_s.astertune.utils.YTPlayerUtils.validateStatus
+import io.github.yuuichi_s.astertune.utils.cipher.SignatureCipherManager
+import io.github.yuuichi_s.astertune.utils.potoken.PoTokenGenerator
+import io.github.yuuichi_s.astertune.utils.potoken.PoTokenResult
 import okhttp3.OkHttpClient
+import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
 
 object YTPlayerUtils {
@@ -73,18 +73,9 @@ object YTPlayerUtils {
     }
 
     /**
-     * Client for the initial player response and playback metadata.
-     *
-     * Uses WEB_REMIX, which includes the configured session cookie when available. Metadata
-     * continues to come from this response even if another client supplies the stream.
-     */
-    private val MAIN_CLIENT: YouTubeClient = WEB_REMIX
-
-    /**
      * Clients tried in order when resolving the playable stream.
      *
-     * Metadata comes from [MAIN_CLIENT]. Its initial response is reused when stream resolution
-     * reaches that client, rather than issuing another player request.
+     * Playback metadata comes from the response of the client that supplies the stream.
      */
     private val STREAM_CLIENTS: Array<YouTubeClient> = arrayOf(
         VISIONOS,
@@ -136,10 +127,23 @@ object YTPlayerUtils {
         }
     }
 
+    /** WEB_REMIX's loudness target, used to derive missing loudnessDb values. */
+    private const val WEB_REMIX_LOUDNESS_TARGET_LKFS = -7.0
+
+    /** Fills a missing loudnessDb from perceptualLoudnessDb on WEB_REMIX's scale. */
+    private fun PlayerResponse.PlayerConfig.AudioConfig.withLoudnessDb() =
+        if (loudnessDb != null) {
+            this
+        }
+        else {
+            copy(loudnessDb = perceptualLoudnessDb?.minus(WEB_REMIX_LOUDNESS_TARGET_LKFS))
+        }
+
     /**
      * Custom player response intended to use for playback.
-     * Metadata like audioConfig and videoDetails are from [MAIN_CLIENT].
-     * Format & stream can be from [MAIN_CLIENT] or [STREAM_CLIENTS].
+     *
+     * Format, stream and metadata come from the same client, selected in [STREAM_CLIENTS] order.
+     * Stream HTTP status validation is skipped for the final client.
      */
     suspend fun playerResponseForPlayback(
         videoId: String,
@@ -149,34 +153,43 @@ object YTPlayerUtils {
     ): Result<PlaybackData> = runCatching {
         Log.d(TAG, "Playback info requested: $videoId")
 
-        // Required for some clients to get working streams, but not forced for MAIN_CLIENT: its
-        // response is needed even when its streams won't work, so this is allowed to be null.
-        val signatureTimestamp = getSignatureTimestampOrNull(videoId)
-
         val isLoggedIn = YouTube.cookie != null
-        // The streaming (GVS) token is minted against this and the stream url is then fetched by a
-        // session identifying itself with visitorData, so this has to be visitorData for both
-        // signed-in and signed-out sessions. Binding it to dataSyncId while requests carry
-        // visitorData is honoured for roughly the first minute of a track and refused after that.
-        val sessionId = YouTube.visitorData
-
-        Log.d(TAG, "[$videoId] signatureTimestamp: $signatureTimestamp, isLoggedIn: $isLoggedIn, " +
+        Log.d(TAG, "[$videoId] isLoggedIn: $isLoggedIn, " +
                 "dataSyncId present: ${!YouTube.dataSyncId.isNullOrBlank()} (len=${YouTube.dataSyncId?.length ?: 0}), " +
                 "visitorData present: ${!YouTube.visitorData.isNullOrBlank()}")
 
-        val (webPlayerPot, webStreamingPot) = getWebClientPoTokenOrNull(videoId, sessionId)?.let {
-            Pair(it.playerRequestPoToken, it.streamingDataPoToken)
-        } ?: Pair(null, null).also {
-            Log.w(TAG, "[$videoId] No po token")
+        // Fetched only when a client that uses them is reached, and at most once per resolution.
+        var signatureTimestamp: Int? = null
+        var signatureTimestampFetched = false
+        fun signatureTimestampFor(client: YouTubeClient): Int? {
+            if (!client.useSignatureTimestamp) {
+                return null
+            }
+            if (!signatureTimestampFetched) {
+                signatureTimestampFetched = true
+                signatureTimestamp = getSignatureTimestampOrNull(videoId)
+                Log.d(TAG, "[$videoId] signatureTimestamp: $signatureTimestamp")
+            }
+            return signatureTimestamp
         }
 
-        val mainPlayerResponse =
-            YouTube.player(videoId, playlistId, MAIN_CLIENT, signatureTimestamp, webPlayerPot)
-                .getOrThrow()
+        var poToken: PoTokenResult? = null
+        var poTokenFetched = false
+        fun poTokenFor(client: YouTubeClient): PoTokenResult? {
+            if (!client.useWebPoTokens) {
+                return null
+            }
+            if (!poTokenFetched) {
+                poTokenFetched = true
+                // Bind the GVS token to visitorData for both signed-in and signed-out sessions,
+                // matching the identity used by stream requests.
+                poToken = getWebClientPoTokenOrNull(videoId, YouTube.visitorData)
+                if (poToken == null) Log.w(TAG, "[$videoId] No po token")
+            }
+            return poToken
+        }
 
-        val audioConfig = mainPlayerResponse.playerConfig?.audioConfig
-        val videoDetails = mainPlayerResponse.videoDetails
-        val playbackTracking = mainPlayerResponse.playbackTracking
+        var playerRequested = false
 
         var format: PlayerResponse.StreamingData.Format? = null
         var streamUrl: String? = null
@@ -204,18 +217,19 @@ object YTPlayerUtils {
                 continue
             }
 
-            // decide which client to use for streams and load its player response
-            if (client == MAIN_CLIENT) {
-                // its response was already fetched for the metadata
-                streamPlayerResponse = mainPlayerResponse
-            } else {
-                val playerResult =
-                    YouTube.player(videoId, playlistId, client, signatureTimestamp, webPlayerPot)
-                playerResult.exceptionOrNull()?.let {
-                    Log.e(TAG, "[$videoId] [${client.clientName}] player request failed", it)
-                }
-                streamPlayerResponse = playerResult.getOrNull()
+            val playerResult = YouTube.player(
+                videoId, playlistId, client,
+                signatureTimestampFor(client), poTokenFor(client)?.playerRequestPoToken,
+            )
+
+            playerResult.exceptionOrNull()?.let {
+                Log.e(TAG, "[$videoId] [${client.clientName}] player request failed", it)
+                // Preserve the first player request's IOException for the caller's error handling.
+                if (!playerRequested && it is IOException) throw it
             }
+
+            playerRequested = true
+            streamPlayerResponse = playerResult.getOrNull()
 
             Log.d(TAG, "[$videoId] stream client: ${client.clientName}, " +
                     "playabilityStatus: ${streamPlayerResponse?.playabilityStatus?.let {
@@ -240,8 +254,9 @@ object YTPlayerUtils {
                     continue
                 }
 
-                if (client.useWebPoTokens && webStreamingPot != null) {
-                    streamUrl += "&pot=$webStreamingPot";
+                val streamingPot = poTokenFor(client)?.streamingDataPoToken
+                if (streamingPot != null) {
+                    streamUrl += "&pot=$streamingPot"
                 }
 
                 streamClient = client.clientName
@@ -284,13 +299,13 @@ object YTPlayerUtils {
         Log.d(TAG, "[$videoId] stream url: $streamUrl")
 
         PlaybackData(
-            audioConfig = audioConfig,
-            videoDetails = videoDetails,
-            playbackTracking = playbackTracking,
+            audioConfig = streamPlayerResponse.playerConfig?.audioConfig?.withLoudnessDb(),
+            videoDetails = streamPlayerResponse.videoDetails,
+            playbackTracking = streamPlayerResponse.playbackTracking,
             format = format,
             streamUrl = streamUrl,
             streamExpiresInSeconds = streamExpiresInSeconds,
-            streamClient = streamClient ?: MAIN_CLIENT.clientName,
+            streamClient = checkNotNull(streamClient),
             streamHeaders = streamHeaders,
         )
     }
