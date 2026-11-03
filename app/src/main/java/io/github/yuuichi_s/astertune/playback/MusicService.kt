@@ -30,6 +30,7 @@ import androidx.media3.common.Format
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.Player.EVENT_MEDIA_ITEM_TRANSITION
 import androidx.media3.common.Player.EVENT_POSITION_DISCONTINUITY
 import androidx.media3.common.Player.EVENT_TIMELINE_CHANGED
 import androidx.media3.common.Player.MEDIA_ITEM_TRANSITION_REASON_AUTO
@@ -201,6 +202,12 @@ class MusicService : MediaLibraryService(),
     // Scope for the per-request playQueue() coroutine. Uses the Main dispatcher because it mutates the
     // player, which must run on the application thread; the SupervisorJob binds it to the service lifecycle.
     private val queueLoadScope = CoroutineScope(SupervisorJob(serviceJob) + Dispatchers.Main)
+
+    // Durations the player reported for recently played songs, keyed by media ID, for counting plays of
+    // songs whose metadata has no duration. Accessed only on the application thread.
+    private val playerDurationsMs = object : LinkedHashMap<String, Long>() {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Long>?) = size > 8
+    }
 
     // Critical player components
     @Inject
@@ -1505,14 +1512,22 @@ class MusicService : MediaLibraryService(),
                 }
             }
         }
+        if (events.containsAny(EVENT_TIMELINE_CHANGED, EVENT_MEDIA_ITEM_TRANSITION)) {
+            val mediaId = player.currentMediaItem?.mediaId
+            val duration = player.duration
+            if (mediaId != null && duration > 0) {
+                playerDurationsMs[mediaId] = duration
+            }
+        }
         if (events.containsAny(EVENT_TIMELINE_CHANGED, EVENT_POSITION_DISCONTINUITY)) {
             currentMediaMetadata.value = player.currentMetadata
         }
     }
 
     override fun onPlaybackStatsReady(eventTime: AnalyticsListener.EventTime, playbackStats: PlaybackStats) {
+        val mediaItem = eventTime.timeline.getWindow(eventTime.windowIndex, Timeline.Window()).mediaItem
+        val playerDurationMs = playerDurationsMs[mediaItem.mediaId]
         offloadScope.launch {
-            val mediaItem = eventTime.timeline.getWindow(eventTime.windowIndex, Timeline.Window()).mediaItem
             var minPlaybackDur = (dataStore.get(minPlaybackDurKey, 30).toFloat() / 100)
             // ensure within bounds
             if (minPlaybackDur >= 1f) {
@@ -1521,8 +1536,8 @@ class MusicService : MediaLibraryService(),
                 minPlaybackDur = 0.01f // Still want "spam skipping" to not count as plays
             }
 
-            val playRatio =
-                playbackStats.totalPlayTimeMs.toFloat() / ((mediaItem.metadata?.duration?.times(1000)) ?: -1)
+            val durationMs = mediaItem.metadata?.duration?.takeIf { it > 0 }?.times(1000L) ?: playerDurationMs
+            val playRatio = durationMs?.let { playbackStats.totalPlayTimeMs.toFloat() / it } ?: -1f
             if (SERVICE_DEBUG) Log.d(TAG, "Playback ratio: $playRatio Min threshold: $minPlaybackDur")
             if (playRatio >= minPlaybackDur && !dataStore.get(PauseListenHistoryKey, false)) {
                 database.query {
