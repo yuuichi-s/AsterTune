@@ -271,6 +271,14 @@ abstract class RotateSigningKeyTask : DefaultTask() {
                 .sign()
             output
         }
+
+        // install tasks read the baseline profiles (.dm) from next to the APKs
+        val inputProfiles = inputApks.dir("baselineProfiles").get().asFile
+        val outputProfiles = outputApks.dir("baselineProfiles").get().asFile
+        outputProfiles.deleteRecursively()
+        if (inputProfiles.exists()) {
+            inputProfiles.copyRecursively(outputProfiles)
+        }
     }
 
     private fun signerConfig(
