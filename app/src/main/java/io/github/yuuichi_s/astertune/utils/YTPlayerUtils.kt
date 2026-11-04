@@ -30,6 +30,7 @@ import io.github.yuuichi_s.astertune.utils.YTPlayerUtils.validateStatus
 import io.github.yuuichi_s.astertune.utils.cipher.SignatureCipherManager
 import io.github.yuuichi_s.astertune.utils.potoken.PoTokenGenerator
 import io.github.yuuichi_s.astertune.utils.potoken.PoTokenResult
+import kotlinx.coroutines.CancellationException
 import okhttp3.OkHttpClient
 import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
@@ -175,7 +176,7 @@ object YTPlayerUtils {
 
         var poToken: PoTokenResult? = null
         var poTokenFetched = false
-        fun poTokenFor(client: YouTubeClient): PoTokenResult? {
+        suspend fun poTokenFor(client: YouTubeClient): PoTokenResult? {
             if (!client.useWebPoTokens) {
                 return null
             }
@@ -308,6 +309,8 @@ object YTPlayerUtils {
             streamClient = checkNotNull(streamClient),
             streamHeaders = streamHeaders,
         )
+    }.onFailure {
+        if (it is CancellationException) throw it
     }
 
     /**
@@ -411,13 +414,15 @@ object YTPlayerUtils {
     }
 
     // Reports exceptions; returns null on failure.
-    private fun getWebClientPoTokenOrNull(videoId: String, visitorData: String?): PoTokenResult? {
+    private suspend fun getWebClientPoTokenOrNull(videoId: String, visitorData: String?): PoTokenResult? {
         if (visitorData == null) {
             Log.d(TAG, "[$videoId] visitorData is null")
             return null
         }
         try {
             return poTokenGenerator.getWebClientPoToken(videoId, visitorData)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             reportException(e)
         }
