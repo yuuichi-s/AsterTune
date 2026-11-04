@@ -71,6 +71,10 @@ import androidx.compose.ui.util.fastForEach
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.zionhuang.innertube.models.AlbumItem
+import com.zionhuang.innertube.models.ArtistItem
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.SongItem
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
@@ -106,10 +110,6 @@ import io.github.yuuichi_s.astertune.ui.utils.fadingEdge
 import io.github.yuuichi_s.astertune.ui.utils.resize
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.ArtistViewModel
-import com.zionhuang.innertube.models.AlbumItem
-import com.zionhuang.innertube.models.ArtistItem
-import com.zionhuang.innertube.models.PlaylistItem
-import com.zionhuang.innertube.models.SongItem
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -448,7 +448,10 @@ fun ArtistScreen(
                                                             startIndex = section.items.indexOf(
                                                                 song
                                                             )
-                                                        )
+                                                        ),
+                                                        appendLater = section.moreEndpoint?.let { endpoint ->
+                                                            suspend { viewModel.loadAllSongs(endpoint) }
+                                                        }
                                                     )
                                                 }
                                             },

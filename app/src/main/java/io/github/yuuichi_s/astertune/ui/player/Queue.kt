@@ -135,9 +135,9 @@ import io.github.yuuichi_s.astertune.constants.SeekIncrementKey
 import io.github.yuuichi_s.astertune.constants.ShowQueueTitleKey
 import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.move
-import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
+import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
@@ -353,6 +353,7 @@ fun BoxScope.QueueContent(
      * SONG LIST
      */
     val mutableSongs = remember { mutableStateListOf<MediaMetadata>() }
+    var lastHandledQueueId by remember { mutableStateOf<Long?>(null) }
     val lazySongsListState = rememberLazyListState()
 
     // multiselect
@@ -468,7 +469,7 @@ fun BoxScope.QueueContent(
         onExitSelectionMode()
     }
 
-    LaunchedEffect(queueWindows, detachedQueue) { // add to songs list & scroll
+    LaunchedEffect(queueWindows, detachedQueue) {
         if (isSearching) return@LaunchedEffect
         if (detachedQueue != null) {
             mutableSongs.apply {
@@ -485,9 +486,33 @@ fun BoxScope.QueueContent(
             return@LaunchedEffect
         }
 
+        val newSongs = queueWindows.mapIndexedNotNull { index, w -> w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble()) }
+
+        // Appending can refresh the existing entries first. Preserve selection and scroll
+        // while the same queue keeps the same song IDs at the existing indices.
+        val currentQueueId = qb.getCurrentQueue()?.id
+        val sameQueue = currentQueueId != null && currentQueueId == lastHandledQueueId
+        val canPreserveSelectionAndScroll =
+            sameQueue &&
+                mutableSongs.isNotEmpty() &&
+                newSongs.size >= mutableSongs.size &&
+                mutableSongs.indices.all { index ->
+                    mutableSongs[index].id == newSongs[index].id
+                }
+        if (canPreserveSelectionAndScroll) {
+            mutableSongs.indices.forEach { i ->
+                if (mutableSongs[i] != newSongs[i]){
+                    mutableSongs[i] = newSongs[i]
+                }
+            }
+            mutableSongs.addAll(newSongs.subList(mutableSongs.size, newSongs.size))
+            return@LaunchedEffect
+        }
+        lastHandledQueueId = currentQueueId
+
         mutableSongs.apply {
             clear()
-            addAll(queueWindows.mapIndexedNotNull { index, w -> w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble()) })
+            addAll(newSongs)
         }
 
         if (currentWindowIndex != -1 && !isSearching) {

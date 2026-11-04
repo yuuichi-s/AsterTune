@@ -6,12 +6,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.yuuichi_s.astertune.constants.ArtistSongSortType
-import io.github.yuuichi_s.astertune.db.MusicDatabase
-import io.github.yuuichi_s.astertune.utils.reportException
 import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.BrowseEndpoint
+import com.zionhuang.innertube.models.SongItem
 import com.zionhuang.innertube.pages.ArtistPage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.yuuichi_s.astertune.constants.ArtistSongSortType
+import io.github.yuuichi_s.astertune.db.MusicDatabase
+import io.github.yuuichi_s.astertune.models.MediaMetadata
+import io.github.yuuichi_s.astertune.models.toMediaMetadata
+import io.github.yuuichi_s.astertune.utils.reportException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
@@ -46,6 +50,19 @@ class ArtistViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Loads unique songs in page order from the artist section's linked page.
+     * If a continuation fails, returns the songs loaded up to that point.
+     *
+     * @throws Exception if the first page fails to load
+     */
+    suspend fun loadAllSongs(endpoint: BrowseEndpoint): List<MediaMetadata> {
+        val firstPage = YouTube.artistItems(endpoint).getOrThrow()
+        val songs =
+            firstPage.items.filterIsInstance<SongItem>() + fetchArtistSongsFrom(firstPage.continuation)
+        return songs.distinctBy { it.id }.map { it.toMediaMetadata() }
+    }
+
     fun fetchArtistsFromYTM() {
         viewModelScope.launch {
             isLoading.value = true
@@ -59,4 +76,19 @@ class ArtistViewModel @Inject constructor(
             isLoading.value = false
         }
     }
+}
+
+/**
+ * Fetches the songs from the continuation [continuation] to the end of an artist's items.
+ * A continuation that fails to load ends the fetch, keeping the songs so far.
+ */
+suspend fun fetchArtistSongsFrom(continuation: String?): List<SongItem> {
+    val songs = mutableListOf<SongItem>()
+    var next = continuation
+    while (next != null) {
+        val page = YouTube.artistItemsContinuation(next).getOrNull() ?: break
+        songs += page.items.filterIsInstance<SongItem>()
+        next = page.continuation
+    }
+    return songs
 }

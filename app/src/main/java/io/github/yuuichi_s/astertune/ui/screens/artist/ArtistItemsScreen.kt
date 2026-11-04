@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -47,6 +47,10 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.zionhuang.innertube.models.AlbumItem
+import com.zionhuang.innertube.models.ArtistItem
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.SongItem
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -72,10 +76,6 @@ import io.github.yuuichi_s.astertune.ui.menu.YouTubePlaylistMenu
 import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.ArtistItemsViewModel
-import com.zionhuang.innertube.models.AlbumItem
-import com.zionhuang.innertube.models.ArtistItem
-import com.zionhuang.innertube.models.PlaylistItem
-import com.zionhuang.innertube.models.SongItem
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -99,6 +99,22 @@ fun ArtistItemsScreen(
 
     val title by viewModel.title.collectAsState()
     val itemsPage by viewModel.itemsPage.collectAsState()
+
+    fun playArtistSongs(song: SongItem) {
+        val page = itemsPage ?: return
+        val songs = page.items.filterIsInstance<SongItem>()
+        val startIndex = songs.indexOfFirst { it.id == song.id }
+        if (startIndex < 0) return
+
+        playerConnection.playQueue(
+            ListQueue(
+                title = "Artist songs: ${song.artists.firstOrNull()?.name}",
+                items = songs.map { it.toMediaMetadata() },
+                startIndex = startIndex
+            ),
+            appendLater = viewModel.remainingSongsLoader(page.continuation)
+        )
+    }
     val songIndex: Map<String, SongItem> by remember(itemsPage) {
         derivedStateOf {
             itemsPage?.items
@@ -159,10 +175,10 @@ fun ArtistItemsScreen(
             contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),
             modifier = Modifier.padding(bottom = if (inSelectMode) 64.dp else 0.dp)
         ) {
-            itemsIndexed(
+            items(
                 items = itemsPage?.items?.filterIsInstance<SongItem>().orEmpty(),
-                key = { _, item -> item.hashCode() }
-            ) { index, song ->
+                key = { it.hashCode() }
+            ) { song ->
                 val onCheckedChange: (Boolean) -> Unit = {
                     haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
                     if (it) {
@@ -210,14 +226,7 @@ fun ArtistItemsScreen(
                                     } else if (song.id == mediaMetadata?.id) {
                                         playerConnection.player.togglePlayPause()
                                     } else {
-                                        playerConnection.playQueue(
-                                            ListQueue(
-                                                title = "Artist songs: ${song.artists.firstOrNull()?.name}",
-                                                items = itemsPage?.items.orEmpty()
-                                                    .map { (it as SongItem).toMediaMetadata() },
-                                                startIndex = index
-                                            )
-                                        )
+                                        playArtistSongs(song)
                                     }
                                 },
                                 onLongClick = {
@@ -255,11 +264,10 @@ fun ArtistItemsScreen(
             columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
             contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
         ) {
-            itemsIndexed(
+            items(
                 items = itemsPage?.items.orEmpty(),
-                key = { _, item -> item.hashCode() }
-            ) { index, item ->
-                itemsPage?.items?.map {it.id}
+                key = { it.hashCode() }
+            ) { item ->
                 YouTubeGridItem(
                     item = item,
                     isActive = when (item) {
@@ -274,13 +282,7 @@ fun ArtistItemsScreen(
                         .combinedClickable(
                             onClick = {
                                 when (item) {
-                                    is SongItem -> playerConnection.playQueue(
-                                        ListQueue(
-                                            title = "Artist songs: ${item.artists.firstOrNull()?.name}",
-                                            items = itemsPage?.items.orEmpty().map { (it as SongItem).toMediaMetadata() },
-                                            startIndex = index
-                                        )
-                                    )
+                                    is SongItem -> playArtistSongs(item)
                                     is AlbumItem -> navController.navigate("album/${item.id}")
                                     is ArtistItem -> navController.navigate("artist/${item.id}")
                                     is PlaylistItem -> navController.navigate("online_playlist/${item.id}")

@@ -71,6 +71,11 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionToken
+import com.google.common.util.concurrent.MoreExecutors
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.WatchEndpoint
+import dagger.hilt.android.AndroidEntryPoint
+import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory
 import io.github.yuuichi_s.astertune.MainActivity
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.AudioDecoderKey
@@ -137,11 +142,6 @@ import io.github.yuuichi_s.astertune.utils.enumPreference
 import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.playerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
-import com.google.common.util.concurrent.MoreExecutors
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.WatchEndpoint
-import dagger.hilt.android.AndroidEntryPoint
-import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -584,6 +584,10 @@ class MusicService : MediaLibraryService(),
      * @param isRadio Whether to configure radio continuation
      * @param title Queue title override; otherwise uses the initial response title or the
      *     localized default queue title
+     * @param appendLater Optional loader invoked on [Dispatchers.IO] after the initial queue loads.
+     *     Songs with IDs from the initial queue or already present at append time are skipped.
+     *     A newer [playQueue] call or dismissal invalidates the result. The target queue must
+     *     still be current when the result is applied. If the loader throws, no songs are appended.
     */
     fun playQueue(
         queue: Queue,
@@ -591,8 +595,10 @@ class MusicService : MediaLibraryService(),
         shouldResume: Boolean = false,
         replace: Boolean = false,
         isRadio: Boolean = false,
-        title: String? = null
+        title: String? = null,
+        appendLater: (suspend () -> List<MediaMetadata>)? = null
     ) {
+        val requestId = playQueueRequestId.incrementAndGet()
         if (!qbInit.value) {
             // Runs on the calling thread: when that is the main thread, initQueue() replaces the
             // board in place instead of dispatching to the blocked main looper.
@@ -607,6 +613,11 @@ class MusicService : MediaLibraryService(),
         val preloadItem = queue.preloadItem
         val dismissCountAtRequest = dismissCount
         queueLoadJob = queueLoadScope.launch {
+            // A stale request must leave the newer request's loader running.
+            if (playQueueRequestId.get() == requestId) {
+                appendLaterJob?.cancel()
+                appendLaterJob = null
+            }
             if (SERVICE_DEBUG) Log.d(TAG, "playQueue: Resolving additional queue data...")
             fun dismissedSinceRequest() = dismissCount != dismissCountAtRequest
             try {
@@ -661,6 +672,19 @@ class MusicService : MediaLibraryService(),
                     ) {
                         queueBoard.value.setCurrQueue(q, shouldResume)
                     }
+                    if (appendLater != null &&
+                        q != null &&
+                        !dismissedSinceRequest() &&
+                        playQueueRequestId.get() == requestId
+                    ) {
+                        appendLaterJob = launchAppendLater(
+                            requestId,
+                            dismissCountAtRequest,
+                            q.id,
+                            q.queue.mapTo(HashSet()) { it.id },
+                            appendLater
+                        )
+                    }
                 }
 
                 if (!dismissedSinceRequest()) {
@@ -676,6 +700,51 @@ class MusicService : MediaLibraryService(),
             }
 
             if (SERVICE_DEBUG) Log.d(TAG, "playQueue: Queue additional data resolution complete")
+        }
+    }
+
+    /**
+     * Fetches and appends songs as described in [playQueue].
+     *
+     * Checks whether the result still applies and appends it on the main thread without
+     * suspending between those steps. [initialIds] prevents songs from the initial queue
+     * from being added back if removed during the fetch.
+     */
+    private fun launchAppendLater(
+        requestId: Int,
+        dismissCountAtRequest: Int,
+        queueId: Long,
+        initialIds: Set<String>,
+        fetch: suspend () -> List<MediaMetadata>,
+    ): Job = queueLoadScope.launch {
+        val songs = try {
+            withContext(Dispatchers.IO) { fetch() }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            reportException(e)
+            return@launch
+        }
+        val current = queueBoard.value.getCurrentQueue()
+
+        if (playQueueRequestId.get() != requestId) return@launch
+        if (dismissCount != dismissCountAtRequest || queueDismissed) return@launch
+        if (current == null || current.id != queueId) return@launch
+
+        val knownIds = HashSet(initialIds)
+        current.queue.forEach { knownIds.add(it.id) }
+        val newSongs = songs.filter { knownIds.add(it.id) }
+        if (newSongs.isNotEmpty()) {
+            val endedWithPlayRequested =
+                player.playbackState == Player.STATE_ENDED && player.playWhenReady
+            val countBefore = player.mediaItemCount
+            queueBoard.value.addSongsToQueue(current, Int.MAX_VALUE, newSongs)
+            // Songs added after the end do not restart playback by themselves.
+            if (endedWithPlayRequested && player.mediaItemCount > countBefore &&
+                player.playbackState == Player.STATE_ENDED
+            ) {
+                player.seekTo(countBefore, 0L)
+            }
         }
     }
 
@@ -759,6 +828,10 @@ class MusicService : MediaLibraryService(),
     // Latest playQueue job
     @Volatile
     private var queueLoadJob: Job? = null
+    private val playQueueRequestId = java.util.concurrent.atomic.AtomicInteger()
+
+    // Main thread only.
+    private var appendLaterJob: Job? = null
 
     // deInitQueue() call count.
     // Written on the main thread. Read by playQueue() from any thread.
@@ -897,6 +970,8 @@ class MusicService : MediaLibraryService(),
         queueInitGeneration++
         dismissCount++
         queueLoadJob = null
+        appendLaterJob?.cancel()
+        appendLaterJob = null
         recordCurrentSongPosition()
         // An uninitialized board may not contain the stored queues, so do not save it.
         if (qbInit.value && dataStore.get(PersistentQueueKey, true)) {

@@ -94,9 +94,12 @@ class PlayerConnection(
         val lyricsHelper = service.lyricsHelper
         val parserOptions = lyricsHelper.getParserOptions()
         val prefLocal = lyricsHelper.isLocalPreferred()
-        val localLyrics = if (prefLocal || dbLyrics?.lyrics == LYRICS_NOT_FOUND) {
-            lyricsHelper.getLocalLyrics(mediaMetadata, parserOptions)
-        } else null
+        val localLyrics =
+            if (prefLocal || dbLyrics?.lyrics == LYRICS_NOT_FOUND) {
+                lyricsHelper.getLocalLyrics(mediaMetadata, parserOptions)
+            } else {
+                null
+            }
 
         when {
             prefLocal && localLyrics != null -> localLyrics
@@ -138,19 +141,26 @@ class PlayerConnection(
         }
     }
 
+    /**
+     * Requests playback of a queue, with optional [appendLater] loading after the initial queue is set.
+     *
+     * @see MusicService.playQueue
+     */
     fun playQueue(
         queue: Queue,
         shouldResume: Boolean = false,
         replace: Boolean = true,
         isRadio: Boolean = false,
-        title: String? = null
+        title: String? = null,
+        appendLater: (suspend () -> List<MediaMetadata>)? = null
     ) {
         service.playQueue(
             queue = queue,
             shouldResume = shouldResume,
             replace = replace,
             title = title,
-            isRadio = isRadio
+            isRadio = isRadio,
+            appendLater = appendLater
         )
     }
 
