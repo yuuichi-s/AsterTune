@@ -231,6 +231,11 @@ class MusicService : MediaLibraryService(),
     lateinit var playerCache: SimpleCache
 
     @Inject
+    @PlayerCache
+    @JvmField
+    var playerCacheSizeMb: Int = 0
+
+    @Inject
     @DownloadCache
     lateinit var downloadCache: SimpleCache
 
@@ -1040,10 +1045,14 @@ class MusicService : MediaLibraryService(),
                         )
                     )
                     .setCacheWriteDataSinkFactory(
-                        HybridCacheDataSinkFactory(playerCache) { dataSpec ->
-                            val isLocal = queueBoard.value.getCurrentQueue()?.findSong(dataSpec.key ?: "")?.isLocal == true
-                            if (SERVICE_DEBUG) Log.d(TAG, "SONG CACHE: ${!isLocal}")
-                            !isLocal
+                        if (playerCacheSizeMb == 0) {
+                            null
+                        } else {
+                            HybridCacheDataSinkFactory(playerCache) { dataSpec ->
+                                val isLocal = queueBoard.value.getCurrentQueue()?.findSong(dataSpec.key ?: "")?.isLocal == true
+                                if (SERVICE_DEBUG) Log.d(TAG, "SONG CACHE: ${!isLocal}")
+                                !isLocal
+                            }
                         }
                     )
                     .setFlags(FLAG_IGNORE_CACHE_ON_ERROR)
