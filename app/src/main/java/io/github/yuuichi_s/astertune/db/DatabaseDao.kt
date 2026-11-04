@@ -53,7 +53,7 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Transaction
     @Query("""
         SELECT song.*
-        FROM (SELECT *, COUNT(1) AS referredCount
+        FROM (SELECT *, COUNT(DISTINCT songId) AS referredCount
               FROM related_song_map
               GROUP BY relatedSongId) map
                  JOIN song ON song.id = map.relatedSongId

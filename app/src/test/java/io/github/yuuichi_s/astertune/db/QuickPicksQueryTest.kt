@@ -62,13 +62,18 @@ class QuickPicksQueryTest {
     }
 
     @Test
-    fun relatedSongOfSeveralPlayedSourcesIsPickedOnce() = runBlocking {
+    fun ranksCandidatesByDistinctSourcesAndReturnsEachOnce() = runBlocking {
+        val duplicateCandidate = "related_duplicate"
+        database.insert(song(duplicateCandidate))
         database.insert(RelatedSongMap(songId = SOURCE_B, relatedSongId = RELATED))
         database.insert(RelatedSongMap(songId = SOURCE_C, relatedSongId = RELATED))
+        repeat(3) {
+            database.insert(RelatedSongMap(songId = SOURCE_B, relatedSongId = duplicateCandidate))
+        }
         play(SOURCE_B)
         play(SOURCE_C)
 
-        assertEquals(listOf(RELATED), database.quickPicks().first().map { it.id })
+        assertEquals(listOf(RELATED, duplicateCandidate), database.quickPicks().first().map { it.id })
     }
 
     @Test
