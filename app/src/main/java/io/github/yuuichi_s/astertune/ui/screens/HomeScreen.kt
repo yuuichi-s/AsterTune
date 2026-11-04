@@ -34,9 +34,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Casino
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.pullToRefresh
@@ -60,6 +60,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.zionhuang.innertube.models.AlbumItem
+import com.zionhuang.innertube.models.ArtistItem
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.SongItem
+import com.zionhuang.innertube.models.WatchEndpoint
+import com.zionhuang.innertube.models.YTItem
+import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
@@ -113,13 +120,6 @@ import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
 import io.github.yuuichi_s.astertune.ui.utils.SnapLayoutInfoProvider
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.HomeViewModel
-import com.zionhuang.innertube.models.AlbumItem
-import com.zionhuang.innertube.models.ArtistItem
-import com.zionhuang.innertube.models.PlaylistItem
-import com.zionhuang.innertube.models.SongItem
-import com.zionhuang.innertube.models.WatchEndpoint
-import com.zionhuang.innertube.models.YTItem
-import com.zionhuang.innertube.utils.parseCookieString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -518,7 +518,7 @@ fun HomeScreen(
             }
 
 
-
+            // Based on listening
             quickPicks?.takeIf { showQuickPicks && it.isNotEmpty() }?.let { quickPicks ->
                 item {
                     NavigationTitle(
@@ -569,6 +569,7 @@ fun HomeScreen(
                 }
             }
 
+            // Forgotten favorites
             forgottenFavorites?.takeIf { showForgottenFav && it.isNotEmpty() }?.let { forgottenFavorites ->
                 item {
                     NavigationTitle(
@@ -625,6 +626,7 @@ fun HomeScreen(
                 }
             }
 
+            // Keep listening
             keepListening?.takeIf { showKeepListening && it.isNotEmpty() }?.let { keepListening ->
                 item {
                     NavigationTitle(
@@ -639,7 +641,7 @@ fun HomeScreen(
                         rows = GridCells.Fixed(1),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(GridThumbnailHeight + 24.dp + with(LocalDensity.current) {
+                            .height(GridThumbnailHeight + with(LocalDensity.current) {
                                 MaterialTheme.typography.bodyLarge.lineHeight.toDp() * 2 +
                                         MaterialTheme.typography.bodyMedium.lineHeight.toDp() * 2
                             })
