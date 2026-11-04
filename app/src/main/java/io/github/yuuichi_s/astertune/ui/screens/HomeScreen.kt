@@ -634,16 +634,15 @@ fun HomeScreen(
                 }
 
                 item {
-                    val rows = if (keepListening.size > 6) 2 else 1
                     LazyHorizontalGrid(
                         state = rememberLazyGridState(),
-                        rows = GridCells.Fixed(rows),
+                        rows = GridCells.Fixed(1),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height((GridThumbnailHeight + 24.dp + with(LocalDensity.current) {
+                            .height(GridThumbnailHeight + 24.dp + with(LocalDensity.current) {
                                 MaterialTheme.typography.bodyLarge.lineHeight.toDp() * 2 +
                                         MaterialTheme.typography.bodyMedium.lineHeight.toDp() * 2
-                            }) * rows)
+                            })
                             .animateItem()
                     ) {
                         items(keepListening) {
