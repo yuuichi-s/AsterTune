@@ -59,6 +59,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.material.icons.automirrored.rounded.NavigateNext
+import io.github.yuuichi_s.astertune.db.entities.RecentActivityType
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -578,78 +583,84 @@ fun YouTubeGridItem(
 )
 
 @Composable
-fun YouTubeCardItem(
+fun RecentActivityTile(
     item: RecentActivityEntity,
-    width: Dp,
+    size: Dp,
     modifier: Modifier = Modifier,
     isActive: Boolean,
     isPlaying: Boolean,
     onClick: () -> Unit,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    Box(
         modifier = modifier
-            .height(60.dp)
-            .width(width)
-            .padding(6.dp)
-            .clip(RoundedCornerShape(6.dp))
+            .size(size)
+            .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp))
             .clickable(onClick = onClick)
     ) {
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.size(ListThumbnailSize)
-            ) {
-                val thumbnailShape = RoundedCornerShape(ThumbnailCornerRadius)
-                val thumbnailRatio = 1f
-
-                AsyncImage(
-                    model = item.thumbnail,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(thumbnailRatio)
-                        .clip(thumbnailShape)
-                )
-            }
-        }
-
-        Column(
+        AsyncImage(
+            model = item.thumbnail,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 8.dp)
+                .fillMaxSize()
+                .clip(if (item.type == RecentActivityType.ARTIST) CircleShape else RectangleShape)
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        0.55f to Color.Transparent,
+                        1f to Color.Black.copy(alpha = 0.75f)
+                    )
+                )
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 2.dp, bottom = 4.dp)
         ) {
             Text(
                 text = item.title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.NavigateNext,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(20.dp)
             )
         }
 
         AnimatedVisibility(
             visible = isActive,
             enter = fadeIn(tween(500)),
-            exit = fadeOut(tween(500))
+            exit = fadeOut(tween(500)),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(6.dp)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(8.dp)
                     .background(
-                        color = Color.Transparent,
+                        color = Color.Black.copy(alpha = 0.5f),
                         shape = RoundedCornerShape(ThumbnailCornerRadius)
                     )
-                    .size(20.dp)
+                    .size(28.dp)
             ) {
                 PlayingIndicator(
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color.White,
                     modifier = Modifier.height(18.dp),
                     barWidth = 3.dp,
                     isPlaying = isPlaying

@@ -68,7 +68,7 @@ fun Context.usesNavRail(windowSizeClass: WindowSizeClass, configuration: Configu
  * Uses maximum window bounds to avoid treating a tablet's narrow split-screen or freeform
  * window as a small display.
  */
-private fun Context.isSmallNaturalLandscapeDisplay(): Boolean {
+fun Context.isSmallNaturalLandscapeDisplay(): Boolean {
     val rotation = runCatching {
         val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             display

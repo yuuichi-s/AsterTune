@@ -3,14 +3,21 @@ package io.github.yuuichi_s.astertune.ui.screens
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +36,9 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -53,8 +63,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -91,6 +104,7 @@ import io.github.yuuichi_s.astertune.db.entities.LocalItem
 import io.github.yuuichi_s.astertune.db.entities.Playlist
 import io.github.yuuichi_s.astertune.db.entities.RecentActivityType
 import io.github.yuuichi_s.astertune.db.entities.Song
+import io.github.yuuichi_s.astertune.extensions.isSmallNaturalLandscapeDisplay
 import io.github.yuuichi_s.astertune.extensions.togglePlayPauseOrReplay
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
@@ -102,9 +116,9 @@ import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.ArtistGridItem
+import io.github.yuuichi_s.astertune.ui.component.items.RecentActivityTile
 import io.github.yuuichi_s.astertune.ui.component.items.SongGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.SongListItem
-import io.github.yuuichi_s.astertune.ui.component.items.YouTubeCardItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeGridItem
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.GridItemPlaceHolder
@@ -164,7 +178,10 @@ fun HomeScreen(
 
     val quickPicksLazyGridState = rememberLazyGridState()
     val forgottenFavoritesLazyGridState = rememberLazyGridState()
-    val recentActivityGridState = rememberLazyGridState()
+    val recentActivityPages = remember(recentActivity) {
+        recentActivity.orEmpty().chunked(RecentActivityRows * RecentActivityColumns)
+    }
+    val recentActivityPagerState = rememberPagerState { recentActivityPages.size }
 
     val innerTubeCookie by rememberPreference(InnerTubeCookieKey, "")
     val isLoggedIn = remember(innerTubeCookie) {
@@ -410,8 +427,12 @@ fun HomeScreen(
 
     // Keyed on the ids: every sync rewrites the rows, so entities never compare equal.
     LaunchedEffect(recentActivity?.map { it.id }) {
-        recentActivityGridState.scrollToItem(0)
+        recentActivityPagerState.scrollToPage(0)
     }
+
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val isSmallLandscapeDisplay = remember(configuration) { context.isSmallNaturalLandscapeDisplay() }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -427,13 +448,22 @@ fun HomeScreen(
 
         val horizontalLazyGridItemWidthFactor = if (maxWidth * 0.475f >= 320.dp) 0.475f else 0.9f
         val horizontalLazyGridItemWidth = maxWidth * horizontalLazyGridItemWidthFactor
-        val recentActivityItemWidth = (maxWidth - 12.dp) / 2
+        // On small landscape displays such as the Echo Show 5, matches the Keep listening thumbnails.
+        val recentActivityTileSize = if (isSmallLandscapeDisplay) {
+            GridThumbnailHeight
+        } else {
+            minOf(
+                (maxWidth - RecentActivityEdgePadding * 2 - RecentActivityTileSpacing * (RecentActivityColumns - 1)) /
+                        RecentActivityColumns,
+                RecentActivityMaxTileSize
+            )
+        }
+        val recentActivityPageWidth = recentActivityTileSize * RecentActivityColumns +
+                RecentActivityTileSpacing * (RecentActivityColumns - 1)
         val quickPicksSnapLayoutInfoProvider =
             rememberGridItemSnapLayoutInfoProvider(quickPicksLazyGridState, horizontalLazyGridItemWidthFactor)
         val forgottenFavoritesSnapLayoutInfoProvider =
             rememberGridItemSnapLayoutInfoProvider(forgottenFavoritesLazyGridState, horizontalLazyGridItemWidthFactor)
-        val recentActivitySnapLayoutInfoProvider =
-            rememberGridItemSnapLayoutInfoProvider(recentActivityGridState, horizontalLazyGridItemWidthFactor)
 
         ScrollToTopManager(navController, lazylistState)
         LazyColumn(
@@ -461,56 +491,83 @@ fun HomeScreen(
                 }
 
                 item {
-                    LazyHorizontalGrid(
-                        state = recentActivityGridState,
-                        rows = GridCells.Fixed(4),
-                        flingBehavior = rememberSnapFlingBehavior(recentActivitySnapLayoutInfoProvider),
-                        contentPadding = WindowInsets.systemBars
+                    Column(modifier = Modifier.animateItem()) {
+                        val systemBarsHorizontal = WindowInsets.systemBars
                             .only(WindowInsetsSides.Horizontal)
-                            .asPaddingValues(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp * 4)
-                            .animateItem()
-                    ) {
-                        items(
-                            items = recentActivity!!,
-                            key = { it.id }
-                        ) { item ->
-                            YouTubeCardItem(
-                                item = item,
-                                width = recentActivityItemWidth,
-                                isActive = queuePlaylistId != null && when (item.type) {
-                                    RecentActivityType.PLAYLIST -> queuePlaylistId == item.id
-                                    RecentActivityType.ALBUM -> queuePlaylistId == item.playlistId
-                                    RecentActivityType.ARTIST -> queuePlaylistId == item.radioPlaylistId ||
-                                            queuePlaylistId == item.shufflePlaylistId ||
-                                            queuePlaylistId == item.playlistId
-                                },
-                                isPlaying = isPlaying,
-                                onClick = {
-                                    when (item.type) {
-                                        RecentActivityType.PLAYLIST -> {
-                                            val entryAtTap = navController.currentBackStackEntry
-                                            scope.launch {
-                                                val localPlaylistId = viewModel.localPlaylistIdToOpen(item.id)
-                                                // Skip when another tap or navigation has already moved away.
-                                                if (navController.currentBackStackEntry != entryAtTap) return@launch
-                                                if (localPlaylistId != null) {
-                                                    navController.navigate("local_playlist/$localPlaylistId")
-                                                } else {
-                                                    navController.navigate("online_playlist/${item.id}")
-                                                }
-                                            }
+                            .asPaddingValues()
+                        val layoutDirection = LocalLayoutDirection.current
+                        HorizontalPager(
+                            state = recentActivityPagerState,
+                            pageSize = PageSize.Fixed(recentActivityPageWidth),
+                            // Places the next page just past the screen edge so that it does not peek in.
+                            pageSpacing = RecentActivityEdgePadding * 2,
+                            contentPadding = PaddingValues(
+                                start = RecentActivityEdgePadding +
+                                        systemBarsHorizontal.calculateStartPadding(layoutDirection),
+                                end = RecentActivityEdgePadding +
+                                        systemBarsHorizontal.calculateEndPadding(layoutDirection)
+                            ),
+                            key = { page -> recentActivityPages[page].first().id },
+                            verticalAlignment = Alignment.Top,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(
+                                    recentActivityTileSize * RecentActivityRows +
+                                            RecentActivityTileSpacing * (RecentActivityRows - 1)
+                                )
+                        ) { page ->
+                            Column(verticalArrangement = Arrangement.spacedBy(RecentActivityTileSpacing)) {
+                                recentActivityPages[page].chunked(RecentActivityColumns).forEach { rowItems ->
+                                    Row(horizontalArrangement = Arrangement.spacedBy(RecentActivityTileSpacing)) {
+                                        rowItems.forEach { item ->
+                                            RecentActivityTile(
+                                                item = item,
+                                                size = recentActivityTileSize,
+                                                isActive = queuePlaylistId != null && when (item.type) {
+                                                    RecentActivityType.PLAYLIST -> queuePlaylistId == item.id
+                                                    RecentActivityType.ALBUM -> queuePlaylistId == item.playlistId
+                                                    RecentActivityType.ARTIST -> queuePlaylistId == item.radioPlaylistId ||
+                                                            queuePlaylistId == item.shufflePlaylistId ||
+                                                            queuePlaylistId == item.playlistId
+                                                },
+                                                isPlaying = isPlaying,
+                                                onClick = {
+                                                    when (item.type) {
+                                                        RecentActivityType.PLAYLIST -> {
+                                                            val entryAtTap = navController.currentBackStackEntry
+                                                            scope.launch {
+                                                                val localPlaylistId = viewModel.localPlaylistIdToOpen(item.id)
+                                                                // Skip when another tap or navigation has already moved away.
+                                                                if (navController.currentBackStackEntry != entryAtTap) return@launch
+                                                                if (localPlaylistId != null) {
+                                                                    navController.navigate("local_playlist/$localPlaylistId")
+                                                                } else {
+                                                                    navController.navigate("online_playlist/${item.id}")
+                                                                }
+                                                            }
+                                                        }
+
+                                                        RecentActivityType.ALBUM ->
+                                                            navController.navigate("album/${item.id}")
+
+                                                        RecentActivityType.ARTIST ->
+                                                            navController.navigate("artist/${item.id}")
+                                                    }
+                                                },
+                                            )
                                         }
-
-                                        RecentActivityType.ALBUM ->
-                                            navController.navigate("album/${item.id}")
-
-                                        RecentActivityType.ARTIST ->
-                                            navController.navigate("artist/${item.id}")
                                     }
-                                },
+                                }
+                            }
+                        }
+
+                        if (recentActivityPages.size > 1) {
+                            PagerIndicator(
+                                pageCount = recentActivityPages.size,
+                                currentPage = recentActivityPagerState.currentPage,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 12.dp)
                             )
                         }
                     }
@@ -972,4 +1029,36 @@ private fun rememberGridItemSnapLayoutInfoProvider(
             (layoutSize * itemWidthFactor / 2f - itemSize / 2f)
         }
     )
+}
+
+private const val RecentActivityRows = 2
+private const val RecentActivityColumns = 3
+private val RecentActivityEdgePadding = 12.dp
+private val RecentActivityTileSpacing = 4.dp
+// Keeps two rows of tiles within the height of a landscape screen.
+private val RecentActivityMaxTileSize = 160.dp
+
+@Composable
+private fun PagerIndicator(
+    pageCount: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+        modifier = modifier
+    ) {
+        repeat(pageCount) { page ->
+            Box(
+                modifier = Modifier
+                    .size(7.dp)
+                    .clip(CircleShape)
+                    .background(
+                        MaterialTheme.colorScheme.onSurface.copy(
+                            alpha = if (page == currentPage) 1f else 0.3f
+                        )
+                    )
+            )
+        }
+    }
 }
