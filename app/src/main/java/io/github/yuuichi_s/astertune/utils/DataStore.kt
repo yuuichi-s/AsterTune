@@ -52,11 +52,12 @@ fun <T> rememberPreference(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
+    val initialValue = remember { context.dataStore[key] ?: defaultValue }
     val state = remember {
         context.dataStore.data
             .map { it[key] ?: defaultValue }
             .distinctUntilChanged()
-    }.collectAsState(context.dataStore[key] ?: defaultValue)
+    }.collectAsState(initialValue)
 
     return remember {
         object : MutableState<T> {
@@ -84,7 +85,7 @@ inline fun <reified T : Enum<T>> rememberEnumPreference(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    val initialValue = context.dataStore[key].toEnum(defaultValue = defaultValue)
+    val initialValue = remember { context.dataStore[key].toEnum(defaultValue = defaultValue) }
     val state = remember {
         context.dataStore.data
             .map { it[key].toEnum(defaultValue = defaultValue) }
