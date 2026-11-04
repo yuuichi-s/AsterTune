@@ -329,85 +329,25 @@ suspend fun loadM3u(
     runCatching {
         context.applicationContext.contentResolver.openInputStream(uri)?.use { stream ->
             val lines = stream.readLines()
-            if (lines.isEmpty()) return@runCatching
-            if (lines.first().startsWith("#EXTM3U")) {
-                lines.forEachIndexed { index, rawLine ->
-                    if (rawLine.startsWith("#EXTINF:")) {
-                        // maybe later write this to be more efficient
-                        val artists =
-                            rawLine.substringAfter("#EXTINF:").substringAfter(',').substringBefore(" - ").split(';')
-                        val title = rawLine.substringAfter("#EXTINF:").substringAfter(',').substringAfter(" - ")
-                        val source = if (index + 1 < lines.size) lines[index + 1] else null
+            if (lines.firstOrNull()?.startsWith("#EXTM3U") != true) return@use
 
-                        val mockSong = Song(
-                            song = SongEntity(
-                                id = "",
-                                title = title,
-                                isLocal = true,
-                                localPath = if (source?.startsWith("http") == false) source.substringAfter(',') else null
-                            ),
-                            artists = artists.map { ArtistEntity("", it) },
-                        )
+            lines.forEachIndexed { index, rawLine ->
+                if (!rawLine.startsWith("#EXTINF:")) return@forEachIndexed
 
-                        // now find the best match
-                        // first, search for songs in the database. Supplement with remote songs if no results are found
-                        // A YouTube/YTM url uniquely identifies the exact video, so we can trust it
-                        // instead of fuzzy-matching. Local entries use "<id>, <path>" (contain a comma).
-                        val isYtUrl = source?.startsWith("http") == true
-                        val ytId = if (isYtUrl) source!!.substringAfter("watch?v=").substringBefore("&") else null
-
-                        val matches = if (source == null) {
-                            database.searchSongsInDb(title).first().toMutableList()
-                        } else {
-                            // local songs have a source format of "<id>, <path>", YTM songs have "<url>"
-                            val id = ytId ?: source.substringBefore(',')
-                            val dbResult = mutableListOf(database.song(id).first())
-                            dbResult.addAll(database.searchSongsInDb(title).first())
-                            dbResult.filterNotNull().toMutableList()
-                        }
-                        // supplement with a remote lookup unless we already have the exact song.
-                        // (skip local file entries, whose source contains a comma)
-                        if (searchOnline && source?.contains(',') == false &&
-                            matches.none { ytId != null && it.id == ytId }
-                        ) {
-                            val onlineResult =
-                                LocalMediaScanner.youtubeSongLookup("$title ${artists.joinToString(" ")}", source)
-                            onlineResult.forEach { result ->
-                                val result = Song(
-                                    song = result.toSongEntity(),
-                                    artists = result.artists.map {
-                                        ArtistEntity(
-                                            id = it.id ?: ArtistEntity.generateArtistId(),
-                                            name = it.name
-                                        )
-                                    }
-                                )
-                                matches.add(result)
-                            }
-                        }
-                        val oldSize = songs.size
-                        // TODO: Eventually the user can pick from matches... eventually...
-
-                        // The m3u url points at one exact song: import it as-is, no fuzzy check.
-                        val exactMatch = if (ytId != null) matches.firstOrNull { it.id == ytId } else null
-                        if (exactMatch != null) {
-                            songs.add(exactMatch)
-                        } else if (matchStrength == ScannerM3uMatchCriteria.LEVEL_0 && searchOnline && matches.isNotEmpty()) {
-                            // take first song when searching on YTM
-                            songs.add(matches.first())
-                        } else {
-                            for (s in matches) {
-                                if (compareM3uSong(mockSong, s, matchStrength = matchStrength)) {
-                                    songs.add(s)
-                                    break
-                                }
-                            }
-                        }
-
-                        if (oldSize == songs.size) {
-                            rejectedSongs.add(rawLine)
-                        }
-                    }
+                val metadata = rawLine.removePrefix("#EXTINF:").substringAfter(',')
+                val artistText = metadata.substringBefore(" - ", missingDelimiterValue = "")
+                val song = findM3uSong(
+                    database = database,
+                    source = lines.getOrNull(index + 1),
+                    title = metadata.substringAfter(" - "),
+                    artists = if (artistText.isBlank()) emptyList() else artistText.split(';'),
+                    matchStrength = matchStrength,
+                    searchOnline = searchOnline,
+                )
+                if (song == null) {
+                    rejectedSongs.add(rawLine)
+                } else {
+                    songs.add(song)
                 }
             }
         }
@@ -426,6 +366,77 @@ suspend fun loadM3u(
         }
     }
     return Triple(songs, rejectedSongs, uri.path?.substringAfterLast('/')?.substringBeforeLast('.') ?: "")
+}
+
+private suspend fun findM3uSong(
+    database: MusicDatabase,
+    source: String?,
+    title: String,
+    artists: List<String>,
+    matchStrength: ScannerM3uMatchCriteria,
+    searchOnline: Boolean,
+): Song? {
+    val sourceUrl = source?.let { Uri.parse(it.trim()) }?.takeIf {
+        it.scheme.equals("http", ignoreCase = true) || it.scheme.equals("https", ignoreCase = true)
+    }
+    val videoId = sourceUrl?.let(::youtubeVideoId)
+
+    // Exported local entries use "<id>, <path>".
+    val localParts = source?.takeIf { sourceUrl == null }?.split(',', limit = 2)
+    val id = videoId ?: localParts?.first()
+    val idMatch = id?.let { database.song(it).first() }
+    if (videoId != null && idMatch != null) {
+        return idMatch
+    }
+
+    val matches = mutableListOf<Song>()
+    idMatch?.let(matches::add)
+    matches.addAll(database.searchSongsInDb(title).first())
+    if (videoId != null) {
+        matches.firstOrNull { it.id == videoId }?.let { return it }
+    }
+
+    val sourceAllowsOnlineLookup = source?.contains(',') == false
+    if (searchOnline && sourceAllowsOnlineLookup) {
+        val onlineMatches = LocalMediaScanner.youtubeSongLookup("$title ${artists.joinToString(" ")}", videoId)
+        for (result in onlineMatches) {
+            val song = Song(
+                song = result.toSongEntity(),
+                artists = result.artists.map {
+                    ArtistEntity(id = it.id ?: ArtistEntity.generateArtistId(), name = it.name)
+                },
+            )
+            if (song.id == videoId) {
+                return song
+            }
+            matches.add(song)
+        }
+    }
+
+    if (matchStrength == ScannerM3uMatchCriteria.LEVEL_0 && searchOnline) {
+        return matches.firstOrNull()
+    }
+    val entry = Song(
+        song = SongEntity(
+            id = "",
+            title = title,
+            isLocal = true,
+            localPath = localParts?.getOrNull(1)?.removePrefix(" ") ?: localParts?.first(),
+        ),
+        artists = artists.map { ArtistEntity("", it) },
+    )
+    return matches.firstOrNull { compareM3uSong(entry, it, matchStrength = matchStrength) }
+}
+
+private fun youtubeVideoId(uri: Uri): String? {
+    val path = uri.pathSegments.singleOrNull()
+    val videoId = when (uri.host?.lowercase()) {
+        "youtu.be" -> path
+        "youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com" ->
+            if (path == "watch") uri.getQueryParameter("v") else null
+        else -> null
+    }
+    return videoId?.takeIf { it.isNotBlank() }
 }
 
 /**

@@ -1,6 +1,5 @@
 package io.github.yuuichi_s.astertune.db
 
-import androidx.room.Room
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
 import io.github.yuuichi_s.astertune.db.entities.PlayCountEntity
 import io.github.yuuichi_s.astertune.db.entities.Song
@@ -8,7 +7,6 @@ import io.github.yuuichi_s.astertune.db.entities.SongArtistMap
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import org.robolectric.RuntimeEnvironment
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -31,11 +29,7 @@ import java.time.ZoneOffset
  * `@Config(application = Application::class)` so that the Hilt application is not started.
  */
 internal fun createTestDatabase(): MusicDatabase {
-    val database = MusicDatabase(
-        Room.inMemoryDatabaseBuilder(RuntimeEnvironment.getApplication(), InternalDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-    )
+    val database = createEmptyTestDatabase()
     baseArtists.forEach { database.insert(it) }
     baseSongs.forEach { testSong ->
         database.insert(testSong.entity)

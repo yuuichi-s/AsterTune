@@ -2,9 +2,8 @@ package io.github.yuuichi_s.astertune.lyrics
 
 import android.app.Application
 import android.content.Context
-import androidx.room.Room
-import io.github.yuuichi_s.astertune.db.InternalDatabase
 import io.github.yuuichi_s.astertune.db.MusicDatabase
+import io.github.yuuichi_s.astertune.db.createEmptyTestDatabase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -29,11 +28,7 @@ class ManualLyricsSearchCacheTest {
 
     @Before
     fun setUp() {
-        database = MusicDatabase(
-            Room.inMemoryDatabaseBuilder(RuntimeEnvironment.getApplication(), InternalDatabase::class.java)
-                .allowMainThreadQueries()
-                .build()
-        )
+        database = createEmptyTestDatabase()
     }
 
     @After
@@ -81,9 +76,14 @@ class ManualLyricsSearchCacheTest {
     private fun helper(vararg providers: LyricsProvider) =
         LyricsHelper(RuntimeEnvironment.getApplication(), database, providers.toList())
 
-    private fun LyricsHelper.search(): List<LyricsResult> = runBlocking {
+    private fun LyricsHelper.search(
+        mediaId: String = "id",
+        title: String = "title",
+        artist: String = "artist",
+        duration: Int = 200,
+    ): List<LyricsResult> = runBlocking {
         val results = mutableListOf<LyricsResult>()
-        getAllLyrics("id", "title", "artist", 200) { results += it }
+        getAllLyrics(mediaId, title, artist, duration) { results += it }
         results
     }
 
@@ -114,15 +114,47 @@ class ManualLyricsSearchCacheTest {
     }
 
     @Test
-    fun successfulResultIsCached() {
-        val first = CandidateProvider("first", listOf("a"))
-        val found = SingleResultProvider("found", LyricsFetchResult.Found("b"))
-        val helper = helper(first, found)
+    fun returnsCandidatesForTheCurrentSearchAndReusesIdenticalSearches() {
+        val provider = object : LyricsProvider {
+            override val name = "provider"
+            override val id = name
+            var calls = 0
 
-        val expected = listOf(LyricsResult("first", "a"), LyricsResult("found", "b"))
+            override fun isEnabled(context: Context) = true
+
+            override suspend fun getLyrics(id: String, title: String, artist: String, duration: Int): LyricsFetchResult {
+                calls++
+                return LyricsFetchResult.Found("$id / $title / $artist / $duration")
+            }
+        }
+        val alternate = CandidateProvider("alternate", listOf("alternate candidate"))
+        val helper = helper(provider, alternate)
+        fun expectedCandidates(lyrics: String) = listOf(
+            LyricsResult(provider.name, lyrics),
+            LyricsResult(alternate.name, "alternate candidate"),
+        )
+
+        val expected = expectedCandidates("id / title / artist / 200")
         assertEquals(expected, helper.search())
         assertEquals(expected, helper.search())
-        assertEquals(listOf(1, 1), listOf(first.calls, found.calls))
+        assertEquals(listOf(1, 1), listOf(provider.calls, alternate.calls))
+
+        assertEquals(
+            expectedCandidates("id / title / artist / 240"),
+            helper.search(duration = 240),
+        )
+        assertEquals(
+            expectedCandidates("other-id / title / artist / 240"),
+            helper.search(mediaId = "other-id", duration = 240),
+        )
+        assertEquals(
+            expectedCandidates("other-id / edited title / artist / 240"),
+            helper.search(mediaId = "other-id", title = "edited title", duration = 240),
+        )
+        assertEquals(
+            expectedCandidates("other-id / edited title / edited artist / 240"),
+            helper.search(mediaId = "other-id", title = "edited title", artist = "edited artist", duration = 240),
+        )
     }
 
     @Test

@@ -64,7 +64,14 @@ class LyricsHelper internal constructor(
         ),
     )
 
-    private val cache = LruCache<String, List<LyricsResult>>(MAX_CACHE_SIZE)
+    private data class ManualSearchKey(
+        val mediaId: String,
+        val title: String,
+        val artists: String,
+        val duration: Int,
+    )
+
+    private val cache = LruCache<ManualSearchKey, List<LyricsResult>>(MAX_CACHE_SIZE)
 
     /**
      * Per-videoId mutexes that make [fetchAndStoreRemote] single-flight: at most one fetch runs for a
@@ -393,9 +400,11 @@ class LyricsHelper internal constructor(
         }
 
     /**
-     * Searches every enabled provider for manual-search candidates, delivering each through
-     * [callback] as it arrives. The result is cached per title and artist only when no provider
-     * failed, so a search after a transient failure queries the providers again.
+     * Delivers manual lyrics search candidates through [callback].
+     *
+     * Reuses cached results for the same [mediaId], [songTitle], [songArtists], and [duration].
+     * On a cache miss, delivers candidates as enabled providers return them and caches the results
+     * only if every enabled provider completes successfully.
      */
     suspend fun getAllLyrics(
         mediaId: String,
@@ -404,7 +413,7 @@ class LyricsHelper internal constructor(
         duration: Int,
         callback: (LyricsResult) -> Unit,
     ) {
-        val cacheKey = "$songArtists-$songTitle".replace(" ", "")
+        val cacheKey = ManualSearchKey(mediaId, songTitle, songArtists, duration)
         cache.get(cacheKey)?.let { results ->
             results.forEach {
                 callback(it)

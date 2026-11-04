@@ -11,6 +11,7 @@ import androidx.room.Update
 import androidx.room.Upsert
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.zionhuang.innertube.models.AlbumItem
 import io.github.yuuichi_s.astertune.constants.AlbumFilter
 import io.github.yuuichi_s.astertune.constants.AlbumSortType
 import io.github.yuuichi_s.astertune.db.entities.Album
@@ -23,10 +24,11 @@ import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.db.entities.SongAlbumMap
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.extensions.reversed
-import com.zionhuang.innertube.models.AlbumItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /*
  * Logic related to albums entities and their mapping
@@ -395,26 +397,22 @@ interface AlbumsDao : ArtistsDao {
     @Query(
         """
         SELECT song.*
-        FROM (SELECT n.songId      AS eid,
-                     SUM(playTime) AS oldPlayTime,
-                     newPlayTime
-              FROM event
-                       JOIN
-                   (SELECT songId, SUM(playTime) AS newPlayTime
-                    FROM event
-                    WHERE timestamp > (:now - 86400000 * 30 * 1)
-                    GROUP BY songId
-                    ORDER BY newPlayTime) as n
-                   ON event.songId = n.songId
-              WHERE timestamp < (:now - 86400000 * 30 * 1)
-              GROUP BY n.songId
-              ORDER BY oldPlayTime) AS t
-                 INNER JOIN song on song.id = t.eid
-        WHERE 0.2 * t.oldPlayTime > t.newPlayTime
+        FROM (
+            SELECT songId,
+                   SUM(CASE WHEN timestamp < (:now - 86400000 * 30) THEN playTime ELSE 0 END) AS oldPlayTime,
+                   SUM(CASE WHEN timestamp >= (:now - 86400000 * 30) THEN playTime ELSE 0 END) AS recentPlayTime
+            FROM event
+            GROUP BY songId
+        ) AS totals
+        JOIN song ON song.id = totals.songId
+        WHERE totals.oldPlayTime > 0 AND totals.recentPlayTime < 0.2 * totals.oldPlayTime
+        ORDER BY totals.oldPlayTime DESC
         LIMIT 100
     """
     )
-    fun forgottenFavorites(now: Long = System.currentTimeMillis()): Flow<List<Song>>
+
+    // Event timestamps encode local wall time as UTC.
+    fun forgottenFavorites(now: Long = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()): Flow<List<Song>>
     @Transaction
     @Query(
         """
@@ -430,6 +428,7 @@ interface AlbumsDao : ArtistsDao {
         OFFSET :offset
         """,
     )
+
     fun recommendedAlbum(
         now: Long = System.currentTimeMillis(),
         limit: Int = 5,

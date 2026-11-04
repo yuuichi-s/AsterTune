@@ -17,6 +17,9 @@ import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastMapNotNull
 import androidx.documentfile.provider.DocumentFile
 import androidx.documentfile.provider.TreeDocumentFileOt
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.ArtistItem
+import com.zionhuang.innertube.models.SongItem
 import io.github.yuuichi_s.astertune.constants.SCANNER_DEBUG
 import io.github.yuuichi_s.astertune.constants.SYNC_SCANNER
 import io.github.yuuichi_s.astertune.constants.ScannerM3uMatchCriteria
@@ -40,9 +43,6 @@ import io.github.yuuichi_s.astertune.utils.closestAlbumMatch
 import io.github.yuuichi_s.astertune.utils.closestMatch
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.ArtistItem
-import com.zionhuang.innertube.models.SongItem
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +54,6 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 class LocalMediaScanner(context: Context) {
     // Hold the application context to avoid leaking an Activity/Service through the static scanner instance
@@ -1125,12 +1124,14 @@ class LocalMediaScanner(context: Context) {
             b: Song,
             matchStrength: ScannerM3uMatchCriteria = ScannerM3uMatchCriteria.LEVEL_1,
         ): Boolean {
-            val matchStrength = when (matchStrength) {
-                ScannerM3uMatchCriteria.LEVEL_1 -> ScannerMatchCriteria.LEVEL_1
-                ScannerM3uMatchCriteria.LEVEL_2 -> ScannerMatchCriteria.LEVEL_2
-                else -> ScannerMatchCriteria.LEVEL_1
+            if (matchStrength != ScannerM3uMatchCriteria.LEVEL_2) {
+                return compareSong(a, b, ScannerMatchCriteria.LEVEL_1)
             }
-            return compareSong(a, b, matchStrength)
+            val path = a.song.localPath
+            if (!path.isNullOrBlank() && path == b.song.localPath) {
+                return true
+            }
+            return a.song.title == b.song.title && compareArtist(a.artists, b.artists)
         }
 
         /**
@@ -1179,20 +1180,13 @@ class LocalMediaScanner(context: Context) {
         }
 
         /**
-         * Search for an artist on YouTube Music.
+         * Looks up [videoId] on YouTube Music and falls back to a song search with [query].
          */
-        suspend fun youtubeSongLookup(query: String, songUrl: String?): List<MediaMetadata> {
+        suspend fun youtubeSongLookup(query: String, videoId: String?): List<MediaMetadata> {
             val ytmResult = ArrayList<MediaMetadata>()
 
-            var exactSong: SongItem? = null
-            if (songUrl != null) {
-                runCatching {
-                    YouTube.queue(listOf(songUrl.substringAfter("/watch?v=").substringBefore("&")))
-                }.onSuccess {
-                    exactSong = it.getOrNull()?.firstOrNull()
-                }.onFailure {
-                    reportException(it)
-                }
+            val exactSong = videoId?.let { id ->
+                YouTube.queue(listOf(id)).getOrNull()?.firstOrNull { it.id == id }
             }
 
             // prefer song from url
