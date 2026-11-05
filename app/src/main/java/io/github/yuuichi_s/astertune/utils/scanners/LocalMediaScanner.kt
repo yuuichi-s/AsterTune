@@ -11,6 +11,7 @@ package io.github.yuuichi_s.astertune.utils.scanners
 
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import android.util.Log
 import androidx.compose.ui.util.fastDistinctBy
 import androidx.compose.ui.util.fastFilter
@@ -22,13 +23,18 @@ import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.SongItem
 import io.github.yuuichi_s.astertune.constants.SCANNER_DEBUG
 import io.github.yuuichi_s.astertune.constants.SYNC_SCANNER
+import io.github.yuuichi_s.astertune.constants.ScanPathsKey
 import io.github.yuuichi_s.astertune.constants.ScannerM3uMatchCriteria
 import io.github.yuuichi_s.astertune.constants.ScannerMatchCriteria
 import io.github.yuuichi_s.astertune.constants.scannerWhitelistExts
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.AlbumEntity
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
+import io.github.yuuichi_s.astertune.db.entities.Event
 import io.github.yuuichi_s.astertune.db.entities.GenreEntity
+import io.github.yuuichi_s.astertune.db.entities.LyricsEntity
+import io.github.yuuichi_s.astertune.db.entities.PlayCountEntity
+import io.github.yuuichi_s.astertune.db.entities.PlaylistSongMap
 import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.db.entities.SongAlbumMap
 import io.github.yuuichi_s.astertune.db.entities.SongArtistMap
@@ -41,6 +47,8 @@ import io.github.yuuichi_s.astertune.models.SongTempData
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.utils.closestAlbumMatch
 import io.github.yuuichi_s.astertune.utils.closestMatch
+import io.github.yuuichi_s.astertune.utils.dataStore
+import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
 import kotlinx.coroutines.CancellationException
@@ -50,6 +58,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.withLock
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -66,13 +75,6 @@ class LocalMediaScanner(context: Context) {
             TAG,
             "Creating scanner instance with scannerImpl:  ${advancedScannerImpl.javaClass.name}"
         )
-    }
-
-    suspend fun advancedScan(
-        uri: Uri,
-    ): SongTempData {
-        val file = fileFromUri(context, uri) ?: throw IOException("Could not access file")
-        return advancedScan(file)
     }
 
     /**
@@ -162,26 +164,28 @@ class LocalMediaScanner(context: Context) {
     /**
      * Synchronizes scanned local songs with [database].
      *
-     * Unmatched songs are inserted. A matched song keeps its database ID, download timestamp,
-     * Like state, and any non-null existing library-added timestamp. When [refreshExisting] is
-     * true, its scanned metadata, format, and artist, album, and genre mappings are refreshed.
-     * When false, it is updated only as needed to restore its local path or library availability.
+     * New songs are inserted with user data restored from matching [MissingSongArchive] entries.
+     * Matched songs keep their database IDs, download timestamps, Like states, and existing
+     * non-null library-added timestamps.
      *
-     * Unless [noDisable] is true, duplicate local rows are consolidated, local songs absent from
-     * [newSongs] are disabled, and local album song counts, durations, artists, and artwork are
-     * recalculated.
+     * When [refreshExisting] is false, matched songs are updated as needed to restore local
+     * paths or library availability.
      *
      * @param newSongs scanned local songs to synchronize
+     * @param foundPaths paths of every local song found by the current scan.
+     *     Required unless [noDisable] is true.
      * @param matchStrength how closely a scanned song must match an existing song
      * @param strictFileNames whether file names participate in matching
      * @param strictFilePaths whether file paths must match
-     * @param refreshExisting whether to refresh metadata and relationship rows for matched songs
-     * @param noDisable whether to skip duplicate cleanup, missing-song disabling, and local album
-     *     metadata refresh
+     * @param refreshExisting whether to refresh scanned metadata, format, and artist, album,
+     *     and genre mappings for matched songs
+     * @param noDisable whether to skip duplicate cleanup, missing-song removal through
+     *     [removeMissingSongs], and local album metadata refresh
      */
     suspend fun syncDB(
         database: MusicDatabase,
         newSongs: java.util.ArrayList<SongTempData>,
+        foundPaths: Set<String>?,
         matchStrength: ScannerMatchCriteria,
         strictFileNames: Boolean,
         strictFilePaths: Boolean,
@@ -218,6 +222,10 @@ class LocalMediaScanner(context: Context) {
         }
 
         val allLocalSongs = database.allLocalDbSongs()
+        val now = System.currentTimeMillis()
+        val restoreCandidates = MissingSongArchive.load(context).filterNot { it.isExpired(now) }.toMutableList()
+        // Restore matching songs together to preserve their relative playlist order.
+        val songsToRestore = ArrayList<Pair<SongTempData, MissingSongArchive.Entry>>()
         // sync
         var runs = 0
         finalSongs.forEach { song ->
@@ -368,8 +376,19 @@ class LocalMediaScanner(context: Context) {
                 if (SCANNER_DEBUG)
                     Log.v(TAG, "NOT found in database, adding song: ${song.song.title}")
 
+                val archived = restoreCandidates.firstOrNull {
+                    val match = it.toMatchSong()
+                    match.song.title.contains(song.song.title, true) &&
+                            compareSong(match, song.song, matchStrength, strictFileNames, strictFilePaths)
+                }
+                if (archived != null) {
+                    restoreCandidates.remove(archived)
+                    songsToRestore.add(song to archived)
+                    return@forEach
+                }
+
                 database.awaitTransaction {
-                    insert(song.song.toMediaMetadata())
+                    insertLocalSong(song.song.toMediaMetadata())
                     song.format?.let {
                         upsert(it.copy(id = song.song.id))
                     }
@@ -377,11 +396,14 @@ class LocalMediaScanner(context: Context) {
             }
         }
 
+        if (songsToRestore.isNotEmpty()) {
+            restoreArchivedSongs(songsToRestore, database)
+        }
+
         scannerProgressCurrent.value = scannerProgressTotal.value
-        // do not delete songs from database automatically, we just disable them
         if (!noDisable) {
             reportUnmergedGroups(finalize(database))
-            disableSongs(finalSongs.map { it.song }, database)
+            removeMissingSongs(requireNotNull(foundPaths), database, matchStrength, strictFileNames, strictFilePaths)
             database.awaitTransaction { refreshLocalAlbums() }
         }
         scannerState.value = 0
@@ -389,15 +411,17 @@ class LocalMediaScanner(context: Context) {
     }
 
     /**
-     * Scans paths in [newSongs] that are not already stored in [database].
+     * Scans local files whose paths are not already in the library.
      *
-     * [newSongs] represents the complete set of song URIs found by the current scan because it is
-     * also used to identify missing local songs. If a URI cannot be resolved to a file path, this
-     * function throws before updating the database.
+     * [newSongs] must contain every song URI found by the current scan.
+     * Once scan locations have been saved, local songs whose paths are absent from the input
+     * are removed (see [removeMissingSongs]).
+     * If a URI cannot be resolved to a file path, this function throws before updating the
+     * database.
      *
-     * Existing song metadata is not refreshed. After scanning new paths, this function:
+     * After scanning, this function:
      *
-     * - disables local songs whose paths are absent from the resolved input paths
+     * - inserts new songs and restores matching archived user data
      * - removes duplicate song records and merges duplicate local artists, albums, and genres
      * - recalculates local album song counts, durations, artists, and artwork
      *
@@ -517,16 +541,16 @@ class LocalMediaScanner(context: Context) {
 
         if (finalSongs.isNotEmpty()) {
             scannerState.value = 0
-            syncDB(database, finalSongs, matchCriteria, strictFileNames, strictFilePaths, noDisable = true)
+            syncDB(database, finalSongs, null, matchCriteria, strictFileNames, strictFilePaths, noDisable = true)
             scannerState.value = 2
         } else {
             Log.i(TAG, "Not syncing, no valid songs found!")
         }
 
         scannerProgressCurrent.value = scannerProgressProbe.value
-        // we handle disabling songs here instead
+        // syncDB skips this step, so missing songs are removed here
         scannerState.value = 3
-        disableSongsByPath(converted, database)
+        removeMissingSongs(converted.toSet(), database, matchCriteria, strictFileNames, strictFilePaths)
         reportUnmergedGroups(finalize(database))
         database.awaitTransaction { refreshLocalAlbums() }
 
@@ -536,25 +560,31 @@ class LocalMediaScanner(context: Context) {
 
 
     /**
-     * Rescans [newSongs] and synchronizes local-song data with [database].
+     * Rescans all local songs found by the current scan and synchronizes them with [database].
      *
-     * For a matched song, the scan refreshes its metadata, format, and artist, album, and genre
+     * [newSongs] must contain every song URI found by the current scan.
+     * Once scan locations have been saved, local songs whose paths are absent from the input
+     * are removed. Cleanup also runs for empty input.
+     * Existing songs whose files are found are kept even if their metadata cannot be read.
+     * If a URI cannot be resolved to a file path, this function throws before updating the
+     * database.
+     *
+     * For matched songs, the scan refreshes metadata, format, and artist, album, and genre
      * relationships while preserving:
      *
-     * - its database ID
-     * - its download timestamp
-     * - its Like state
-     * - an existing non-null library-added timestamp
+     * - database IDs
+     * - download timestamps
+     * - Like states
+     * - existing non-null library-added timestamps
      *
-     * If at least one valid song is found, new songs are inserted, missing local songs are disabled,
-     * duplicate local rows are merged, and local album song counts, durations, artists, and artwork
-     * are recalculated.
-     * If no valid song is found, the database is left unchanged.
+     * New songs are inserted and matching archived user data is restored.
+     * Duplicate local rows are consolidated. Local album song counts, durations, artists,
+     * and artwork are recalculated.
      *
-     * No remote artist lookup is performed. The cached directory tree is not refreshed, so callers
-     * displaying it should rebuild it after the scan.
+     * No remote artist lookup is performed. The cached directory tree is not refreshed, so
+     * callers displaying it should rebuild it after the scan.
      *
-     * @param newSongs local-song URIs to rescan
+     * @param newSongs complete set of local-song URIs found by the current scan
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun fullSync(
@@ -570,6 +600,10 @@ class LocalMediaScanner(context: Context) {
         scannerProgressTotal.value = newSongs.size
         scannerProgressCurrent.value = 0
         scannerProgressProbe.value = 0
+        val files = newSongs.map { uri ->
+            fileFromUri(context, uri) ?: throw IOException("Could not resolve local file path: $uri")
+        }
+        val foundPaths = files.mapTo(HashSet()) { it.absolutePath }
         val mod = if (newSongs.size < 20) {
             2
         } else if (newSongs.size < 50) {
@@ -582,14 +616,14 @@ class LocalMediaScanner(context: Context) {
         val scannerJobs = ArrayList<Deferred<SongTempData?>>()
 
         // Get song basic metadata
-        newSongs.forEach { uri ->
+        files.forEach { file ->
             if (scannerRequestCancel) {
                 Log.i(TAG, "WARNING: Requested to cancel. Aborting.")
                 throw ScannerAbortException("Scanner canceled during FULL Library Sync")
             }
 
             if (SCANNER_DEBUG)
-                Log.d(TAG, "PATH: $uri")
+                Log.d(TAG, "PATH: $file")
 
             if (!SYNC_SCANNER) {
                 // use async scanner
@@ -601,7 +635,7 @@ class LocalMediaScanner(context: Context) {
                                 throw ScannerAbortException("")
                             }
                             try {
-                                val ret = advancedScan(uri)
+                                val ret = advancedScan(file)
                                 scannerProgressProbe.value++
                                 if (SCANNER_DEBUG && scannerProgressProbe.value % mod == 0) {
                                     Log.d(
@@ -621,7 +655,7 @@ class LocalMediaScanner(context: Context) {
                 }
             } else {
                 // force synchronous scanning of songs. Do not catch errors
-                finalSongs.add(advancedScan(uri))
+                finalSongs.add(advancedScan(file))
             }
         }
 
@@ -637,68 +671,206 @@ class LocalMediaScanner(context: Context) {
         }
 
         scannerProgressCurrent.value = scannerProgressProbe.value
-        if (finalSongs.isNotEmpty()) {
-            /**
-             * TODO: Delete all local format entity before scan
-             */
-            scannerState.value = 0
-            syncDB(database, finalSongs, matchCriteria, strictFileNames, strictFilePaths, refreshExisting = true)
-            scannerState.value = 2
-        } else {
-            Log.i(TAG, "Not syncing, no valid songs found!")
-        }
+        /**
+         * TODO: Delete all local format entity before scan
+         */
+        scannerState.value = 0
+        syncDB(database, finalSongs, foundPaths, matchCriteria, strictFileNames, strictFilePaths, refreshExisting = true)
+        scannerState.value = 2
 
         scannerState.value = 0
         Log.i(TAG, "------------ SYNC: Finished FULL Library Sync ------------")
     }
 
-    private suspend fun disableSongsByPath(newSongs: List<String>, database: MusicDatabase) {
-        Log.i(TAG, "Start finalize (disableSongsByPath) job. Number of valid songs: ${newSongs.size}")
-        // get list of all local songs in db
-        database.disableInvalidLocalSongs() // make sure path is existing
-        val allSongs = database.allLocalSongs()
+    /**
+     * Deletes local songs whose paths are absent from [foundPaths], including songs with no path.
+     * Does nothing until the scan location setting has been saved at least once.
+     *
+     * Archives a song's user data in [MissingSongArchive] if it has at least
+     * [ARCHIVE_MIN_PLAY_COUNT] plays, is liked, or belongs to a playlist.
+     * Existing matching archive entries are replaced.
+     *
+     * Reads user data and deletes songs in one database transaction. The archive is saved first.
+     * A failed archive write prevents deletion. The archive file is not rolled back with the
+     * database. Entries left after a rollback are ignored while their songs remain in the database.
+     *
+     * Removes unbookmarked local artists, albums, and genres that have no songs.
+     * Discards archive entries that have reached [MissingSongArchive.RETENTION_MILLIS].
+     *
+     * @param foundPaths file paths of every local song found by the current scan
+     * @throws ScannerAbortException if the scan was canceled before anything is deleted
+     */
+    private suspend fun removeMissingSongs(
+        foundPaths: Set<String>,
+        database: MusicDatabase,
+        matchStrength: ScannerMatchCriteria,
+        strictFileNames: Boolean,
+        strictFilePaths: Boolean,
+    ) {
+        if (context.dataStore[ScanPathsKey] == null) {
+            Log.i(TAG, "Scan locations were never saved. Skipping removeMissingSongs")
+            return
+        }
+        Log.i(TAG, "Start finalize (removeMissingSongs) job")
+        val now = System.currentTimeMillis()
+        MissingSongArchive.lock.withLock {
+            database.awaitTransaction {
+                // Checked here so a cancel made while waiting for the transaction is still seen.
+                if (scannerRequestCancel) {
+                    throw ScannerAbortException("Scanner canceled before removing missing songs")
+                }
+                val missingSongs = allLocalDbSongs().filter { song ->
+                    song.song.localPath.let { it == null || it !in foundPaths }
+                }
+                Log.i(TAG, "Missing songs: ${missingSongs.size}")
 
-        // disable if not in directory anymore
-        for (song in allSongs) {
-            if (song.song.localPath == null) {
-                continue
-            }
+                val stored = MissingSongArchive.load(context)
+                val retained = stored.filterNot { it.isExpired(now) }.toMutableList()
+                var archiveChanged = retained.size != stored.size
 
-            // new songs is all songs that are known to be valid
-            // delete all songs in the DB that do not match a path
-            if (newSongs.none { it == song.song.localPath }) {
-                if (SCANNER_DEBUG)
-                    Log.v(TAG, "Disabling song ${song.song.localPath}")
-                database.awaitTransaction {
-                    disableLocalSong(song.song.id)
+                // Capture original playlist positions before deletions shift them.
+                val playlistMaps = missingSongs.associate { it.song.id to songMapsToPlaylist(it.song.id) }
+                for (song in missingSongs) {
+                    val id = song.song.id
+                    val playCounts = playCountsBySong(id)
+                    val maps = playlistMaps.getValue(id)
+                    val keep = playCounts.sumOf { it.count } >= ARCHIVE_MIN_PLAY_COUNT ||
+                            song.song.liked || maps.isNotEmpty()
+                    if (!keep) {
+                        continue
+                    }
+
+                    val entry = MissingSongArchive.Entry(
+                        title = song.song.title,
+                        artists = song.artists.map { it.name },
+                        album = song.album?.title,
+                        localPath = song.song.localPath,
+                        archivedAt = now,
+                        liked = song.song.liked,
+                        likedDate = song.song.likedDate,
+                        lyrics = lyricsById(id)?.let {
+                            MissingSongArchive.Lyrics(it.lyrics, it.provider, it.lastCheckedAt, it.providerSignature)
+                        },
+                        playCounts = playCounts.map { MissingSongArchive.PlayCount(it.year, it.month, it.count) },
+                        events = eventsBySong(id).map { MissingSongArchive.PlayEvent(it.timestamp, it.playTime) },
+                        playlists = maps.map {
+                            MissingSongArchive.PlaylistEntry(it.playlistId, it.position, it.setVideoId)
+                        },
+                    )
+                    retained.removeAll {
+                        compareSong(it.toMatchSong(), song, matchStrength, strictFileNames, strictFilePaths)
+                    }
+                    retained.add(entry)
+                    archiveChanged = true
+                }
+                if (archiveChanged) {
+                    MissingSongArchive.save(context, retained)
+                }
+
+                for (song in missingSongs) {
+                    val id = song.song.id
+                    if (SCANNER_DEBUG)
+                        Log.v(TAG, "Removing song $id (${song.song.localPath})")
+
+                    // Remove playlist entries one at a time so the positions after each stay contiguous.
+                    while (true) {
+                        val map = songMapsToPlaylist(id).firstOrNull() ?: break
+                        move(map.playlistId, map.position, Int.MAX_VALUE)
+                        delete(map.copy(position = Int.MAX_VALUE))
+                    }
+                    // These tables have no foreign key to the song, so delete their rows explicitly.
+                    deletePlayCounts(id)
+                    deleteLyricById(id)
+                    deleteFormatById(id)
+                    delete(song.song)
+                }
+                if (missingSongs.isNotEmpty()) {
+                    deleteUnbookmarkedLocalArtistsWithoutSongs()
+                    deleteUnbookmarkedLocalAlbumsWithoutSongs()
+                    deleteUnbookmarkedLocalGenresWithoutSongs()
                 }
             }
         }
-        Log.i(TAG, "Finished (disableSongsByPath) job")
+        Log.i(TAG, "Finished (removeMissingSongs) job")
     }
 
-    private suspend fun disableSongs(newSongs: List<Song>, database: MusicDatabase) {
-        Log.i(TAG, "Start finalize (disableSongs) job. Number of valid songs: ${newSongs.size}")
+    /**
+     * Inserts the scanned songs in [songs] and restores their archived user data in one
+     * transaction.
+     *
+     * Rechecks matched entries under [MissingSongArchive.lock] so intervening changes, such as
+     * clearing the listen history, are preserved. Songs whose entries no longer exist are inserted
+     * without archived data.
+     *
+     * Restores playlist entries in archived position order, shifting later entries. Positions
+     * beyond the current playlist length are appended, and deleted playlists are skipped.
+     *
+     * Removes restored archive entries after the transaction commits. If that update fails,
+     * the entries remain unused while the restored songs are still in the database.
+     */
+    private suspend fun restoreArchivedSongs(
+        songs: List<Pair<SongTempData, MissingSongArchive.Entry>>,
+        database: MusicDatabase,
+    ) {
+        MissingSongArchive.lock.withLock {
+            val stored = MissingSongArchive.load(context)
+            val restored = songs.mapNotNull { (song, entry) ->
+                stored.firstOrNull { it.isSameEntryAs(entry) }?.let { song to it }
+            }
+            database.awaitTransaction {
+                songs.forEach { (song, _) ->
+                    insertLocalSong(song.song.toMediaMetadata())
+                    song.format?.let {
+                        upsert(it.copy(id = song.song.id))
+                    }
+                }
+                restored.forEach { (song, entry) ->
+                    val songId = song.song.id
+                    if (SCANNER_DEBUG)
+                        Log.v(TAG, "Restoring archived data for ${entry.title} to $songId")
 
-        // get list of all local songs in db
-        database.disableInvalidLocalSongs() // make sure path is existing
-        val allSongs = database.allLocalSongs()
+                    if (entry.liked) {
+                        setLike(songId, true, entry.likedDate)
+                    }
+                    entry.lyrics?.let {
+                        upsert(LyricsEntity(songId, it.lyrics, it.provider, it.lastCheckedAt, it.providerSignature))
+                    }
+                    entry.playCounts.forEach {
+                        insert(PlayCountEntity(songId, it.year, it.month, it.count))
+                    }
+                    entry.events.forEach {
+                        insert(Event(songId = songId, timestamp = it.timestamp, playTime = it.playTime))
+                    }
+                }
+                restored.flatMap { (song, entry) -> entry.playlists.map { song.song.id to it } }
+                    .groupBy { it.second.playlistId }
+                    .forEach { (playlistId, items) ->
+                        if (!playlistExists(playlistId)) return@forEach
 
-        // disable if not in directory anymore
-        for (song in allSongs) {
-            if (song.song.localPath == null) {
-                continue
+                        items.sortedBy { it.second.position }.forEach { (songId, item) ->
+                            val position = minOf(item.position, playlistSongCount(playlistId))
+                            shiftPlaylistPositions(playlistId, position)
+                            insert(
+                                PlaylistSongMap(
+                                    playlistId = playlistId,
+                                    songId = songId,
+                                    position = position,
+                                    setVideoId = item.setVideoId
+                                )
+                            )
+                        }
+                    }
             }
 
-            // new songs is all songs that are known to be valid
-            // delete all songs in the DB that do not match a path
-            if (newSongs.none { it.song.localPath == song.song.localPath }) {
-                if (SCANNER_DEBUG)
-                    Log.v(TAG, "Disabling song ${song.song.localPath}")
-                database.disableLocalSong(song.song.id)
+            if (restored.isEmpty()) return@withLock
+
+            val restoredEntries = restored.map { it.second }
+            try {
+                MissingSongArchive.save(context, stored.filterNot { it in restoredEntries })
+            } catch (e: IOException) {
+                Log.e(TAG, "Could not remove restored entries from the missing song archive", e)
             }
         }
-        Log.i(TAG, "Finished (disableSongs) job")
     }
 
     /**
@@ -882,6 +1054,9 @@ class LocalMediaScanner(context: Context) {
         // do not put any thing that should adhere to the scanner lock in here
         const val TAG = "LocalMediaScanner"
 
+        /** Minimum lifetime play count for a missing song to be archived without a like or playlist. */
+        const val ARCHIVE_MIN_PLAY_COUNT = 10
+
         private var ownerId = -1
         private var localScanner: LocalMediaScanner? = null
 
@@ -950,16 +1125,16 @@ class LocalMediaScanner(context: Context) {
 
 
         /**
-         * Build a list of files to scan, taking in exclusions into account. Exclusions
-         * will override inclusions. All subdirectories will also be affected.
+         * Lists files to scan, applying exclusions to the selected folders and their descendants.
+         * Exclusions take precedence over inclusions.
          *
-         * Uri.path can be assumed to be non-null
+         * Input URIs are expected to have non-null paths.
          */
         fun getScanFiles(scanPaths: List<Uri>, excludedScanPaths: List<Uri>, context: Context): List<Uri> {
             val allSongs = ArrayList<Uri>()
             val resultingPaths =
                 scanPaths.filterNot { incl ->
-                    excludedScanPaths.any { excl -> incl.path?.startsWith(excl.path.toString()) == true }
+                    excludedScanPaths.any { excl -> isSameOrInsideFolder(incl.path, excl.path.toString()) }
                 }
 
             resultingPaths.forEach { path ->
@@ -984,9 +1159,7 @@ class LocalMediaScanner(context: Context) {
                         }
 
                         allSongs.addAll(songsHere.fastFilter { incl ->
-                            !excludedScanPaths.any {
-                                incl.uri.path?.startsWith(it.path.toString()) == true
-                            }
+                            !excludedScanPaths.any { isSameOrInsideFolder(incl.uri.path, it.path.toString()) }
                         }.map { it.uri })
                     }
                 } catch (e: FileNotFoundException) {
@@ -996,6 +1169,24 @@ class LocalMediaScanner(context: Context) {
             }
 
             return allSongs.fastDistinctBy { it.toString() }
+        }
+
+        /**
+         * Tests whether the tree URI path [path] is [folder] or lies within it.
+         *
+         * With [folder] set to `/tree/primary:Music`:
+         *
+         * - `/tree/primary:Music/Live` matches.
+         * - `/tree/primary:Music2` does not match.
+         *
+         * A trailing `:` in [folder] indicates a storage volume root.
+         */
+        private fun isSameOrInsideFolder(path: String?, folder: String): Boolean {
+            if (path == null) return false
+            if (path == folder) return true
+
+            val prefix = if (folder.endsWith(':') || folder.endsWith('/')) folder else "$folder/"
+            return path.startsWith(prefix)
         }
 
         fun scanDfRecursive(
@@ -1009,7 +1200,7 @@ class LocalMediaScanner(context: Context) {
             for (file in files) {
                 if (!scanHidden && file.name?.startsWith(".") == true) continue
                 if (
-                    file.isDirectory &&
+                    isDirectory(file) &&
                     (scanHidden || !listFiles(file, failOnListingError).any { it.name == ".nomedia" })
                 ) {
                     // look into subdirs
@@ -1026,6 +1217,23 @@ class LocalMediaScanner(context: Context) {
                 }
             }
             return null
+        }
+
+        /**
+         * Whether [file] is a directory. For a [TreeDocumentFileOt] from a directory listing, the
+         * MIME type read with the listing is used, because querying it again can fail and would
+         * then report a directory as a file, leaving its songs unscanned.
+         */
+        private fun isDirectory(file: DocumentFile): Boolean {
+            // TreeDocumentFileOt.getType() preserves the cached directory MIME type.
+            // Without a cached type, it queries the provider and returns null for directories.
+            val listedType = if (file is TreeDocumentFileOt) file.type else null
+
+            return if (listedType != null) {
+                listedType == DocumentsContract.Document.MIME_TYPE_DIR
+            } else {
+                file.isDirectory
+            }
         }
 
         private fun listFiles(dir: DocumentFile, failOnListingError: Boolean): Array<DocumentFile> {
@@ -1135,12 +1343,13 @@ class LocalMediaScanner(context: Context) {
         }
 
         /**
-         * Check the similarity of a song
+         * Tests whether [a] and [b] match under the local scanner criteria.
          *
-         * @param a
-         * @param b
-         * @param matchStrength How lax should the scanner be
-         * @param strictFileNames Whether to consider file names
+         * @param a first song to compare
+         * @param b second song to compare
+         * @param matchStrength metadata matching level. Levels 2 and 3 also accept equal nonblank paths.
+         * @param strictFileNames whether to reject differing file names. Ignored when [strictFilePaths] is true.
+         * @param strictFilePaths whether to match only equal nonblank paths, bypassing other criteria
          */
         fun compareSong(
             a: Song,
@@ -1149,13 +1358,8 @@ class LocalMediaScanner(context: Context) {
             strictFileNames: Boolean = false,
             strictFilePaths: Boolean = false,
         ): Boolean {
-            /**
-             * Compare file paths
-             *
-             * I draw the "user error" line here
-             */
             fun closeEnough(): Boolean {
-                return a.song.localPath == b.song.localPath
+                return !a.song.localPath.isNullOrBlank() && a.song.localPath == b.song.localPath
             }
             if (strictFilePaths) {
                 return closeEnough()

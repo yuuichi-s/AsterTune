@@ -10,6 +10,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.zionhuang.innertube.models.PlaylistItem
 import io.github.yuuichi_s.astertune.constants.PlaylistFilter
 import io.github.yuuichi_s.astertune.constants.PlaylistSortType
 import io.github.yuuichi_s.astertune.db.entities.Playlist
@@ -17,7 +18,6 @@ import io.github.yuuichi_s.astertune.db.entities.PlaylistEntity
 import io.github.yuuichi_s.astertune.db.entities.PlaylistSong
 import io.github.yuuichi_s.astertune.db.entities.PlaylistSongMap
 import io.github.yuuichi_s.astertune.extensions.reversed
-import com.zionhuang.innertube.models.PlaylistItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -102,6 +102,22 @@ interface PlaylistsDao {
 
     @Query("SELECT * FROM playlist_song_map WHERE playlistId = :playlistId AND position >= :from ORDER BY position")
     fun songMapsToPlaylist(playlistId: String, from: Int): List<PlaylistSongMap>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM playlist WHERE id = :playlistId)")
+    fun playlistExists(playlistId: String): Boolean
+
+    @Query("SELECT id FROM song WHERE id IN (:songIds)")
+    fun existingSongIds(songIds: List<String>): List<String>
+
+    /**
+     * The IDs in [songIds] that belong to songs in the database.
+     * Queried in chunks to stay under the SQLite limit on bound parameters.
+     */
+    fun storedSongIds(songIds: List<String>): Set<String> =
+        songIds.distinct().chunked(500).flatMapTo(HashSet()) { existingSongIds(it) }
+
+    @Query("SELECT COUNT(*) FROM playlist_song_map WHERE playlistId = :playlistId")
+    fun playlistSongCount(playlistId: String): Int
 
     @Query("""
         SELECT DISTINCT playlistId
@@ -193,10 +209,15 @@ interface PlaylistsDao {
         ))
     }
 
+    /**
+     * Appends [songIds] to [playlist], skipping IDs not found in the database.
+     * Local songs removed from the library are not recreated, even if the player still shows them.
+     */
     @Transaction
     fun addSongToPlaylist(playlist: Playlist, songIds: List<String>) {
         var position = playlist.songCount
-        songIds.forEach { id ->
+        val storedIds = storedSongIds(songIds)
+        songIds.filter { it in storedIds }.forEach { id ->
             insert(
                 PlaylistSongMap(
                     songId = id,
@@ -224,6 +245,9 @@ interface PlaylistsDao {
     """
     )
     fun move(playlistId: String, fromPosition: Int, toPosition: Int)
+
+    @Query("UPDATE playlist_song_map SET position = position + 1 WHERE playlistId = :playlistId AND position >= :fromPosition")
+    fun shiftPlaylistPositions(playlistId: String, fromPosition: Int)
     // endregion
 
     // region Deletes

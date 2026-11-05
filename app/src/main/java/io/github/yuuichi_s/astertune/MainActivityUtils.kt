@@ -38,6 +38,7 @@ import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.destroyScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerState
+import io.github.yuuichi_s.astertune.utils.scanners.ScannerAbortException
 import com.zionhuang.innertube.YouTube
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -205,6 +206,9 @@ suspend fun scanInit(
                 scanner.quickSync(database, uris, scannerSensitivity, strictExtensions, strictFilePaths)
             } catch (e: CancellationException) {
                 throw e
+            } catch (e: ScannerAbortException) {
+                localScanFailed = true
+                Log.i(MAIN_TAG, "Automatic scan canceled: ${e.message}")
             } catch (e: Exception) {
                 localScanFailed = true
                 coroutineScope.launch {

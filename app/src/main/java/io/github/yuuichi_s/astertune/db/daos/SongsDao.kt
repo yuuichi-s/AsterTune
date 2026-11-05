@@ -79,6 +79,9 @@ interface SongsDao {
     @Query("SELECT sum(count) from playCount WHERE song = :songId")
     fun getLifetimePlayCount(songId: String?): Int
 
+    @Query("SELECT * FROM playCount WHERE song = :songId")
+    fun playCountsBySong(songId: String): List<PlayCountEntity>
+
     @Query("SELECT sum(count) from playCount WHERE song = :songId AND year = :year")
     fun getPlayCountByYear(songId: String?, year: Int): Flow<Int>
 
@@ -424,11 +427,11 @@ interface SongsDao {
     @Query("UPDATE song SET liked = 0, likedDate = null WHERE id = :songId")
     fun removeLike(songId: String)
 
-    @Query("UPDATE song SET inLibrary = null WHERE localPath IS NULL AND isLocal = 1")
-    fun disableInvalidLocalSongs()
-
     @Query("UPDATE song SET inLibrary = null, localPath = null WHERE id = :songId")
     fun disableLocalSong(songId: String)
+
+    @Query("UPDATE song SET liked = :liked, likedDate = :likedDate WHERE id = :songId")
+    fun setLike(songId: String, liked: Boolean, likedDate: LocalDateTime?)
 
     fun updateLocalSongPath(songId: String, inLibrary: LocalDateTime?, localPath: String?) {
         if (localPath != null) {
@@ -446,6 +449,9 @@ interface SongsDao {
     // region Deletes
     @Delete
     fun delete(song: SongEntity)
+
+    @Query("DELETE FROM playCount WHERE song = :songId")
+    fun deletePlayCounts(songId: String)
 
     @Transaction
     @Query("DELETE FROM song WHERE isLocal = 1")

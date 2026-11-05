@@ -878,6 +878,14 @@ class QueueBoard(
         writeToDatabase { saveQueue(queue, songs, songMaps) }
     }
 
+    /**
+     * Saves the songs and metadata of the open queues whose IDs are in [ids] when persistence
+     * is enabled.
+     */
+    fun saveQueueSongs(ids: Set<Long>) {
+        masterQueues.filter { it.id in ids }.forEach { saveQueueSongs(it) }
+    }
+
     private fun saveQueue(mq: MultiQueueObject) {
         if (!persistQueues()) return
         val queue = mq.toQueueEntity()

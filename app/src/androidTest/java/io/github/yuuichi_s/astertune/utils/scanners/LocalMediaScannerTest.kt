@@ -4,19 +4,25 @@ import android.content.Context
 import android.net.Uri
 import android.os.storage.StorageManager
 import android.provider.DocumentsContract
+import androidx.datastore.preferences.core.edit
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import io.github.yuuichi_s.astertune.constants.SCANNER_OWNER_LM
+import io.github.yuuichi_s.astertune.constants.ScanPathsKey
 import io.github.yuuichi_s.astertune.constants.ScannerMatchCriteria
 import io.github.yuuichi_s.astertune.db.InternalDatabase
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.Song
+import io.github.yuuichi_s.astertune.utils.dataStore
+import io.github.yuuichi_s.astertune.utils.get
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,10 +36,17 @@ class LocalMediaScannerTest {
     private lateinit var directory: File
     private lateinit var database: MusicDatabase
     private lateinit var scanner: LocalMediaScanner
+    private var scanPathsWasSaved = true
 
     @Before
     fun setUp() = runBlocking {
         context = InstrumentationRegistry.getInstrumentation().targetContext
+        // Missing songs are removed only after scan locations have been saved once.
+        scanPathsWasSaved = context.dataStore[ScanPathsKey] != null
+        if (!scanPathsWasSaved) {
+            context.dataStore.edit { it[ScanPathsKey] = "" }
+        }
+
         val external = requireNotNull(context.getExternalFilesDir(null))
         directory = File(external, "scanner-test-${java.util.UUID.randomUUID()}")
         check(directory.mkdirs())
@@ -50,6 +63,7 @@ class LocalMediaScannerTest {
             try {
                 if (::database.isInitialized) database.close()
             } finally {
+                if (!scanPathsWasSaved) context.dataStore.edit { it.remove(ScanPathsKey) }
                 if (::directory.isInitialized) check(directory.deleteRecursively())
             }
         }
@@ -104,20 +118,15 @@ class LocalMediaScannerTest {
     }
 
     @Test
-    fun fullScanDisablesMissingSongWhenAnotherValidSongRemains() = runBlocking {
+    fun fullScanRemovesMissingSongWhenAnotherValidSongRemains() = runBlocking {
         val a = copyAudio("a-before.flac", "a.flac")
         val b = copyAudio("b.flac", "b.flac")
         quick(a, b)
         val before = database.allLocalDbSongs()
         assertEquals(2, before.size)
-        val missingId = before.single { it.song.localPath == a.absolutePath }.id
         val remainingId = before.single { it.song.localPath == b.absolutePath }.id
-        // Empty full scans intentionally leave the database unchanged. Keep B in the input.
         full(b)
-        val after = database.allLocalDbSongs()
-        assertEquals(2, after.size)
-        assertNull(after.single { it.id == missingId }.song.inLibrary)
-        assertEquals(remainingId, database.allLocalSongs().single().id)
+        assertEquals(listOf(remainingId), database.allLocalDbSongs().map { it.id })
     }
 
     private fun copyAudio(asset: String, name: String): File = File(directory, name).also { file ->
