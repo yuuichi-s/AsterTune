@@ -10,11 +10,11 @@ import android.view.Surface
 import android.view.WindowManager
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.layout.WindowMetricsCalculator
+import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
 import io.github.yuuichi_s.astertune.constants.YtmSyncKey
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.get
-import com.zionhuang.innertube.utils.parseCookieString
 
 fun Context.isAutoSyncEnabled(): Boolean {
     return dataStore.get(YtmSyncKey, true) && isUserLoggedIn()
@@ -68,7 +68,7 @@ fun Context.usesNavRail(windowSizeClass: WindowSizeClass, configuration: Configu
  * Uses maximum window bounds to avoid treating a tablet's narrow split-screen or freeform
  * window as a small display.
  */
-fun Context.isSmallNaturalLandscapeDisplay(): Boolean {
+private fun Context.isSmallNaturalLandscapeDisplay(): Boolean {
     val rotation = runCatching {
         val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             display
