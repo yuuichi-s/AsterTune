@@ -38,6 +38,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -63,12 +64,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -102,9 +102,9 @@ import io.github.yuuichi_s.astertune.db.entities.Album
 import io.github.yuuichi_s.astertune.db.entities.Artist
 import io.github.yuuichi_s.astertune.db.entities.LocalItem
 import io.github.yuuichi_s.astertune.db.entities.Playlist
+import io.github.yuuichi_s.astertune.db.entities.RecentActivityEntity
 import io.github.yuuichi_s.astertune.db.entities.RecentActivityType
 import io.github.yuuichi_s.astertune.db.entities.Song
-import io.github.yuuichi_s.astertune.extensions.isSmallNaturalLandscapeDisplay
 import io.github.yuuichi_s.astertune.extensions.togglePlayPauseOrReplay
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
@@ -178,10 +178,6 @@ fun HomeScreen(
 
     val quickPicksLazyGridState = rememberLazyGridState()
     val forgottenFavoritesLazyGridState = rememberLazyGridState()
-    val recentActivityPages = remember(recentActivity) {
-        recentActivity.orEmpty().chunked(RecentActivityRows * RecentActivityColumns)
-    }
-    val recentActivityPagerState = rememberPagerState { recentActivityPages.size }
 
     val innerTubeCookie by rememberPreference(InnerTubeCookieKey, "")
     val isLoggedIn = remember(innerTubeCookie) {
@@ -425,14 +421,28 @@ fun HomeScreen(
         forgottenFavoritesLazyGridState.scrollToItem(0)
     }
 
-    // Keyed on the ids: every sync rewrites the rows, so entities never compare equal.
-    LaunchedEffect(recentActivity?.map { it.id }) {
-        recentActivityPagerState.scrollToPage(0)
-    }
+    fun openRecentActivity(item: RecentActivityEntity) {
+        when (item.type) {
+            RecentActivityType.PLAYLIST -> {
+                val entryAtTap = navController.currentBackStackEntry
+                scope.launch {
+                    val localPlaylistId = viewModel.localPlaylistIdToOpen(item.id)
+                    // Skip when another tap or navigation has already moved away.
+                    if (navController.currentBackStackEntry != entryAtTap) return@launch
 
-    val context = LocalContext.current
-    val configuration = LocalConfiguration.current
-    val isSmallLandscapeDisplay = remember(configuration) { context.isSmallNaturalLandscapeDisplay() }
+                    if (localPlaylistId != null) {
+                        navController.navigate("local_playlist/$localPlaylistId")
+                    } else {
+                        navController.navigate("online_playlist/${item.id}")
+                    }
+                }
+            }
+
+            RecentActivityType.ALBUM -> navController.navigate("album/${item.id}")
+
+            RecentActivityType.ARTIST -> navController.navigate("artist/${item.id}")
+        }
+    }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -448,18 +458,21 @@ fun HomeScreen(
 
         val horizontalLazyGridItemWidthFactor = if (maxWidth * 0.475f >= 320.dp) 0.475f else 0.9f
         val horizontalLazyGridItemWidth = maxWidth * horizontalLazyGridItemWidthFactor
-        // On small landscape displays such as the Echo Show 5, matches the Keep listening thumbnails.
-        val recentActivityTileSize = if (isSmallLandscapeDisplay) {
-            GridThumbnailHeight
-        } else {
-            minOf(
-                (maxWidth - RecentActivityEdgePadding * 2 - RecentActivityTileSpacing * (RecentActivityColumns - 1)) /
-                        RecentActivityColumns,
-                RecentActivityMaxTileSize
-            )
+
+        val listPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
+
+        val recentLayout = recentActivityLayout(maxWidth, listPadding)
+        val recentPages = remember(recentActivity, recentLayout.columns) {
+            recentActivity.orEmpty().chunked(RecentRows * recentLayout.columns)
         }
-        val recentActivityPageWidth = recentActivityTileSize * RecentActivityColumns +
-                RecentActivityTileSpacing * (RecentActivityColumns - 1)
+        // Keep pager state outside the list item to retain the current page while off screen.
+        val recentPagerState = rememberPagerState { recentPages.size }
+        // Use IDs to avoid resetting the page when sync only updates timestamps.
+        val recentActivityIds = remember(recentActivity) { recentActivity?.map { it.id } }
+        LaunchedEffect(recentActivityIds, recentLayout.columns) {
+            recentPagerState.scrollToPage(0)
+        }
+
         val quickPicksSnapLayoutInfoProvider =
             rememberGridItemSnapLayoutInfoProvider(quickPicksLazyGridState, horizontalLazyGridItemWidthFactor)
         val forgottenFavoritesSnapLayoutInfoProvider =
@@ -468,7 +481,7 @@ fun HomeScreen(
         ScrollToTopManager(navController, lazylistState)
         LazyColumn(
             state = lazylistState,
-            contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
+            contentPadding = listPadding
         ) {
             if (showChips) {
                 item {
@@ -491,86 +504,15 @@ fun HomeScreen(
                 }
 
                 item {
-                    Column(modifier = Modifier.animateItem()) {
-                        val systemBarsHorizontal = WindowInsets.systemBars
-                            .only(WindowInsetsSides.Horizontal)
-                            .asPaddingValues()
-                        val layoutDirection = LocalLayoutDirection.current
-                        HorizontalPager(
-                            state = recentActivityPagerState,
-                            pageSize = PageSize.Fixed(recentActivityPageWidth),
-                            // Places the next page just past the screen edge so that it does not peek in.
-                            pageSpacing = RecentActivityEdgePadding * 2,
-                            contentPadding = PaddingValues(
-                                start = RecentActivityEdgePadding +
-                                        systemBarsHorizontal.calculateStartPadding(layoutDirection),
-                                end = RecentActivityEdgePadding +
-                                        systemBarsHorizontal.calculateEndPadding(layoutDirection)
-                            ),
-                            key = { page -> recentActivityPages[page].first().id },
-                            verticalAlignment = Alignment.Top,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(
-                                    recentActivityTileSize * RecentActivityRows +
-                                            RecentActivityTileSpacing * (RecentActivityRows - 1)
-                                )
-                        ) { page ->
-                            Column(verticalArrangement = Arrangement.spacedBy(RecentActivityTileSpacing)) {
-                                recentActivityPages[page].chunked(RecentActivityColumns).forEach { rowItems ->
-                                    Row(horizontalArrangement = Arrangement.spacedBy(RecentActivityTileSpacing)) {
-                                        rowItems.forEach { item ->
-                                            RecentActivityTile(
-                                                item = item,
-                                                size = recentActivityTileSize,
-                                                isActive = queuePlaylistId != null && when (item.type) {
-                                                    RecentActivityType.PLAYLIST -> queuePlaylistId == item.id
-                                                    RecentActivityType.ALBUM -> queuePlaylistId == item.playlistId
-                                                    RecentActivityType.ARTIST -> queuePlaylistId == item.radioPlaylistId ||
-                                                            queuePlaylistId == item.shufflePlaylistId ||
-                                                            queuePlaylistId == item.playlistId
-                                                },
-                                                isPlaying = isPlaying,
-                                                onClick = {
-                                                    when (item.type) {
-                                                        RecentActivityType.PLAYLIST -> {
-                                                            val entryAtTap = navController.currentBackStackEntry
-                                                            scope.launch {
-                                                                val localPlaylistId = viewModel.localPlaylistIdToOpen(item.id)
-                                                                // Skip when another tap or navigation has already moved away.
-                                                                if (navController.currentBackStackEntry != entryAtTap) return@launch
-                                                                if (localPlaylistId != null) {
-                                                                    navController.navigate("local_playlist/$localPlaylistId")
-                                                                } else {
-                                                                    navController.navigate("online_playlist/${item.id}")
-                                                                }
-                                                            }
-                                                        }
-
-                                                        RecentActivityType.ALBUM ->
-                                                            navController.navigate("album/${item.id}")
-
-                                                        RecentActivityType.ARTIST ->
-                                                            navController.navigate("artist/${item.id}")
-                                                    }
-                                                },
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (recentActivityPages.size > 1) {
-                            PagerIndicator(
-                                pageCount = recentActivityPages.size,
-                                currentPage = recentActivityPagerState.currentPage,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 12.dp)
-                            )
-                        }
-                    }
+                    RecentActivityPager(
+                        pages = recentPages,
+                        layout = recentLayout,
+                        pagerState = recentPagerState,
+                        queuePlaylistId = queuePlaylistId,
+                        isPlaying = isPlaying,
+                        onItemClick = ::openRecentActivity,
+                        modifier = Modifier.animateItem()
+                    )
                 }
             }
 
@@ -1031,12 +973,99 @@ private fun rememberGridItemSnapLayoutInfoProvider(
     )
 }
 
-private const val RecentActivityRows = 2
-private const val RecentActivityColumns = 3
-private val RecentActivityEdgePadding = 12.dp
-private val RecentActivityTileSpacing = 4.dp
-// Keeps two rows of tiles within the height of a landscape screen.
-private val RecentActivityMaxTileSize = 160.dp
+private const val RecentRows = 2
+private val RecentEdgePadding = 12.dp
+private val RecentTileSpacing = 4.dp
+
+private data class RecentActivityLayout(
+    val columns: Int,
+    val tileSize: Dp,
+    val startPadding: Dp,
+    val endPadding: Dp,
+)
+
+/**
+ * Recent activity layout with as many columns as fit at the Keep listening thumbnail size.
+ * Tile sizes are adjusted to fill the available width.
+ */
+@Composable
+private fun recentActivityLayout(maxWidth: Dp, listPadding: PaddingValues): RecentActivityLayout {
+    val layoutDirection = LocalLayoutDirection.current
+    val barPadding = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal).asPaddingValues()
+    val startPadding = RecentEdgePadding + barPadding.calculateStartPadding(layoutDirection)
+    val endPadding = RecentEdgePadding + barPadding.calculateEndPadding(layoutDirection)
+    // The list's content padding holds the navigation rail width when the rail is shown.
+    val rowWidth = maxWidth -
+            listPadding.calculateStartPadding(layoutDirection) -
+            listPadding.calculateEndPadding(layoutDirection) -
+            startPadding - endPadding
+    val columns = ((rowWidth + RecentTileSpacing) / (GridThumbnailHeight + RecentTileSpacing))
+        .toInt()
+        .coerceAtLeast(1)
+    val tileSize = (rowWidth - RecentTileSpacing * (columns - 1)) / columns
+    return RecentActivityLayout(columns, tileSize, startPadding, endPadding)
+}
+
+private fun RecentActivityEntity.isQueued(queuePlaylistId: String?): Boolean =
+    queuePlaylistId != null && when (type) {
+        RecentActivityType.PLAYLIST -> queuePlaylistId == id
+        RecentActivityType.ALBUM -> queuePlaylistId == playlistId
+        RecentActivityType.ARTIST -> queuePlaylistId == radioPlaylistId ||
+                queuePlaylistId == shufflePlaylistId ||
+                queuePlaylistId == playlistId
+    }
+
+@Composable
+private fun RecentActivityPager(
+    pages: List<List<RecentActivityEntity>>,
+    layout: RecentActivityLayout,
+    pagerState: PagerState,
+    queuePlaylistId: String?,
+    isPlaying: Boolean,
+    onItemClick: (RecentActivityEntity) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        HorizontalPager(
+            state = pagerState,
+            pageSize = PageSize.Fill,
+            // Add space so less of the next or previous page shows at the edges.
+            pageSpacing = RecentEdgePadding * 2,
+            contentPadding = PaddingValues(start = layout.startPadding, end = layout.endPadding),
+            key = { page -> pages[page].first().id },
+            verticalAlignment = Alignment.Top,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(layout.tileSize * RecentRows + RecentTileSpacing * (RecentRows - 1))
+        ) { page ->
+            Column(verticalArrangement = Arrangement.spacedBy(RecentTileSpacing)) {
+                pages[page].chunked(layout.columns).forEach { rowItems ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(RecentTileSpacing)) {
+                        rowItems.forEach { item ->
+                            RecentActivityTile(
+                                item = item,
+                                size = layout.tileSize,
+                                isActive = item.isQueued(queuePlaylistId),
+                                isPlaying = isPlaying,
+                                onClick = { onItemClick(item) },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (pages.size > 1) {
+            PagerIndicator(
+                pageCount = pages.size,
+                currentPage = pagerState.currentPage,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+            )
+        }
+    }
+}
 
 @Composable
 private fun PagerIndicator(
