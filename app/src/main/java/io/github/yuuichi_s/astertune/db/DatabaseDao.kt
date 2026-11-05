@@ -9,6 +9,12 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Upsert
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.zionhuang.innertube.models.AlbumItem
+import com.zionhuang.innertube.models.ArtistItem
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.SongItem
+import com.zionhuang.innertube.models.YTItem
+import com.zionhuang.innertube.pages.AlbumPage
 import io.github.yuuichi_s.astertune.db.daos.AlbumsDao
 import io.github.yuuichi_s.astertune.db.daos.ArtistsDao
 import io.github.yuuichi_s.astertune.db.daos.PlaylistsDao
@@ -36,12 +42,6 @@ import io.github.yuuichi_s.astertune.db.entities.SongGenreMap
 import io.github.yuuichi_s.astertune.extensions.toSQLiteQuery
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import com.zionhuang.innertube.models.AlbumItem
-import com.zionhuang.innertube.models.ArtistItem
-import com.zionhuang.innertube.models.PlaylistItem
-import com.zionhuang.innertube.models.SongItem
-import com.zionhuang.innertube.models.YTItem
-import com.zionhuang.innertube.pages.AlbumPage
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 
@@ -98,8 +98,14 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Query("SELECT * FROM lyrics WHERE id = :id")
     fun lyrics(id: String?): Flow<LyricsEntity?>
 
+    @Query("SELECT * FROM lyrics WHERE id = :id")
+    fun lyricsById(id: String): LyricsEntity?
+
+    @Query("SELECT * FROM event WHERE songId = :songId ORDER BY timestamp")
+    fun eventsBySong(songId: String): List<Event>
+
     @Transaction
-    @Query("SELECT * FROM event ORDER BY rowId DESC")
+    @Query("SELECT * FROM event ORDER BY timestamp DESC, rowId DESC")
     fun events(): Flow<List<EventWithSong>>
 
     @Query("DELETE FROM event")
@@ -187,13 +193,41 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(map: RelatedSongMap)
 
+    /**
+     * Inserts the song in [mediaMetadata] with its artists, genres, and album unless it already
+     * exists.
+     *
+     * Local songs are added only by the local media scanner through [insertLocalSong].
+     * This method skips local songs so removed songs are not recreated from metadata held by
+     * a queue or the player.
+     */
     @Transaction
     fun insert(mediaMetadata: MediaMetadata, block: (SongEntity) -> SongEntity = { it }) {
+        if (mediaMetadata.isLocal) return
+        insertSongWithRelations(mediaMetadata, block)
+    }
+
+    /**
+     * Inserts a local song found by the local media scanner, as [insert] does for other songs.
+     */
+    @Transaction
+    fun insertLocalSong(mediaMetadata: MediaMetadata) {
+        insertSongWithRelations(mediaMetadata) { it }
+    }
+
+    /**
+     * Inserts a song with its artists, genres, and album unless the song ID already exists.
+     *
+     * Requires a caller-provided database transaction and does not filter local songs.
+     * Use [insert] or [insertLocalSong] for normal insertion.
+     */
+    fun insertSongWithRelations(mediaMetadata: MediaMetadata, block: (SongEntity) -> SongEntity) {
         val album = mediaMetadata.album?.let { albumsByName(it.title, it.isLocal) }
         val albumId = mediaMetadata.album?.let { album?.id ?: GenreEntity.generateGenreId() }
 
         val songEntity = mediaMetadata.toSongEntity().let(block).let {
-            // Align local song.albumId with the row used below; preserve YouTube album IDs for navigation.
+            // Use the resolved database album ID for local songs.
+            // Preserve YouTube album IDs for navigation.
             if (mediaMetadata.isLocal && albumId != null) it.copy(albumId = albumId) else it
         }
         if (insert(songEntity) == -1L) return
@@ -240,8 +274,7 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
         mediaMetadata.album?.let {
             upsert(
                 if (album != null) {
-                    // Keep every other column (playlistId, year, themeColor, bookmarkedAt, ...)
-                    // as-is; only the running totals and a missing thumbnail are refreshed.
+                    // Preserve the other album fields, including bookmarks and the year.
                     album.copy(
                         songCount = album.songCount.coerceAtLeast(1),
                         duration = album.duration + mediaMetadata.duration,
@@ -361,6 +394,17 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     @Query("DELETE FROM lyrics where id = :id")
     fun deleteLyricById(id: String)
 
+    @Query("DELETE FROM format WHERE id = :id")
+    fun deleteFormatById(id: String)
+
+    @Query("""
+        DELETE FROM genre
+        WHERE isLocal = 1
+            AND bookmarkedAt IS NULL
+            AND NOT EXISTS (SELECT 1 FROM song_genre_map WHERE song_genre_map.genreId = genre.id)
+    """)
+    fun deleteUnbookmarkedLocalGenresWithoutSongs()
+
     @Delete
     fun delete(searchHistory: SearchHistory)
 
@@ -370,6 +414,9 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
 
     /**
      * Replaces [queue] and its stored song mappings. Does nothing if [songs] is empty.
+     *
+     * Mappings are saved only for songs present in the database after inserting [songs].
+     * Removed local songs are not recreated by [insert], even if they remain in the queue.
      *
      * Use [QueueDao.update] to update queue metadata without replacing its song mappings.
      */
@@ -382,7 +429,8 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
         insert(queue)
         deleteAllQueueSongs(queue.id)
         songs.forEach { insert(it) }
-        songMaps.forEach { insert(it) }
+        val storedIds = storedSongIds(songMaps.map { it.songId })
+        songMaps.forEach { if (it.songId in storedIds) insert(it) }
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

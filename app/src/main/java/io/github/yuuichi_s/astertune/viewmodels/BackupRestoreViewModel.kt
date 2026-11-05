@@ -6,6 +6,8 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.yuuichi_s.astertune.MainActivity
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.db.InternalDatabase
@@ -15,10 +17,11 @@ import io.github.yuuichi_s.astertune.extensions.zipInputStream
 import io.github.yuuichi_s.astertune.extensions.zipOutputStream
 import io.github.yuuichi_s.astertune.playback.MusicService
 import io.github.yuuichi_s.astertune.utils.reportException
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.yuuichi_s.astertune.utils.scanners.MissingSongArchive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.zip.Deflater
@@ -42,12 +45,21 @@ class BackupRestoreViewModel @Inject constructor(
                         outputStream.putNextEntry(ZipEntry(SETTINGS_FILENAME))
                         inputStream.copyTo(outputStream)
                     }
-                    runBlocking(Dispatchers.IO) {
-                        database.checkpoint()
-                    }
-                    FileInputStream(database.openHelper.writableDatabase.path).use { inputStream ->
-                        outputStream.putNextEntry(ZipEntry(InternalDatabase.DB_NAME))
-                        inputStream.copyTo(outputStream)
+                    // The scanner changes the database and the archive together under this lock.
+                    runBlocking {
+                        MissingSongArchive.lock.withLock {
+                            withContext(Dispatchers.IO) {
+                                database.checkpoint()
+                            }
+                            FileInputStream(database.openHelper.writableDatabase.path).use { inputStream ->
+                                outputStream.putNextEntry(ZipEntry(InternalDatabase.DB_NAME))
+                                inputStream.copyTo(outputStream)
+                            }
+                            MissingSongArchive.readBytes(context)?.let { bytes ->
+                                outputStream.putNextEntry(ZipEntry(MissingSongArchive.FILENAME))
+                                outputStream.write(bytes)
+                            }
+                        }
                     }
                 }
             }
@@ -61,62 +73,82 @@ class BackupRestoreViewModel @Inject constructor(
 
     fun restore(uri: Uri) {
         runCatching {
-            context.applicationContext.contentResolver.openInputStream(uri)?.use {
-                it.zipInputStream().use { inputStream ->
-                    var entry = inputStream.nextEntry
-                    while (entry != null) {
-                        when (entry.name) {
-                            SETTINGS_FILENAME -> {
-                                (context.filesDir / "datastore" / SETTINGS_FILENAME).outputStream()
-                                    .use { outputStream ->
-                                        inputStream.copyTo(outputStream)
+            context.applicationContext.contentResolver.openInputStream(uri)?.use { stream ->
+                // The scanner changes the database and the archive together under this lock.
+                runBlocking {
+                    MissingSongArchive.lock.withLock {
+                        stream.zipInputStream().use { inputStream ->
+                            var databaseValid = false
+                            var archiveBytes: ByteArray? = null
+                            var entry = inputStream.nextEntry
+                            while (entry != null) {
+                                when (entry.name) {
+                                    SETTINGS_FILENAME -> {
+                                        (context.filesDir / "datastore" / SETTINGS_FILENAME).outputStream()
+                                            .use { outputStream ->
+                                                inputStream.copyTo(outputStream)
+                                            }
                                     }
-                            }
 
-                            InternalDatabase.DB_NAME -> {
-                                Log.i(TAG, "Starting database restore")
-                                runBlocking(Dispatchers.IO) {
-                                    database.checkpoint()
-                                }
-                                database.close()
+                                    InternalDatabase.DB_NAME -> {
+                                        Log.i(TAG, "Starting database restore")
+                                        runBlocking(Dispatchers.IO) {
+                                            database.checkpoint()
+                                        }
+                                        database.close()
 
-                                Log.i(TAG, "Testing new database for compatibility...")
-                                val destFile = context.getDatabasePath(InternalDatabase.TEST_DB_NAME)
-                                destFile.parentFile?.apply {
-                                    if (!exists()) mkdirs()
-                                }
-                                FileOutputStream(destFile).use { outputStream ->
-                                    inputStream.copyTo(outputStream)
-                                }
-
-                                val status = try {
-                                    val t = InternalDatabase.newTestInstance(context, InternalDatabase.TEST_DB_NAME)
-                                    t.openHelper.writableDatabase.isDatabaseIntegrityOk
-                                    t.close()
-                                    true
-                                } catch (e: Exception) {
-                                    Log.e(TAG, "DB validation failed", e)
-                                    false
-                                }
-
-                                if (status) {
-                                    Log.i(TAG, "Found valid database, proceeding with restore")
-                                    destFile.inputStream().use { inputStream ->
-                                        FileOutputStream(database.openHelper.writableDatabase.path).use { outputStream ->
+                                        Log.i(TAG, "Testing new database for compatibility...")
+                                        val destFile = context.getDatabasePath(InternalDatabase.TEST_DB_NAME)
+                                        destFile.parentFile?.apply {
+                                            if (!exists()) mkdirs()
+                                        }
+                                        FileOutputStream(destFile).use { outputStream ->
                                             inputStream.copyTo(outputStream)
                                         }
+
+                                        val status = try {
+                                            val t = InternalDatabase.newTestInstance(context, InternalDatabase.TEST_DB_NAME)
+                                            t.openHelper.writableDatabase.isDatabaseIntegrityOk
+                                            t.close()
+                                            true
+                                        } catch (e: Exception) {
+                                            Log.e(TAG, "DB validation failed", e)
+                                            false
+                                        }
+
+                                        if (status) {
+                                            Log.i(TAG, "Found valid database, proceeding with restore")
+                                            databaseValid = true
+                                        } else {
+                                            Log.e(TAG, "Incompatible database, aborting restore")
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.err_restore_incompatible_database),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
-                                } else {
-                                    Log.e(TAG, "Incompatible database, aborting restore")
-                                    Toast.makeText(
-                                        context,
-                                        context.getString(R.string.err_restore_incompatible_database),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+
+                                    MissingSongArchive.FILENAME -> {
+                                        archiveBytes = inputStream.readBytes()
+                                    }
                                 }
+                                entry = inputStream.nextEntry
+                            }
+
+                            // Delete the current archive before replacing the database so it cannot
+                            // be reused with the restored database.
+                            // A backup with no valid archive leaves no archive.
+                            if (databaseValid) {
+                                val archive = MissingSongArchive.prepareRestore(context, archiveBytes)
+                                context.getDatabasePath(InternalDatabase.TEST_DB_NAME).inputStream().use { inputStream ->
+                                    FileOutputStream(database.openHelper.writableDatabase.path).use { outputStream ->
+                                        inputStream.copyTo(outputStream)
+                                    }
+                                }
+                                MissingSongArchive.finishRestore(context, archive)
                             }
                         }
-                        entry = inputStream.nextEntry
                     }
                 }
             }

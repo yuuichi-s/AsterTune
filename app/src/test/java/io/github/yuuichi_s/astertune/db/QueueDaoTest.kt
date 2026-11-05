@@ -51,13 +51,13 @@ class QueueDaoTest {
             database.getAllQueues().first()
         )
 
-        val openQueues = database.readQueue(maxQueues = 1)
+        val openQueues = database.readQueue(maxQueues = 1).first
         assertEquals(listOf(2L), openQueues.map { it.id })
         assertEquals("renamed", openQueues.single().title)
         assertEquals(5, openQueues.single().index)
         assertEquals(listOf("song2"), openQueues.single().queue.map { it.id })
 
-        val expandedQueues = database.readQueue(maxQueues = 2)
+        val expandedQueues = database.readQueue(maxQueues = 2).first
         assertEquals(listOf(1L, 2L), expandedQueues.map { it.id })
         assertEquals(listOf(listOf("song1"), listOf("song2")), expandedQueues.map { q -> q.queue.map { it.id } })
     }
@@ -90,7 +90,7 @@ class QueueDaoTest {
         storeQueue(id = 10, index = 1)
         database.insert(QueueEntity(id = 20, title = "empty", index = 3))
 
-        val queues = database.readQueue(maxQueues = 2)
+        val queues = database.readQueue(maxQueues = 2).first
 
         assertEquals(listOf(10L to 1, 40L to 2), queues.map { it.id to it.index })
     }
@@ -114,7 +114,7 @@ class QueueDaoTest {
             ),
         )
 
-        val queue = database.readQueue().single()
+        val queue = database.readQueue().first.single()
 
         assertEquals(50L, queue.id)
         assertEquals("saved queue", queue.title)

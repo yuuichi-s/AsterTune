@@ -1,5 +1,6 @@
 package io.github.yuuichi_s.astertune.ui.screens.settings.fragments
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -16,8 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
@@ -28,11 +31,17 @@ import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
 import io.github.yuuichi_s.astertune.ui.component.SwitchPreference
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.utils.rememberPreference
-import com.zionhuang.innertube.utils.parseCookieString
+import io.github.yuuichi_s.astertune.utils.reportException
+import io.github.yuuichi_s.astertune.utils.scanners.MissingSongArchive
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ColumnScope.ListenHistoryFrag() {
     val database = LocalDatabase.current
+    val context = LocalContext.current.applicationContext
 
     val (pauseListenHistory, onPauseListenHistoryChange) = rememberPreference(
         key = PauseListenHistoryKey,
@@ -96,8 +105,16 @@ fun ColumnScope.ListenHistoryFrag() {
                 TextButton(
                     onClick = {
                         showClearListenHistoryDialog = false
-                        database.query {
-                            clearListenHistory()
+                        // Allow history deletion to finish even if the user leaves this screen.
+                        CoroutineScope(Dispatchers.IO).launch {
+                            runCatching {
+                                MissingSongArchive.clearListenHistoryWithArchive(context, database)
+                            }.onFailure {
+                                reportException(it)
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(context, R.string.clear_listen_history_failed, Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 ) {

@@ -845,8 +845,9 @@ class MusicService : MediaLibraryService(),
     private var dismissCount = 0
 
     /**
-     * Reloads the queue list up to the configured limit without loading it into the player.
+     * Reloads the queue list up to the configured limit.
      * Uses stored queues when persistence is enabled, otherwise in-memory queues.
+     * Updates the player when songs have been removed from its active queue.
      * A dismissed player stays hidden unless its playlist matches an open queue.
      */
     suspend fun initQueue() {
@@ -874,7 +875,8 @@ class MusicService : MediaLibraryService(),
 
             // Read the queues only after pending edits have reached the database.
             queueBoard.value.flushDatabaseWrites()
-            val storedQueues = database.readQueue(maxQueues).toMutableList()
+            val (readQueues, repairedIds) = database.readQueue(maxQueues)
+            val storedQueues = readQueues.toMutableList()
 
             // Checking and replacing run together on the main thread, where the queues are edited.
             val done = withContext(Dispatchers.Main.immediate) {
@@ -888,6 +890,10 @@ class MusicService : MediaLibraryService(),
                     // Queues edited during the read are read again.
                     QueueBoard.writeCount != writeCount -> false
                     else -> {
+                        val playerIds = List(player.mediaItemCount) { player.getMediaItemAt(it).mediaId }
+                        val playerQueueId = queueBoard.value.getCurrentQueue()
+                            ?.takeIf { q -> !queueDismissed && q.getCurrentQueueShuffled().map { it.id } == playerIds }
+                            ?.id
                         // Keep open queues after stored queues outside the limit.
                         replaceQueueBoard(
                             storedQueues,
@@ -895,6 +901,23 @@ class MusicService : MediaLibraryService(),
                             storedQueuesLoaded = true,
                             minFirstQueueIndex = storedQueues.firstOrNull()?.index ?: 0,
                         )
+                        // Replace the in-memory queues before saving repaired indices, so
+                        // later position updates use the same song order.
+                        queueBoard.value.saveQueueSongs(repairedIds)
+                        // Refresh the player if reloading removed songs from its active queue.
+                        if (playerQueueId != null) {
+                            val current = queueBoard.value.getCurrentQueue()
+                            if (queueBoard.value.masterQueues.none { it.id == playerQueueId }) {
+                                // The active queue was not reloaded.
+                                // Select another queue or clear the player.
+                                queueBoard.value.setCurrQueue()
+                            } else if (current != null &&
+                                current.id == playerQueueId &&
+                                current.getCurrentQueueShuffled().map { it.id } != playerIds
+                            ) {
+                                queueBoard.value.setCurrQueue(current)
+                            }
+                        }
                         true
                     }
                 }

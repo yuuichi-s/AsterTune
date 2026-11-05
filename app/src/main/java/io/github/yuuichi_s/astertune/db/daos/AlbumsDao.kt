@@ -514,6 +514,14 @@ interface AlbumsDao : ArtistsDao {
     @Delete
     fun delete(album: AlbumEntity)
 
+    @Query("""
+        DELETE FROM album
+        WHERE isLocal = 1
+            AND bookmarkedAt IS NULL
+            AND NOT EXISTS (SELECT 1 FROM song_album_map WHERE song_album_map.albumId = album.id)
+    """)
+    fun deleteUnbookmarkedLocalAlbumsWithoutSongs()
+
     @Transaction
     @Query("DELETE FROM album WHERE isLocal = 1")
     fun nukeLocalAlbums()

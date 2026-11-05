@@ -295,6 +295,14 @@ interface ArtistsDao {
     """)
     fun safeDeleteArtist(artistId: String)
 
+    @Query("""
+        DELETE FROM artist
+        WHERE isLocal = 1
+            AND bookmarkedAt IS NULL
+            AND NOT EXISTS (SELECT 1 FROM song_artist_map WHERE song_artist_map.artistId = artist.id)
+    """)
+    fun deleteUnbookmarkedLocalArtistsWithoutSongs()
+
     @Transaction
     @Query("DELETE FROM artist WHERE isLocal = 1")
     fun nukeLocalArtists()
