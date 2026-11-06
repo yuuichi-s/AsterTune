@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.scale
 import androidx.media3.common.util.BitmapLoader
+import androidx.media3.session.MediaSession
 import coil3.ImageLoader
 import coil3.asImage
 import coil3.decode.DataSource
@@ -70,15 +71,24 @@ class CoilBitmapLoader @Inject constructor(
             BitmapFactory.decodeByteArray(data, 0, data.size) ?: drawPlaceholder(context)
         }
 
+    /**
+     * Loads artwork for the media session and notification.
+     *
+     * Requests artwork at Media3's size limit to reduce decoding work.
+     * Disables Coil's memory cache because Media3 caches the artwork.
+     */
     override fun loadBitmap(uri: Uri): ListenableFuture<Bitmap> =
         scope.future {
             try {
+                val dimensionLimit = MediaSession.getBitmapDimensionLimit(context)
                 // local images
                 val result = if (uri.toString().startsWith("/storage/")) {
                     context.imageLoader.execute(
                         ImageRequest.Builder(context)
                             .data(LocalArtworkPath(uri.toString()))
+                            .size(dimensionLimit)
                             .allowHardware(false)
+                            .memoryCachePolicy(CachePolicy.DISABLED)
                             .diskCachePolicy(CachePolicy.DISABLED)
                             .build()
                     )
@@ -86,7 +96,9 @@ class CoilBitmapLoader @Inject constructor(
                     context.imageLoader.execute(
                         ImageRequest.Builder(context)
                             .data(uri)
+                            .size(dimensionLimit)
                             .allowHardware(false)
+                            .memoryCachePolicy(CachePolicy.DISABLED)
                             .build()
                     )
                 }
