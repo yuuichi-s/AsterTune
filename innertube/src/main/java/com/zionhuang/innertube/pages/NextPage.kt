@@ -5,6 +5,7 @@ import com.zionhuang.innertube.models.Artist
 import com.zionhuang.innertube.models.BrowseEndpoint
 import com.zionhuang.innertube.models.PlaylistPanelVideoRenderer
 import com.zionhuang.innertube.models.SongItem
+import com.zionhuang.innertube.models.ThumbnailSizeLog
 import com.zionhuang.innertube.models.WatchEndpoint
 import com.zionhuang.innertube.models.oddElements
 import com.zionhuang.innertube.models.splitBySeparator
@@ -41,7 +42,9 @@ object NextPage {
                 )
             },
             duration = renderer.lengthText?.runs?.firstOrNull()?.text?.parseTime() ?: return null,
-            thumbnail = renderer.thumbnail.thumbnails.lastOrNull()?.url ?: return null,
+            thumbnail = renderer.thumbnail.thumbnails.lastOrNull()
+                ?.also(ThumbnailSizeLog::record)
+                ?.url ?: return null,
             explicit = renderer.badges?.find {
                 it.musicInlineBadgeRenderer?.icon?.iconType == "MUSIC_EXPLICIT_BADGE"
             } != null

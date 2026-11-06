@@ -24,6 +24,7 @@ import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.db.entities.SongAlbumMap
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.extensions.reversed
+import io.github.yuuichi_s.astertune.utils.IMAGE_DEBUG_NEWEST_ARTIST_ALBUM_QUERY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -336,6 +337,10 @@ interface AlbumsDao : ArtistsDao {
         )
     """)
     fun artistAlbumThumbnails(artistId: String): Flow<List<AlbumThumbnail>>
+
+    /** IMAGE_DEBUG: the header artwork of the newest album, chosen in one query. */
+    @Query(IMAGE_DEBUG_NEWEST_ARTIST_ALBUM_QUERY)
+    suspend fun debugNewestArtistAlbumThumbnail(artistId: String): AlbumThumbnail?
 
     @Transaction
     @RawQuery(

@@ -19,6 +19,7 @@ import androidx.datastore.preferences.core.edit
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
+import coil3.imageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
 import coil3.memory.MemoryCache
@@ -51,6 +52,8 @@ import io.github.yuuichi_s.astertune.utils.LocalArtworkPathKeyer
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathSizeMapper
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.get
+import io.github.yuuichi_s.astertune.utils.debugEventListener
+import io.github.yuuichi_s.astertune.utils.initializeImageLoadDebug
 import io.github.yuuichi_s.astertune.utils.normalizeDataSyncId
 import io.github.yuuichi_s.astertune.utils.reportException
 import com.zionhuang.innertube.YouTube
@@ -109,6 +112,8 @@ class App : Application(), SingletonImageLoader.Factory {
             }
         }
 
+        initializeImageLoadDebug(this) { imageLoader }
+
         if (dataStore[UseLoginForBrowse] != false) {
             YouTube.useLoginForBrowse = true
         }
@@ -162,6 +167,7 @@ class App : Application(), SingletonImageLoader.Factory {
         // will crash app if you set to 0 after cache starts being used
         if (cacheSize == 0) {
             return ImageLoader.Builder(this)
+                .debugEventListener { imageLoader }
                 .components {
                     add(LocalArtworkPathSizeMapper())
                     add(CoilBitmapLoader.Factory(this@App))
@@ -180,6 +186,7 @@ class App : Application(), SingletonImageLoader.Factory {
         }
 
         return ImageLoader.Builder(this)
+            .debugEventListener { imageLoader }
             .components {
                 add(LocalArtworkPathSizeMapper())
                 add(CoilBitmapLoader.Factory(this@App))

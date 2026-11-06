@@ -59,6 +59,8 @@ class CoilBitmapLoader @Inject constructor(
     private val targetScale: Scale = Scale.FIT,
 ) : Fetcher, BitmapLoader {
 
+    private val imageDebug = LocalArtworkDebug.create(data, targetScale)
+
     override fun supportsMimeType(mimeType: String): Boolean {
         return mimeType.startsWith("image/")
     }
@@ -103,19 +105,24 @@ class CoilBitmapLoader @Inject constructor(
     override suspend fun fetch(): FetchResult? {
         return try {
             if (data.path?.startsWith("/storage/") == true) {
+                imageDebug?.onStart()
                 var subsampled = false
                 var image: Bitmap = try {
                     val art = embeddedPicture(data.path)!!
+                    imageDebug?.onExtracted(art.size)
                     val sampleSize = sampleSize(art)
+                    imageDebug?.onSampleSize(sampleSize)
                     val decoded = BitmapFactory.decodeByteArray(
                         art, 0, art.size,
                         BitmapFactory.Options().apply { inSampleSize = sampleSize }
                     )
+                    imageDebug?.onDecoded()
                     subsampled = decoded != null && sampleSize > 1
                     decoded
                 } catch (_: Exception) {
                     framePlaceholder()
                 } ?: framePlaceholder()
+                imageDebug?.onScaleStart()
 
                 val factor = scaleFactor(image.width, image.height)
                 val scaled = factor < 1f
@@ -125,6 +132,8 @@ class CoilBitmapLoader @Inject constructor(
                         (image.height * factor).roundToInt().coerceAtLeast(1)
                     )
                 }
+
+                imageDebug?.onComplete(image)
 
                 ImageFetchResult(
                     image = image.asImage(),
@@ -169,6 +178,7 @@ class CoilBitmapLoader @Inject constructor(
     private fun sampleSize(art: ByteArray): Int {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeByteArray(art, 0, art.size, bounds)
+        imageDebug?.onBounds(bounds.outWidth, bounds.outHeight)
 
         val factor = scaleFactor(bounds.outWidth, bounds.outHeight)
         if (factor <= 0f || factor >= 1f) return 1
