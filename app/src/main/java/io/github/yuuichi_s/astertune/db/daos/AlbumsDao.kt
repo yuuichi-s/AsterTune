@@ -304,21 +304,34 @@ interface AlbumsDao : ArtistsDao {
      */
     @Transaction
     @Query("""
+        WITH artist_library_songs AS (
+            SELECT s.id, s.albumId, s.year
+            FROM song_artist_map sam
+                INNER JOIN song s ON sam.songId = s.id
+            WHERE sam.artistId = :artistId
+                AND s.inLibrary IS NOT NULL
+        ), album_years AS (
+            SELECT albumId, MAX(year) AS year
+            FROM (
+                SELECT albumId, year
+                FROM artist_library_songs
+                WHERE albumId IS NOT NULL
+
+                UNION ALL
+
+                SELECT m.albumId, s.year
+                FROM artist_library_songs s
+                    INNER JOIN song_album_map m ON m.songId = s.id
+            )
+            GROUP BY albumId
+        )
         SELECT album.*, count(song.dateDownload) downloadCount,
-               COALESCE(
-                   album.year,
-                   (SELECT MAX(s.year)
-                    FROM song_artist_map sam
-                        INNER JOIN song s ON sam.songId = s.id
-                    WHERE sam.artistId = :artistId
-                        AND s.inLibrary IS NOT NULL
-                        AND (s.albumId = album.id
-                            OR s.id IN (SELECT m.songId FROM song_album_map m WHERE m.albumId = album.id)))
-               ) AS sortYear
+               COALESCE(album.year, album_years.year) AS sortYear
         FROM song_artist_map
             INNER JOIN song ON song_artist_map.songId = song.id
             INNER JOIN song_album_map ON song_album_map.songId = song.id
             INNER JOIN album ON song_album_map.albumId = album.id
+            LEFT JOIN album_years ON album_years.albumId = album.id
         WHERE song_artist_map.artistId = :artistId
             AND song.inLibrary IS NOT NULL
         GROUP BY album.id
