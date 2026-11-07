@@ -138,4 +138,4 @@ const val LYRICS_DEBUG = false
 const val DB_QUERY_DEBUG = false
 
 // log image request sources, load timings, and artwork sizes
-const val IMAGE_DEBUG = true
+const val IMAGE_DEBUG = false
