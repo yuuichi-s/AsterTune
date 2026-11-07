@@ -14,6 +14,7 @@ import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.extensions.reversed
 import io.github.yuuichi_s.astertune.utils.fixFilePath
+import io.github.yuuichi_s.astertune.utils.pathPrefixUpperBound
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -51,16 +52,18 @@ interface SongsDao {
      * Does not include unavailable songs
      */
     fun searchSongsAllLocalInDir(dir: String, query: String, previewSize: Int = Int.MAX_VALUE): Flow<List<Song>> {
-        return _searchSongsAllLocalInDir(fixFilePath(dir), query, previewSize)
+        val fixedDir = fixFilePath(dir)
+        return _searchSongsAllLocalInDir(fixedDir, pathPrefixUpperBound(fixedDir), query, previewSize)
     }
 
     @Transaction
     @Query("""
-        SELECT * FROM song 
-        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localpath LIKE :dir || '%' AND title LIKE '%' || :query || '%'
+        SELECT * FROM song
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localPath >= :dir AND localPath < :dirEnd
+        AND title LIKE '%' || :query || '%'
         LIMIT :previewSize
         """)
-    fun _searchSongsAllLocalInDir(dir: String, query: String, previewSize: Int = Int.MAX_VALUE): Flow<List<Song>>
+    fun _searchSongsAllLocalInDir(dir: String, dirEnd: String, query: String, previewSize: Int): Flow<List<Song>>
 
     @Transaction
     @Query("""
@@ -175,47 +178,63 @@ interface SongsDao {
      * Does not include unavailable songs
      */
     fun localSongsInDirShallow(filter: String): List<Song> {
-        return _localSongsInDirShallow(fixFilePath(filter))
+        val fixedDir = fixFilePath(filter)
+        return _localSongsInDirShallow(fixedDir, pathPrefixUpperBound(fixedDir))
     }
 
     @Transaction
     @Query("""
         SELECT * FROM song
-        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localpath LIKE :filter || '%' 
-        AND instr(substr(localpath, length(:filter) + 1), '/') = 0
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localPath >= :dir AND localPath < :dirEnd
+        AND instr(substr(localpath, length(:dir) + 1), '/') = 0
         UNION
         SELECT * FROM song
-        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localpath LIKE :filter || '%'
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localPath >= :dir AND localPath < :dirEnd
         GROUP BY rtrim(localPath, replace(localPath, '/', ''))
     """)
-    fun _localSongsInDirShallow(filter: String): List<Song>
+    fun _localSongsInDirShallow(dir: String, dirEnd: String): List<Song>
 
     /**
      * Songs directly in the directory, excluding subdirectories. Does not include unavailable songs
      */
     fun localSongsDirectlyInDir(dir: String): Flow<List<Song>> {
-        return _localSongsDirectlyInDir(fixFilePath(dir))
+        val fixedDir = fixFilePath(dir)
+        return _localSongsDirectlyInDir(fixedDir, pathPrefixUpperBound(fixedDir))
     }
 
     @Transaction
     @Query("""
         SELECT * FROM song
-        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localpath LIKE :dir || '%'
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localPath >= :dir AND localPath < :dirEnd
         AND instr(substr(localpath, length(:dir) + 1), '/') = 0
     """)
-    fun _localSongsDirectlyInDir(dir: String): Flow<List<Song>>
+    fun _localSongsDirectlyInDir(dir: String, dirEnd: String): Flow<List<Song>>
 
     fun localSongsInDirDeep(filter: String): List<Song> {
-        return _localSongsInDirDeep(fixFilePath(filter))
+        val fixedDir = fixFilePath(filter)
+        return _localSongsInDirDeep(fixedDir, pathPrefixUpperBound(fixedDir))
     }
 
     @Transaction
-    @Query("SELECT * FROM song WHERE isLocal = 1 and inLibrary IS NOT NULL AND localpath LIKE :filter || '%'")
-    fun _localSongsInDirDeep(filter: String): List<Song>
+    @Query("""
+        SELECT * FROM song
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localPath >= :dir AND localPath < :dirEnd
+    """)
+    fun _localSongsInDirDeep(dir: String, dirEnd: String): List<Song>
 
-    @Transaction
-    @Query("SELECT count(*) FROM song WHERE isLocal = 1 and inLibrary IS NOT NULL AND localpath LIKE :path || '%'")
-    fun localSongCountInPath(path: String): Flow<Int>
+    /**
+     * Number of songs in the directory and its subdirectories. Does not include unavailable songs
+     */
+    fun localSongCountInPath(path: String): Flow<Int> {
+        val fixedDir = fixFilePath(path)
+        return _localSongCountInPath(fixedDir, pathPrefixUpperBound(fixedDir))
+    }
+
+    @Query("""
+        SELECT count(*) FROM song
+        WHERE isLocal = 1 AND inLibrary IS NOT NULL AND localPath >= :dir AND localPath < :dirEnd
+    """)
+    fun _localSongCountInPath(dir: String, dirEnd: String): Flow<Int>
 
     @Query("""
         SELECT * FROM song

@@ -41,6 +41,12 @@ fun String.urlEncode(): String = Uri.encode(this)
 
 fun fixFilePath(path: String) = "/" + path.split('/').filterNot { it.isEmpty() }.joinToString("/") + "/"
 
+/** Exclusive upper bound for paths starting with [dir] in binary order. */
+fun pathPrefixUpperBound(dir: String): String {
+    require(dir.endsWith('/')) { "dir must end with '/': $dir" }
+    return dir.dropLast(1) + '0'
+}
+
 fun formatFileSize(sizeBytes: Long): String {
     val prefix = if (sizeBytes < 0) "-" else ""
     var result: Long = sizeBytes.absoluteValue
