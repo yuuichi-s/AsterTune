@@ -24,7 +24,7 @@ import java.io.File
  * so a changed limit applies after the app restarts.
  */
 object LocalArtworkDiskCache {
-    const val DEFAULT_MAX_SIZE_MIB = 512
+    const val DEFAULT_MAX_SIZE_MIB = 32
 
     /** Sizes, in pixels, that requests are rounded up to before artwork is saved. */
     val TIERS = intArrayOf(128, 256, 512, 1024)

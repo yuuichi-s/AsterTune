@@ -864,7 +864,7 @@ fun ColumnScope.ImageCacheFrag() {
     DiskCacheFrag(
         diskCache = imageDiskCache,
         maxSizeKey = MaxImageCacheSizeKey,
-        defaultMaxSizeMib = 512,
+        defaultMaxSizeMib = 64,
         clearConfirmText = stringResource(R.string.clear_image_cache_confirm),
     )
 }
@@ -956,7 +956,7 @@ private fun ColumnScope.DiskCacheFrag(
     ListPreference(
         title = { Text(stringResource(R.string.max_cache_size)) },
         selectedValue = maxCacheSize,
-        values = listOf(0, 128, 256, 512, 1024, 2048, 4096, 8192),
+        values = listOf(0, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192),
         valueText = {
             when (it) {
                 0 -> stringResource(R.string.off)

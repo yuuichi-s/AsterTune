@@ -205,7 +205,7 @@ class App : Application(), SingletonImageLoader.Factory {
                 // Local images should bypass with DataSource.DISK
                 DiskCache.Builder()
                     .directory(cacheDir.resolve("coil"))
-                    .maxSizeBytes((cacheSize ?: 512) * 1024 * 1024L)
+                    .maxSizeBytes((cacheSize ?: 64) * 1024 * 1024L)
                     .build()
             )
             .build()
