@@ -17,22 +17,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import io.github.yuuichi_s.astertune.LocalPlayerConnection
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.SettingsGroupSpacing
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.DownloadsFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.ImageCacheFrag
+import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalImageCacheFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.SongCacheFrag
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import io.github.yuuichi_s.astertune.LocalPlayerConnection
 
 
 @SuppressLint("PrivateResource")
@@ -79,6 +80,17 @@ fun StorageSettings(
             modifier = Modifier.fillMaxWidth()
         ) {
             ImageCacheFrag()
+        }
+        Spacer(modifier = Modifier.height(SettingsGroupSpacing))
+
+        PreferenceGroupTitle(
+            title = stringResource(R.string.local_image_cache)
+        )
+
+        ElevatedCard(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            LocalImageCacheFrag()
         }
     }
 }

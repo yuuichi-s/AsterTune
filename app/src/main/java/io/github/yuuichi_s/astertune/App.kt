@@ -19,13 +19,17 @@ import androidx.datastore.preferences.core.edit
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
-import coil3.imageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
+import coil3.imageLoader
 import coil3.memory.MemoryCache
 import coil3.request.CachePolicy
 import coil3.request.allowHardware
 import coil3.request.crossfade
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.YouTubeLocale
+import com.zionhuang.kugou.KuGou
+import dagger.hilt.android.HiltAndroidApp
 import io.github.yuuichi_s.astertune.constants.AccountChannelHandleKey
 import io.github.yuuichi_s.astertune.constants.AccountEmailKey
 import io.github.yuuichi_s.astertune.constants.AccountImageFetchedKey
@@ -46,20 +50,17 @@ import io.github.yuuichi_s.astertune.constants.UseLoginForBrowse
 import io.github.yuuichi_s.astertune.constants.VisitorDataKey
 import io.github.yuuichi_s.astertune.extensions.toEnum
 import io.github.yuuichi_s.astertune.extensions.toInetSocketAddress
-import io.github.yuuichi_s.astertune.utils.CoilBitmapLoader
+import io.github.yuuichi_s.astertune.utils.LocalArtworkDiskCache
+import io.github.yuuichi_s.astertune.utils.LocalArtworkFetcher
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathInterceptor
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathKeyer
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathSizeMapper
 import io.github.yuuichi_s.astertune.utils.dataStore
-import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.debugEventListener
+import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.initializeImageLoadDebug
 import io.github.yuuichi_s.astertune.utils.normalizeDataSyncId
 import io.github.yuuichi_s.astertune.utils.reportException
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.YouTubeLocale
-import com.zionhuang.kugou.KuGou
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -170,7 +171,7 @@ class App : Application(), SingletonImageLoader.Factory {
                 .debugEventListener { imageLoader }
                 .components {
                     add(LocalArtworkPathSizeMapper())
-                    add(CoilBitmapLoader.Factory(this@App))
+                    add(LocalArtworkFetcher.Factory(this@App, LocalArtworkDiskCache.get(this@App)))
                     add(LocalArtworkPathKeyer())
                     add(LocalArtworkPathInterceptor())
                 }
@@ -189,7 +190,7 @@ class App : Application(), SingletonImageLoader.Factory {
             .debugEventListener { imageLoader }
             .components {
                 add(LocalArtworkPathSizeMapper())
-                add(CoilBitmapLoader.Factory(this@App))
+                add(LocalArtworkFetcher.Factory(this@App, LocalArtworkDiskCache.get(this@App)))
                 add(LocalArtworkPathKeyer())
                 add(LocalArtworkPathInterceptor())
             }

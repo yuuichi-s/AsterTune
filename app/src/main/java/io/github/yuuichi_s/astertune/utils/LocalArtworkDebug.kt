@@ -17,6 +17,10 @@ internal class LocalArtworkDebug private constructor(
     private var sample = 1
     private var originalWidth = -1
     private var originalHeight = -1
+    private var saveStart = -1L
+    private var saved = -1L
+    private var savedKey: String? = null
+    private var hitKey: String? = null
 
     fun onStart() {
         start = System.nanoTime()
@@ -24,6 +28,25 @@ internal class LocalArtworkDebug private constructor(
         decoded = -1L
         artBytes = -1
         sample = 1
+        saveStart = -1L
+        saved = -1L
+        savedKey = null
+        hitKey = null
+    }
+
+    fun onCacheHit(key: String, bytes: Int) {
+        extracted = System.nanoTime()
+        artBytes = bytes
+        hitKey = key.substringAfterLast(';')
+    }
+
+    fun onSaveStart() {
+        saveStart = System.nanoTime()
+    }
+
+    fun onSaved(key: String) {
+        saved = System.nanoTime()
+        savedKey = key.substringAfterLast(';')
     }
 
     fun onExtracted(bytes: Int) {
@@ -56,6 +79,7 @@ internal class LocalArtworkDebug private constructor(
                 "bytes=$artBytes sample=$sample out=${image.width}x${image.height} " +
                 "extract=${ms(start, extracted)} decode=${ms(extracted, decoded)} " +
                 "scale=${ms(scaleStart, end)} total=${ms(start, end)} " +
+                "hit=${hitKey ?: "-"} saved=${savedKey ?: "-"} save=${ms(saveStart, saved)} " +
                 "placeholder=${decoded < 0} path=${data.path}"
         )
     }

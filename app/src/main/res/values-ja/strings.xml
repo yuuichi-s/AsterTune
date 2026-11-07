@@ -232,6 +232,8 @@
     <string name="cache">キャッシュ</string>
     <string name="image_cache">画像のキャッシュ</string>
     <string name="song_cache">曲のキャッシュ</string>
+    <string name="local_image_cache">ローカル画像のキャッシュ</string>
+    <string name="clear_local_image_cache_confirm">ローカル画像のキャッシュをすべて削除しますか？</string>
     <string name="max_cache_size">キャッシュ容量の上限</string>
     <string name="unlimited">無制限</string>
     <string name="clear_all_downloads">アプリ専用領域から削除</string>
