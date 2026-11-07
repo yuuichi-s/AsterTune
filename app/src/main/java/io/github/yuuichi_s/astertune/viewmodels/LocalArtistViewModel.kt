@@ -73,7 +73,10 @@ class LocalArtistViewModel @Inject constructor(
         .map(::localArtistTotalSeconds)
         .stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
-    val albums = combine(database.artistSongAlbums(artistId), songs, ::localArtistAlbums)
+    val albums = database.artistSongAlbums(artistId)
+        .map { albums ->
+            albums.map { LocalArtistAlbum(Album(it.album, it.downloadCount, it.artists), it.sortYear) }
+        }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     /** Artwork that can still be shown for each album, keyed by album ID. */
@@ -121,23 +124,3 @@ internal fun localArtistLatestYear(songs: List<Song>): Int? =
 /** Total length of [songs] in seconds; songs with an unknown length count as zero. */
 internal fun localArtistTotalSeconds(songs: List<Song>): Int =
     songs.sumOf { it.song.duration.coerceAtLeast(0) }
-
-/**
- * [albums] newest first, albums without a year last. An album without its own year takes the newest
- * year of [songs] linked to it through either the song's albumId or the song-album map.
- */
-internal fun localArtistAlbums(albums: List<Album>, songs: List<Song>): List<LocalArtistAlbum> {
-    val latestYearByAlbum = HashMap<String, Int>()
-    songs.forEach { song ->
-        val year = song.song.year ?: return@forEach
-        setOfNotNull(song.song.albumId, song.album?.id).forEach { albumId ->
-            latestYearByAlbum.merge(albumId, year, ::maxOf)
-        }
-    }
-    return albums.map { album ->
-        LocalArtistAlbum(
-            album = album,
-            year = album.album.year ?: latestYearByAlbum[album.id]
-        )
-    }.sortedByDescending { it.year ?: Int.MIN_VALUE }
-}
