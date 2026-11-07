@@ -115,6 +115,7 @@ fun AsterTuneTheme(
                                 val result = context.imageLoader.execute(
                                     ImageRequest.Builder(context)
                                         .data(model)
+                                        .size(100)
                                         .allowHardware(false)
                                         .build()
                                 )

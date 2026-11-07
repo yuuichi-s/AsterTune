@@ -13,6 +13,7 @@ import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.Album
 import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.extensions.toEnum
+import io.github.yuuichi_s.astertune.utils.ArtistHeaderDebug
 import io.github.yuuichi_s.astertune.utils.dataStore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -41,6 +43,7 @@ class LocalArtistViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val artistId = savedStateHandle.get<String>("artistId")!!
+    private val imageDebug = ArtistHeaderDebug.create(this, database, artistId)
 
     private val artistRow = database.artist(artistId)
         .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
@@ -70,7 +73,10 @@ class LocalArtistViewModel @Inject constructor(
         .map(::localArtistTotalSeconds)
         .stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
-    val albums = combine(database.artistSongAlbums(artistId), songs, ::localArtistAlbums)
+    val albums = database.artistSongAlbums(artistId)
+        .map { albums ->
+            albums.map { LocalArtistAlbum(Album(it.album, it.downloadCount, it.artists), it.sortYear) }
+        }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     /** Artwork that can still be shown for each album, keyed by album ID. */
@@ -97,6 +103,8 @@ class LocalArtistViewModel @Inject constructor(
 
     val headerThumbnail = combine(usableArtistThumbnail, newestAlbumThumbnail) { chosen, newest ->
         chosen ?: newest
+    }.onEach { header ->
+        imageDebug?.onHeader(header, songs.value.size, albums.value.size, albumThumbnails.value.size)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 }
 
@@ -116,23 +124,3 @@ internal fun localArtistLatestYear(songs: List<Song>): Int? =
 /** Total length of [songs] in seconds; songs with an unknown length count as zero. */
 internal fun localArtistTotalSeconds(songs: List<Song>): Int =
     songs.sumOf { it.song.duration.coerceAtLeast(0) }
-
-/**
- * [albums] newest first, albums without a year last. An album without its own year takes the newest
- * year of [songs] linked to it through either the song's albumId or the song-album map.
- */
-internal fun localArtistAlbums(albums: List<Album>, songs: List<Song>): List<LocalArtistAlbum> {
-    val latestYearByAlbum = HashMap<String, Int>()
-    songs.forEach { song ->
-        val year = song.song.year ?: return@forEach
-        setOfNotNull(song.song.albumId, song.album?.id).forEach { albumId ->
-            latestYearByAlbum.merge(albumId, year, ::maxOf)
-        }
-    }
-    return albums.map { album ->
-        LocalArtistAlbum(
-            album = album,
-            year = album.album.year ?: latestYearByAlbum[album.id]
-        )
-    }.sortedByDescending { it.year ?: Int.MIN_VALUE }
-}

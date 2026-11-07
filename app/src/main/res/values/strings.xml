@@ -297,6 +297,8 @@
     <string name="cache">Cache</string>
     <string name="image_cache">Image Cache</string>
     <string name="song_cache">Song Cache</string>
+    <string name="local_image_cache">Local Image Cache</string>
+    <string name="clear_local_image_cache_confirm">Clear the entire local image cache?</string>
     <string name="max_cache_size">Cache size limit</string>
     <string name="unlimited">Unlimited</string>
     <string name="clear_all_downloads">Delete from app-private storage</string>

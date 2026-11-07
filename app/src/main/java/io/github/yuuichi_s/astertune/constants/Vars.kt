@@ -136,3 +136,6 @@ const val LYRICS_DEBUG = false
 
 // log every SQL statement Room executes, with its bind arguments
 const val DB_QUERY_DEBUG = false
+
+// log image request sources, load timings, and artwork sizes
+const val IMAGE_DEBUG = false

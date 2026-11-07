@@ -182,6 +182,7 @@ import io.github.yuuichi_s.astertune.ui.theme.AsterTuneTheme
 import io.github.yuuichi_s.astertune.ui.theme.rememberUseDarkTheme
 import io.github.yuuichi_s.astertune.ui.utils.appBarScrollBehavior
 import io.github.yuuichi_s.astertune.utils.ActivityLauncherHelper
+import io.github.yuuichi_s.astertune.utils.ObserveImageLoadNavigation
 import io.github.yuuichi_s.astertune.utils.NetworkConnectivityObserver
 import io.github.yuuichi_s.astertune.utils.AccountImageFetcher
 import io.github.yuuichi_s.astertune.utils.SyncUtils
@@ -336,6 +337,7 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
+                ObserveImageLoadNavigation(navController)
 
                 val tabOpenedFromShortcut = remember {
                     // reroute to library page for new layout is handled in NavHost section

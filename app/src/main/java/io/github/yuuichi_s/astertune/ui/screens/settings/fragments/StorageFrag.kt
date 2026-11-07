@@ -56,9 +56,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.Preferences
 import coil3.annotation.ExperimentalCoilApi
+import coil3.disk.DiskCache
 import coil3.imageLoader
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -67,6 +70,7 @@ import io.github.yuuichi_s.astertune.constants.DownloadExtraPathKey
 import io.github.yuuichi_s.astertune.constants.DownloadOnWifiOnlyKey
 import io.github.yuuichi_s.astertune.constants.DownloadPathKey
 import io.github.yuuichi_s.astertune.constants.MaxImageCacheSizeKey
+import io.github.yuuichi_s.astertune.constants.MaxLocalImageCacheSizeKey
 import io.github.yuuichi_s.astertune.constants.MaxSongCacheSizeKey
 import io.github.yuuichi_s.astertune.constants.ScanPathsKey
 import io.github.yuuichi_s.astertune.constants.ThumbnailCornerRadius
@@ -79,6 +83,7 @@ import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
 import io.github.yuuichi_s.astertune.ui.dialog.ActionPromptDialog
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
+import io.github.yuuichi_s.astertune.utils.LocalArtworkDiskCache
 import io.github.yuuichi_s.astertune.utils.dlCoroutine
 import io.github.yuuichi_s.astertune.utils.formatFileSize
 import io.github.yuuichi_s.astertune.utils.rememberPreference
@@ -90,7 +95,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import androidx.compose.ui.tooling.preview.Preview
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -855,30 +859,73 @@ fun ColumnScope.SongCacheFrag() {
 @Composable
 fun ColumnScope.ImageCacheFrag() {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     val imageDiskCache = context.imageLoader.diskCache ?: return
 
-    val (maxImageCacheSize, onMaxImageCacheSizeChange) = rememberPreference(
-        key = MaxImageCacheSizeKey,
-        defaultValue = 512
+    DiskCacheFrag(
+        diskCache = imageDiskCache,
+        maxSizeKey = MaxImageCacheSizeKey,
+        defaultMaxSizeMib = 512,
+        clearConfirmText = stringResource(R.string.clear_image_cache_confirm),
+    )
+}
+
+/**
+ * Settings for the disk cache of artwork embedded in local audio files.
+ *
+ * A changed limit applies after the app restarts. Turning the limit off clears the cache.
+ */
+@Composable
+fun ColumnScope.LocalImageCacheFrag() {
+    val context = LocalContext.current
+    val localDiskCache = remember { LocalArtworkDiskCache.get(context) }
+
+    DiskCacheFrag(
+        diskCache = localDiskCache,
+        maxSizeKey = MaxLocalImageCacheSizeKey,
+        defaultMaxSizeMib = LocalArtworkDiskCache.DEFAULT_MAX_SIZE_MIB,
+        clearConfirmText = stringResource(R.string.clear_local_image_cache_confirm),
+    )
+}
+
+/**
+ * Shows the usage, size limit and clear action of an image disk cache.
+ *
+ * @param diskCache Cache to manage, or null to hide usage and disable clearing while keeping
+ *     the size limit editable.
+ * @param maxSizeKey Preference for the size limit in MiB, where 0 turns the cache off.
+ */
+@Composable
+private fun ColumnScope.DiskCacheFrag(
+    diskCache: DiskCache?,
+    maxSizeKey: Preferences.Key<Int>,
+    defaultMaxSizeMib: Int,
+    clearConfirmText: String,
+) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val (maxCacheSize, onMaxCacheSizeChange) = rememberPreference(
+        key = maxSizeKey,
+        defaultValue = defaultMaxSizeMib
     )
 
-    var imageCacheSize by remember {
-        mutableLongStateOf(imageDiskCache.size)
+    var cacheSize by remember {
+        mutableLongStateOf(diskCache?.size ?: 0L)
     }
 
-    LaunchedEffect(imageDiskCache) {
+    LaunchedEffect(diskCache) {
+        if (diskCache == null) return@LaunchedEffect
+
         while (isActive) {
             delay(500)
-            imageCacheSize = imageDiskCache.size
+            cacheSize = diskCache.size
         }
     }
 
     // clear caches when turning off
-    LaunchedEffect(maxImageCacheSize) {
-        if (maxImageCacheSize == 0) {
+    LaunchedEffect(maxCacheSize) {
+        if (maxCacheSize == 0 && diskCache != null) {
             coroutineScope.launch(Dispatchers.IO) {
-                imageDiskCache.clear()
+                diskCache.clear()
             }
         }
     }
@@ -887,10 +934,10 @@ fun ColumnScope.ImageCacheFrag() {
         mutableStateOf(false)
     }
 
-    if (maxImageCacheSize > 0) {
+    if (maxCacheSize > 0 && diskCache != null) {
         Spacer(modifier = Modifier.height(16.dp))
         LinearProgressIndicator(
-            progress = { (imageCacheSize.toFloat() / imageDiskCache.maxSize).coerceIn(0f, 1f) },
+            progress = { (cacheSize.toFloat() / diskCache.maxSize).coerceIn(0f, 1f) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 6.dp)
@@ -899,7 +946,7 @@ fun ColumnScope.ImageCacheFrag() {
         Text(
             text = stringResource(
                 R.string.size_used,
-                "${formatFileSize(imageCacheSize)} / ${formatFileSize(imageDiskCache.maxSize)}"
+                "${formatFileSize(cacheSize)} / ${formatFileSize(diskCache.maxSize)}"
             ),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
@@ -908,7 +955,7 @@ fun ColumnScope.ImageCacheFrag() {
 
     ListPreference(
         title = { Text(stringResource(R.string.max_cache_size)) },
-        selectedValue = maxImageCacheSize,
+        selectedValue = maxCacheSize,
         values = listOf(0, 128, 256, 512, 1024, 2048, 4096, 8192),
         valueText = {
             when (it) {
@@ -916,7 +963,7 @@ fun ColumnScope.ImageCacheFrag() {
                 else -> formatFileSize(it * 1024 * 1024L)
             }
         },
-        onValueSelected = onMaxImageCacheSizeChange
+        onValueSelected = onMaxCacheSizeChange
     )
     InfoLabel(stringResource(R.string.restart_to_apply_changes))
 
@@ -925,6 +972,7 @@ fun ColumnScope.ImageCacheFrag() {
         onClick = {
             showClearConfirmDialog = true
         },
+        isEnabled = diskCache != null,
     )
 
     /**
@@ -937,7 +985,7 @@ fun ColumnScope.ImageCacheFrag() {
             onDismiss = { showClearConfirmDialog = false },
             content = {
                 Text(
-                    text = stringResource(R.string.clear_image_cache_confirm),
+                    text = clearConfirmText,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(horizontal = 18.dp)
                 )
@@ -953,7 +1001,7 @@ fun ColumnScope.ImageCacheFrag() {
                     onClick = {
                         showClearConfirmDialog = false
                         coroutineScope.launch(Dispatchers.IO) {
-                            imageDiskCache.clear()
+                            diskCache?.clear()
                         }
                     }
                 ) {

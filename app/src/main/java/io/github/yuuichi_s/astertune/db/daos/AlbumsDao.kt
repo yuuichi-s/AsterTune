@@ -19,11 +19,13 @@ import io.github.yuuichi_s.astertune.db.entities.AlbumArtistMap
 import io.github.yuuichi_s.astertune.db.entities.AlbumEntity
 import io.github.yuuichi_s.astertune.db.entities.AlbumThumbnail
 import io.github.yuuichi_s.astertune.db.entities.AlbumWithSongs
+import io.github.yuuichi_s.astertune.db.entities.AlbumWithYear
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
 import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.db.entities.SongAlbumMap
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.extensions.reversed
+import io.github.yuuichi_s.astertune.utils.IMAGE_DEBUG_NEWEST_ARTIST_ALBUM_QUERY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -229,11 +231,13 @@ interface AlbumsDao : ArtistsDao {
     fun _albumWithSongs(albumId: String): Flow<AlbumWithSongs?>
 
     /**
-     * Observes the album identified by [albumId] and its songs, omitting disabled local songs.
-     * Uses each song's own isLocal/inLibrary rather than the album's isLocal, so a song list stays
-     * correct even when the album's own local/YouTube classification does not match its songs.
-     * Songs come from [albumSongs] in album order: the relation's junction view is joined by
-     * SQLite without applying the view's ORDER BY.
+     * The album identified by [albumId] and its songs in album order.
+     *
+     * Omits local songs that are not in the library. Filtering uses each song's own isLocal and
+     * inLibrary rather than the album's isLocal, even when their classifications differ.
+     *
+     * Songs come from [albumSongs] because the relation's junction view does not guarantee their
+     * order after a join.
      */
     fun albumWithSongs(albumId: String): Flow<AlbumWithSongs?> =
         combine(_albumWithSongs(albumId), albumSongs(albumId)) { album, songs ->
@@ -291,19 +295,49 @@ interface AlbumsDao : ArtistsDao {
     """)
     fun artistAlbums(artistId: String): Flow<List<Album>>
 
-    /** Albums containing the artist's library songs. */
+    /**
+     * Albums linked to the artist's library songs through the song-album map.
+     *
+     * Sorted by year descending, with unknown years last, then by title with NOCASE collation.
+     * An album without its own year takes the newest year of the artist's library songs linked
+     * to it through either the song's albumId or the song-album map.
+     */
     @Transaction
     @Query("""
-        SELECT album.*, count(song.dateDownload) downloadCount
+        WITH artist_library_songs AS (
+            SELECT s.id, s.albumId, s.year
+            FROM song_artist_map sam
+                INNER JOIN song s ON sam.songId = s.id
+            WHERE sam.artistId = :artistId
+                AND s.inLibrary IS NOT NULL
+        ), album_years AS (
+            SELECT albumId, MAX(year) AS year
+            FROM (
+                SELECT albumId, year
+                FROM artist_library_songs
+                WHERE albumId IS NOT NULL
+
+                UNION ALL
+
+                SELECT m.albumId, s.year
+                FROM artist_library_songs s
+                    INNER JOIN song_album_map m ON m.songId = s.id
+            )
+            GROUP BY albumId
+        )
+        SELECT album.*, count(song.dateDownload) downloadCount,
+               COALESCE(album.year, album_years.year) AS sortYear
         FROM song_artist_map
             INNER JOIN song ON song_artist_map.songId = song.id
             INNER JOIN song_album_map ON song_album_map.songId = song.id
             INNER JOIN album ON song_album_map.albumId = album.id
+            LEFT JOIN album_years ON album_years.albumId = album.id
         WHERE song_artist_map.artistId = :artistId
             AND song.inLibrary IS NOT NULL
         GROUP BY album.id
+        ORDER BY sortYear IS NULL, sortYear DESC, album.title COLLATE NOCASE ASC
     """)
-    fun artistSongAlbums(artistId: String): Flow<List<Album>>
+    fun artistSongAlbums(artistId: String): Flow<List<AlbumWithYear>>
 
     /**
      * Artwork for each album of [artistSongAlbums] that can still be shown: non-local artwork as is,
@@ -336,6 +370,10 @@ interface AlbumsDao : ArtistsDao {
         )
     """)
     fun artistAlbumThumbnails(artistId: String): Flow<List<AlbumThumbnail>>
+
+    /** IMAGE_DEBUG: the header artwork of the newest album, chosen in one query. */
+    @Query(IMAGE_DEBUG_NEWEST_ARTIST_ALBUM_QUERY)
+    suspend fun debugNewestArtistAlbumThumbnail(artistId: String): AlbumThumbnail?
 
     @Transaction
     @RawQuery(
