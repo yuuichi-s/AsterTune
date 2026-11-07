@@ -8,8 +8,8 @@ import io.github.yuuichi_s.astertune.db.InternalDatabase
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -65,18 +65,21 @@ class RelatedSongsSaverTest {
 
     @Test
     fun overlappingCallsSaveTheRelatedSongsOnce() = runBlocking {
-        val bothFetching = CompletableDeferred<Unit>()
+        val release = CompletableDeferred<Unit>()
         var fetching = 0
         val saver = RelatedSongsSaver(database) {
-            // Hold every fetch until both calls have passed the check before fetching
-            if (++fetching == 2) bothFetching.complete(Unit)
-            bothFetching.await()
+            fetching++
+            // Hold the fetch until the overlapping call has returned
+            release.await()
             listOf(item("r1"), item("r2"))
         }
 
-        listOf(async { saver.saveIfMissing(SOURCE) }, async { saver.saveIfMissing(SOURCE) }).awaitAll()
+        val first = async(start = CoroutineStart.UNDISPATCHED) { saver.saveIfMissing(SOURCE) }
+        saver.saveIfMissing(SOURCE)
+        release.complete(Unit)
+        first.await()
 
-        assertEquals(2, fetching)
+        assertEquals(1, fetching)
         assertEquals(listOf("r1", "r2"), relatedIds())
     }
 

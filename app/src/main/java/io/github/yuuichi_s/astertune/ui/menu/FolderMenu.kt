@@ -101,7 +101,6 @@ fun FolderMenu(
 
     LaunchedEffect(Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            database.localSongCountInPath(folder.getFullPath()).first()
             subDirSongCount = database.localSongCountInPath(folder.getFullPath()).first()
         }
     }

@@ -220,16 +220,6 @@ interface AlbumsDao : ArtistsDao {
     )
     fun safeDeleteAlbum(albumId: String)
 
-    @Transaction
-    @Query("""
-        SELECT album.*, count(song.dateDownload) downloadCount
-        FROM album
-            LEFT JOIN song ON song.albumId = album.id
-        WHERE album.id = :albumId
-        GROUP BY album.id
-    """)
-    fun _albumWithSongs(albumId: String): Flow<AlbumWithSongs?>
-
     /**
      * The album identified by [albumId] and its songs in album order.
      *
@@ -240,8 +230,15 @@ interface AlbumsDao : ArtistsDao {
      * order after a join.
      */
     fun albumWithSongs(albumId: String): Flow<AlbumWithSongs?> =
-        combine(_albumWithSongs(albumId), albumSongs(albumId)) { album, songs ->
-            album?.copy(songs = songs)
+        combine(album(albumId), albumSongs(albumId)) { album, songs ->
+            album?.let {
+                AlbumWithSongs(
+                    album = it.album,
+                    artists = it.artists,
+                    songs = songs,
+                    downloadCount = it.downloadCount,
+                )
+            }
         }
 
     /**

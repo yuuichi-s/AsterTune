@@ -13,6 +13,7 @@ import com.zionhuang.innertube.models.WatchEndpoint
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.RelatedSongMap
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
+import java.util.concurrent.ConcurrentHashMap
 
 /** Saves the related songs of a played song, which quick picks are built from. */
 class RelatedSongsSaver(
@@ -22,15 +23,26 @@ class RelatedSongsSaver(
             ?.let { YouTube.related(it).getOrNull() }?.songs
     },
 ) {
+    private val fetchingIds = ConcurrentHashMap.newKeySet<String>()
+
     /**
      * Fetches missing related songs and schedules a database write.
      * This method returns without waiting for the write to finish.
      */
     suspend fun saveIfMissing(mediaId: String) {
+        if (!fetchingIds.add(mediaId)) return
+
+        try {
+            save(mediaId)
+        } finally {
+            fetchingIds.remove(mediaId)
+        }
+    }
+
+    private suspend fun save(mediaId: String) {
         if (database.hasRelatedSongs(mediaId)) return
         val songs = fetchRelatedSongs(mediaId) ?: return
-        // Calls for the same song can overlap while fetching (one runs for every data source open).
-        // Re-check inside the serialized transaction so only the first result is stored.
+        // The fetch guard may be released before this queued write runs.
         database.transaction {
             if (hasRelatedSongs(mediaId)) return@transaction
             songs
