@@ -41,6 +41,7 @@ import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.items.SongFolderItem
 import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
+import io.github.yuuichi_s.astertune.utils.fixFilePath
 import io.github.yuuichi_s.astertune.utils.joinByBullet
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
@@ -101,7 +102,7 @@ fun FolderMenu(
 
     LaunchedEffect(Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            subDirSongCount = database.localSongCountInPath(folder.getFullPath()).first()
+            subDirSongCount = database.localSongCountInPath(fixFilePath(folder.getFullPath())).first()
         }
     }
 

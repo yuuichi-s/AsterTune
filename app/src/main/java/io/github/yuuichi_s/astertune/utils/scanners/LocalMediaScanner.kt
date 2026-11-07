@@ -1272,7 +1272,14 @@ class LocalMediaScanner(context: Context) {
             }
 
             Log.i(TAG, "------------ SCAN: Finished Quick Directory Rebuild ------------")
-            return newDirectoryStructure.androidStorageWorkaround()
+            val root = newDirectoryStructure.androidStorageWorkaround()
+
+            // hold the root path as parent path and directory name, like the subdirectories
+            if (root.parent.isEmpty() && root.currentDir.contains('/')) {
+                root.parent = root.currentDir.substringBeforeLast('/')
+                root.currentDir = root.currentDir.substringAfterLast('/')
+            }
+            return root
         }
 
 
