@@ -1,0 +1,14 @@
+AsterTune 1.0.6
+
+Features
+- Show the album and a like button in local song lists.
+- Queue an artist's full song list when playing from their Songs section.
+- Stop showing local songs whose files are gone. They return if the files come back.
+
+Improvements
+- Start playing online songs sooner.
+
+Fixes
+- Fix online songs sometimes getting stuck while loading.
+- Show correct song counts and search results in folders.
+- Update local artwork when the audio file changes.
