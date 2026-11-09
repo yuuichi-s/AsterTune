@@ -53,13 +53,12 @@ fun LoginScreen(
     val innerTubeCookie by rememberPreference(InnerTubeCookieKey, "")
     val accountImageFetcher = LocalAccountImageFetcher.current
 
-    // Once the cookie shows an established session, leave the login screen and return to the
-    // start destination (the main screen) automatically.
+    // Keep sign-in from bypassing unfinished setup.
     val isLoggedIn = remember(innerTubeCookie) {
         "SAPISID" in parseCookieString(innerTubeCookie)
     }
     LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn) {
+        if (isLoggedIn && !navController.popBackStack("setup_wizard", false)) {
             navController.popBackStack(navController.graph.startDestinationId, false)
         }
     }
