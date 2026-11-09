@@ -315,4 +315,5 @@
     <string name="scan_paths_already_included">Ce dossier est déjà inclus dans l’analyse. Retirez-le de l’une des deux listes.</string>
     <string name="scan_paths_rejected_dir">Le dossier de téléchargement et ses sous-dossiers ne peuvent pas être sélectionnés</string>
     <string name="dl_select_folder">Sélectionner un dossier</string>
+    <string name="scanner_scan_canceled">Analyse annulée</string>
 </resources>
