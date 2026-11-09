@@ -132,6 +132,7 @@
     <string name="sleep_timer_show_on_player_desc">プレーヤー画面にスリープタイマーボタンを表示する</string>
     <string name="scanner_progress_syncing">同期中…</string>
     <string name="scanner_scan_fail">スキャンが失敗しました</string>
+    <string name="scanner_scan_canceled">スキャンをキャンセルしました</string>
     <string name="scanner_ytm_link_fail">YouTube アーティストのリンク ジョブが失敗しました</string>
     <string name="scanner_ytm_link_start">YouTube アーティストのリンクを開始…</string>
     <string name="scanner_ytm_link_success">YouTube アーティストのリンク作業が完了</string>

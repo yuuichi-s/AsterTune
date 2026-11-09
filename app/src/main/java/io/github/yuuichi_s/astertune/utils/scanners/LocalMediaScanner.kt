@@ -52,12 +52,13 @@ import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.sync.withLock
 import java.io.File
 import java.io.FileNotFoundException
@@ -205,9 +206,11 @@ class LocalMediaScanner(context: Context) {
         if (strictFilePaths) {
             finalSongs.addAll(newSongs)
         } else {
+            val kept = SongMatchIndex<SongTempData> { it.song }
             newSongs.forEach { song ->
-                if (finalSongs.none { s -> compareSong(song.song, s.song, matchStrength, strictFileNames) }) {
+                if (kept.candidates(song.song).none { s -> compareSong(song.song, s.song, matchStrength, strictFileNames) }) {
                     finalSongs.add(song)
+                    kept.add(song)
                 }
             }
         }
@@ -221,7 +224,7 @@ class LocalMediaScanner(context: Context) {
             140
         }
 
-        val allLocalSongs = database.allLocalDbSongs()
+        val allLocalSongs = SongMatchIndex<Song> { it }.apply { database.allLocalDbSongs().forEach(::add) }
         val now = System.currentTimeMillis()
         val restoreCandidates = MissingSongArchive.load(context).filterNot { it.isExpired(now) }.toMutableList()
         // Restore matching songs together to preserve their relative playlist order.
@@ -245,24 +248,21 @@ class LocalMediaScanner(context: Context) {
             }
 
             // check if this song is known to the library
-            val songMatch = allLocalSongs.filter {
-                return@filter it.song.title.contains(song.song.title, true) &&
+            val songMatch = allLocalSongs.candidates(song.song).firstOrNull {
+                it.song.title.contains(song.song.title, true) &&
                         compareSong(it, song.song, matchStrength, strictFileNames, strictFilePaths)
             }
 
-            if (SCANNER_DEBUG) {
-                Log.v(TAG, "Found songs that match: ${songMatch.size}")
-                if (songMatch.isNotEmpty()) {
-                    Log.v(TAG, "FIRST Found songs ${songMatch.first().song.title}")
-                }
+            if (SCANNER_DEBUG && songMatch != null) {
+                Log.v(TAG, "FIRST Found songs ${songMatch.song.title}")
             }
 
 
-            if (songMatch.isNotEmpty()) { // known song, update the song info in the database
+            if (songMatch != null) { // known song, update the song info in the database
                 if (SCANNER_DEBUG)
                     Log.v(TAG, "Found in database, updating song: ${song.song.title} rescan = $refreshExisting")
 
-                val oldSong = songMatch.first().song
+                val oldSong = songMatch.song
                 val songToUpdate = song.song.song.copy(
                     id = oldSong.id,
                     localPath = song.song.song.localPath,
@@ -432,7 +432,6 @@ class LocalMediaScanner(context: Context) {
      *
      * @param newSongs complete set of local-song URIs found by the current scan
      */
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun quickSync(
         database: MusicDatabase,
         newSongs: List<Uri>,
@@ -465,56 +464,23 @@ class LocalMediaScanner(context: Context) {
             20
         }
 
-        val finalSongs = ArrayList<SongTempData>()
-        val scannerJobs = ArrayList<Deferred<SongTempData?>>()
-
-        // Get song basic metadata
-        delta.forEach { s ->
-            if (scannerRequestCancel) {
-                Log.i(TAG, "WARNING: Requested to cancel. Aborting.")
-                throw ScannerAbortException("Scanner canceled during Quick (additive delta) Library Sync")
-            }
-
-            if (SCANNER_DEBUG) {
-                Log.v(TAG, "PATH: $s")
-            }
-
-            if (!SYNC_SCANNER) {
-                // use async scanner
-                runBlocking {
-                    scannerJobs.add(
-                        async(lmScannerCoroutine) {
-                            var ret: SongTempData?
-                            if (scannerRequestCancel) {
-                                Log.i(TAG, "WARNING: Canceling advanced scanner job.")
-                                throw ScannerAbortException("")
-                            }
-                            try {
-                                ret = advancedScan(File(s))
-                                scannerProgressProbe.value++
-                                if (SCANNER_DEBUG && scannerProgressProbe.value % mod == 0) {
-                                    Log.d(
-                                        TAG,
-                                        "------------ SCAN: Full Scanner: ${scannerProgressProbe.value} discovered ------------"
-                                    )
-                                }
-                                if (scannerProgressProbe.value % mod == 0) {
-                                    scannerProgressCurrent.value = scannerProgressProbe.value
-                                }
-                            } catch (e: InvalidAudioFileException) {
-                                ret = null
-                            }
-                            ret
-                        }
-                    )
-                }
-            } else {
+        val abortMessage = "Scanner canceled during Quick (additive delta) Library Sync"
+        val finalSongs = if (!SYNC_SCANNER) {
+            extractConcurrently(delta.map { File(it) }, mod, abortMessage)
+        } else {
+            val songs = ArrayList<SongTempData>()
+            delta.forEach { s ->
                 if (scannerRequestCancel) {
                     Log.i(TAG, "WARNING: Requested to cancel. Aborting.")
-                    throw ScannerAbortException("Scanner canceled during Quick (additive delta) Library Sync")
+                    throw ScannerAbortException(abortMessage)
                 }
+
+                if (SCANNER_DEBUG) {
+                    Log.v(TAG, "PATH: $s")
+                }
+
                 // force synchronous scanning of songs. Do not catch errors
-                finalSongs.add(advancedScan(File(s)))
+                songs.add(advancedScan(File(s)))
                 scannerProgressProbe.value++
                 if (SCANNER_DEBUG && scannerProgressProbe.value % 5 == 0) {
                     Log.d(
@@ -526,17 +492,7 @@ class LocalMediaScanner(context: Context) {
                     scannerProgressCurrent.value = scannerProgressProbe.value
                 }
             }
-        }
-
-        if (!SYNC_SCANNER) {
-            // use async scanner
-            scannerJobs.awaitAll()
-        }
-
-        // add to finished list
-        scannerJobs.forEach {
-            val song = it.getCompleted()
-            song?.song?.let { finalSongs.add(song) }
+            songs
         }
 
         if (finalSongs.isNotEmpty()) {
@@ -586,7 +542,6 @@ class LocalMediaScanner(context: Context) {
      *
      * @param newSongs complete set of local-song URIs found by the current scan
      */
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun fullSync(
         database: MusicDatabase,
         newSongs: List<Uri>,
@@ -612,62 +567,24 @@ class LocalMediaScanner(context: Context) {
             20
         }
 
-        val finalSongs = ArrayList<SongTempData>()
-        val scannerJobs = ArrayList<Deferred<SongTempData?>>()
-
-        // Get song basic metadata
-        files.forEach { file ->
-            if (scannerRequestCancel) {
-                Log.i(TAG, "WARNING: Requested to cancel. Aborting.")
-                throw ScannerAbortException("Scanner canceled during FULL Library Sync")
-            }
-
-            if (SCANNER_DEBUG)
-                Log.d(TAG, "PATH: $file")
-
-            if (!SYNC_SCANNER) {
-                // use async scanner
-                runBlocking {
-                    scannerJobs.add(
-                        async(lmScannerCoroutine) {
-                            if (scannerRequestCancel) {
-                                Log.i(TAG, "WARNING: Canceling advanced scanner job.")
-                                throw ScannerAbortException("")
-                            }
-                            try {
-                                val ret = advancedScan(file)
-                                scannerProgressProbe.value++
-                                if (SCANNER_DEBUG && scannerProgressProbe.value % mod == 0) {
-                                    Log.d(
-                                        TAG,
-                                        "------------ SCAN: Full Scanner: ${scannerProgressProbe.value} discovered ------------"
-                                    )
-                                }
-                                if (scannerProgressProbe.value % mod == 0) {
-                                    scannerProgressCurrent.value = scannerProgressProbe.value
-                                }
-                                ret
-                            } catch (e: InvalidAudioFileException) {
-                                null
-                            }
-                        }
-                    )
+        val abortMessage = "Scanner canceled during FULL Library Sync"
+        val finalSongs = if (!SYNC_SCANNER) {
+            extractConcurrently(files, mod, abortMessage)
+        } else {
+            val songs = ArrayList<SongTempData>()
+            files.forEach { file ->
+                if (scannerRequestCancel) {
+                    Log.i(TAG, "WARNING: Requested to cancel. Aborting.")
+                    throw ScannerAbortException(abortMessage)
                 }
-            } else {
+
+                if (SCANNER_DEBUG)
+                    Log.d(TAG, "PATH: $file")
+
                 // force synchronous scanning of songs. Do not catch errors
-                finalSongs.add(advancedScan(file))
+                songs.add(advancedScan(file))
             }
-        }
-
-        if (!SYNC_SCANNER) {
-            // use async scanner
-            scannerJobs.awaitAll()
-        }
-
-        // add to finished list
-        scannerJobs.forEach {
-            val song = it.getCompleted()
-            song?.song?.let { finalSongs.add(song) }
+            songs
         }
 
         scannerProgressCurrent.value = scannerProgressProbe.value
@@ -680,6 +597,47 @@ class LocalMediaScanner(context: Context) {
 
         scannerState.value = 0
         Log.i(TAG, "------------ SYNC: Finished FULL Library Sync ------------")
+    }
+
+    /**
+     * Extracts metadata from [files] in parallel on [lmScannerCoroutine].
+     *
+     * Returns the extracted songs in the order of [files], skipping files that are not playable
+     * audio. Progress counts successful extractions and is published every [mod] songs.
+     *
+     * @throws ScannerAbortException with [abortMessage] if a cancel is requested before every
+     *     extraction has started
+     */
+    private suspend fun extractConcurrently(
+        files: List<File>,
+        mod: Int,
+        abortMessage: String,
+    ): ArrayList<SongTempData> = coroutineScope {
+        files.map { file ->
+            async(lmScannerCoroutine) {
+                if (scannerRequestCancel) {
+                    Log.i(TAG, "WARNING: Canceling advanced scanner job.")
+                    throw ScannerAbortException(abortMessage)
+                }
+                if (SCANNER_DEBUG)
+                    Log.d(TAG, "PATH: $file")
+
+                try {
+                    val ret = advancedScan(file)
+                    val probed = scannerProgressProbe.updateAndGet { it + 1 }
+                    if (probed % mod == 0) {
+                        if (SCANNER_DEBUG) {
+                            Log.d(TAG, "------------ SCAN: Full Scanner: $probed discovered ------------")
+                        }
+                        // Jobs can finish out of order, so never move the shown progress backwards.
+                        scannerProgressCurrent.update { maxOf(it, probed) }
+                    }
+                    ret
+                } catch (e: InvalidAudioFileException) {
+                    null
+                }
+            }
+        }.awaitAll().filterNotNullTo(ArrayList())
     }
 
     /**
@@ -1196,15 +1154,28 @@ class LocalMediaScanner(context: Context) {
             failOnListingError: Boolean = false,
             validator: ((DocumentFile) -> Boolean)? = null
         ): DocumentFile? {
-            val files = listFiles(dir, failOnListingError)
+            scanListedFiles(listFiles(dir, failOnListingError), result, scanHidden, failOnListingError, validator)
+            return null
+        }
+
+        /**
+         * Scans [files], the listing of one directory, recursing into subdirectories. Each
+         * subdirectory is listed once, and that listing serves both the `.nomedia` check and the
+         * recursion.
+         */
+        private fun scanListedFiles(
+            files: Array<DocumentFile>,
+            result: ArrayList<DocumentFile>,
+            scanHidden: Boolean,
+            failOnListingError: Boolean,
+            validator: ((DocumentFile) -> Boolean)?
+        ) {
             for (file in files) {
                 if (!scanHidden && file.name?.startsWith(".") == true) continue
-                if (
-                    isDirectory(file) &&
-                    (scanHidden || !listFiles(file, failOnListingError).any { it.name == ".nomedia" })
-                ) {
+                val children = if (isDirectory(file)) listFiles(file, failOnListingError) else null
+                if (children != null && (scanHidden || !children.any { it.name == ".nomedia" })) {
                     // look into subdirs
-                    scanDfRecursive(file, result, scanHidden, failOnListingError, validator)
+                    scanListedFiles(children, result, scanHidden, failOnListingError, validator)
                 } else {
                     // add if file matches
                     if (validator == null || validator(file)) {
@@ -1216,7 +1187,6 @@ class LocalMediaScanner(context: Context) {
                     }
                 }
             }
-            return null
         }
 
         /**
@@ -1454,6 +1424,32 @@ class LocalMediaScanner(context: Context) {
 
             return ytmResult
         }
+    }
+}
+
+/**
+ * Indexes songs by title and by nonblank local path. [LocalMediaScanner.compareSong] reports a
+ * match only for songs sharing one of these, so candidates can be found without comparing
+ * against every song.
+ */
+private class SongMatchIndex<T>(private val songOf: (T) -> Song) {
+    private val items = ArrayList<T>()
+    private val byTitle = HashMap<String, MutableList<Int>>()
+    private val byPath = HashMap<String, MutableList<Int>>()
+
+    fun add(item: T) {
+        val song = songOf(item).song
+        val index = items.size
+        items.add(item)
+        byTitle.getOrPut(song.title) { ArrayList() }.add(index)
+        song.localPath?.takeIf { it.isNotBlank() }?.let { byPath.getOrPut(it) { ArrayList() }.add(index) }
+    }
+
+    /** Items sharing [target]'s title or nonblank local path, in the order they were added. */
+    fun candidates(target: Song): List<T> {
+        val byTitleHits = byTitle[target.song.title].orEmpty()
+        val byPathHits = target.song.localPath?.takeIf { it.isNotBlank() }?.let { byPath[it] }.orEmpty()
+        return (byTitleHits + byPathHits).distinct().sorted().map { items[it] }
     }
 }
 
