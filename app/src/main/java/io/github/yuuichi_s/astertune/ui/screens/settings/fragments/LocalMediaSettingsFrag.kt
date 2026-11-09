@@ -13,6 +13,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -93,6 +94,7 @@ import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.reportException
+import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.TAG
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.destroyScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.getScanner
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerProgressCurrent
@@ -221,9 +223,10 @@ fun ColumnScope.LocalScannerFrag() {
                             delay(1000)
                         } catch (e: ScannerAbortException) {
                             scannerFailure = true
+                            Log.i(TAG, "Manual scan canceled: ${e.message}")
 
                             snackbarHostState.showSnackbar(
-                                message = "$scanFailMessage: ${e.message}",
+                                message = resources.getString(R.string.scanner_scan_canceled),
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
                             )
@@ -255,9 +258,10 @@ fun ColumnScope.LocalScannerFrag() {
                             delay(1000)
                         } catch (e: ScannerAbortException) {
                             scannerFailure = true
+                            Log.i(TAG, "Manual scan canceled: ${e.message}")
 
                             snackbarHostState.showSnackbar(
-                                message = "$scanFailMessage: ${e.message}",
+                                message = resources.getString(R.string.scanner_scan_canceled),
                                 withDismissAction = true,
                                 duration = SnackbarDuration.Short
                             )

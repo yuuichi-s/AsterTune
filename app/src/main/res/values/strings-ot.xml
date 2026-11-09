@@ -256,6 +256,7 @@ while also allowing users to translate our app as well. New, specific strings to
 	<string name="scanner_progress_scanning">Scanning…</string>
     <string name="scanner_progress_syncing">Syncing…</string>
 	<string name="scanner_scan_fail">Scanner failed</string>
+    <string name="scanner_scan_canceled">Scan canceled</string>
 
 	<string name="scanner_ytm_link_fail">YouTube artist linking job failed</string>
 	<string name="scanner_ytm_link_start">Starting YouTube artist linking…</string>
