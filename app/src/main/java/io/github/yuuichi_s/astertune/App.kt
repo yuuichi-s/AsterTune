@@ -165,7 +165,7 @@ class App : Application(), SingletonImageLoader.Factory {
     override fun newImageLoader(context: PlatformContext): ImageLoader {
         val cacheSize = dataStore[MaxImageCacheSizeKey]
 
-        // will crash app if you set to 0 after cache starts being used
+        // DiskCache.Builder requires a positive size, so skip it when the cache is off.
         if (cacheSize == 0) {
             return ImageLoader.Builder(this)
                 .debugEventListener { imageLoader }
@@ -182,6 +182,7 @@ class App : Application(), SingletonImageLoader.Factory {
                         .maxSizePercent(context, 0.3)
                         .build()
                 }
+                .diskCache(null)
                 .diskCachePolicy(CachePolicy.DISABLED)
                 .build()
         }

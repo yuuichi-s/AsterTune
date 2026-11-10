@@ -859,7 +859,7 @@ fun ColumnScope.SongCacheFrag() {
 @Composable
 fun ColumnScope.ImageCacheFrag() {
     val context = LocalContext.current
-    val imageDiskCache = context.imageLoader.diskCache ?: return
+    val imageDiskCache = context.imageLoader.diskCache
 
     DiskCacheFrag(
         diskCache = imageDiskCache,
