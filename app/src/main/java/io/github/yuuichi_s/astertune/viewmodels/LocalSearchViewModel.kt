@@ -2,13 +2,14 @@ package io.github.yuuichi_s.astertune.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.Album
 import io.github.yuuichi_s.astertune.db.entities.Artist
 import io.github.yuuichi_s.astertune.db.entities.LocalItem
 import io.github.yuuichi_s.astertune.db.entities.Playlist
 import io.github.yuuichi_s.astertune.db.entities.Song
-import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.yuuichi_s.astertune.utils.withArtistThumbnails
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -37,7 +38,7 @@ class LocalSearchViewModel @Inject constructor(
                 LocalFilter.ALL -> combine(
                     database.searchSongs(query, PREVIEW_SIZE),
                     database.searchAlbums(query, PREVIEW_SIZE),
-                    database.searchArtists(query, PREVIEW_SIZE),
+                    database.searchArtists(query, PREVIEW_SIZE).withArtistThumbnails(database),
                     database.searchArtistSongs(query, PREVIEW_SIZE),
                     database.searchPlaylists(query, PREVIEW_SIZE),
                 ) { songs, albums, artists, artistSongs, playlists ->
@@ -52,7 +53,7 @@ class LocalSearchViewModel @Inject constructor(
                     list.distinctBy { it.id }
                 }
                 LocalFilter.ALBUM -> database.searchAlbums(query)
-                LocalFilter.ARTIST -> database.searchArtists(query)
+                LocalFilter.ARTIST -> database.searchArtists(query).withArtistThumbnails(database)
                 LocalFilter.PLAYLIST -> database.searchPlaylists(query)
             }.map { list ->
                 LocalSearchResult(

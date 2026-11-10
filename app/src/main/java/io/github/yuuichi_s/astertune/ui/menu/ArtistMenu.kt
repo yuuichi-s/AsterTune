@@ -16,9 +16,12 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.zionhuang.innertube.YouTube
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalNetworkConnected
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -28,10 +31,11 @@ import io.github.yuuichi_s.astertune.db.entities.Artist
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.items.ArtistListItem
-import com.zionhuang.innertube.YouTube
+import io.github.yuuichi_s.astertune.utils.artistThumbnailData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -45,17 +49,22 @@ fun ArtistMenu(
     val database = LocalDatabase.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val isNetworkConnected = LocalNetworkConnected.current
-    val artistState = database.artist(originalArtist.id).collectAsState(initial = originalArtist)
+    val artistFlow = remember(database, originalArtist.id) { database.artist(originalArtist.id) }
+    val artistState = artistFlow.collectAsState(initial = originalArtist)
     val artist = artistState.value ?: originalArtist
+    val thumbnailData by remember(database, artist.artist.isLocal) {
+        if (artist.artist.isLocal) database.artistThumbnailData() else flowOf(null)
+    }.collectAsState(initial = null)
 
     ArtistListItem(
-        artist = artist,
+        artist = thumbnailData?.withThumbnail(artist) ?: artist,
         badges = {},
         trailingContent = {
             IconButton(
                 onClick = {
                     database.transaction {
-                        update(artist.artist.toggleLike())
+                        val entity = artistById(artist.id) ?: return@transaction
+                        update(entity.toggleLike())
                     }
                 }
             ) {

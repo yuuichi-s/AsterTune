@@ -19,6 +19,9 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zionhuang.innertube.YouTube
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.yuuichi_s.astertune.constants.AlbumFilter
 import io.github.yuuichi_s.astertune.constants.AlbumFilterKey
 import io.github.yuuichi_s.astertune.constants.AlbumSortDescendingKey
@@ -69,9 +72,7 @@ import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.refreshLocal
 import io.github.yuuichi_s.astertune.utils.sortLocalSongs
-import com.zionhuang.innertube.YouTube
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import io.github.yuuichi_s.astertune.utils.withArtistThumbnails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -163,24 +164,9 @@ class LocalLibraryViewModel @Inject constructor(
         }
         .distinctUntilChanged()
         .flatMapLatest { (sortType, descending) ->
-            combine(
-                database.artists(ArtistFilter.LIBRARY, sortType, descending, localOnly = true),
-                database.localArtistThumbnails(),
-                database.localArtistsWithUsableThumbnail(),
-            ) { artists, thumbnails, usableIds ->
-                val thumbnailByArtist = thumbnails
-                    .filter { it.thumbnailUrl != null }
-                    .associate { it.artistId to it.thumbnailUrl }
-                val usable = usableIds.toSet()
-                artists.map { artist ->
-                    if (artist.artist.isLocal && artist.id !in usable && artist.artist.thumbnailUrl != thumbnailByArtist[artist.id]) {
-                        artist.copy(artist = artist.artist.copy(thumbnailUrl = thumbnailByArtist[artist.id]))
-                    } else {
-                        artist
-                    }
-                }
-            }
+            database.artists(ArtistFilter.LIBRARY, sortType, descending, localOnly = true)
         }
+        .withArtistThumbnails(database)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val localPlaylists: StateFlow<List<Playlist>?> = context.dataStore.data
@@ -296,6 +282,7 @@ class LibraryArtistsViewModel @Inject constructor(
         .flatMapLatest { (filter, sortType, descending) ->
             database.artists(filter, sortType, descending)
         }
+        .withArtistThumbnails(database)
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     fun syncArtists(bypassCd: Boolean = false) {

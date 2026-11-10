@@ -10,6 +10,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,10 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.constants.ListItemHeight
 import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
 import io.github.yuuichi_s.astertune.models.MediaMetadata
+import io.github.yuuichi_s.astertune.utils.artistThumbnailData
+import io.github.yuuichi_s.astertune.utils.getThumbnailModel
+import kotlinx.coroutines.flow.flowOf
 
 @JvmName("ArtistDialogMediaMetadataArtist")
 @Composable
@@ -76,6 +83,12 @@ fun ArtistDialog(
     artists: List<ArtistEntity>,
     onDismiss: () -> Unit,
 ) {
+    val database = LocalDatabase.current
+    val hasLocalArtists = artists.any { it.isLocal }
+    val thumbnailData by remember(database, hasLocalArtists) {
+        if (hasLocalArtists) database.artistThumbnailData() else flowOf(null)
+    }.collectAsState(initial = null)
+
     ListDialog(
         onDismiss = onDismiss
     ) {
@@ -83,6 +96,10 @@ fun ArtistDialog(
             items = artists,
             key = { it.id }
         ) { artist ->
+            val thumbnailUrl = when (val thumbnails = thumbnailData) {
+                null -> artist.thumbnailUrl
+                else -> thumbnails.thumbnailUrl(artist)
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -98,7 +115,7 @@ fun ArtistDialog(
                     contentAlignment = Alignment.Center
                 ) {
                     AsyncImage(
-                        model = artist.thumbnailUrl,
+                        model = thumbnailUrl?.let { getThumbnailModel(it) },
                         contentDescription = null,
                         modifier = Modifier
                             .size(ListThumbnailSize)
