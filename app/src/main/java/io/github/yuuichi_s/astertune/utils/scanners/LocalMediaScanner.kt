@@ -9,6 +9,7 @@
 
 package io.github.yuuichi_s.astertune.utils.scanners
 
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
@@ -1085,15 +1086,16 @@ class LocalMediaScanner(context: Context) {
         /**
          * Lists files to scan, applying exclusions to the selected folders and their descendants.
          * Exclusions take precedence over inclusions.
-         *
-         * Input URIs are expected to have non-null paths.
          */
         fun getScanFiles(scanPaths: List<Uri>, excludedScanPaths: List<Uri>, context: Context): List<Uri> {
             val allSongs = ArrayList<Uri>()
-            val resultingPaths =
-                scanPaths.filterNot { incl ->
-                    excludedScanPaths.any { excl -> isSameOrInsideFolder(incl.path, excl.path.toString()) }
-                }
+            val excludedLocations = excludedScanPaths.mapNotNull(::scanLocationOf)
+            fun isExcluded(uri: Uri): Boolean {
+                val location = scanLocationOf(uri) ?: return false
+                return excludedLocations.any { location.isSameOrInside(it) }
+            }
+
+            val resultingPaths = scanPaths.filterNot(::isExcluded)
 
             resultingPaths.forEach { path ->
                 try {
@@ -1116,9 +1118,7 @@ class LocalMediaScanner(context: Context) {
                             return@scanDfRecursive true
                         }
 
-                        allSongs.addAll(songsHere.fastFilter { incl ->
-                            !excludedScanPaths.any { isSameOrInsideFolder(incl.uri.path, it.path.toString()) }
-                        }.map { it.uri })
+                        allSongs.addAll(songsHere.fastFilter { !isExcluded(it.uri) }.map { it.uri })
                     }
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
@@ -1129,22 +1129,48 @@ class LocalMediaScanner(context: Context) {
             return allSongs.fastDistinctBy { it.toString() }
         }
 
-        /**
-         * Tests whether the tree URI path [path] is [folder] or lies within it.
-         *
-         * With [folder] set to `/tree/primary:Music`:
-         *
-         * - `/tree/primary:Music/Live` matches.
-         * - `/tree/primary:Music2` does not match.
-         *
-         * A trailing `:` in [folder] indicates a storage volume root.
-         */
-        private fun isSameOrInsideFolder(path: String?, folder: String): Boolean {
-            if (path == null) return false
-            if (path == folder) return true
+        private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
 
-            val prefix = if (folder.endsWith(':') || folder.endsWith('/')) folder else "$folder/"
-            return path.startsWith(prefix)
+        /**
+         * Provider and location of a tree or document URI, used to compare scan folders.
+         *
+         * External-storage document IDs allow exclusions to match across different tree URIs.
+         * Other providers use URI paths.
+         */
+        private data class ScanLocation(val authority: String, val id: String)
+
+        private fun scanLocationOf(uri: Uri): ScanLocation? {
+            if (uri.scheme != ContentResolver.SCHEME_CONTENT) return null
+            val authority = uri.authority ?: return null
+            val id = if (authority == EXTERNAL_STORAGE_AUTHORITY) documentOrTreeId(uri) else uri.path
+            return id?.let { ScanLocation(authority, it) }
+        }
+
+        /** Returns the document ID of a document URI, or the tree document ID of a tree-only URI. */
+        private fun documentOrTreeId(uri: Uri): String? =
+            try {
+                DocumentsContract.getDocumentId(uri)
+            } catch (_: IllegalArgumentException) {
+                try {
+                    DocumentsContract.getTreeDocumentId(uri)
+                } catch (_: IllegalArgumentException) {
+                    null
+                }
+            }
+
+        /**
+         * Tests whether this location is [folder] or a descendant.
+         * Volume-root IDs such as `primary:` have no `/` before descendant paths.
+         */
+        private fun ScanLocation.isSameOrInside(folder: ScanLocation): Boolean {
+            if (authority != folder.authority) return false
+            if (id == folder.id) return true
+
+            val volumeSeparator = folder.id.indexOf(':')
+            val isVolumeRoot = volumeSeparator >= 0 && volumeSeparator == folder.id.lastIndex
+            val prefix = if (isVolumeRoot || folder.id.endsWith('/')) folder.id else "${folder.id}/"
+
+            return id.startsWith(prefix)
         }
 
         fun scanDfRecursive(
