@@ -3,6 +3,15 @@ package io.github.yuuichi_s.astertune.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.YTItem
+import com.zionhuang.innertube.pages.ExplorePage
+import com.zionhuang.innertube.pages.HomePage
+import com.zionhuang.innertube.utils.completed
+import com.zionhuang.innertube.utils.parseCookieString
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.Album
@@ -13,15 +22,6 @@ import io.github.yuuichi_s.astertune.utils.SyncUtils
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.syncCoroutine
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.PlaylistItem
-import com.zionhuang.innertube.models.YTItem
-import com.zionhuang.innertube.pages.ExplorePage
-import com.zionhuang.innertube.pages.HomePage
-import com.zionhuang.innertube.utils.completed
-import com.zionhuang.innertube.utils.parseCookieString
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -57,7 +57,7 @@ class HomeViewModel @Inject constructor(
     private val previousHomePage = MutableStateFlow<HomePage?>(null)
     val explorePage = MutableStateFlow<ExplorePage?>(null)
     val recentActivity = database.recentActivity()
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val allLocalItems = MutableStateFlow<List<LocalItem>>(emptyList())
     /** Items from similar recommendations and home sections used for random playback. */

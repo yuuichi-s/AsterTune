@@ -484,7 +484,7 @@ fun HomeScreen(
             contentPadding = listPadding
         ) {
             if (showChips) {
-                item {
+                item(key = "chips") {
                     ChipsRow(
                         chips = homePage?.chips?.mapNotNull { it to it.title } ?: emptyList(),
                         currentValue = selectedChip,
@@ -496,14 +496,14 @@ fun HomeScreen(
             }
 
             if (isLoggedIn && !recentActivity.isNullOrEmpty()) {
-                item {
+                item(key = "recent_activity_title") {
                     NavigationTitle(
                         title = stringResource(R.string.recent_activity),
                         modifier = Modifier.animateItem()
                     )
                 }
 
-                item {
+                item(key = "recent_activity") {
                     RecentActivityPager(
                         pages = recentPages,
                         layout = recentLayout,
@@ -519,14 +519,14 @@ fun HomeScreen(
 
             // Based on listening
             quickPicks?.takeIf { showQuickPicks && it.isNotEmpty() }?.let { quickPicks ->
-                item {
+                item(key = "quick_picks_title") {
                     NavigationTitle(
                         title = stringResource(R.string.quick_picks),
                         modifier = Modifier.animateItem()
                     )
                 }
 
-                item {
+                item(key = "quick_picks") {
                     LazyHorizontalGrid(
                         state = quickPicksLazyGridState,
                         rows = GridCells.Fixed(4),
@@ -570,14 +570,14 @@ fun HomeScreen(
 
             // Forgotten favorites
             forgottenFavorites?.takeIf { showForgottenFav && it.isNotEmpty() }?.let { forgottenFavorites ->
-                item {
+                item(key = "forgotten_favorites_title") {
                     NavigationTitle(
                         title = stringResource(R.string.forgotten_favorites),
                         modifier = Modifier.animateItem()
                     )
                 }
 
-                item {
+                item(key = "forgotten_favorites") {
                     val queueTitle = stringResource(R.string.forgotten_favorites)
                     // take min in case list size is less than 4
                     val rows = min(4, forgottenFavorites.size)
@@ -627,14 +627,14 @@ fun HomeScreen(
 
             // Keep listening
             keepListening?.takeIf { showKeepListening && it.isNotEmpty() }?.let { keepListening ->
-                item {
+                item(key = "keep_listening_title") {
                     NavigationTitle(
                         title = stringResource(R.string.keep_listening),
                         modifier = Modifier.animateItem()
                     )
                 }
 
-                item {
+                item(key = "keep_listening") {
                     LazyHorizontalGrid(
                         state = rememberLazyGridState(),
                         rows = GridCells.Fixed(1),
@@ -654,7 +654,7 @@ fun HomeScreen(
             }
 
             accountPlaylists?.takeIf { showAccountPlaylists && it.isNotEmpty() }?.let { accountPlaylists ->
-                item {
+                item(key = "account_playlists_title") {
                     NavigationTitle(
                         title = stringResource(R.string.your_youtube_playlists),
                         onClick = {
@@ -664,7 +664,7 @@ fun HomeScreen(
                     )
                 }
 
-                item {
+                item(key = "account_playlists") {
                     LazyRow(
                         contentPadding = WindowInsets.systemBars
                             .only(WindowInsetsSides.Horizontal)
@@ -816,7 +816,7 @@ fun HomeScreen(
             }
 
             if (showYtmSections && homePage?.continuation != null && homePage?.sections?.isNotEmpty() == true) {
-                item {
+                item(key = "youtube_continuation_placeholder") {
                     ShimmerHost(
                         modifier = Modifier.animateItem()
                     ) {
@@ -836,7 +836,7 @@ fun HomeScreen(
             }
 
             explorePage?.moodAndGenres?.takeIf { showMood }?.let { moodAndGenres ->
-                item {
+                item(key = "mood_and_genres_title") {
                     NavigationTitle(
                         title = stringResource(R.string.mood_and_genres),
                         onClick = {
@@ -845,7 +845,7 @@ fun HomeScreen(
                         modifier = Modifier.animateItem()
                     )
                 }
-                item {
+                item(key = "mood_and_genres") {
                     LazyHorizontalGrid(
                         rows = GridCells.Fixed(4),
                         contentPadding = PaddingValues(6.dp),
@@ -869,7 +869,7 @@ fun HomeScreen(
             }
 
             if (isLoading) {
-                item {
+                item(key = "loading_placeholder") {
                     ShimmerHost(
                         modifier = Modifier.animateItem()
                     ) {
