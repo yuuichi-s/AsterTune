@@ -41,6 +41,7 @@
     <string name="local_player_settings_title">Локальные медиа</string>
     <string name="m3u_import_playlist">Импортировать плейлист (m3u)</string>
     <string name="scanner_scan_fail">Ошибка сканирования</string>
+    <string name="scanner_scan_canceled">Сканирование отменено</string>
     <plurals name="scanner_n_song_processed">
         <item quantity="one">%d песня обработана</item>
         <item quantity="few">%d песни обработаны</item>

@@ -210,6 +210,7 @@
     <string name="scanner_progress_scanning">סורק…</string>
     <string name="scanner_progress_syncing">מסנכרן…</string>
     <string name="scanner_scan_fail">הסריקה נכשלה</string>
+    <string name="scanner_scan_canceled">הסריקה בוטלה</string>
     <string name="scanner_ytm_link_fail">קישור אמן YouTube נכשל</string>
     <string name="scanner_ytm_link_start">מתחיל קישור אמן YouTube…</string>
     <string name="scanner_ytm_link_success">קישור אמן YouTube הושלם</string>

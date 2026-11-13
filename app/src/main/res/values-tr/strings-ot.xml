@@ -251,6 +251,7 @@ while also allowing users to translate our app as well. New, specific strings to
 	<string name="scanner_progress_scanning">Taranıyor…</string>
     <string name="scanner_progress_syncing">Eşitleniyor…</string>
 	<string name="scanner_scan_fail">Tarama başarısız oldu</string>
+    <string name="scanner_scan_canceled">Tarama iptal edildi</string>
 
 	<string name="scanner_ytm_link_fail">YouTube sanatçılarını bağlama işlemi başarısız oldu</string>
 	<string name="scanner_ytm_link_start">YouTube sanatçılarını bağlama işlemi başlatılıyor…</string>

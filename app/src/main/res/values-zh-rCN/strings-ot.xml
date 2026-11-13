@@ -90,6 +90,7 @@
     <string name="scanner_progress_scanning">扫描..…</string>
     <string name="scanner_progress_syncing">同步..…</string>
     <string name="scanner_scan_fail">扫描失败</string>
+    <string name="scanner_scan_canceled">扫描已取消</string>
     <string name="scanner_ytm_link_fail">YouTube 音乐人链接任务失败</string>
     <string name="scanner_ytm_link_start">正在关联 YouTube 音乐人…</string>
     <string name="scanner_ytm_link_success">YouTube 音乐人链接任务已完成</string>

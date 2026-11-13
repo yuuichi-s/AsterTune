@@ -139,6 +139,7 @@
     <string name="scanner_progress_scanning">स्कैन किया जा रहा है…</string>
     <string name="scanner_progress_syncing">सिंक किया जा रहा है…</string>
     <string name="scanner_scan_fail">स्कैनर फेल हो गया</string>
+    <string name="scanner_scan_canceled">स्कैन रद्द किया गया</string>
     <string name="scanner_ytm_link_fail">YouTube कलाकार लिंक करने की प्रक्रिया विफल हुई</string>
     <string name="scanner_ytm_link_start">YouTube कलाकार लिंक करना प्रारंभ किया जा रहा है…</string>
     <string name="scanner_ytm_link_success">YouTube कलाकार लिंकिंग कार्य पूर्ण हुआ</string>

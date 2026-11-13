@@ -56,6 +56,7 @@
     <string name="scanner_progress_syncing">Sincronizzazione…</string>
     <string name="scanner_ytm_link_fail">Collegamento dell\'artista su YouTube fallito</string>
     <string name="scanner_scan_fail">Scanner fallito</string>
+    <string name="scanner_scan_canceled">Scansione annullata</string>
     <string name="scanner_missing_storage_perm">Lo scanner multimediale locale richiede autorizzazioni di archiviazione per funzionare</string>
     <string name="scanner_local_title">Scanner locale</string>
     <string name="scanner_ytm_link_start">Avvio del collegamento dell\'artista su YouTube…</string>

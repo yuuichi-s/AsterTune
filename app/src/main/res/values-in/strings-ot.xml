@@ -158,6 +158,7 @@
     <string name="scanner_progress_scanning">Memindai…</string>
     <string name="scanner_progress_syncing">Menyinkronkan…</string>
     <string name="scanner_scan_fail">Gagal memindai</string>
+    <string name="scanner_scan_canceled">Pemindaian dibatalkan</string>
     <string name="scanner_ytm_link_fail">Pekerjaan penautan artis YouTube gagal</string>
     <string name="scanner_ytm_link_start">Memulai menautkan artis YouTube…</string>
     <string name="scanner_ytm_link_success">Pekerjaan menautkan artis YouTube selesai</string>

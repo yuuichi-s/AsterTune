@@ -62,6 +62,7 @@
     <string name="scanner_local_title">로컬 스캔</string>
     <string name="scanner_progress_syncing">동기화 중…</string>
     <string name="scanner_scan_fail">스캔 실패</string>
+    <string name="scanner_scan_canceled">스캔 취소됨</string>
     <string name="scanner_ytm_link_fail">유튜브 아티스트 연결 실패</string>
     <string name="scanner_ytm_link_success">유튜브 아티스트 연결 완료</string>
     <plurals name="scanner_n_song_processed">

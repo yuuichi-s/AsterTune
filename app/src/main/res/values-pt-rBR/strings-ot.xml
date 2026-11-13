@@ -105,6 +105,7 @@
     <string name="scanner_missing_storage_perm">A busca de midia local requer permissões de armazenamento</string>
     <string name="scanner_progress_syncing">Sincronizando…</string>
     <string name="scanner_scan_fail">A busca falhou</string>
+    <string name="scanner_scan_canceled">Busca cancelada</string>
     <string name="scanner_ytm_link_fail">O processo de vínculo de artistas do YouTube falhou</string>
     <string name="playlist_add_local_to_synced_note">Observação: Adicionar músicas locais em listas sincronizadas/remotas não é suportado. Qualquer outra combinação é válida</string>
     <string name="grp_lyrics_parser">Interpretador</string>

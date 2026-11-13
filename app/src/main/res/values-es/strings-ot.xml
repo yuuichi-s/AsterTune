@@ -81,6 +81,7 @@
     <string name="scanner_progress_complete">Escaneo completo</string>
     <string name="scanner_progress_scanning">Escaneando…</string>
     <string name="scanner_scan_fail">El escaneo falló</string>
+    <string name="scanner_scan_canceled">Escaneo cancelado</string>
     <string name="scanner_ytm_link_fail">Error en la tarea de vinculación de artistas de YouTube</string>
     <string name="scanner_ytm_link_success">Tarea de vinculación de artistas de YouTube completa</string>
     <plurals name="scanner_n_song_found">

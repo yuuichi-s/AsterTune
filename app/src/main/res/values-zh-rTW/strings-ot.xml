@@ -149,6 +149,7 @@
     <string name="scanner_progress_scanning">正在掃描…</string>
     <string name="scanner_progress_syncing">正在同步…</string>
     <string name="scanner_scan_fail">掃描失敗</string>
+    <string name="scanner_scan_canceled">掃描已取消</string>
     <string name="scanner_ytm_link_fail">YouTube 藝人關聯工作失敗</string>
     <string name="scanner_ytm_link_start">正在關聯 YouTube 藝人…</string>
     <string name="scanner_ytm_link_success">YouTube 藝人關聯工作完成</string>

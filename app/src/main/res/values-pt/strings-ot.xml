@@ -160,6 +160,7 @@
     <string name="scanner_progress_scanning">A analisar…</string>
     <string name="scanner_progress_syncing">A sincronizar…</string>
     <string name="scanner_scan_fail">Falha ao analisar</string>
+    <string name="scanner_scan_canceled">Análise cancelada</string>
     <string name="scanner_ytm_link_fail">Falha ao vincular artistas do YouTube</string>
     <string name="scanner_ytm_link_start">A iniciar vínculo dos artistas YouTube…</string>
     <string name="scanner_ytm_link_success">O vínculo de artistas YouTube foi concluído</string>

@@ -147,6 +147,7 @@
     <string name="scanner_progress_scanning">جارٍ المسح…</string>
     <string name="scanner_progress_syncing">جارٍ المزامنة…</string>
     <string name="scanner_scan_fail">فشل الماسح</string>
+    <string name="scanner_scan_canceled">أُلغي المسح</string>
     <string name="scanner_ytm_link_fail">فشلت مهمة ربط فنان YouTube</string>
     <string name="scanner_ytm_link_start">بدء ربط فنان YouTube…</string>
     <string name="scanner_ytm_link_success">اكتملت مهمة ربط فنان YouTube</string>
