@@ -77,7 +77,18 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="sync_progress_active">Syncing with YouTube account…</string>
     <string name="sync_progress_success">Sync complete</string>
 
-<!-- Settings -->
+<!-- Last.fm -->
+    <string name="lastfm" translatable="false">Last.fm</string>
+    <string name="lastfm_connect">Connect to Last.fm</string>
+    <string name="lastfm_connect_failed">Could not connect to Last.fm</string>
+    <string name="lastfm_open_profile">Open your Last.fm profile</string>
+    <string name="lastfm_reconnect">Reconnect to Last.fm</string>
+    <string name="lastfm_reconnect_desc">Reconnect to Last.fm. Unsent listening history stays on this device until then.</string>
+    <string name="lastfm_scrobble">Record plays on Last.fm</string>
+    <string name="lastfm_disconnect">Disconnect</string>
+    <string name="lastfm_disconnect_desc">Disconnecting deletes unsent listening history. AsterTune’s access remains until you remove it in your Last.fm settings.</string>
+
+    <!-- Settings -->
     <string name="prefs_advanced">Advanced</string>
     <string name="settings_debug">Debug</string>
 
@@ -402,4 +413,5 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="speed_fast">Fast</string>
     <string name="speed_very_fast">Very fast</string>
     <string name="dl_saved_files_title">Load saved files</string>
+
 </resources>

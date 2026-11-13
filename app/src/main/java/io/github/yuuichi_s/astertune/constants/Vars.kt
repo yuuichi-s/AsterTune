@@ -139,3 +139,6 @@ const val DB_QUERY_DEBUG = false
 
 // log image request sources, load timings, and artwork sizes
 const val IMAGE_DEBUG = false
+
+// log Last.fm scrobble metadata and batch submission results
+const val LASTFM_DEBUG = false

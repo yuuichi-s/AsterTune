@@ -43,10 +43,15 @@ android {
 
         // expose the TagLib library version (from the version catalog) for the About screen
         buildConfigField("String", "TAGLIB_VERSION", "\"${libs.versions.taglib.get()}\"")
+
+        // Last.fm API credentials. Both values are required to show the Last.fm settings.
+        buildConfigField("String", "LASTFM_API_KEY", "\"${keystoreProperties.getProperty("lastFmApiKey", "")}\"")
+        buildConfigField("String", "LASTFM_SECRET", "\"${keystoreProperties.getProperty("lastFmSecret", "")}\"")
     }
 
     signingConfigs {
-        if (!keystoreProperties.isEmpty) {
+        // keystore.properties may contain Last.fm credentials without release signing credentials.
+        if (keystoreProperties.getProperty("storeFile") != null) {
             create("release") {
                 storeFile = file(keystoreProperties["storeFile"] as String)
                 (keystoreProperties["keyAlias"] as? String)?.let {
@@ -384,6 +389,7 @@ dependencies {
     implementation(project(":innertube"))
     implementation(project(":kugou"))
     implementation(project(":lrclib"))
+    implementation(project(":lastfm"))
     implementation(project(":betterlyrics"))
     implementation(project(":simpmusic"))
 

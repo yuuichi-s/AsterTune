@@ -16,6 +16,7 @@ import io.github.yuuichi_s.astertune.extensions.div
 import io.github.yuuichi_s.astertune.extensions.zipInputStream
 import io.github.yuuichi_s.astertune.extensions.zipOutputStream
 import io.github.yuuichi_s.astertune.playback.MusicService
+import io.github.yuuichi_s.astertune.utils.LastFmScrobbler
 import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.MissingSongArchive
 import kotlinx.coroutines.Dispatchers
@@ -84,6 +85,8 @@ class BackupRestoreViewModel @Inject constructor(
                             while (entry != null) {
                                 when (entry.name) {
                                     SETTINGS_FILENAME -> {
+                                        // The restored settings may connect another Last.fm account.
+                                        LastFmScrobbler.clearQueueOnNextStart(context)
                                         (context.filesDir / "datastore" / SETTINGS_FILENAME).outputStream()
                                             .use { outputStream ->
                                                 inputStream.copyTo(outputStream)

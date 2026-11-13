@@ -315,4 +315,13 @@
     <string name="scan_paths_already_included">התיקייה הזו כבר כלולה בסריקה. יש להסיר אותה מאחת משתי הרשימות.</string>
     <string name="scan_paths_rejected_dir">לא ניתן לבחור בתיקיית ההורדות או בתיקיות המשנה שלה</string>
     <string name="dl_select_folder">בחירת תיקייה</string>
+
+    <string name="lastfm_connect">התחברות ל-Last.fm</string>
+    <string name="lastfm_connect_failed">לא ניתן להתחבר ל-Last.fm</string>
+    <string name="lastfm_open_profile">פתיחת הפרופיל שלך ב-Last.fm</string>
+    <string name="lastfm_reconnect">התחברות מחדש ל-Last.fm</string>
+    <string name="lastfm_reconnect_desc">יש להתחבר מחדש ל-Last.fm. היסטוריית ההאזנה שטרם נשלחה תישמר במכשיר זה עד אז.</string>
+    <string name="lastfm_scrobble">תיעוד האזנות ב-Last.fm</string>
+    <string name="lastfm_disconnect">ניתוק</string>
+    <string name="lastfm_disconnect_desc">הניתוק מוחק את היסטוריית ההאזנה שטרם נשלחה. הרשאת הגישה של AsterTune נשארת בתוקף עד לביטולה בהגדרות Last.fm.</string>
 </resources>

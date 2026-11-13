@@ -71,6 +71,7 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionToken
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.WatchEndpoint
@@ -134,6 +135,7 @@ import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.playback.queues.Queue
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.utils.CoilBitmapLoader
+import io.github.yuuichi_s.astertune.utils.LastFmScrobbler
 import io.github.yuuichi_s.astertune.utils.NetworkConnectivityObserver
 import io.github.yuuichi_s.astertune.utils.SyncUtils
 import io.github.yuuichi_s.astertune.utils.YTPlayerUtils
@@ -142,6 +144,7 @@ import io.github.yuuichi_s.astertune.utils.enumPreference
 import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.playerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
+import io.github.yuuichi_s.lastfm.ScrobbleRules
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -290,6 +293,29 @@ class MusicService : MediaLibraryService(),
 
     private var localPlaybackSequence = 0
     private var lastPlaybackState = Player.STATE_IDLE
+
+    private lateinit var playbackStatsListener: PlaybackStatsListener
+
+    private var selfControllerFuture: ListenableFuture<MediaController>? = null
+
+    // Retains registration state to prevent duplicates when final playback stats arrive.
+    // Accessed only on the application thread.
+    private var currentListen: Listen? = null
+
+    private class Listen(
+        val mediaId: String,
+        val startedAtMs: Long,
+        // Media3 play time before this listen. Non-zero for replays after the song ends.
+        val basePlayedMs: Long,
+    ) {
+        var scrobbled = false
+        var playRegistered = false
+        var eventPlayedMs = 0L
+
+        // Written in a database transaction, read in later ones.
+        @Volatile
+        var eventId: Long? = null
+    }
     private val localPlayback = MutableStateFlow<LocalPlayback?>(null)
     private val localPlaybackLoudness = localPlayback.flatMapLatest { playback ->
         if (playback == null) {
@@ -358,9 +384,10 @@ class MusicService : MediaLibraryService(),
                 // listeners
                 addListener(this@MusicService)
                 sleepTimer = SleepTimer(scope, this)
-                sleepTimer.onFinish = { this@MusicService.pauseAllPlayersAndStopSelf() }
+                sleepTimer.onFinish = { this@MusicService.stopService() }
                 addListener(sleepTimer)
-                addAnalyticsListener(PlaybackStatsListener(false, this@MusicService))
+                playbackStatsListener = PlaybackStatsListener(false, this@MusicService)
+                addAnalyticsListener(playbackStatsListener)
                 addAnalyticsListener(object : AnalyticsListener {
                     override fun onMediaItemTransition(
                         eventTime: AnalyticsListener.EventTime,
@@ -397,10 +424,12 @@ class MusicService : MediaLibraryService(),
 
         player.repeatMode = dataStore.get(RepeatModeKey, REPEAT_MODE_OFF)
 
-        // Keep a connected controller so that notification works
+        // Keep a connected controller so notifications work. It binds the service and prevents
+        // teardown until released by stopService().
         val sessionToken = SessionToken(this, ComponentName(this, MusicService::class.java))
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
         controllerFuture.addListener({ controllerFuture.get() }, MoreExecutors.directExecutor())
+        selfControllerFuture = controllerFuture
 
         connectivityManager = getSystemService()!!
 
@@ -515,6 +544,9 @@ class MusicService : MediaLibraryService(),
             offloadScope.launch {
                 connectivityObserver.networkStatus.collect { isConnected ->
                     isNetworkConnected.value = isConnected
+                    if (isConnected) {
+                        LastFmScrobbler.flush(this@MusicService)
+                    }
 
                     if (isConnected && waitingForNetworkConnection.value) {
                         waitingForNetworkConnection.value = false
@@ -1603,23 +1635,158 @@ class MusicService : MediaLibraryService(),
         // Playing an ended song again is a new playback without a media item transition.
         if (lastPlaybackState == Player.STATE_ENDED && playbackState != Player.STATE_ENDED) {
             restartLocalPlayback()
+            startListenAfterEnd()
+        }
+        if (playbackState == Player.STATE_ENDED && lastPlaybackState != Player.STATE_ENDED) {
+            countCurrentListen()
         }
         lastPlaybackState = playbackState
+    }
+
+    /** Counts the current listen without waiting for Media3's final playback stats. */
+    private fun countCurrentListen() {
+        val mediaItem = player.currentMediaItem ?: return
+        val stats = playbackStatsListener.getPlaybackStats() ?: return
+        val listen = currentListen?.takeIf { it.mediaId == mediaItem.mediaId }
+            ?: newListen(mediaItem.mediaId, stats).also { currentListen = it }
+
+        countListen(listen, mediaItem, stats)
+    }
+
+    /** Starts a new listen when an ended song is replayed within the same Media3 session. */
+    private fun startListenAfterEnd() {
+        val mediaId = player.currentMediaItem?.mediaId ?: return
+        if (currentListen?.mediaId != mediaId) return
+
+        val stats = playbackStatsListener.getPlaybackStats() ?: return
+        currentListen = Listen(mediaId, System.currentTimeMillis(), basePlayedMs = stats.totalPlayTimeMs)
+    }
+
+    private fun newListen(mediaId: String, stats: PlaybackStats): Listen {
+        // Include pauses and time after playback ends when estimating the listen's start time.
+        val elapsedMs = stats.totalElapsedTimeMs -
+                stats.getPlaybackStateDurationMs(PlaybackStats.PLAYBACK_STATE_NOT_STARTED) -
+                stats.getPlaybackStateDurationMs(PlaybackStats.PLAYBACK_STATE_JOINING_BACKGROUND)
+
+        return Listen(mediaId, System.currentTimeMillis() - elapsedMs, basePlayedMs = 0)
+    }
+
+    /**
+     * Checks the current listen for Last.fm and history registration.
+     *
+     * Uses separate thresholds and attempts each registration at most once per listen.
+     * Updates the play time in local listening history after the play is recorded.
+     */
+    private fun countListen(listen: Listen, mediaItem: MediaItem, stats: PlaybackStats) {
+        val playedMs = stats.totalPlayTimeMs - listen.basePlayedMs
+        val durationMs = mediaItem.metadata?.duration?.takeIf { it > 0 }?.times(1000L)
+            ?: playerDurationsMs[mediaItem.mediaId]
+            ?: return
+
+        if (!listen.scrobbled && ScrobbleRules.isScrobblable(durationMs, playedMs)) {
+            listen.scrobbled = true
+            LastFmScrobbler.queueListen(
+                context = this,
+                metadata = mediaItem.metadata,
+                durationMs = durationMs,
+                playedMs = playedMs,
+                startedAtMs = listen.startedAtMs,
+            )
+        }
+
+        // Queue writes directly so history inserts precede updates.
+        // The DB executor is independent of the service's coroutine scope.
+        if (!listen.playRegistered) {
+            // Ignore brief plays and allow for rounding near the full duration.
+            val minPlaybackRatio = (dataStore.get(minPlaybackDurKey, 30).toFloat() / 100).coerceIn(0.01f, 0.99f)
+            val playRatio = playedMs.toFloat() / durationMs
+            if (SERVICE_DEBUG) Log.d(TAG, "Playback ratio: $playRatio Min threshold: $minPlaybackRatio")
+
+            if (playRatio >= minPlaybackRatio) {
+                listen.playRegistered = true
+                listen.eventPlayedMs = playedMs
+                registerPlay(listen, mediaItem, playedMs)
+            }
+        } else if (playedMs > listen.eventPlayedMs) {
+            listen.eventPlayedMs = playedMs
+            database.transaction {
+                listen.eventId?.let { updateEventPlayTime(it, playedMs) }
+            }
+        }
+    }
+
+    /**
+     * Adds a play to the play count and the listen history, keeping the ID of the listen history
+     * entry in [listen], then starts adding it to the YouTube Music history.
+     */
+    private fun registerPlay(listen: Listen, mediaItem: MediaItem, playedMs: Long) {
+        database.transaction {
+            if (dataStore.get(PauseListenHistoryKey, false)) return@transaction
+
+            incrementPlayCount(mediaItem.mediaId)
+            listen.eventId = try {
+                insert(
+                    Event(
+                        songId = mediaItem.mediaId,
+                        timestamp = LocalDateTime.now(),
+                        playTime = playedMs
+                    )
+                ).takeIf { it > 0 }
+            } catch (_: SQLException) {
+                null
+            }
+            offloadScope.launch { registerRemoteHistory(mediaItem) }
+        }
+    }
+
+    private suspend fun registerRemoteHistory(mediaItem: MediaItem) {
+        // TODO: support playlist id
+        val ytHist = mediaItem.metadata?.isLocal != true && !dataStore.get(PauseRemoteListenHistoryKey, false)
+        if (SERVICE_DEBUG) Log.d(TAG, "Trying to register remote history: $ytHist")
+        if (ytHist) {
+            val metaResult = YTPlayerUtils.playerResponseForMetadata(mediaItem.mediaId, null)
+            val response = metaResult.getOrNull()
+            if (SERVICE_DEBUG) Log.d(
+                TAG,
+                "History meta: success=${metaResult.isSuccess}" +
+                    (metaResult.exceptionOrNull()?.let { " err=${it.javaClass.simpleName}:${it.message}" } ?: "") +
+                    " playability=${response?.playabilityStatus?.status}/${response?.playabilityStatus?.reason}" +
+                    " hasTracking=${response?.playbackTracking != null}" +
+                    " hasVideostats=${response?.playbackTracking?.videostatsPlaybackUrl != null}" +
+                    " loggedIn=${YouTube.cookie != null}"
+            )
+            val playbackUrl = response?.playbackTracking?.videostatsPlaybackUrl?.baseUrl
+            if (SERVICE_DEBUG) Log.d(TAG, "Got playback url: $playbackUrl")
+
+            playbackUrl?.let {
+                YouTube.registerPlayback(null, playbackUrl)
+                    .onFailure {
+                        reportException(it)
+                    }
+            }
+        }
     }
 
     override fun onEvents(player: Player, events: Player.Events) {
         if (events.containsAny(Player.EVENT_PLAYBACK_STATE_CHANGED, Player.EVENT_PLAY_WHEN_READY_CHANGED)) {
             val isBufferingOrReady =
                 player.playbackState == Player.STATE_BUFFERING || player.playbackState == Player.STATE_READY
+
             if (isBufferingOrReady && player.playWhenReady) {
                 openAudioEffectSession()
             } else {
                 closeAudioEffectSession()
+
                 if (!player.playWhenReady) {
                     waitingForNetworkConnection.value = false
                 }
             }
+
+            if (events.contains(Player.EVENT_PLAY_WHEN_READY_CHANGED) && !player.playWhenReady) {
+                countCurrentListen()
+            }
         }
+
         if (events.containsAny(EVENT_TIMELINE_CHANGED, EVENT_MEDIA_ITEM_TRANSITION)) {
             val mediaId = player.currentMediaItem?.mediaId
             val duration = player.duration
@@ -1627,6 +1794,7 @@ class MusicService : MediaLibraryService(),
                 playerDurationsMs[mediaId] = duration
             }
         }
+
         if (events.containsAny(EVENT_TIMELINE_CHANGED, EVENT_POSITION_DISCONTINUITY)) {
             currentMediaMetadata.value = player.currentMetadata
         }
@@ -1634,60 +1802,10 @@ class MusicService : MediaLibraryService(),
 
     override fun onPlaybackStatsReady(eventTime: AnalyticsListener.EventTime, playbackStats: PlaybackStats) {
         val mediaItem = eventTime.timeline.getWindow(eventTime.windowIndex, Timeline.Window()).mediaItem
-        val playerDurationMs = playerDurationsMs[mediaItem.mediaId]
-        offloadScope.launch {
-            var minPlaybackDur = (dataStore.get(minPlaybackDurKey, 30).toFloat() / 100)
-            // ensure within bounds
-            if (minPlaybackDur >= 1f) {
-                minPlaybackDur = 0.99f // Ehhh 99 is good enough to avoid any rounding errors
-            } else if (minPlaybackDur < 0.01f) {
-                minPlaybackDur = 0.01f // Still want "spam skipping" to not count as plays
-            }
+        val listen = currentListen?.takeIf { it.mediaId == mediaItem.mediaId }?.also { currentListen = null }
+            ?: newListen(mediaItem.mediaId, playbackStats)
 
-            val durationMs = mediaItem.metadata?.duration?.takeIf { it > 0 }?.times(1000L) ?: playerDurationMs
-            val playRatio = durationMs?.let { playbackStats.totalPlayTimeMs.toFloat() / it } ?: -1f
-            if (SERVICE_DEBUG) Log.d(TAG, "Playback ratio: $playRatio Min threshold: $minPlaybackDur")
-            if (playRatio >= minPlaybackDur && !dataStore.get(PauseListenHistoryKey, false)) {
-                database.query {
-                    incrementPlayCount(mediaItem.mediaId)
-                    try {
-                        insert(
-                            Event(
-                                songId = mediaItem.mediaId,
-                                timestamp = LocalDateTime.now(),
-                                playTime = playbackStats.totalPlayTimeMs
-                            )
-                        )
-                    } catch (_: SQLException) {
-                    }
-                }
-
-                // TODO: support playlist id
-                val ytHist = mediaItem.metadata?.isLocal != true && !dataStore.get(PauseRemoteListenHistoryKey, false)
-                if (SERVICE_DEBUG) Log.d(TAG, "Trying to register remote history: $ytHist")
-                if (ytHist) {
-                    val metaResult = YTPlayerUtils.playerResponseForMetadata(mediaItem.mediaId, null)
-                    val response = metaResult.getOrNull()
-                    if (SERVICE_DEBUG) Log.d(
-                        TAG,
-                        "History meta: success=${metaResult.isSuccess}" +
-                            (metaResult.exceptionOrNull()?.let { " err=${it.javaClass.simpleName}:${it.message}" } ?: "") +
-                            " playability=${response?.playabilityStatus?.status}/${response?.playabilityStatus?.reason}" +
-                            " hasTracking=${response?.playbackTracking != null}" +
-                            " hasVideostats=${response?.playbackTracking?.videostatsPlaybackUrl != null}" +
-                            " loggedIn=${YouTube.cookie != null}"
-                    )
-                    val playbackUrl = response?.playbackTracking?.videostatsPlaybackUrl?.baseUrl
-                    if (SERVICE_DEBUG) Log.d(TAG, "Got playback url: $playbackUrl")
-                    playbackUrl?.let {
-                        YouTube.registerPlayback(null, playbackUrl)
-                            .onFailure {
-                                reportException(it)
-                            }
-                    }
-                }
-            }
-        }
+        countListen(listen, mediaItem, playbackStats)
     }
 
     override fun onRepeatModeChanged(repeatMode: Int) {
@@ -1747,7 +1865,7 @@ class MusicService : MediaLibraryService(),
         if (SERVICE_DEBUG) Log.i(TAG, "onTaskRemoved called")
         if (dataStore.get(StopMusicOnTaskClearKey, true) && !dataStore.get(KeepAliveKey, false)) {
             if (SERVICE_DEBUG) Log.i(TAG, "onTaskRemoved kill")
-            pauseAllPlayersAndStopSelf()
+            stopService()
         } else {
             if (SERVICE_DEBUG) Log.i(TAG, "onTaskRemoved def")
             super.onTaskRemoved(rootIntent)
@@ -1755,6 +1873,13 @@ class MusicService : MediaLibraryService(),
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
+
+    /** Releases the service's controller, pauses playback, and requests service shutdown. */
+    private fun stopService() {
+        selfControllerFuture?.let { MediaController.releaseFuture(it) }
+        selfControllerFuture = null
+        pauseAllPlayersAndStopSelf()
+    }
 
     inner class MusicBinder : Binder() {
         val service: MusicService

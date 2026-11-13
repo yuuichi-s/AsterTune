@@ -309,4 +309,13 @@
     <string name="scan_paths_already_included">이 폴더는 이미 스캔 대상으로 설정되어 있습니다. 두 목록 중 하나에서 삭제하세요.</string>
     <string name="scan_paths_rejected_dir">다운로드 폴더와 그 하위 폴더는 선택할 수 없습니다</string>
     <string name="dl_select_folder">폴더 선택</string>
+
+    <string name="lastfm_connect">Last.fm에 연결</string>
+    <string name="lastfm_connect_failed">Last.fm에 연결할 수 없습니다</string>
+    <string name="lastfm_open_profile">내 Last.fm 프로필 열기</string>
+    <string name="lastfm_reconnect">Last.fm에 다시 연결</string>
+    <string name="lastfm_reconnect_desc">Last.fm에 다시 연결하세요. 아직 전송하지 않은 청취 기록은 다시 연결할 때까지 이 기기에 저장됩니다.</string>
+    <string name="lastfm_scrobble">Last.fm에 재생 내역 기록</string>
+    <string name="lastfm_disconnect">연결 해제</string>
+    <string name="lastfm_disconnect_desc">연결을 해제하면 아직 전송하지 않은 청취 기록이 삭제됩니다. Last.fm 설정에서 AsterTune의 접근 권한을 취소할 때까지 해당 권한은 유지됩니다.</string>
 </resources>

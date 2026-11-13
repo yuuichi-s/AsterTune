@@ -25,17 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
 import io.github.yuuichi_s.astertune.constants.SettingsGroupSpacing
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.AccountExtrasFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.AccountFrag
+import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LastFmFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.SyncAutoFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.SyncManualFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.SyncParamsFrag
+import io.github.yuuichi_s.astertune.utils.LastFmScrobbler
 import io.github.yuuichi_s.astertune.utils.rememberPreference
-import com.zionhuang.innertube.utils.parseCookieString
 
 @SuppressLint("PrivateResource")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,6 +101,19 @@ fun AccountSyncSettings(
                 }
                 Spacer(modifier = Modifier.height(SettingsGroupSpacing))
             }
+        }
+
+        if (LastFmScrobbler.isAvailable) {
+            PreferenceGroupTitle(
+                title = stringResource(R.string.lastfm)
+            )
+
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                LastFmFrag(navController)
+            }
+            Spacer(modifier = Modifier.height(SettingsGroupSpacing))
         }
     }
 }

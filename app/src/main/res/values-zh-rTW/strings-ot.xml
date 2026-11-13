@@ -309,4 +309,13 @@
     <string name="scan_paths_already_included">此資料夾已設定為掃描對象。請將其從其中一個清單中移除。</string>
     <string name="scan_paths_rejected_dir">無法選擇下載資料夾及其子資料夾</string>
     <string name="dl_select_folder">選擇資料夾</string>
+
+    <string name="lastfm_connect">連線至 Last.fm</string>
+    <string name="lastfm_connect_failed">無法連線至 Last.fm</string>
+    <string name="lastfm_open_profile">開啟你的 Last.fm 個人檔案</string>
+    <string name="lastfm_reconnect">重新連線至 Last.fm</string>
+    <string name="lastfm_reconnect_desc">請重新連線至 Last.fm。在此之前，尚未傳送的聆聽記錄會儲存在此裝置上。</string>
+    <string name="lastfm_scrobble">在 Last.fm 記錄播放</string>
+    <string name="lastfm_disconnect">中斷連線</string>
+    <string name="lastfm_disconnect_desc">中斷連線會刪除尚未傳送的聆聽記錄。AsterTune 的存取權限仍會保留，直到你在 Last.fm 設定中將其撤銷。</string>
 </resources>

@@ -315,4 +315,13 @@
     <string name="scan_paths_already_included">Esta carpeta ya está incluida en el escaneo. Elimínala de una de las dos listas.</string>
     <string name="scan_paths_rejected_dir">No se puede seleccionar la carpeta de descargas ni sus subcarpetas</string>
     <string name="dl_select_folder">Seleccionar carpeta</string>
+
+    <string name="lastfm_connect">Conectar a Last.fm</string>
+    <string name="lastfm_connect_failed">No se pudo conectar a Last.fm</string>
+    <string name="lastfm_open_profile">Abrir tu perfil de Last.fm</string>
+    <string name="lastfm_reconnect">Volver a conectar a Last.fm</string>
+    <string name="lastfm_reconnect_desc">Vuelve a conectar a Last.fm. El historial de escucha no enviado permanecerá en este dispositivo hasta entonces.</string>
+    <string name="lastfm_scrobble">Registrar reproducciones en Last.fm</string>
+    <string name="lastfm_disconnect">Desconectar</string>
+    <string name="lastfm_disconnect_desc">Al desconectar, se elimina el historial de escucha no enviado. El permiso de acceso de AsterTune se mantiene hasta que lo revoques en los ajustes de Last.fm.</string>
 </resources>

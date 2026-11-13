@@ -312,4 +312,13 @@
     <string name="scan_paths_already_included">Dieser Ordner ist bereits zum Scannen ausgewählt. Entferne ihn aus einer der beiden Listen.</string>
     <string name="scan_paths_rejected_dir">Der Download-Ordner und seine Unterordner können nicht ausgewählt werden</string>
     <string name="dl_select_folder">Ordner auswählen</string>
+
+    <string name="lastfm_connect">Mit Last.fm verbinden</string>
+    <string name="lastfm_connect_failed">Verbindung mit Last.fm fehlgeschlagen</string>
+    <string name="lastfm_open_profile">Dein Last.fm-Profil öffnen</string>
+    <string name="lastfm_reconnect">Erneut mit Last.fm verbinden</string>
+    <string name="lastfm_reconnect_desc">Verbinde dich erneut mit Last.fm. Noch nicht gesendete Einträge im Hörverlauf bleiben bis dahin auf diesem Gerät.</string>
+    <string name="lastfm_scrobble">Wiedergaben auf Last.fm erfassen</string>
+    <string name="lastfm_disconnect">Verbindung trennen</string>
+    <string name="lastfm_disconnect_desc">Beim Trennen der Verbindung werden noch nicht gesendete Einträge im Hörverlauf gelöscht. Die Zugriffsberechtigung für AsterTune bleibt bestehen, bis du sie in deinen Last.fm-Einstellungen widerrufst.</string>
 </resources>

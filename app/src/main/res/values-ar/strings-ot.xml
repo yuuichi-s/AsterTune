@@ -324,4 +324,13 @@
     <string name="scan_paths_already_included">هذا المجلد مشمول بالفعل في المسح. أزله من إحدى القائمتين.</string>
     <string name="scan_paths_rejected_dir">لا يمكن اختيار مجلد التنزيل أو مجلداته الفرعية</string>
     <string name="dl_select_folder">اختيار مجلد</string>
+
+    <string name="lastfm_connect">الاتصال بـ Last.fm</string>
+    <string name="lastfm_connect_failed">تعذر الاتصال بـ Last.fm</string>
+    <string name="lastfm_open_profile">فتح ملفك الشخصي على Last.fm</string>
+    <string name="lastfm_reconnect">إعادة الاتصال بـ Last.fm</string>
+    <string name="lastfm_reconnect_desc">أعد الاتصال بـ Last.fm. سيبقى سجل الاستماع غير المرسل على هذا الجهاز حتى ذلك الحين.</string>
+    <string name="lastfm_scrobble">تسجيل مرات الاستماع على Last.fm</string>
+    <string name="lastfm_disconnect">قطع الاتصال</string>
+    <string name="lastfm_disconnect_desc">يؤدي قطع الاتصال إلى حذف سجل الاستماع غير المرسل. يظل إذن وصول AsterTune ساريًا حتى تلغيه من إعدادات Last.fm.</string>
 </resources>

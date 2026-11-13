@@ -50,6 +50,7 @@ import io.github.yuuichi_s.astertune.constants.UseLoginForBrowse
 import io.github.yuuichi_s.astertune.constants.VisitorDataKey
 import io.github.yuuichi_s.astertune.extensions.toEnum
 import io.github.yuuichi_s.astertune.extensions.toInetSocketAddress
+import io.github.yuuichi_s.astertune.utils.LastFmScrobbler
 import io.github.yuuichi_s.astertune.utils.LocalArtworkDiskCache
 import io.github.yuuichi_s.astertune.utils.LocalArtworkFetcher
 import io.github.yuuichi_s.astertune.utils.LocalArtworkPathInterceptor
@@ -118,6 +119,8 @@ class App : Application(), SingletonImageLoader.Factory {
         if (dataStore[UseLoginForBrowse] != false) {
             YouTube.useLoginForBrowse = true
         }
+
+        LastFmScrobbler.flush(this)
 
         GlobalScope.launch {
             dataStore.data

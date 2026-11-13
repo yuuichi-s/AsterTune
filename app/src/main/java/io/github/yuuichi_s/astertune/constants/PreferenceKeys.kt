@@ -217,6 +217,11 @@ val AccountChannelHandleKey = stringPreferencesKey("accountChannelHandle")
 val AccountImageUrlKey = stringPreferencesKey("accountImageUrl")
 val AccountImageFetchedKey = booleanPreferencesKey("accountImageFetched")
 
+val LastFmSessionKey = stringPreferencesKey("lastFmSessionKey")
+val LastFmUsernameKey = stringPreferencesKey("lastFmUsername")
+val LastFmScrobbleEnabledKey = booleanPreferencesKey("lastFmScrobbleEnabled")
+val LastFmNeedsReconnectKey = booleanPreferencesKey("lastFmNeedsReconnect")
+
 
 /**
  * Misc
