@@ -256,4 +256,31 @@ class TagLibScanner : MetadataScanner {
         "audio/x-ms-wma" -> "wma"
         else -> null
     }
+
+    companion object {
+        /**
+         * Checks whether [file] has a non-blank title tag.
+         *
+         * Uses the last title tag value, as [getAllMetadataFromFile] does.
+         * Returns null if the file or its metadata cannot be read.
+         */
+        fun hasTitleTag(file: File): Boolean? = try {
+            ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { fd ->
+                TagLib.getMetadata(fd = fd.dup().detachFd(), readPictures = false)?.let { metadata ->
+                    var rawTitle: String? = null
+                    metadata.propertyMap.forEach { (key, values) ->
+                        if (key == "TITLE" || key == "title")
+                            values.forEach { rawTitle = it }
+                    }
+
+                    !rawTitle.isNullOrBlank()
+                }
+            }
+        } catch (e: Exception) {
+            if (SCANNER_DEBUG)
+                Log.w(EXTRACTOR_TAG, "Could not read title tag: ${file.absolutePath}", e)
+
+            null
+        }
+    }
 }

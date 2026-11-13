@@ -310,4 +310,13 @@
     <string name="oobe_cache_subtitle">曲のキャッシュのサイズを選択。ネット接続やYouTube APIの再生に関する問題を軽減します</string>
     <string name="library_filter">ライブラリを絞り込み</string>
     <string name="dl_saved_files_title">保存済みファイルの読み込み</string>
+
+    <string name="lastfm_connect">Last.fmに接続</string>
+    <string name="lastfm_connect_failed">Last.fmに接続できませんでした</string>
+    <string name="lastfm_open_profile">Last.fmのプロフィールを開く</string>
+    <string name="lastfm_reconnect">Last.fmに再接続</string>
+    <string name="lastfm_reconnect_desc">Last.fmに再接続してください。未送信の再生履歴は、再接続するまでこの端末に保存します。</string>
+    <string name="lastfm_scrobble">Last.fmに再生を記録</string>
+    <string name="lastfm_disconnect">接続を解除</string>
+    <string name="lastfm_disconnect_desc">未送信の再生は削除されます。Last.fm側の連携設定は残るため、不要な場合はLast.fmの設定で解除してください。</string>
 </resources>

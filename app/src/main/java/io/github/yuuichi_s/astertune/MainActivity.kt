@@ -17,7 +17,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -104,10 +103,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.valentinilk.shimmer.LocalShimmerTheme
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.yuuichi_s.astertune.constants.AppBarHeight
-import io.github.yuuichi_s.astertune.constants.DEFAULT_ENABLED_TABS
 import io.github.yuuichi_s.astertune.constants.CustomThemeColorKey
 import io.github.yuuichi_s.astertune.constants.CustomThemeKey
+import io.github.yuuichi_s.astertune.constants.DEFAULT_ENABLED_TABS
 import io.github.yuuichi_s.astertune.constants.DefaultOpenTabKey
 import io.github.yuuichi_s.astertune.constants.DynamicThemeKey
 import io.github.yuuichi_s.astertune.constants.EnabledTabsKey
@@ -121,6 +122,7 @@ import io.github.yuuichi_s.astertune.constants.OobeStatusKey
 import io.github.yuuichi_s.astertune.constants.PureBlackKey
 import io.github.yuuichi_s.astertune.constants.SlimNavBarKey
 import io.github.yuuichi_s.astertune.constants.TabletUiKey
+import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.extensions.isTabMode
 import io.github.yuuichi_s.astertune.extensions.usesNavRail
@@ -138,6 +140,7 @@ import io.github.yuuichi_s.astertune.ui.screens.AlbumScreen
 import io.github.yuuichi_s.astertune.ui.screens.BrowseScreen
 import io.github.yuuichi_s.astertune.ui.screens.HistoryScreen
 import io.github.yuuichi_s.astertune.ui.screens.HomeScreen
+import io.github.yuuichi_s.astertune.ui.screens.LastFmLoginScreen
 import io.github.yuuichi_s.astertune.ui.screens.LoginScreen
 import io.github.yuuichi_s.astertune.ui.screens.MoodAndGenresScreen
 import io.github.yuuichi_s.astertune.ui.screens.PlayerScreen
@@ -155,8 +158,8 @@ import io.github.yuuichi_s.astertune.ui.screens.library.LibraryArtistsScreen
 import io.github.yuuichi_s.astertune.ui.screens.library.LibraryFoldersScreen
 import io.github.yuuichi_s.astertune.ui.screens.library.LibraryPlaylistsScreen
 import io.github.yuuichi_s.astertune.ui.screens.library.LibraryScreen
-import io.github.yuuichi_s.astertune.ui.screens.library.LocalScreen
 import io.github.yuuichi_s.astertune.ui.screens.library.LibrarySongsScreen
+import io.github.yuuichi_s.astertune.ui.screens.library.LocalScreen
 import io.github.yuuichi_s.astertune.ui.screens.playlist.AutoPlaylistScreen
 import io.github.yuuichi_s.astertune.ui.screens.playlist.LocalPlaylistScreen
 import io.github.yuuichi_s.astertune.ui.screens.playlist.OnlinePlaylistScreen
@@ -177,20 +180,18 @@ import io.github.yuuichi_s.astertune.ui.screens.settings.PlayerSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.PrivacySettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.SettingsScreen
 import io.github.yuuichi_s.astertune.ui.screens.settings.StorageSettings
-import io.github.yuuichi_s.astertune.ui.theme.DefaultThemeColor
 import io.github.yuuichi_s.astertune.ui.theme.AsterTuneTheme
+import io.github.yuuichi_s.astertune.ui.theme.DefaultThemeColor
 import io.github.yuuichi_s.astertune.ui.theme.rememberUseDarkTheme
 import io.github.yuuichi_s.astertune.ui.utils.appBarScrollBehavior
-import io.github.yuuichi_s.astertune.utils.ActivityLauncherHelper
-import io.github.yuuichi_s.astertune.utils.ObserveImageLoadNavigation
-import io.github.yuuichi_s.astertune.utils.NetworkConnectivityObserver
 import io.github.yuuichi_s.astertune.utils.AccountImageFetcher
+import io.github.yuuichi_s.astertune.utils.ActivityLauncherHelper
+import io.github.yuuichi_s.astertune.utils.NetworkConnectivityObserver
+import io.github.yuuichi_s.astertune.utils.ObserveImageLoadNavigation
 import io.github.yuuichi_s.astertune.utils.SyncUtils
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
-import com.valentinilk.shimmer.LocalShimmerTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -747,6 +748,9 @@ class MainActivity : ComponentActivity() {
                                     }
                                     composable("login") {
                                         LoginScreen(navController)
+                                    }
+                                    composable("lastfm_login") {
+                                        LastFmLoginScreen(navController)
                                     }
 
                                     composable("setup_wizard") {

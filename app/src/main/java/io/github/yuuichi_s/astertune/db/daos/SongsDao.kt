@@ -16,9 +16,7 @@ import io.github.yuuichi_s.astertune.extensions.reversed
 import io.github.yuuichi_s.astertune.utils.fixFilePath
 import io.github.yuuichi_s.astertune.utils.pathPrefixUpperBound
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -416,19 +414,15 @@ interface SongsDao {
     fun incrementPlayCount(songId: String, year: Int, month: Int)
 
     /**
-     * Increment by one the play count with today's year and month.
+     * Increments the play count for the current year and month.
+     *
+     * Uses synchronous queries so it can run inside a transaction. Collecting a Flow there may wait
+     * for the transaction to end.
      */
     fun incrementPlayCount(songId: String) {
         val time = LocalDateTime.now().atOffset(ZoneOffset.UTC)
-        var oldCount: Int
-        runBlocking {
-            oldCount = getPlayCountByMonth(songId, time.year, time.monthValue).first()
-        }
-
-        // add new
-        if (oldCount <= 0) {
-            insert(PlayCountEntity(songId, time.year, time.monthValue, 0))
-        }
+        // ignored when the month already has a row
+        insert(PlayCountEntity(songId, time.year, time.monthValue, 0))
         incrementPlayCount(songId, time.year, time.monthValue)
     }
 

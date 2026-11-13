@@ -188,7 +188,10 @@ interface DatabaseDao : SongsDao, AlbumsDao, ArtistsDao, PlaylistsDao, QueueDao 
     fun insert(searchHistory: SearchHistory)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(event: Event)
+    fun insert(event: Event): Long
+
+    @Query("UPDATE event SET playTime = :playTime WHERE id = :id")
+    fun updateEventPlayTime(id: Long, playTime: Long)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(map: RelatedSongMap)

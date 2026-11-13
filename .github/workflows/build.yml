@@ -36,6 +36,7 @@ jobs:
             --tests com.zionhuang.innertube.HomeListShelfTest \
             :lrclib:test \
             --tests com.dd3boh.lrclib.LrcLibSelectionTest \
+            :lastfm:test \
             :simpmusic:test \
             --tests com.dd3boh.simpmusic.SimpMusicSelectionTest \
             --stacktrace -DskipFormatKtlint
