@@ -401,4 +401,13 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="scan_paths_already_included">Bu klasör zaten taramaya dahil edilmiş. Listelerden birinden kaldırın.</string>
     <string name="scan_paths_rejected_dir">İndirme klasörü ve alt klasörleri seçilemez</string>
     <string name="dl_select_folder">Klasör seç</string>
+
+    <string name="lastfm_connect">Last.fm\'e bağlan</string>
+    <string name="lastfm_connect_failed">Last.fm\'e bağlanılamadı</string>
+    <string name="lastfm_open_profile">Last.fm profilini aç</string>
+    <string name="lastfm_reconnect">Last.fm\'e yeniden bağlan</string>
+    <string name="lastfm_reconnect_desc">Last.fm\'e yeniden bağlanın. Gönderilmemiş dinleme geçmişi, yeniden bağlanana kadar bu cihazda saklanır.</string>
+    <string name="lastfm_scrobble">Dinlemeleri Last.fm\'e kaydet</string>
+    <string name="lastfm_disconnect">Bağlantıyı kes</string>
+    <string name="lastfm_disconnect_desc">Bağlantı kesildiğinde gönderilmemiş dinleme geçmişi silinir. AsterTune\'un erişim izni, siz Last.fm ayarlarından kaldırana kadar geçerli kalır.</string>
 </resources>

@@ -318,4 +318,13 @@
     <string name="scan_paths_already_included">Эта папка уже включена в сканирование. Удалите её из одного из списков.</string>
     <string name="scan_paths_rejected_dir">Нельзя выбрать папку загрузок и её подпапки</string>
     <string name="dl_select_folder">Выбрать папку</string>
+
+    <string name="lastfm_connect">Подключиться к Last.fm</string>
+    <string name="lastfm_connect_failed">Не удалось подключиться к Last.fm</string>
+    <string name="lastfm_open_profile">Открыть свой профиль Last.fm</string>
+    <string name="lastfm_reconnect">Подключиться к Last.fm повторно</string>
+    <string name="lastfm_reconnect_desc">Подключитесь к Last.fm повторно. До этого неотправленная история прослушиваний останется на этом устройстве.</string>
+    <string name="lastfm_scrobble">Записывать прослушивания в Last.fm</string>
+    <string name="lastfm_disconnect">Отключиться</string>
+    <string name="lastfm_disconnect_desc">При отключении неотправленная история прослушиваний удаляется. Доступ AsterTune сохраняется, пока вы не отзовёте его в настройках Last.fm.</string>
 </resources>

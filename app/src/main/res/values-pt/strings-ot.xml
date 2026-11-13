@@ -315,4 +315,13 @@
     <string name="scan_paths_already_included">Esta pasta já está incluída na análise. Remova-a de uma das duas listas.</string>
     <string name="scan_paths_rejected_dir">Não é possível selecionar a pasta de transferências nem as suas subpastas</string>
     <string name="dl_select_folder">Selecionar pasta</string>
+
+    <string name="lastfm_connect">Ligar ao Last.fm</string>
+    <string name="lastfm_connect_failed">Não foi possível ligar ao Last.fm</string>
+    <string name="lastfm_open_profile">Abrir o seu perfil do Last.fm</string>
+    <string name="lastfm_reconnect">Voltar a ligar ao Last.fm</string>
+    <string name="lastfm_reconnect_desc">Volte a ligar ao Last.fm. O histórico de audição não enviado fica guardado neste dispositivo até lá.</string>
+    <string name="lastfm_scrobble">Registar reproduções no Last.fm</string>
+    <string name="lastfm_disconnect">Desligar</string>
+    <string name="lastfm_disconnect_desc">Ao desligar, o histórico de audição não enviado é eliminado. A permissão de acesso do AsterTune mantém-se até a revogar nas definições do Last.fm.</string>
 </resources>

@@ -312,4 +312,13 @@
     <string name="scan_paths_already_included">यह फ़ोल्डर पहले से ही स्कैन में शामिल है। इसे दोनों सूचियों में से किसी एक से हटाएँ।</string>
     <string name="scan_paths_rejected_dir">डाउनलोड फ़ोल्डर और उसके उप-फ़ोल्डर नहीं चुने जा सकते</string>
     <string name="dl_select_folder">फ़ोल्डर चुनें</string>
+
+    <string name="lastfm_connect">Last.fm से कनेक्ट करें</string>
+    <string name="lastfm_connect_failed">Last.fm से कनेक्ट नहीं हो सका</string>
+    <string name="lastfm_open_profile">अपनी Last.fm प्रोफ़ाइल खोलें</string>
+    <string name="lastfm_reconnect">Last.fm से दोबारा कनेक्ट करें</string>
+    <string name="lastfm_reconnect_desc">Last.fm से दोबारा कनेक्ट करें। तब तक, इस डिवाइस पर वह सुनने का इतिहास सहेजा रहेगा जो अभी तक भेजा नहीं गया है।</string>
+    <string name="lastfm_scrobble">Last.fm पर सुने गए गानों का रिकॉर्ड रखें</string>
+    <string name="lastfm_disconnect">कनेक्शन हटाएँ</string>
+    <string name="lastfm_disconnect_desc">कनेक्शन हटाने पर, सुनने के इतिहास का वह हिस्सा मिट जाएगा जो अभी तक भेजा नहीं गया है। AsterTune की पहुँच तब तक बनी रहेगी जब तक आप उसे Last.fm की सेटिंग्स में हटा नहीं देते।</string>
 </resources>

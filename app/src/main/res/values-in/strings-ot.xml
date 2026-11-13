@@ -309,4 +309,13 @@
     <string name="scan_paths_already_included">Folder ini sudah disertakan dalam pemindaian. Hapus dari salah satu daftar.</string>
     <string name="scan_paths_rejected_dir">Folder unduhan dan subfoldernya tidak dapat dipilih</string>
     <string name="dl_select_folder">Pilih folder</string>
+
+    <string name="lastfm_connect">Hubungkan ke Last.fm</string>
+    <string name="lastfm_connect_failed">Tidak dapat terhubung ke Last.fm</string>
+    <string name="lastfm_open_profile">Buka profil Last.fm Anda</string>
+    <string name="lastfm_reconnect">Hubungkan kembali ke Last.fm</string>
+    <string name="lastfm_reconnect_desc">Hubungkan kembali ke Last.fm. Riwayat mendengarkan yang belum terkirim tetap tersimpan di perangkat ini hingga terhubung kembali.</string>
+    <string name="lastfm_scrobble">Catat pemutaran di Last.fm</string>
+    <string name="lastfm_disconnect">Putuskan koneksi</string>
+    <string name="lastfm_disconnect_desc">Memutuskan koneksi akan menghapus riwayat mendengarkan yang belum terkirim. Izin akses AsterTune tetap berlaku hingga Anda mencabutnya di pengaturan Last.fm.</string>
 </resources>

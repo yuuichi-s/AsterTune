@@ -309,4 +309,13 @@
     <string name="scan_paths_already_included">此文件夹已包含在扫描范围内。请将其从其中一个列表中移除。</string>
     <string name="scan_paths_rejected_dir">无法选择下载文件夹及其子文件夹</string>
     <string name="dl_select_folder">选择文件夹</string>
+
+    <string name="lastfm_connect">连接到 Last.fm</string>
+    <string name="lastfm_connect_failed">无法连接到 Last.fm</string>
+    <string name="lastfm_open_profile">打开你的 Last.fm 个人主页</string>
+    <string name="lastfm_reconnect">重新连接到 Last.fm</string>
+    <string name="lastfm_reconnect_desc">请重新连接到 Last.fm。在此之前，未发送的收听记录会保存在此设备上。</string>
+    <string name="lastfm_scrobble">在 Last.fm 记录播放</string>
+    <string name="lastfm_disconnect">断开连接</string>
+    <string name="lastfm_disconnect_desc">断开连接会删除未发送的收听记录。AsterTune 的访问权限仍会保留，直到你在 Last.fm 设置中将其撤销。</string>
 </resources>
