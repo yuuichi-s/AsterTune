@@ -316,4 +316,12 @@
     <string name="scan_paths_rejected_dir">Le dossier de téléchargement et ses sous-dossiers ne peuvent pas être sélectionnés</string>
     <string name="dl_select_folder">Sélectionner un dossier</string>
     <string name="scanner_scan_canceled">Analyse annulée</string>
+    <string name="lastfm_connect">Se connecter à Last.fm</string>
+    <string name="lastfm_connect_failed">Impossible de se connecter à Last.fm</string>
+    <string name="lastfm_open_profile">Ouvrez votre profil Last.fm</string>
+    <string name="lastfm_reconnect">Se reconnecter à Last.fm</string>
+    <string name="lastfm_reconnect_desc">Reconnectez-vous à Last.fm. L\'historique d\'écoute non envoyé restera sur cet appareil jusqu\'à ce moment-là.</string>
+    <string name="lastfm_scrobble">Enregistrer les écoutes sur Last.fm</string>
+    <string name="lastfm_disconnect">Se déconnecter</string>
+    <string name="lastfm_disconnect_desc">La déconnexion efface l\'historique d\'écoute non envoyé. L\'accès d\'AsterTune reste actif jusqu\'à ce que vous le supprimiez dans vos paramètres Last.fm.</string>
 </resources>
