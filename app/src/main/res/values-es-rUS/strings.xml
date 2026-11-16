@@ -281,7 +281,6 @@
     <string name="enable_discord_rpc">Activar Presencia Enriquecida</string>
     <string name="about">Sobre</string>
     <string name="app_version">Versión de la aplicación</string>
-    <string name="new_version_available">Nueva versión disponible</string>
     <string name="translation_models">Modelos de traducción</string>
     <string name="clear_translation_models">Modelos de traducción claros</string>
     <string name="action_like_all">Me gustan todas</string>
@@ -292,5 +291,4 @@
     <string name="ignore_audio_focus">Mantener el foco de audio</string>
     <string name="ignore_audio_focus_desc">Continuar la reproducción cuando otra aplicación tome el foco de audio. La música no se pausará por otras fuentes de audio, incluidas las llamadas telefónicas.</string>
     <string name="enable_betterlyrics">Activar el proveedor de letras BetterLyrics</string>
-    <string name="enable_simpmusic">Activar el proveedor de letras SimpMusic</string>
 </resources>

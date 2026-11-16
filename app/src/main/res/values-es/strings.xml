@@ -270,7 +270,6 @@
     <string name="enable_discord_rpc">Activar Rich Presence</string>
     <string name="about">Acerca de</string>
     <string name="app_version">Versión de la app</string>
-    <string name="new_version_available">Nueva versión disponible</string>
     <string name="translation_models">Modelos de traducción</string>
     <string name="clear_translation_models">Borrar modelos de traducción</string>
     <string name="listen_history">Historial de reproducciones</string>
@@ -292,7 +291,6 @@
     <string name="ignore_audio_focus">Mantener el foco de audio</string>
     <string name="ignore_audio_focus_desc">Continuar la reproducción cuando otra aplicación tome el foco de audio. La música no se pausará por otras fuentes de audio, incluidas las llamadas telefónicas.</string>
     <string name="enable_betterlyrics">Activar el proveedor de letras BetterLyrics</string>
-    <string name="enable_simpmusic">Activar el proveedor de letras SimpMusic</string>
     <string name="duration_hours_minutes">%1$dh %2$dmin</string>
     <string name="duration_minutes">%dmin</string>
     <string name="heading_with_count">%1$s - %2$d</string>

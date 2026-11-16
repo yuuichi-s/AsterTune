@@ -131,7 +131,6 @@ val PauseSearchHistoryKey = booleanPreferencesKey("pauseSearchHistory")
 val EnableKugouKey = booleanPreferencesKey("enableKugou")
 val EnableLrcLibKey = booleanPreferencesKey("enableLrcLib")
 val EnableBetterLyricsKey = booleanPreferencesKey("enableBetterLyrics")
-val EnableSimpMusicKey = booleanPreferencesKey("enableSimpMusic")
 val UseLoginForBrowse = booleanPreferencesKey("useLoginForBrowse")
 
 
@@ -226,9 +225,11 @@ val LastFmNeedsReconnectKey = booleanPreferencesKey("lastFmNeedsReconnect")
 /**
  * Misc
  */
-val LastUpdateCheckKey = longPreferencesKey("lastUpdateCheck")
-val LastVersionKey = stringPreferencesKey("lastVersion")
-val UpdateAvailableKey = booleanPreferencesKey("updateAvailable")
+val AutoUpdateCheckKey = booleanPreferencesKey("autoUpdateCheck")
+val LastUpdateCheckTimeKey = longPreferencesKey("lastUpdateCheckTime")
+val LatestKnownVersionKey = stringPreferencesKey("latestKnownVersion")
+val DismissedUpdateVersionKey = stringPreferencesKey("dismissedUpdateVersion")
+val UpdateInstallPermissionRequestedKey = booleanPreferencesKey("updateInstallPermissionRequested")
 
 val LanguageCodeToName = mapOf(
     "af" to "Afrikaans",

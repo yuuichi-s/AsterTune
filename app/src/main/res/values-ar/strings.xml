@@ -302,7 +302,6 @@
     <string name="discord_information">AsterTune يستخدم مكتبة KizzyRPC لتعيين حالة حساب Discord الخاص بك. هذا يتضمن استخدام اتصال Discord Gateway، والذي قد يعتبر انتهاكًا لشروط خدمة Discord. مع ذلك، لا توجد حالات معروفة لتعطيل حسابات المستخدمين لهذا السبب. استخدم على مسؤوليتك الخاصة. \n \nسيقوم AsterTune فقط باستخراج رمز الوصول الخاص بك، وسيتم تخزين كل شيء آخر محليًا.</string>
     <string name="dismiss">إغلاق</string>
     <string name="enable_discord_rpc">فعل Rich Presence</string>
-    <string name="new_version_available">نسخة جديدة متوفرة</string>
     <string name="login_failed">فشل تسجيل الدخول</string>
     <string name="about">حول</string>
     <string name="app_version">نسخة التطبيق</string>
@@ -322,7 +321,6 @@
     <string name="custom_accent_color_description">استخدام لون ثابت من اختيارك للتمييز في جميع أنحاء التطبيق</string>
     <string name="accent_color">لون التمييز</string>
     <string name="enable_betterlyrics">تفعيل موفر كلمات الأغاني BetterLyrics</string>
-    <string name="enable_simpmusic">تفعيل موفر كلمات الأغاني SimpMusic</string>
     <string name="ignore_audio_focus">الاحتفاظ بالتركيز الصوتي</string>
     <string name="ignore_audio_focus_desc">متابعة التشغيل عندما يستحوذ تطبيق آخر على التركيز الصوتي. لن تتوقف الموسيقى مؤقتًا بسبب مصادر الصوت الأخرى، بما فيها المكالمات الهاتفية.</string>
 </resources>

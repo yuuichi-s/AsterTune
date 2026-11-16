@@ -289,7 +289,6 @@
     <string name="enable_discord_rpc">Включить Rich Presence</string>
     <string name="about">О приложении</string>
     <string name="app_version">Версия приложения</string>
-    <string name="new_version_available">Доступна новая версия</string>
     <string name="translation_models">Модели перевода</string>
     <string name="clear_translation_models">Очистить модели перевода</string>
     <string name="use_login_for_browse">Использовать аккаунт для просмотра контента</string>
@@ -306,5 +305,4 @@
     <string name="ignore_audio_focus">Сохранять аудиофокус</string>
     <string name="ignore_audio_focus_desc">Продолжать воспроизведение, когда другое приложение получает аудиофокус. Музыка не будет приостанавливаться из-за других источников звука, включая телефонные звонки.</string>
     <string name="enable_betterlyrics">Включить провайдера текстов BetterLyrics</string>
-    <string name="enable_simpmusic">Включить провайдера текстов SimpMusic</string>
 </resources>

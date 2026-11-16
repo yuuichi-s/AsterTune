@@ -264,7 +264,6 @@
     <string name="enable_lrclib">गीत के बोल के लिए LrcLib सक्षम करें</string>
     <string name="enable_kugou">गीत के बोल के लिए KuGou सक्षम करें</string>
     <string name="enable_betterlyrics">गीत के बोल के लिए BetterLyrics सक्षम करें</string>
-    <string name="enable_simpmusic">गीत के बोल के लिए SimpMusic सक्षम करें</string>
     <string name="hide_explicit">अश्लील सामग्री छिपाएँ</string>
     <string name="backup_restore">बैकअप और पुनर्स्थापना</string>
     <string name="action_backup">बैकअप</string>
@@ -281,7 +280,6 @@
     <string name="enable_discord_rpc">Rich Presence सक्षम करें</string>
     <string name="about">परिचय</string>
     <string name="app_version">ऐप संस्करण</string>
-    <string name="new_version_available">नया संस्करण उपलब्ध है</string>
     <string name="translation_models">अनुवाद मॉडल</string>
     <string name="clear_translation_models">अनुवाद मॉडल साफ़ करें</string>
     <string name="duration_hours_minutes">%1$d घं. %2$d मि.</string>

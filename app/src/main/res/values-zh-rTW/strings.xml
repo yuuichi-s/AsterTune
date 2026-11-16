@@ -270,7 +270,6 @@
     <string name="enable_discord_rpc">啟用 Rich Presence</string>
     <string name="about">關於</string>
     <string name="app_version">應用程式版本</string>
-    <string name="new_version_available">發現新版本</string>
     <string name="translation_models">翻譯模型</string>
     <string name="clear_translation_models">清除翻譯模型</string>
     <string name="duration_hours_minutes">%1$d 小時 %2$d 分鐘</string>
@@ -279,5 +278,4 @@
     <string name="artist_image_auto">自動（最新專輯）</string>
     <string name="minimize_player">最小化播放器</string>
     <string name="enable_betterlyrics">使用 BetterLyrics 提供歌詞</string>
-    <string name="enable_simpmusic">使用 SimpMusic 提供歌詞</string>
 </resources>

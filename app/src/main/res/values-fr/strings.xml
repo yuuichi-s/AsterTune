@@ -226,7 +226,6 @@
     <string name="restore_failed">Échec de la restauration de la sauvegarde</string>
     <string name="about">À propos</string>
     <string name="app_version">Version de l\'application</string>
-    <string name="new_version_available">Nouvelle version disponible</string>
     <string name="translation_models">Modèles de traduction</string>
     <string name="clear_translation_models">Effacer les modèles de traduction</string>
     <string name="not_logged_in">Non connecté</string>
@@ -292,7 +291,6 @@
     <string name="ignore_audio_focus">Conserver le focus audio</string>
     <string name="ignore_audio_focus_desc">Continuer la lecture lorsqu\'une autre application prend le focus audio. La musique ne sera pas mise en pause par d\'autres sources audio, y compris les appels téléphoniques.</string>
     <string name="enable_betterlyrics">Activer le fournisseur de paroles BetterLyrics</string>
-    <string name="enable_simpmusic">Activer le fournisseur de paroles SimpMusic</string>
     <string name="duration_hours_minutes">%1$d h %2$d min</string>
     <string name="duration_minutes">%d min</string>
     <string name="heading_with_count">%1$s - %2$d</string>
