@@ -1,0 +1,13 @@
+AsterTune 1.0.7
+
+Features
+- Record your plays on Last.fm. Connect your account in Settings > Account and sync.
+- Check for new versions in About and install them in the app. The app also checks each time you open it.
+
+Improvements
+- Scan local media faster.
+- Show Home content sooner after opening the app.
+
+Fixes
+- Skip songs in excluded folders when scanning their parent folder.
+- Keep local artist images visible when the image is set to Automatic.
