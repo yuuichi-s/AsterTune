@@ -10,4 +10,4 @@ Improvements
 
 Fixes
 - Skip songs in excluded folders when scanning their parent folder.
-- Keep local artist images visible when the image is set to Automatic.
+- Keep local artist images visible in Library and search after choosing Automatic on the artist page.
