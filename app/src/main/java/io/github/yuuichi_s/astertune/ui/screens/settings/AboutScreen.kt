@@ -52,6 +52,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -98,6 +99,7 @@ fun AboutScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
+    val resources = LocalResources.current
     val coroutineScope = rememberCoroutineScope()
 
     val (autoUpdateCheck, onAutoUpdateCheckChange) = rememberPreference(AutoUpdateCheckKey, defaultValue = true)
@@ -260,7 +262,7 @@ fun AboutScreen(
                             }
                             if (message != null) {
                                 snackbarHostState.showSnackbar(
-                                    message = context.getString(message),
+                                    message = resources.getString(message),
                                     withDismissAction = true,
                                     duration = SnackbarDuration.Short
                                 )
