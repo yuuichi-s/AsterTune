@@ -111,6 +111,22 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="help_contact_email_inquiries">Diğer sorular (e-posta adresini kopyalamak için dokunun)</string>
     <string name="help_support_forum">Yardım ve destek (GitHub üzerinden)</string>
     <string name="no_updates_available">Güncelleme yok</string>
+    <string name="auto_update_check">Güncellemeleri otomatik denetle</string>
+    <string name="auto_update_check_description">Uygulama açıldığında yeni bir sürüm olup olmadığını denetle</string>
+    <string name="update_available_version">%1$s sürümü kullanılabilir</string>
+    <string name="update_check_failed">Güncellemeler denetlenemedi</string>
+    <string name="update_install">Yükle</string>
+    <string name="update_downloading">İndiriliyor…</string>
+    <string name="update_downloading_percent">İndiriliyor… %%%1$d</string>
+    <string name="update_installing">Yükleniyor…</string>
+    <string name="update_installed">Yüklendi</string>
+    <string name="update_download_failed">İndirme başarısız oldu</string>
+    <string name="update_verify_failed">İndirilen dosya yayımlanan dosyayla eşleşmediği için silindi</string>
+    <string name="update_install_aborted">Yükleme iptal edildi</string>
+    <string name="update_install_failed">Yükleme başarısız oldu %1$s</string>
+    <string name="update_install_permission_title">Güncellemelerin yüklenmesine izin ver</string>
+    <string name="update_install_permission_message">Güncellemeleri yüklemek için Android ayarlarından AsterTune\'un bilinmeyen uygulamaları yüklemesine izin verin.</string>
+    <string name="update_open_settings">Ayarları aç</string>
     <string name="oss_licenses_title">Açık kaynak lisansları</string>
     <string name="wiki">Viki</string>
 
