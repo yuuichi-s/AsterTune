@@ -34,9 +34,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.SongItem
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -48,7 +49,6 @@ import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.items.ListItem
@@ -58,8 +58,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.ArtistDialog
 import io.github.yuuichi_s.astertune.utils.joinByBullet
 import io.github.yuuichi_s.astertune.utils.makeTimeString
 import io.github.yuuichi_s.astertune.utils.syncCoroutine
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.SongItem
 import kotlinx.coroutines.launch
 
 @Composable
@@ -197,12 +195,7 @@ fun YouTubeSongMenu(
                 downloadUtil.download(song.toMediaMetadata())
             },
             onRemoveDownload = {
-                DownloadService.sendRemoveDownload(
-                    context,
-                    ExoDownloadService::class.java,
-                    song.id,
-                    false
-                )
+                downloadUtil.removeDownload(song.id)
             }
         )
         GridMenuItem(

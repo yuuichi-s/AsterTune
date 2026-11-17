@@ -227,11 +227,11 @@
     <string name="dl_extra_path_title">مجلدات مصدر إضافية</string>
     <string name="dl_extra_path_description">تحميل الأغاني المنزّلة المحفوظة خارج مجلد الوجهة إلى التطبيق.</string>
     <string name="dl_migrate_title">نقل الأغاني المنزّلة إلى مجلد</string>
-    <string name="dl_migrate_description">نقل الأغاني المنزّلة خارج مساحة التخزين الخاصة بالتطبيق.</string>
+    <string name="dl_migrate_description">نقل الأغاني من مساحة التخزين الخاصة بالتطبيق إلى المجلد المحدد.</string>
     <string name="dl_migrate_confirm">هل تريد نقل الأغاني المنزّلة إلى هذا المجلد؟\n\n%s\n\nستُحذف البيانات الأصلية من مساحة التخزين الخاصة بالتطبيق.</string>
     <string name="dl_main_path_title">وجهة نقل الأغاني المنزّلة</string>
-    <string name="dl_main_path_description">بعد اختيار مجلد، استخدم «نقل الأغاني المنزّلة إلى مجلد». ستظل التنزيلات الجديدة تُحفظ في مساحة التخزين الخاصة بالتطبيق.</string>
-    <string name="dl_oobe_tooltip">تُحفظ التنزيلات الجديدة في مساحة التخزين الخاصة بالتطبيق. اختيار مجلد لا ينقل الأغاني. لنقلها لاحقًا، استخدم «نقل الأغاني المنزّلة إلى مجلد» ضمن «إعدادات» ← «مساحة التخزين».</string>
+    <string name="dl_main_path_description">تُنقل الأغاني المنزّلة إلى هذا المجلد تلقائيًا. تُنقل أيضًا الأغاني الموجودة في مساحة التخزين الخاصة بالتطبيق.</string>
+    <string name="dl_oobe_tooltip">إذا حددت مجلدًا، تُحفظ الأغاني المنزّلة فيه. وإذا لم تحدد مجلدًا، تُحفظ في مساحة التخزين الخاصة بالتطبيق.</string>
     <string name="dl_rescan_title">إعادة فحص المجلدات</string>
     <string name="dl_rescan_description">فحص مجلد الوجهة ومجلدات المصدر الإضافية لتحديث معلومات الأغاني المنزّلة.</string>
     <string name="clear_downloads_confirm">هل تريد حذف جميع الأغاني المنزّلة من مساحة التخزين الخاصة بالتطبيق؟\nستبقى الملفات الموجودة في المجلدات.</string>
@@ -249,7 +249,7 @@
     <string name="audio_decoder_system_only">استخدام برامج فك ترميز النظام فقط</string>
     <string name="audio_decoder_system_with_ffmpeg">إعطاء الأولوية لبرامج فك ترميز النظام</string>
     <string name="auto_scanner_tooltip">يعكس المسح التلقائي إضافة الأغاني وإزالتها. لتحديث البيانات الوصفية للأغاني التي سبق مسحها أيضًا، حدّد خيار إعادة المسح ضمن «الماسح اليدوي».</string>
-    <string name="dl_storage_tooltip">مساحة التخزين الخاصة بالتطبيق\nتُحفظ هنا الأغاني التي تُنزّل حديثًا. لا تستطيع تطبيقات إدارة الملفات العادية الوصول إليها مباشرةً.\n\nوجهة نقل الأغاني المنزّلة\nتُنقل الأغاني إلى هنا باستخدام «نقل الأغاني المنزّلة إلى مجلد». بعد نقلها، يمكنك مواصلة تشغيلها في AsterTune والوصول إليها باستخدام مدير ملفات. اختر مجلدًا فارغًا مخصصًا لهذه الأغاني فقط.\n\nمجلدات مصدر إضافية\nتتيح تحميل الأغاني المنزّلة المحفوظة خارج مجلد الوجهة إلى التطبيق. مثلًا، بعد استعادة بيانات التطبيق، أضف المجلدات واختر «إعادة فحص المجلدات». لن تُدرج إلا الأغاني المسجّلة مسبقًا في التطبيق.</string>
+    <string name="dl_storage_tooltip">مساحة التخزين الخاصة بالتطبيق\nهذا هو المكان الافتراضي لحفظ الأغاني المنزّلة. لا تستطيع تطبيقات إدارة الملفات العادية الوصول إليها مباشرةً.\n\nوجهة نقل الأغاني المنزّلة\nعند تعيين الوجهة، تُنقل أيضًا الأغاني الموجودة في مساحة التخزين الخاصة بالتطبيق. لإعادة محاولة نقل الأغاني التي تعذّر نقلها، استخدم «نقل الأغاني المنزّلة إلى مجلد». بعد نقلها، يمكنك مواصلة تشغيلها في AsterTune والوصول إليها باستخدام مدير ملفات. اختر مجلدًا فارغًا مخصصًا لهذه الأغاني فقط.\n\nمجلدات مصدر إضافية\nتتيح تحميل الأغاني المنزّلة المحفوظة خارج مجلد الوجهة إلى التطبيق. مثلًا، بعد استعادة بيانات التطبيق، أضف المجلدات واختر «إعادة فحص المجلدات». لن تُدرج إلا الأغاني المسجّلة مسبقًا في التطبيق.</string>
     <string name="download_on_wifi_only_title">التنزيل عبر Wi-Fi فقط</string>
     <string name="download_on_wifi_only_description">الانتظار عند استخدام بيانات الجوال وبدء التنزيل عند الاتصال بشبكة Wi-Fi.</string>
     <string name="download_waiting_for_wifi">سيبدأ التنزيل عند الاتصال بشبكة Wi-Fi</string>
@@ -276,7 +276,7 @@
     <string name="oobe_complete_title">كل شيء جاهز!</string>
     <string name="oobe_cross_platform_sync">المزامنة عبر المنصات</string>
     <string name="oobe_cross_platform_sync_description">حافظ على مزامنة موسيقاك عبر أجهزتك</string>
-    <string name="oobe_downloads_subtitle">اختر وجهة لنقل الأغاني المنزّلة (اختياري).</string>
+    <string name="oobe_downloads_subtitle">اختر وجهة للأغاني المنزّلة (اختياري).</string>
     <string name="oobe_downloads_title">تنزيلات الأغاني</string>
     <string name="oobe_interface_subtitle">خصّص مظهر AsterTune والمحتوى الذي يعرضه لك.</string>
     <string name="oobe_local_media_subtitle">اختر المجلدات التي تحتوي على موسيقاك. سنفحصها للعثور على أغانٍ لاستيرادها.</string>
@@ -330,6 +330,8 @@
     <string name="clear_downloads_description">ستبقى الملفات الموجودة في مجلد الوجهة ومجلدات المصدر الإضافية.</string>
     <string name="dl_extra_path_dialog_description">أضف مجلدات تحتوي على أغانٍ سبق تنزيلها. لن تُدرج إلا الأغاني المسجّلة مسبقًا في التطبيق. بعد إضافة المجلدات، اختر «إعادة فحص المجلدات».</string>
     <string name="dl_migrate_action">نقل</string>
+    <string name="dl_move_failed_title">تعذّر نقل الأغنية المنزّلة</string>
+    <string name="dl_move_failed_count_text">عدد الأغاني التي تعذّر نقلها: %d.</string>
     <string name="dl_path_not_set">غير محدد</string>
     <string name="dl_add_folder">إضافة مجلد</string>
     <string name="dl_subfolders_tooltip">يشمل ذلك المجلدات الفرعية أيضًا.</string>

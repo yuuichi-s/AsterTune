@@ -1,7 +1,6 @@
 package io.github.yuuichi_s.astertune.ui.screens.playlist
 
 import android.util.Log
-import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -74,8 +73,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
@@ -89,8 +88,8 @@ import androidx.compose.ui.util.fastSumBy
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
+import com.zionhuang.innertube.YouTube
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalMenuState
@@ -111,13 +110,13 @@ import io.github.yuuichi_s.astertune.constants.PlaylistSongSortType
 import io.github.yuuichi_s.astertune.constants.PlaylistSongSortTypeKey
 import io.github.yuuichi_s.astertune.constants.SwipeToQueueKey
 import io.github.yuuichi_s.astertune.constants.SyncMode
+import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import io.github.yuuichi_s.astertune.constants.YtmSyncModeKey
 import io.github.yuuichi_s.astertune.db.entities.Playlist
 import io.github.yuuichi_s.astertune.db.entities.PlaylistSong
 import io.github.yuuichi_s.astertune.extensions.move
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
@@ -136,7 +135,6 @@ import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.syncCoroutine
 import io.github.yuuichi_s.astertune.viewmodels.LocalPlaylistViewModel
-import com.zionhuang.innertube.YouTube
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -269,6 +267,7 @@ fun LocalPlaylistScreen(
     }
 
     if (showRemoveDownloadDialog) {
+        val downloadUtil = LocalDownloadUtil.current
         DefaultDialog(
             onDismiss = { showRemoveDownloadDialog = false },
             content = {
@@ -295,12 +294,7 @@ fun LocalPlaylistScreen(
                         }
 
                         playlistWithSongs.second.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.song.id,
-                                false
-                            )
+                            downloadUtil.removeDownload(song.song.id)
                         }
                     }
                 ) {
@@ -791,12 +785,7 @@ fun LocalPlaylistHeader(
                                 IconButton(
                                     onClick = {
                                         songs.forEach { song ->
-                                            DownloadService.sendRemoveDownload(
-                                                context,
-                                                ExoDownloadService::class.java,
-                                                song.song.id,
-                                                false
-                                            )
+                                            downloadUtil.removeDownload(song.song.id)
                                         }
                                     }
                                 ) {

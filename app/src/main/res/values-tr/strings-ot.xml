@@ -308,18 +308,18 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="dl_extra_path_title">Ek kaynak klasörleri</string>
     <string name="dl_extra_path_description">Hedef klasör dışında saklanan indirilmiş şarkıları yükle.</string>
     <string name="dl_migrate_title">İndirilen şarkıları klasöre taşı</string>
-    <string name="dl_migrate_description">İndirilen şarkıları uygulamanın özel depolama alanından taşı.</string>
+    <string name="dl_migrate_description">Şarkıları uygulamanın özel depolama alanından seçilen klasöre taşıyın.</string>
     <string name="dl_migrate_confirm">İndirilen şarkılar bu klasöre taşınsın mı?\n\n%s\n\nUygulamanın özel depolama alanındaki özgün veriler silinir.</string>
     <string name="dl_main_path_title">İndirilen şarkılar için hedef klasör</string>
-    <string name="dl_main_path_description">Klasör seçtikten sonra “İndirilen şarkıları klasöre taşı” seçeneğini kullanın. Yeni indirmeler uygulamanın özel depolama alanına kaydedilmeye devam eder.</string>
-    <string name="dl_oobe_tooltip">Yeni indirmeler uygulamanın özel depolama alanına kaydedilir. Klasör seçmek şarkıları taşımaz. Daha sonra taşımak için Ayarlar → Depolama bölümündeki “İndirilen şarkıları klasöre taşı” seçeneğini kullanın.</string>
+    <string name="dl_main_path_description">İndirilen şarkılar otomatik olarak bu klasöre taşınır. Uygulamanın özel depolama alanındaki şarkılar da taşınır.</string>
+    <string name="dl_oobe_tooltip">Bir klasör ayarlarsanız indirilen şarkılar oraya kaydedilir. Ayarlamazsanız uygulamanın özel depolama alanına kaydedilir.</string>
     <string name="dl_rescan_title">Klasörleri yeniden tara</string>
     <string name="dl_rescan_description">Hangi şarkıların indirilmiş olduğunu güncellemek için hedef klasörü ve ek kaynak klasörlerini kontrol et.</string>
 	<string name="dl_rescan_confirm">Hedef klasör ve ek kaynak klasörleri yeniden taransın mı?\nDosya sayısına bağlı olarak bu işlem birkaç dakika sürebilir.</string>
     <string name="dl_size_used_cache">Uygulamanın özel depolama alanı: %s</string>
     <string name="dl_size_used_main">İndirilen şarkılar için hedef klasör: %s</string>
     <string name="dl_size_used_extra">Ek kaynak klasörleri: %s</string>
-    <string name="dl_storage_tooltip">Uygulamanın özel depolama alanı\nYeni indirilen şarkılar buraya kaydedilir. Standart dosya yöneticileri bunlara doğrudan erişemez.\n\nİndirilen şarkılar için hedef klasör\nŞarkılar “İndirilen şarkıları klasöre taşı” ile buraya taşınır. Taşıdıktan sonra şarkıları AsterTune’da dinlemeye devam edebilir ve bir dosya yöneticisiyle açabilirsiniz. Yalnızca bu şarkılar için boş bir klasör seçin.\n\nEk kaynak klasörleri\nHedef klasör dışında saklanan indirilmiş şarkıları yüklemek için kullanılır. Örneğin uygulama verilerini geri yükledikten sonra klasörleri ekleyip “Klasörleri yeniden tara” seçeneğini kullanın. Yalnızca uygulamada zaten kayıtlı olan şarkılar dikkate alınır.</string>
+    <string name="dl_storage_tooltip">Uygulamanın özel depolama alanı\nİndirilen şarkılar varsayılan olarak burada saklanır. Sıradan dosya yöneticileri bunlara doğrudan erişemez.\n\nİndirilen şarkılar için hedef klasör\nHedef klasörü ayarladığınızda, uygulamanın özel depolama alanında bulunan şarkılar da taşınır. Taşınamayan şarkıları yeniden taşımak için “İndirilen şarkıları klasöre taşı” seçeneğini kullanın. Taşındıktan sonra AsterTune’da çalınmaya ve dosya yöneticisiyle açılmaya devam edebilir. Yalnızca bu şarkılar için boş bir klasör seçin.\n\nEk kaynak klasörleri\nHedef klasör dışında saklanan indirilmiş şarkıları yüklemek için kullanılır. Örneğin uygulama verilerini geri yükledikten sonra klasörleri ekleyip “Klasörleri yeniden tara” seçeneğini kullanın. Yalnızca uygulamada zaten kayıtlı olan şarkılar dikkate alınır.</string>
     <string name="restart_to_apply_changes">Değişiklikleri uygulamak için uygulamayı yeniden başlatın.</string>
 
 <!-- Privacy settings -->
@@ -373,7 +373,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="oobe_cache_title">Şarkı önbelleği</string>
     <string name="oobe_cache_subtitle">Şarkı önbelleği boyutunu seçin. Bu, internet veya YouTube API\'sinden kaynaklanan çalma sorunlarını azaltmaya yardımcı olabilir</string>
     <string name="oobe_downloads_title">Şarkı indirmeleri</string>
-    <string name="oobe_downloads_subtitle">İndirilen şarkıları taşımak için bir hedef klasör seçin (isteğe bağlı).</string>
+    <string name="oobe_downloads_subtitle">İndirilen şarkılar için bir hedef klasör seçin (isteğe bağlı).</string>
 
     <!-- Setup complete -->
     <string name="oobe_complete_title">Her şey hazır!</string>
@@ -407,6 +407,8 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="clear_downloads_description">Hedef klasördeki ve ek kaynak klasörlerindeki dosyalar korunur.</string>
     <string name="dl_extra_path_dialog_description">Daha önce indirilmiş şarkıların bulunduğu klasörleri ekleyin. Yalnızca uygulamada zaten kayıtlı olan şarkılar dikkate alınır. Ardından “Klasörleri yeniden tara” seçeneğini kullanın.</string>
     <string name="dl_migrate_action">Taşı</string>
+    <string name="dl_move_failed_title">İndirilen şarkı taşınamadı</string>
+    <string name="dl_move_failed_count_text">%d şarkı taşınamadı.</string>
     <string name="dl_path_not_set">Ayarlanmadı</string>
     <string name="dl_add_folder">Klasör ekle</string>
     <string name="dl_subfolders_tooltip">Alt klasörler de dahildir.</string>

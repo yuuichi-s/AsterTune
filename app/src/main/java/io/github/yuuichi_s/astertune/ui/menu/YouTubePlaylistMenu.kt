@@ -37,8 +37,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.PlaylistItem
+import com.zionhuang.innertube.models.SongItem
+import com.zionhuang.innertube.utils.completed
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -47,7 +50,6 @@ import io.github.yuuichi_s.astertune.db.entities.PlaylistEntity
 import io.github.yuuichi_s.astertune.db.entities.PlaylistSongMap
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
@@ -55,10 +57,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.utils.getDownloadState
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.PlaylistItem
-import com.zionhuang.innertube.models.SongItem
-import com.zionhuang.innertube.utils.completed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -356,12 +354,7 @@ fun YouTubePlaylistMenu(
                     onClick = {
                         showRemoveDownloadDialog = false
                         songs.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.id,
-                                false
-                            )
+                            downloadUtil.removeDownload(song.id)
                         }
                     }
                 ) {

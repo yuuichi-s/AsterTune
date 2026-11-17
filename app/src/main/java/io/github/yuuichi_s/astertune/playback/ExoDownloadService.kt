@@ -103,6 +103,8 @@ class ExoDownloadService : DownloadService(
     companion object {
         const val CHANNEL_ID = "download"
         const val NOTIFICATION_ID = 1
+        /** Kept apart from the ids [TerminalStateNotificationHelper] counts up from [NOTIFICATION_ID]. */
+        const val MOVE_FAILED_NOTIFICATION_ID = 0x10000
         const val JOB_ID = 1
         const val REMOVE_ALL_PENDING_DOWNLOADS = "REMOVE_ALL_PENDING_DOWNLOADS"
     }

@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
@@ -40,7 +39,6 @@ import io.github.yuuichi_s.astertune.LocalSyncUtils
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.MediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
@@ -304,12 +302,7 @@ fun SelectionMediaMetadataMenu(
                     onClick = {
                         showRemoveDownloadDialog = false
                         selection.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.id,
-                                false
-                            )
+                            downloadUtil.removeDownload(song.id)
                         }
                     }
                 ) {

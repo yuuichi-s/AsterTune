@@ -91,8 +91,8 @@
     <string name="err_invalid_ytm_song">השמעת השיר נכשלה. ניתן להשמיע רק תוכן הזמין ב-YouTube Music</string>
     <string name="dl_migrate_confirm">להעביר את השירים שהורדו לתיקייה הזו?\n\n%s\n\nהנתונים המקוריים באחסון הפרטי של האפליקציה יימחקו.</string>
     <string name="dl_main_path_title">יעד להעברת שירים שהורדו</string>
-    <string name="dl_main_path_description">לאחר בחירת תיקייה, יש להשתמש ב״העברת שירים שהורדו לתיקייה״. הורדות חדשות עדיין יישמרו באחסון הפרטי של האפליקציה.</string>
-    <string name="dl_oobe_tooltip">הורדות חדשות נשמרות באחסון הפרטי של האפליקציה. בחירת תיקייה אינה מעבירה שירים. כדי להעביר אותם בהמשך, יש לבחור ב״העברת שירים שהורדו לתיקייה״ תחת הגדרות ← אחסון.</string>
+    <string name="dl_main_path_description">שירים שהורדו מועברים לתיקייה הזו באופן אוטומטי. גם שירים שכבר נמצאים באחסון הפרטי של האפליקציה מועברים.</string>
+    <string name="dl_oobe_tooltip">אם מגדירים תיקייה, השירים שהורדו נשמרים בה. אם לא מוגדרת תיקייה, הם נשמרים באחסון הפרטי של האפליקציה.</string>
     <string name="dl_rescan_title">סריקה חוזרת של התיקיות</string>
     <string name="dl_rescan_confirm">לסרוק מחדש את תיקיית היעד ואת תיקיות המקור הנוספות?\nהתהליך עשוי להימשך כמה דקות, בהתאם למספר הקבצים.</string>
     <string name="restart_to_apply_changes">יש להפעיל מחדש את האפליקציה כדי להחיל את השינויים.</string>
@@ -120,7 +120,7 @@
     <string name="oobe_local_media_title">מדיה מקומית</string>
     <string name="oobe_local_media_subtitle">בחר תיקיות שמכילות את המוזיקה שלך. נסרוק אותן כדי למצוא שירים לייבוא.</string>
     <string name="oobe_downloads_title">הורדות שירים</string>
-    <string name="oobe_downloads_subtitle">בחירת תיקיית יעד להעברת שירים שהורדו (לא חובה).</string>
+    <string name="oobe_downloads_subtitle">בחירת תיקיית יעד לשירים שהורדו (לא חובה).</string>
     <string name="oobe_complete_title">אתה מוכן!</string>
     <string name="oobe_complete">ההגדרה של AsterTune הושלמה והאפליקציה מוכנה לשימוש. אפשר לעיין במוזיקה שלך, לגלות שירים חדשים וליהנות מההאזנה!</string>
     <string name="import_failed_songs">לא ניתן היה לייבא</string>
@@ -245,9 +245,9 @@
     <string name="dl_extra_path_title">תיקיות מקור נוספות</string>
     <string name="dl_extra_path_description">טעינת שירים שהורדו ונשמרו מחוץ לתיקיית היעד.</string>
     <string name="dl_migrate_title">העברת שירים שהורדו לתיקייה</string>
-    <string name="dl_migrate_description">העברת שירים שהורדו אל מחוץ לאחסון הפרטי של האפליקציה.</string>
+    <string name="dl_migrate_description">העברת השירים מהאחסון הפרטי של האפליקציה לתיקייה שנבחרה.</string>
     <string name="dl_rescan_description">בדיקת תיקיית היעד ותיקיות המקור הנוספות כדי לעדכן אילו שירים הורדו.</string>
-    <string name="dl_storage_tooltip">האחסון הפרטי של האפליקציה\nכאן נשמרים שירים חדשים שהורדו. מנהלי קבצים רגילים אינם יכולים לגשת אליהם ישירות.\n\nיעד להעברת שירים שהורדו\nהשירים מועברים לכאן באמצעות ״העברת שירים שהורדו לתיקייה״. לאחר ההעברה עדיין ניתן להשמיע אותם ב-AsterTune ולגשת אליהם באמצעות מנהל קבצים. יש לבחור תיקייה ריקה המיועדת לשירים האלה בלבד.\n\nתיקיות מקור נוספות\nמאפשרות לטעון שירים שהורדו ונשמרו מחוץ לתיקיית היעד. לדוגמה, לאחר שחזור נתוני האפליקציה, יש להוסיף את התיקיות ולבחור ב״סריקה חוזרת של התיקיות״. ייכללו רק שירים שכבר רשומים באפליקציה.</string>
+    <string name="dl_storage_tooltip">האחסון הפרטי של האפליקציה\nכאן נשמרים השירים שהורדו כברירת מחדל. מנהלי קבצים רגילים לא יכולים לגשת אליהם ישירות.\n\nיעד להעברת שירים שהורדו\nכשמגדירים את היעד, מועברים גם השירים שכבר נמצאים באחסון הפרטי של האפליקציה. כדי לנסות שוב להעביר שירים שלא הועברו, יש לבחור ב״העברת שירים שהורדו לתיקייה״. אחרי ההעברה אפשר להמשיך להשמיע אותם ב־AsterTune ולפתוח אותם במנהל קבצים. כדאי לבחור תיקייה ריקה שמיועדת רק לשירים האלה.\n\nתיקיות מקור נוספות\nמאפשרות לטעון שירים שהורדו ונשמרו מחוץ לתיקיית היעד. לדוגמה, לאחר שחזור נתוני האפליקציה, יש להוסיף את התיקיות ולבחור ב״סריקה חוזרת של התיקיות״. ייכללו רק שירים שכבר רשומים באפליקציה.</string>
     <string name="attribution_title">שיוך</string>
     <string name="toggle_lyrics">הפעל/כבה את מילות השיר</string>
     <string name="ffmpeg_lgpl">תוכנה זו עושה שימוש בספריות מפרויקט FFmpeg תחת רישיון LGPLv2.1</string>
@@ -321,6 +321,8 @@
     <string name="clear_downloads_description">הקבצים בתיקיית היעד ובתיקיות המקור הנוספות יישמרו.</string>
     <string name="dl_extra_path_dialog_description">יש להוסיף תיקיות עם שירים שהורדו בעבר. ייכללו רק שירים שכבר רשומים באפליקציה. לאחר מכן יש לבחור ב״סריקה חוזרת של התיקיות״.</string>
     <string name="dl_migrate_action">העברה</string>
+    <string name="dl_move_failed_title">לא ניתן היה להעביר את השיר שהורד</string>
+    <string name="dl_move_failed_count_text">מספר השירים שלא ניתן היה להעביר: %d.</string>
     <string name="dl_path_not_set">לא הוגדרה</string>
     <string name="dl_add_folder">הוספת תיקייה</string>
     <string name="dl_subfolders_tooltip">גם תיקיות משנה נכללות.</string>

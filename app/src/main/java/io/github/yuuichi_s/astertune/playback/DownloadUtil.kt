@@ -12,8 +12,11 @@ import android.net.ConnectivityManager
 import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.edit
+import androidx.media3.common.util.NotificationUtil
 import androidx.media3.database.DatabaseProvider
 import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.datasource.cache.CacheDataSource
@@ -27,7 +30,6 @@ import androidx.media3.exoplayer.offline.DownloadRequest
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.Requirements
 import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.SongItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.AudioQuality
@@ -38,8 +40,6 @@ import io.github.yuuichi_s.astertune.constants.DownloadOnWifiOnlyKey
 import io.github.yuuichi_s.astertune.constants.DownloadPathKey
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.FormatEntity
-import io.github.yuuichi_s.astertune.db.entities.PlaylistSong
-import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.di.AppModule.PlayerCache
 import io.github.yuuichi_s.astertune.di.DownloadCache
@@ -47,7 +47,6 @@ import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.playback.DownloadUtil.Companion.STATE_DOWNLOADING
 import io.github.yuuichi_s.astertune.playback.DownloadUtil.Companion.STATE_INVALID
 import io.github.yuuichi_s.astertune.playback.downloadManager.DownloadDirectoryManagerOt
-import io.github.yuuichi_s.astertune.playback.downloadManager.DownloadManagerOt
 import io.github.yuuichi_s.astertune.utils.YTPlayerUtils
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.dlCoroutine
@@ -57,8 +56,11 @@ import io.github.yuuichi_s.astertune.utils.reportException
 import io.github.yuuichi_s.astertune.utils.scanners.InvalidAudioFileException
 import io.github.yuuichi_s.astertune.utils.scanners.fileFromUri
 import io.github.yuuichi_s.astertune.utils.scanners.uriListFromString
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -66,15 +68,19 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
+import java.io.InputStream
+import java.io.SequenceInputStream
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.Enumeration
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -172,8 +178,16 @@ class DownloadUtil @Inject constructor(
         context.dataStore.get(DownloadPathKey, "").toUri(),
         uriListFromString(context.dataStore.get(DownloadExtraPathKey, ""))
     )
-    val downloadMgr = DownloadManagerOt(localMgr)
     var isProcessingDownloads = MutableStateFlow(false)
+
+    // Serializes download moves, deletions, scans, and directory updates.
+    private val storageMutex = Mutex()
+
+    // Keeps storage operations running after the requesting screen is closed.
+    private val storageScope = CoroutineScope(SupervisorJob() + dlCoroutine)
+
+    // Songs saved in a download directory whose internal copies are awaiting removal.
+    private val movedSongIds: MutableSet<String> = ConcurrentHashMap.newKeySet()
 
     fun getDownload(songId: String): Flow<LocalDateTime?> = downloads.map { it[songId] }
 
@@ -238,127 +252,290 @@ class DownloadUtil @Inject constructor(
     }
 
 
-// Deletes from custom dl
-
-    fun delete(song: PlaylistSong) = deleteSong(song.song.id)
-
-    fun delete(song: SongItem) = deleteSong(song.id)
-
-    fun delete(song: Song) = deleteSong(song.song.id)
-
-    fun delete(song: SongEntity) = deleteSong(song.id)
-
-    fun delete(song: MediaMetadata) = deleteSong(song.id)
-
-    private fun deleteSong(id: String): Boolean {
-        val deleted = localMgr.deleteFile(id)
-        if (!deleted) return false
-        downloads.update { map ->
-            map.toMutableMap().apply {
-                remove(id)
+    fun removeDownload(songId: String) {
+        storageScope.launch {
+            storageMutex.withLock {
+                // A concurrent move may add this ID after the internal download is removed.
+                movedSongIds.remove(songId)
+                if (localMgr.deleteFile(songId)) {
+                    downloads.update { it - songId }
+                    database.removeDownloadSong(songId)
+                }
             }
         }
-
-        runBlocking {
-            database.song(id).first()?.song?.copy(localPath = null)?.let { database.update(it) }
-            database.updateDownloadStatus(id, null)
-        }
-        return true
+        DownloadService.sendRemoveDownload(context, ExoDownloadService::class.java, songId, false)
     }
 
     /**
-     * Retrieve song from cache, and delete it from cache afterwards
+     * Opens a download's cached files as a single stream.
+     *
+     * Returns null if the cache is empty or has gaps. If the download size is known,
+     * the cached data must also match that size.
      */
-    fun getFromCache(cache: SimpleCache, mediaId: String): ByteArray? {
-        val spans: Set<CacheSpan> = cache.getCachedSpans(mediaId)
-        if (spans.isEmpty()) return null
-
-        val output = ByteArrayOutputStream()
-        try {
-            for (span in spans) {
-                val file: File? = span.file
-                FileInputStream(file).use { fis ->
-                    fis.copyTo(output)
-                }
+    private fun openInternalData(download: Download): InputStream? {
+        val spans: Set<CacheSpan> = downloadCache.getCachedSpans(download.request.id)
+        val files = ArrayList<File>()
+        var position = 0L
+        for (span in spans) {
+            val file = span.file
+            if (!span.isCached || file == null || span.position != position) {
+                return null
             }
-            return output.toByteArray()
-        } catch (e: IOException) {
-            reportException(e)
-        } finally {
-            output.close()
+
+            files.add(file)
+            position += span.length
         }
-        return null
+
+        if (files.isEmpty() || (download.contentLength > 0 && position != download.contentLength)) {
+            return null
+        }
+
+        val iterator = files.iterator()
+        return SequenceInputStream(object : Enumeration<InputStream> {
+            override fun hasMoreElements() = iterator.hasNext()
+            override fun nextElement(): InputStream = FileInputStream(iterator.next())
+        })
     }
 
-    /**
-     * Migrated existing downloads from the download cache to the new system in external storage
-     */
-    suspend fun migrateDownloads() {
-        if (isProcessingDownloads.value) return
-        isProcessingDownloads.value = true
-
-        var runs = 0
+    suspend fun moveToFolder(mediaId: String) {
         try {
-            // "skeleton" of old download manager to access old download data
-            val dataSourceFactory = ResolvingDataSource.Factory(
-                CacheDataSource.Factory()
-                    .setCache(playerCache)
-                    .setUpstreamDataSourceFactory(
-                        OkHttpDataSource.Factory(
-                            OkHttpClient.Builder()
-                                .proxy(YouTube.proxy)
-                                .build()
-                        )
-                    )
-            ) { dataSpec ->
-                return@Factory dataSpec
-            }
-
-            val downloadManager: DownloadManager = DownloadManager(
-                context,
-                databaseProvider,
-                downloadCache,
-                dataSourceFactory,
-                Executor(Runnable::run)
-            ).apply {
-                maxParallelDownloads = 3
-            }
-
-            // actual migration code
-            val downloadedSongs = mutableMapOf<String, Download>()
-            val cursor = downloadManager.downloadIndex.getDownloads()
-            while (cursor.moveToNext()) {
-                downloadedSongs[cursor.download.request.id] = cursor.download
-            }
-
-            // copy all completed downloads
-            val toMigrate = downloadedSongs.filter { it.value.state == Download.STATE_COMPLETED }
-            toMigrate.forEach { s ->
-                if (runs++ % 10 == 0) {
-                    if (DOWNLOAD_DEBUG) Log.d(TAG, "Migrating download: $runs/${toMigrate.size}")
-                    if (runs % 20 == 0) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(context, "$runs/${toMigrate.size}", LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                val songFromCache = getFromCache(downloadCache, s.key)
-                if (songFromCache != null) {
-                    downloadCache.removeResource(s.key)
-                    downloadMgr.enqueue(
-                        mediaId = s.key,
-                        data = songFromCache,
-                        displayName = runBlocking { database.song(s.key).first()?.title ?: "" })
+            storageMutex.withLock {
+                if (moveToFolderCatching(mediaId)) {
+                    notifyMoveFailed()
                 }
             }
-            scanDownloads()
         } catch (e: Exception) {
             reportException(e)
-        } finally {
-            isProcessingDownloads.value = false
         }
     }
 
+    /**
+     * Moves completed internal downloads to the main download directory, if set.
+     *
+     * Posts one notification if any downloads remain after a failed move.
+     *
+     * @param refreshFiles Whether to scan the download directories before moving songs.
+     *     Set to false if they were just scanned.
+     */
+    suspend fun migrateDownloads(refreshFiles: Boolean = true) =
+        withContext(NonCancellable) { migrateDownloadsUncancellable(refreshFiles) }
+
+    private suspend fun migrateDownloadsUncancellable(refreshFiles: Boolean) {
+        if (context.dataStore.get(DownloadPathKey, "").isEmpty()) {
+            return
+        }
+
+        storageMutex.withLock {
+            var anyKept = false
+            isProcessingDownloads.value = true
+            try {
+                val ids = ArrayList<String>()
+                downloadManager.downloadIndex.getDownloads(Download.STATE_COMPLETED).use { cursor ->
+                    while (cursor.moveToNext()) {
+                        ids.add(cursor.download.request.id)
+                    }
+                }
+
+                if (ids.isEmpty()) {
+                    return
+                }
+
+                localMgr.deleteTempFiles()
+                if (refreshFiles) {
+                    localMgr.getAvailableFiles(false)
+                }
+
+                ids.forEachIndexed { index, id ->
+                    if (DOWNLOAD_DEBUG) Log.d(TAG, "Migrating download: ${index + 1}/${ids.size}")
+                    if ((index + 1) % 20 == 0) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(context, "${index + 1}/${ids.size}", LENGTH_SHORT).show()
+                        }
+                    }
+                    if (moveToFolderCatching(id)) {
+                        anyKept = true
+                    }
+                }
+            } catch (e: Exception) {
+                reportException(e)
+            } finally {
+                isProcessingDownloads.value = false
+            }
+
+            if (anyKept) {
+                notifyMoveFailed()
+            }
+        }
+    }
+
+    /**
+     * Moves an internal download to the main download directory.
+     *
+     * Reuses an existing file in any download directory instead of saving another copy.
+     * Removes the internal copy only after the file is registered.
+     * The caller must hold [storageMutex].
+     *
+     * @return true if the move fails and the internal download is still marked as completed.
+     */
+    private suspend fun moveToFolderLocked(mediaId: String): Boolean {
+        val downloadPath = context.dataStore.get(DownloadPathKey, "")
+        // A changed path is applied by setDownloadPath(), which moves the remaining songs afterward.
+        if (downloadPath.isEmpty() || downloadPath.toUri() != localMgr.dir) {
+            return false
+        }
+
+        val download = downloadManager.downloadIndex.getDownload(mediaId)
+        val song = database.song(mediaId).first()
+        val title = song?.title
+            ?: download?.request?.data?.let { String(it) }
+            ?: mediaId
+
+        var saved = localMgr.findFile(mediaId)
+        if (saved == null) {
+            if (download?.state != Download.STATE_COMPLETED) return false
+
+            if (!hasInternalData(download)) {
+                // Remove the record so a song with missing data is not shown as downloaded.
+                withContext(Dispatchers.Main) { downloadManager.removeDownload(mediaId) }
+                return false
+            }
+
+            val dir = localMgr.mainDir
+            if (dir == null || fileFromUri(context, dir.uri) == null) {
+                return isKept(mediaId)
+            }
+
+            saved = openInternalData(download)?.use { localMgr.saveFile(mediaId, it, title) }
+        }
+
+        val path = saved?.let { fileFromUri(context, it.uri) }?.absolutePath
+            ?: return isKept(mediaId)
+
+        val dateDownload = song?.song?.dateDownload
+            ?.takeIf { it != STATE_DOWNLOADING && it != STATE_INVALID }
+            ?: download?.let {
+                Instant.ofEpochMilli(it.updateTimeMs).atZone(ZoneOffset.UTC).toLocalDateTime()
+            }?: LocalDateTime.now()
+
+        database.registerDownloadSong(mediaId, dateDownload, path)
+        downloads.update { it + (mediaId to dateDownload) }
+
+        if (download != null) {
+            movedSongIds.add(mediaId)
+            withContext(Dispatchers.Main) { downloadManager.removeDownload(mediaId) }
+        }
+
+        return false
+    }
+
+    /**
+     * Moves an internal download and reports errors.
+     *
+     * The caller must hold [storageMutex].
+     *
+     * @return true if the move fails and the internal download is still marked as completed.
+     */
+    private suspend fun moveToFolderCatching(mediaId: String): Boolean = try {
+        moveToFolderLocked(mediaId)
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        reportException(e)
+        runCatching { isKept(mediaId) }.getOrDefault(false)
+    }
+
+    private fun isKept(mediaId: String): Boolean =
+        downloadManager.downloadIndex.getDownload(mediaId)?.state == Download.STATE_COMPLETED
+
+    /**
+     * Posts a move-failure notification with the count of remaining completed internal downloads.
+     *
+     * Callers must hold [storageMutex].
+     */
+    private fun notifyMoveFailed() {
+        var count = 0
+        downloadManager.downloadIndex.getDownloads(Download.STATE_COMPLETED).use { cursor ->
+            while (cursor.moveToNext()) {
+                if (cursor.download.request.id !in movedSongIds && hasInternalData(cursor.download)) {
+                    count++
+                }
+            }
+        }
+
+        if (count == 0) return
+
+        val text = context.getString(R.string.dl_move_failed_count_text, count)
+        val notification = NotificationCompat.Builder(context, ExoDownloadService.CHANNEL_ID)
+            .setSmallIcon(R.drawable.error)
+            .setContentTitle(context.getString(R.string.dl_move_failed_title))
+            .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setAutoCancel(true)
+            .build()
+        NotificationUtil.setNotification(context, ExoDownloadService.MOVE_FAILED_NOTIFICATION_ID, notification)
+    }
+
+    /**
+     * Changes the main download directory and moves completed internal downloads there.
+     *
+     * Registers existing files in the download directories and preserves existing download dates.
+     *
+     * @param scanFirst Whether to register previously unregistered files before moving
+     *     internal downloads. Otherwise, registers them afterward.
+     */
+    fun setDownloadPath(path: String, scanFirst: Boolean) {
+        storageScope.launch {
+            context.dataStore.edit { it[DownloadPathKey] = path }
+            storageMutex.withLock { cd() }
+            if (scanFirst) {
+                scanDownloads()
+            } else {
+                rescanDownloads()
+            }
+            migrateDownloads(refreshFiles = false)
+            if (!scanFirst) {
+                registerNewFiles()
+            }
+        }
+    }
+
+    /**
+     * Marks newly found files as downloaded.
+     *
+     * Uses the current time as their download date. Skips songs that are not in the database.
+     */
+    private suspend fun registerNewFiles() = withContext(NonCancellable) {
+        storageMutex.withLock {
+            val newFiles = localMgr.getAvailableFiles(true).filterKeys { it !in downloads.value }
+            if (newFiles.isEmpty()) return@withLock
+
+            val timeNow = LocalDateTime.now()
+            database.awaitTransaction {
+                newFiles.forEach { (id, uri) ->
+                    val file = fileFromUri(context, uri) ?: return@forEach
+                    registerDownloadSong(id, timeNow, file.absolutePath)
+                }
+            }
+            val registered = database.downloadedOrQueuedSongs().first().filter { it.id in newFiles }
+            downloads.update { map -> map + registered.associate { it.id to it.song.dateDownload!! } }
+        }
+    }
+
+    fun setExtraDownloadPaths(paths: String) {
+        storageScope.launch {
+            context.dataStore.edit { it[DownloadExtraPathKey] = paths }
+            storageMutex.withLock { cd() }
+            scanDownloads()
+        }
+    }
+
+    fun startScanDownloads() {
+        storageScope.launch { scanDownloads() }
+    }
+
+    fun startMigrateDownloads() {
+        storageScope.launch { migrateDownloads() }
+    }
 
     fun cd() {
         localMgr.doInit(
@@ -369,98 +546,151 @@ class DownloadUtil @Inject constructor(
     }
 
     /**
-     * Rescan download directory and updates songs
+     * Refreshes download status and file paths for registered songs.
      */
-    suspend fun rescanDownloads() {
-        if (DOWNLOAD_DEBUG) Log.i(TAG, "+rescanDownloads()")
+    suspend fun rescanDownloads() = withContext(NonCancellable) { storageMutex.withLock { rescanDownloadsLocked() } }
+
+    /**
+     * Checks whether a download record counts as an internal download.
+     *
+     * Ignores downloads being removed. For completed downloads, checks for all cached data
+     * only when the total length is known.
+     */
+    private fun hasInternalData(download: Download): Boolean = when (download.state) {
+        Download.STATE_REMOVING -> false
+        Download.STATE_COMPLETED -> download.contentLength <= 0 ||
+            downloadCache.isCached(download.request.id, 0, download.contentLength)
+        else -> true
+    }
+
+    private suspend fun rescanDownloadsLocked() {
         isProcessingDownloads.value = true
+        try {
+            rescanDownloadsUnflagged()
+        } finally {
+            isProcessingDownloads.value = false
+        }
+    }
+
+    private suspend fun rescanDownloadsUnflagged() {
+        if (DOWNLOAD_DEBUG) Log.i(TAG, "+rescanDownloads()")
         val dbDownloads = database.downloadedOrQueuedSongs().first()
         val result = mutableMapOf<String, LocalDateTime>()
 
-        // get missing files not in custom downloads or in internal downloads, remove them
+        // Clear download status for songs missing from both the directories and internal downloads.
         val missingFiles =
             localMgr.getMissingFiles(dbDownloads.filterNot { it.song.dateDownload == null }).toMutableList()
-        if (DOWNLOAD_DEBUG) Log.d(TAG, "Found ${missingFiles.size}/${dbDownloads.size} songs not in custom download directories")
-        val cursor = downloadManager.downloadIndex.getDownloads()
-        while (cursor.moveToNext()) {
-            missingFiles.removeIf { it.id == cursor.download.request.id }
+        if (DOWNLOAD_DEBUG) {
+            Log.d(TAG, "Found ${missingFiles.size}/${dbDownloads.size} songs not in custom download directories")
+        }
+
+        downloadManager.downloadIndex.getDownloads().use { cursor ->
+            while (cursor.moveToNext()) {
+                if (!hasInternalData(cursor.download)) {
+                    continue
+                }
+
+                missingFiles.removeIf { it.id == cursor.download.request.id }
+            }
         }
         if (DOWNLOAD_DEBUG) Log.d(
             TAG,
             "Found ${missingFiles.size}/${dbDownloads.size} song not in custom download directories + internal cache. Removing these files now"
         )
 
-        database.transaction {
+        val availableDownloads = dbDownloads.minus(missingFiles)
+        val files = localMgr.getAvailableFiles(true)
+        val changedPaths = availableDownloads.mapNotNull { s ->
+            val path = files[s.id]?.let {
+                fileFromUri(context, it)
+            }?.absolutePath ?: return@mapNotNull null
+
+            if (path == s.song.localPath) {
+                null
+            } else {
+                Triple(s.id, s.song.dateDownload!!, path)
+            }
+        }
+
+        database.awaitTransaction {
             missingFiles.forEach {
                 if (DOWNLOAD_DEBUG) Log.v(TAG, "Shedding: [${it.id}] ${it.song.title}")
                 removeDownloadSong(it.song.id)
             }
+            changedPaths.forEach { (id, dateDownload, path) -> registerDownloadSong(id, dateDownload, path) }
         }
 
-        // new files
-        val availableDownloads = dbDownloads.minus(missingFiles)
         availableDownloads.forEach { s ->
-            result[s.song.id] = s.song.dateDownload!! // sql should cover our butts
+            result[s.song.id] = s.song.dateDownload!! // The query excludes null download dates.
         }
 
         downloads.value = result
-        isProcessingDownloads.value = false
         if (DOWNLOAD_DEBUG) Log.i(TAG, "-rescanDownloads()")
     }
 
 
     /**
-     * Scan and import downloaded songs from main and extra directories.
+     * Rebuilds download records from the download directories and internal downloads.
      *
-     * This is intended for re-importing existing songs (ex. songs get moved, after restoring app backup), thus all
-     * songs will already need to exist in the database.
+     * Only updates songs already in the database.
      */
-    suspend fun scanDownloads() {
+    suspend fun scanDownloads() = withContext(NonCancellable) { scanDownloadsUncancellable() }
+
+    private suspend fun scanDownloadsUncancellable() = storageMutex.withLock {
         if (DOWNLOAD_DEBUG) Log.i(TAG, "+scanDownloads()")
-        if (isProcessingDownloads.value) {
-            if (DOWNLOAD_DEBUG) Log.i(TAG, "-scanDownloads()")
-            return
-        }
         isProcessingDownloads.value = true
 
-        database.removeAllDownloadedSongs()
-        val timeNow = LocalDateTime.now()
+        try {
+            val registeredDates = database.downloadedOrQueuedSongs().first().mapNotNull { s ->
+                s.song.dateDownload?.takeIf { it != STATE_DOWNLOADING && it != STATE_INVALID }?.let { s.id to it }
+            }.toMap()
+            database.removeAllDownloadedSongs()
+            val timeNow = LocalDateTime.now()
 
-        // add custom downloads
-        val availableFiles = localMgr.getAvailableFiles(false)
-        database.transaction {
-            availableFiles.forEach { f ->
-                try {
-                    val file = fileFromUri(context, f.value)
-                    if (file == null) throw (InvalidAudioFileException("Hello darkness my old friend"))
-                    // TODO: validate files in download folder
-//                        val format: FormatEntity? = scanner.advancedScan(f.value).format
-//                        if (format != null) {
-//                            database.upsert(format)
-//                        }
-                    registerDownloadSong(f.key, timeNow, file.absolutePath)
+            // add custom downloads
+            val availableFiles = localMgr.getAvailableFiles(false)
+            database.awaitTransaction {
+                availableFiles.forEach { f ->
+                    try {
+                        val file = fileFromUri(context, f.value)
+                        if (file == null) throw (InvalidAudioFileException("Hello darkness my old friend"))
 
-                } catch (e: InvalidAudioFileException) {
-                    reportException(e)
+                        registerDownloadSong(f.key, registeredDates[f.key] ?: timeNow, file.absolutePath)
+
+                    } catch (e: InvalidAudioFileException) {
+                        reportException(e)
+                    }
                 }
             }
-        }
-//            LocalMediaScanner.destroyScanner(SCANNER_OWNER_DL)
-        if (DOWNLOAD_DEBUG) Log.d(TAG, "Registered ${availableFiles.size} files from custom downloads")
 
-        // add internal downloads
-        val cursor = downloadManager.downloadIndex.getDownloads()
-        var count = 0
-        database.transaction {
-            while (cursor.moveToNext()) {
-                updateDownloadStatus(cursor.download.request.id, stateToLocalDateTime(cursor.download))
-                count ++
+            if (DOWNLOAD_DEBUG) Log.d(TAG, "Registered ${availableFiles.size} files from custom downloads")
+
+            // add internal downloads
+            val internalDownloads = ArrayList<Download>()
+            downloadManager.downloadIndex.getDownloads().use { cursor ->
+                while (cursor.moveToNext()) {
+                    if (hasInternalData(cursor.download)) {
+                        internalDownloads.add(cursor.download)
+                    }
+                }
             }
+            var count = 0
+            database.awaitTransaction {
+                internalDownloads.forEach {
+                    updateDownloadStatus(it.request.id, stateToLocalDateTime(it))
+                    count ++
+                }
+            }
+            if (DOWNLOAD_DEBUG) {
+                Log.d(TAG, "Registered $count files from internal downloads")
+                Log.d(TAG, "Database registration complete, triggering map registry rebuild")
+            }
+
+            rescanDownloadsUnflagged()
+        } finally {
+            isProcessingDownloads.value = false
         }
-        if (DOWNLOAD_DEBUG) Log.d(TAG, "Registered $count files from internal downloads")
-        isProcessingDownloads.value = false
-        if (DOWNLOAD_DEBUG) Log.d(TAG, "Database registration complete, triggering map registry rebuild")
-        rescanDownloads()
+
         if (DOWNLOAD_DEBUG) Log.i(TAG, "-scanDownloads()")
     }
 
@@ -477,6 +707,12 @@ class DownloadUtil @Inject constructor(
         if (DOWNLOAD_DEBUG) Log.i(TAG, "DownloadUtil init")
         // TODO: make sure db is update when download is queued
         CoroutineScope(dlCoroutine).launch {
+            // A move interrupted by process death leaves its temporary file in the download directory.
+            try {
+                storageMutex.withLock { localMgr.deleteTempFiles() }
+            } catch (e: Exception) {
+                reportException(e)
+            }
             rescanDownloads()
         }
 
@@ -487,6 +723,11 @@ class DownloadUtil @Inject constructor(
                     download: Download,
                     finalException: Exception?
                 ) {
+                    // Keep the song marked as downloaded while its internal copy is removed.
+                    if (download.state == Download.STATE_REMOVING && download.request.id in movedSongIds) {
+                        return
+                    }
+
                     downloads.update { map ->
                         map.toMutableMap().apply {
                             val state = stateToLocalDateTime(download)
@@ -508,6 +749,14 @@ class DownloadUtil @Inject constructor(
                             database.updateDownloadStatus(download.request.id, null)
                         }
                     }
+
+                    if (download.state == Download.STATE_COMPLETED) {
+                        CoroutineScope(dlCoroutine).launch { moveToFolder(download.request.id) }
+                    }
+                }
+
+                override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
+                    movedSongIds.remove(download.request.id)
                 }
             }
         )

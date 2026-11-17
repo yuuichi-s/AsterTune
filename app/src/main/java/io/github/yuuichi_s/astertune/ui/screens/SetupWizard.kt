@@ -77,7 +77,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -98,6 +97,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.BuildConfig
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.R
@@ -129,16 +129,12 @@ import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.AccountFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalScannerFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalizationFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.ThemeAppFrag
-import io.github.yuuichi_s.astertune.utils.dlCoroutine
 import io.github.yuuichi_s.astertune.utils.formatFileSize
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.scanners.absoluteFilePathFromUri
 import io.github.yuuichi_s.astertune.utils.scanners.stringFromUriList
 import io.github.yuuichi_s.astertune.utils.scanners.uriListFromString
-import com.zionhuang.innertube.utils.parseCookieString
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +142,6 @@ fun SetupWizard(
     navController: NavController,
 ) {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
     val layoutDirection = LocalLayoutDirection.current
     val uriHandler = LocalUriHandler.current
@@ -562,7 +557,7 @@ fun SetupWizard(
                     // downloads
                     4 -> {
                         val downloadUtil = LocalDownloadUtil.current
-                        val (downloadPath, onDownloadPathChange) = rememberPreference(DownloadPathKey, "")
+                        val (downloadPath, _) = rememberPreference(DownloadPathKey, "")
                         val (maxSongCacheSize, onMaxSongCacheSizeChange) = rememberPreference(
                             key = MaxSongCacheSizeKey,
                             defaultValue = 0
@@ -679,19 +674,11 @@ fun SetupWizard(
                                     tempFilePath = null
                                 },
                                 onConfirm = {
-                                    tempFilePath?.let { f ->
-                                        val uris = stringFromUriList(listOfNotNull(f))
-                                        onDownloadPathChange(uris)
-                                    }
+                                    val uris = stringFromUriList(listOfNotNull(tempFilePath))
+                                    downloadUtil.setDownloadPath(uris, scanFirst = true)
 
                                     showDlPathDialog = false
                                     tempFilePath = null
-
-                                    coroutineScope.launch(dlCoroutine) {
-                                        delay(1000)
-                                        downloadUtil.cd()
-                                        downloadUtil.scanDownloads()
-                                    }
                                 },
                                 onReset = {
                                     tempFilePath = null

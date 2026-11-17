@@ -187,7 +187,7 @@
     <string name="scan_paths_description">Elige las carpetas que quieres escanear</string>
     <string name="scanner_progress_discovering">Descubriendo…</string>
     <string name="scanner_progress_processing">Procesando…</string>
-    <string name="dl_main_path_description">Después de elegir una carpeta, usa «Mover las canciones descargadas a la carpeta». Las nuevas descargas seguirán guardándose en el almacenamiento privado de la aplicación.</string>
+    <string name="dl_main_path_description">Las canciones descargadas se mueven automáticamente a esta carpeta. También se mueven las canciones que ya están en el almacenamiento privado de la aplicación.</string>
     <string name="oobe_ytm_integration">Integración con YouTube Music</string>
     <string name="oobe_local_music_support_description">Reproduce tus archivos de música (por ejemplo, MP3, OGG, FLAC, etc.)</string>
     <string name="oobe_cross_platform_sync">Sincronización multiplataforma</string>
@@ -198,7 +198,7 @@
     <string name="oobe_ad_free_exp">YouTube libre de anuncios</string>
     <string name="oobe_complete_title">¡Ya está todo listo!</string>
     <string name="dl_migrate_title">Mover las canciones descargadas a la carpeta</string>
-    <string name="dl_migrate_description">Mover las canciones descargadas fuera del almacenamiento privado de la aplicación.</string>
+    <string name="dl_migrate_description">Mueve las canciones del almacenamiento privado de la aplicación a la carpeta seleccionada.</string>
     <string name="tablet_ui_title">Forzar interfaz de tableta</string>
     <string name="tablet_ui_title_description">Fuerza una interfaz dividida optimizada para pantallas grandes. Este ajuste no tiene efecto si no se cumplen los requisitos de anchura mínima</string>
     <string name="attribution_title">Colaboradores</string>
@@ -220,7 +220,7 @@
     <string name="oobe_ad_free_exp_description">Disfruta la reproducción de música ininterrumpida</string>
     <string name="oobe_cross_platform_sync_description">Mantén tu música en armonía en todos los dispositivos</string>
     <string name="oobe_ytm_logon_subtitle">Inicia sesión en tu cuenta de YouTube Music para sincronizar y acceder al contenido privado de la cuenta. Esto es opcional.</string>
-    <string name="oobe_downloads_subtitle">Elige una carpeta de destino para mover las canciones descargadas (opcional).</string>
+    <string name="oobe_downloads_subtitle">Elige una carpeta de destino para las canciones descargadas (opcional).</string>
     <string name="m3u_ytm_lookup">Busca en YouTube Music canciones que no se encuentran en la base de datos de la aplicación</string>
     <string name="dl_rescan_description">Comprobar la carpeta de destino y las carpetas de origen adicionales para actualizar qué canciones están descargadas.</string>
     <string name="clear_song_cache_confirm">¿Borrar toda la caché de canciones?</string>
@@ -228,7 +228,7 @@
     <string name="oobe_local_media_subtitle">Elige las carpetas que contienen tu música. Las escanearemos en busca de canciones para importar.</string>
     <string name="lyrics_karaoke_description">Permite la sincronización palabra por palabra de las letras. Requiere compatibilidad con el formato de las letras.</string>
     <string name="dl_extra_path_description">Cargar canciones descargadas que estén fuera de la carpeta de destino.</string>
-    <string name="dl_oobe_tooltip">Las nuevas descargas se guardan en el almacenamiento privado de la aplicación. Elegir una carpeta no mueve las canciones. Para moverlas más adelante, usa «Mover las canciones descargadas a la carpeta» en Ajustes → Almacenamiento.</string>
+    <string name="dl_oobe_tooltip">Si configuras una carpeta, las canciones descargadas se guardarán en ella. Si no, se guardarán en el almacenamiento privado de la aplicación.</string>
     <string name="oobe_local_music_support">Amplio soporte musical local</string>
     <string name="oobe_local_media_title">Medios locales</string>
     <string name="dl_rescan_confirm">¿Volver a explorar la carpeta de destino y las carpetas de origen adicionales?\nEsto puede tardar unos minutos según el número de archivos.</string>
@@ -238,7 +238,7 @@
     <string name="dl_migrate_confirm">¿Mover las canciones descargadas a esta carpeta?\n\n%s\n\nSe eliminarán los datos originales del almacenamiento privado de la aplicación.</string>
     <string name="dl_rescan_title">Volver a explorar carpetas</string>
     <string name="dl_calculate_size">Calcular el espacio que ocupan las carpetas</string>
-    <string name="dl_storage_tooltip">Almacenamiento privado de la aplicación\nAquí se guardan las nuevas canciones descargadas. Los gestores de archivos habituales no pueden acceder a ellas directamente.\n\nCarpeta de destino de las canciones descargadas\nLas canciones se trasladan aquí con «Mover las canciones descargadas a la carpeta». Después puedes seguir escuchándolas en AsterTune y acceder a ellas con un gestor de archivos. Elige una carpeta vacía reservada para estas canciones.\n\nCarpetas de origen adicionales\nPermiten cargar canciones descargadas que estén fuera de la carpeta de destino. Por ejemplo, tras restaurar los datos de la aplicación, añade las carpetas y selecciona «Volver a explorar carpetas». Solo se tendrán en cuenta las canciones ya registradas en la aplicación.</string>
+    <string name="dl_storage_tooltip">Almacenamiento privado de la aplicación\nLas canciones descargadas se guardan aquí de forma predeterminada. Los gestores de archivos habituales no pueden acceder a ellas directamente.\n\nCarpeta de destino de las canciones descargadas\nAl elegir la carpeta de destino, también se mueven las canciones que ya están en el almacenamiento privado de la aplicación. Para volver a mover las canciones que no se han podido mover, usa «Mover las canciones descargadas a la carpeta». Después puedes seguir escuchándolas en AsterTune y abrirlas con un gestor de archivos. Elige una carpeta vacía reservada para estas canciones.\n\nCarpetas de origen adicionales\nPermiten cargar canciones descargadas que estén fuera de la carpeta de destino. Por ejemplo, tras restaurar los datos de la aplicación, añade las carpetas y selecciona «Volver a explorar carpetas». Solo se tendrán en cuenta las canciones ya registradas en la aplicación.</string>
     <string name="err_invalid_ytm_song">No se pudo reproducir la canción. Solo se puede reproducir el contenido accesible en YouTube Music</string>
     <string name="app_info_title">Información de la aplicación</string>
     <string name="device_info_title">Información del dispositivo</string>
@@ -321,6 +321,8 @@
     <string name="clear_downloads_description">Se conservarán los archivos de la carpeta de destino y de las carpetas de origen adicionales.</string>
     <string name="dl_extra_path_dialog_description">Añade carpetas que contengan canciones descargadas anteriormente. Solo se tendrán en cuenta las canciones ya registradas en la aplicación. Después, selecciona «Volver a explorar carpetas».</string>
     <string name="dl_migrate_action">Mover</string>
+    <string name="dl_move_failed_title">No se ha podido mover la canción descargada</string>
+    <string name="dl_move_failed_count_text">Canciones que no se han podido mover: %d.</string>
     <string name="dl_path_not_set">Sin definir</string>
     <string name="dl_add_folder">Añadir carpeta</string>
     <string name="dl_subfolders_tooltip">También se incluyen las subcarpetas.</string>

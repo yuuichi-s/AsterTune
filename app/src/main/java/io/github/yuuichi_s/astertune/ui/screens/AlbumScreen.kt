@@ -75,7 +75,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import io.github.yuuichi_s.astertune.LocalDatabase
@@ -92,7 +91,6 @@ import io.github.yuuichi_s.astertune.constants.ThumbnailCornerRadius
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.db.entities.Album
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.AsyncImageLocal
 import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
@@ -287,12 +285,7 @@ fun AlbumScreen(
                                             IconButton(
                                                 onClick = {
                                                     albumWithSongsLocal.songs.forEach { song ->
-                                                        DownloadService.sendRemoveDownload(
-                                                            context,
-                                                            ExoDownloadService::class.java,
-                                                            song.id,
-                                                            false
-                                                        )
+                                                        downloadUtil.removeDownload(song.id)
                                                     }
                                                 }
                                             ) {
@@ -307,12 +300,7 @@ fun AlbumScreen(
                                             IconButton(
                                                 onClick = {
                                                     albumWithSongsLocal.songs.forEach { song ->
-                                                        DownloadService.sendRemoveDownload(
-                                                            context,
-                                                            ExoDownloadService::class.java,
-                                                            song.id,
-                                                            false
-                                                        )
+                                                        downloadUtil.removeDownload(song.id)
                                                     }
                                                 }
                                             ) {

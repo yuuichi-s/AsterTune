@@ -188,7 +188,7 @@
     <string name="oobe_ytm_logon_subtitle">登录你的YouTube音乐账号以同步和进入私人账户内容。此为可选项。</string>
     <string name="oobe_complete_title">全部设置完毕！</string>
     <string name="oobe_local_media_subtitle">选择拥有你的音乐的文件夹。我们将扫描并导入这些文件夹中的曲目.</string>
-    <string name="oobe_downloads_subtitle">选择用于移动已下载歌曲的目标文件夹（可选）。</string>
+    <string name="oobe_downloads_subtitle">选择下载歌曲的目标文件夹（可选）。</string>
     <string name="speed_very_slow">非常缓慢</string>
     <string name="queues_title">播放队列</string>
     <string name="tap_show_more">点击以显示更多信息</string>
@@ -239,11 +239,11 @@
     <string name="dl_extra_path_title">其他来源文件夹</string>
     <string name="dl_extra_path_description">读取保存在目标文件夹以外的已下载歌曲。</string>
     <string name="dl_migrate_title">将已下载的歌曲移至文件夹</string>
-    <string name="dl_migrate_description">将已下载的歌曲移出应用专用存储空间。</string>
+    <string name="dl_migrate_description">将应用专用存储空间中的歌曲移至指定文件夹。</string>
     <string name="dl_migrate_confirm">将已下载的歌曲移至此文件夹？\n\n%s\n\n应用专用存储空间中的原始数据将被删除。</string>
     <string name="dl_main_path_title">已下载歌曲的目标文件夹</string>
-    <string name="dl_main_path_description">选择文件夹后，请使用“将已下载的歌曲移至文件夹”。新下载的歌曲仍会保存在应用专用存储空间中。</string>
-    <string name="dl_oobe_tooltip">新下载的歌曲会保存在应用专用存储空间中。仅选择文件夹不会移动歌曲。如需稍后移动，请在“设置”→“储存”中使用“将已下载的歌曲移至文件夹”。</string>
+    <string name="dl_main_path_description">已下载的歌曲会自动移至此文件夹。已在应用专用存储空间中的歌曲也会一并移动。</string>
+    <string name="dl_oobe_tooltip">设置文件夹后，下载的歌曲会保存在该文件夹中。如果未设置，则保存在应用专用存储空间中。</string>
     <string name="dl_rescan_title">重新扫描文件夹</string>
     <string name="dl_size_used_cache">应用专用存储空间：%s</string>
     <string name="dl_size_used_main">已下载歌曲的目标文件夹：%s</string>
@@ -276,7 +276,7 @@
     <string name="scanner_strict_file_paths_description">路径不同的文件会被视为不同的歌曲。移动文件或更改文件名后，可能会作为另一首歌曲添加到音乐库</string>
     <string name="dl_rescan_description">检查目标文件夹和其他来源文件夹，更新已下载歌曲的信息。</string>
     <string name="dl_rescan_confirm">重新扫描目标文件夹和其他来源文件夹？\n根据文件数量，此过程可能需要几分钟。</string>
-    <string name="dl_storage_tooltip">应用专用存储空间\n新下载的歌曲保存在这里，普通文件管理器无法直接访问。\n\n已下载歌曲的目标文件夹\n使用“将已下载的歌曲移至文件夹”可将歌曲移到这里。移动后，仍可在 AsterTune 中播放，也可通过文件管理器访问。请选择一个专门用于存放这些歌曲的空文件夹。\n\n其他来源文件夹\n用于读取保存在目标文件夹以外的已下载歌曲。例如，恢复应用数据后，添加相应文件夹并选择“重新扫描文件夹”。仅识别已在应用中登记的歌曲。</string>
+    <string name="dl_storage_tooltip">应用专用存储空间\n下载的歌曲默认保存在这里。普通文件管理器无法直接访问这些歌曲。\n\n已下载歌曲的目标文件夹\n设置目标文件夹时，已在应用专用存储空间中的歌曲也会一并移动。如需重新移动未能移动的歌曲，请使用“将已下载的歌曲移至文件夹”。移动后，这些歌曲仍可在 AsterTune 中播放，也可以用文件管理器打开。请选择一个专门存放这些歌曲的空文件夹。\n\n其他来源文件夹\n用于读取保存在目标文件夹以外的已下载歌曲。例如，恢复应用数据后，添加相应文件夹并选择“重新扫描文件夹”。仅识别已在应用中登记的歌曲。</string>
     <string name="max_queues_title">最大播放队列数</string>
     <string name="oobe_welcome_tip">为了获得最佳体验，我们建议您立即完成快速设置，以便对主题、YouTube 帐户、本地媒体和下载等关键功能进行个性化配置。</string>
     <string name="oobe_cache_title">歌曲缓存</string>
@@ -315,6 +315,8 @@
     <string name="clear_downloads_description">目标文件夹和其他来源文件夹中的文件将予以保留。</string>
     <string name="dl_extra_path_dialog_description">添加包含以前下载的歌曲的文件夹。仅识别已在应用中登记的歌曲。添加后，请选择“重新扫描文件夹”。</string>
     <string name="dl_migrate_action">移动</string>
+    <string name="dl_move_failed_title">无法移动已下载的歌曲</string>
+    <string name="dl_move_failed_count_text">有 %d 首歌曲未能移动。</string>
     <string name="dl_path_not_set">未设置</string>
     <string name="dl_add_folder">添加文件夹</string>
     <string name="dl_subfolders_tooltip">也会包含子文件夹。</string>

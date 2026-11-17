@@ -189,7 +189,7 @@
     <string name="clear_image_cache_confirm">Svuotare tutta la cache delle immagini?</string>
     <string name="clear_song_cache_confirm">Svuotare tutta la cache dei brani?</string>
     <string name="dl_main_path_title">Destinazione dei brani scaricati</string>
-    <string name="dl_main_path_description">Dopo aver scelto una cartella, usa «Sposta i brani scaricati nella cartella». I nuovi download continueranno a essere salvati nella memoria privata dell’app.</string>
+    <string name="dl_main_path_description">I brani scaricati vengono spostati automaticamente in questa cartella. Vengono spostati anche i brani già presenti nella memoria privata dell’app.</string>
     <string name="oobe_ytm_integration_description">Accedi ai tuoi brani preferiti senza soluzione di continuità</string>
     <string name="oobe_ytm_integration">Integrazione musicale di YouTube Music</string>
     <string name="oobe_local_music_support_description">Riproduci i tuoi file musicali (Ex. MP3, OGG, FLAC, ecc.)</string>
@@ -214,7 +214,7 @@
     <string name="oobe_local_media_title">Media locali</string>
     <string name="oobe_local_media_subtitle">Scegli le cartelle che contengono la tua musica. Le scansioneremo per trovare i brani da importare.</string>
     <string name="oobe_downloads_title">Download brani</string>
-    <string name="oobe_downloads_subtitle">Scegli una cartella in cui spostare i brani scaricati (facoltativo).</string>
+    <string name="oobe_downloads_subtitle">Scegli una cartella di destinazione per i brani scaricati (facoltativo).</string>
     <string name="m3u_export">Esporta come file M3U</string>
     <string name="speed_medium">Medio</string>
     <string name="speed_very_fast">Molto veloce</string>
@@ -222,17 +222,17 @@
     <string name="tablet_ui_title_description">Forza un\'interfaccia divisa ottimizzata per schermi di grandi dimensioni. Questa impostazione non ha effetto se i requisiti di larghezza minima non sono soddisfatti.</string>
     <string name="dl_extra_path_title">Cartelle di origine aggiuntive</string>
     <string name="dl_migrate_title">Sposta i brani scaricati nella cartella</string>
-    <string name="dl_migrate_description">Sposta i brani scaricati fuori dalla memoria privata dell’app.</string>
+    <string name="dl_migrate_description">Sposta i brani dalla memoria privata dell’app alla cartella selezionata.</string>
     <string name="dl_migrate_confirm">Spostare i brani scaricati in questa cartella?\n\n%s\n\nI dati originali nella memoria privata dell’app verranno eliminati.</string>
     <string name="attribution_title">Attribuzione</string>
     <string name="oss_licenses_title">Licenze open source</string>
     <string name="lyrics_karaoke_hz_title">Regola la velocità di aggiornamento dei testi del karaoke</string>
     <string name="dl_calculate_size">Calcola lo spazio occupato dalle cartelle</string>
-    <string name="dl_storage_tooltip">Memoria privata dell’app\nQui vengono salvati i nuovi brani scaricati. I normali gestori di file non possono accedervi direttamente.\n\nDestinazione dei brani scaricati\nI brani vengono spostati qui con «Sposta i brani scaricati nella cartella». Dopo lo spostamento puoi continuare ad ascoltarli in AsterTune e accedervi con un gestore di file. Scegli una cartella vuota dedicata a questi brani.\n\nCartelle di origine aggiuntive\nPermettono di caricare i brani scaricati che si trovano al di fuori della cartella di destinazione. Ad esempio, dopo aver ripristinato i dati dell’app, aggiungi le cartelle e seleziona «Scansiona di nuovo le cartelle». Verranno considerati solo i brani già registrati nell’app.</string>
+    <string name="dl_storage_tooltip">Memoria privata dell’app\nI brani scaricati vengono salvati qui per impostazione predefinita. I comuni gestori di file non possono accedervi direttamente.\n\nDestinazione dei brani scaricati\nQuando imposti la destinazione, vengono spostati anche i brani già presenti nella memoria privata dell’app. Per riprovare a spostare i brani che non è stato possibile spostare, usa «Sposta i brani scaricati nella cartella». Dopo lo spostamento puoi continuare ad ascoltarli in AsterTune e aprirli con un gestore di file. Scegli una cartella vuota riservata a questi brani.\n\nCartelle di origine aggiuntive\nPermettono di caricare i brani scaricati che si trovano al di fuori della cartella di destinazione. Ad esempio, dopo aver ripristinato i dati dell’app, aggiungi le cartelle e seleziona «Scansiona di nuovo le cartelle». Verranno considerati solo i brani già registrati nell’app.</string>
     <string name="scanner_rejected_dir">Selezione non valida. Una cartella di scansione non può essere una sottodirectory della cartella di download o la cartella di download stessa</string>
     <string name="lyrics_karaoke_title">Testi in stile karaoke.</string>
     <string name="scan_paths_description">Scegli le cartelle da scansionare</string>
-    <string name="dl_oobe_tooltip">I nuovi download vengono salvati nella memoria privata dell’app. Scegliere una cartella non sposta i brani. Per spostarli in seguito, usa «Sposta i brani scaricati nella cartella» in Impostazioni → Archiviazione.</string>
+    <string name="dl_oobe_tooltip">Se imposti una cartella, i brani scaricati vengono salvati lì. Altrimenti vengono salvati nella memoria privata dell’app.</string>
     <string name="lyrics_karaoke_description">Abilita la sincronizzazione dei testi parola per parola. Richiede un formato di testo compatibile.</string>
     <string name="dl_extra_path_description">Carica i brani scaricati che si trovano al di fuori della cartella di destinazione.</string>
     <string name="dl_rescan_title">Scansiona di nuovo le cartelle</string>
@@ -321,6 +321,8 @@
     <string name="clear_downloads_description">I file nella cartella di destinazione e nelle cartelle di origine aggiuntive verranno conservati.</string>
     <string name="dl_extra_path_dialog_description">Aggiungi le cartelle contenenti brani già scaricati. Verranno considerati solo i brani già registrati nell’app. Poi seleziona «Scansiona di nuovo le cartelle».</string>
     <string name="dl_migrate_action">Sposta</string>
+    <string name="dl_move_failed_title">Impossibile spostare il brano scaricato</string>
+    <string name="dl_move_failed_count_text">Brani che non è stato possibile spostare: %d.</string>
     <string name="dl_path_not_set">Non impostata</string>
     <string name="dl_add_folder">Aggiungi cartella</string>
     <string name="dl_subfolders_tooltip">Sono incluse anche le sottocartelle.</string>

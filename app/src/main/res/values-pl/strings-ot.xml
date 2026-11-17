@@ -172,7 +172,7 @@
     <string name="oobe_interface_subtitle">Dostosuj wygląd AsterTune oraz pokazywane treści.</string>
     <string name="oobe_downloads_title">Pobrane piosenki</string>
     <string name="oobe_complete_title">Wszystko gotowe!</string>
-    <string name="dl_migrate_description">Przenieś pobrane utwory poza prywatną pamięć aplikacji.</string>
+    <string name="dl_migrate_description">Przenieś utwory z prywatnej pamięci aplikacji do wybranego folderu.</string>
     <string name="dl_migrate_confirm">Przenieść pobrane utwory do tego folderu?\n\n%s\n\nOryginalne dane w prywatnej pamięci aplikacji zostaną usunięte.</string>
     <string name="tablet_ui_title">Wymuś układ dla tabletu</string>
     <string name="dl_calculate_size">Oblicz miejsce zajmowane przez foldery</string>
@@ -183,7 +183,7 @@
     <string name="oobe_ad_free_exp_description">Ciesz się nieprzerwaną muzyką</string>
     <string name="oobe_local_music_support">Ekstensywne ­wsparcie lokalnej muzyki</string>
     <string name="oobe_local_media_title">Lokalne media</string>
-    <string name="oobe_downloads_subtitle">Wybierz folder, do którego chcesz przenieść pobrane utwory (opcjonalnie).</string>
+    <string name="oobe_downloads_subtitle">Wybierz folder docelowy dla pobranych utworów (opcjonalnie).</string>
     <string name="speed_very_slow">Bardzo powolna</string>
     <string name="speed_slow">Wolna</string>
     <string name="speed_medium">Średnia</string>
@@ -213,16 +213,16 @@
     <string name="clear_downloads_confirm">Usunąć wszystkie pobrane utwory z prywatnej pamięci aplikacji?\nPliki w folderach zostaną zachowane.</string>
     <string name="clear_song_cache_confirm">Wyczyścić całą pamięć podręczną utworów?</string>
     <string name="scan_paths_description">Wybierz foldery do skanowania</string>
-    <string name="dl_oobe_tooltip">Nowe pliki są pobierane do prywatnej pamięci aplikacji. Sam wybór folderu nie przenosi utworów. Aby przenieść je później, wybierz „Przenieś pobrane utwory do folderu” w Ustawienia → Pamięć.</string>
+    <string name="dl_oobe_tooltip">Jeśli ustawisz folder, pobrane utwory będą w nim zapisywane. W przeciwnym razie będą zapisywane w prywatnej pamięci aplikacji.</string>
     <string name="dl_rescan_confirm">Przeskanować ponownie folder docelowy i dodatkowe foldery źródłowe?\nMoże to potrwać kilka minut, zależnie od liczby plików.</string>
     <string name="dl_size_used_cache">Prywatna pamięć aplikacji: %s</string>
     <string name="dl_main_path_title">Folder docelowy pobranych utworów</string>
     <string name="dl_migrate_title">Przenieś pobrane utwory do folderu</string>
     <string name="scanner_rejected_dir">Nieprawidłowa selekcja. Folder do skanowanie nie może by podfolderem folderu z pobraniami, czy też tym samym folderem</string>
     <string name="dl_extra_path_description">Wczytaj pobrane utwory przechowywane poza folderem docelowym.</string>
-    <string name="dl_main_path_description">Po wybraniu folderu użyj opcji „Przenieś pobrane utwory do folderu”. Nowe pliki nadal będą pobierane do prywatnej pamięci aplikacji.</string>
+    <string name="dl_main_path_description">Pobrane utwory są automatycznie przenoszone do tego folderu. Przenoszone są też utwory, które są już w prywatnej pamięci aplikacji.</string>
     <string name="clear_image_cache_confirm">Wyczyścić całą pamięć podręczną obrazów?</string>
-    <string name="dl_storage_tooltip">Prywatna pamięć aplikacji\nTutaj zapisywane są nowo pobrane utwory. Zwykłe menedżery plików nie mają do nich bezpośredniego dostępu.\n\nFolder docelowy pobranych utworów\nTutaj trafiają utwory po użyciu opcji „Przenieś pobrane utwory do folderu”. Po przeniesieniu nadal można odtwarzać je w AsterTune i otwierać za pomocą menedżera plików. Wybierz pusty folder przeznaczony tylko na te utwory.\n\nDodatkowe foldery źródłowe\nPozwalają wczytać pobrane utwory przechowywane poza folderem docelowym. Na przykład po przywróceniu danych aplikacji dodaj foldery i wybierz „Przeskanuj foldery ponownie”. Uwzględnione zostaną tylko utwory już zarejestrowane w aplikacji.</string>
+    <string name="dl_storage_tooltip">Prywatna pamięć aplikacji\nTutaj domyślnie zapisywane są pobrane utwory. Zwykłe menedżery plików nie mają do nich bezpośredniego dostępu.\n\nFolder docelowy pobranych utworów\nPo ustawieniu folderu docelowego przenoszone są też utwory, które są już w prywatnej pamięci aplikacji. Aby ponownie przenieść utwory, których nie udało się przenieść, wybierz „Przenieś pobrane utwory do folderu”. Potem nadal można ich słuchać w AsterTune i otwierać je w menedżerze plików. Wybierz pusty folder przeznaczony tylko na te utwory.\n\nDodatkowe foldery źródłowe\nPozwalają wczytać pobrane utwory przechowywane poza folderem docelowym. Na przykład po przywróceniu danych aplikacji dodaj foldery i wybierz „Przeskanuj foldery ponownie”. Uwzględnione zostaną tylko utwory już zarejestrowane w aplikacji.</string>
     <string name="oobe_ytm_logon_subtitle">Zaloguj się do swojego konta YouTube Music by dokonać synchronizacji oraz otrzymać dostęp do prywatnych treści z tego konta. Ta opcja jest opcjonalna.</string>
     <string name="att_translator">Tłumacz (%s)</string>
     <string name="lyrics_synced_clickable">Klikalny tekst</string>
@@ -279,6 +279,8 @@
     <string name="clear_downloads_description">Pliki w folderze docelowym i dodatkowych folderach źródłowych zostaną zachowane.</string>
     <string name="dl_extra_path_dialog_description">Dodaj foldery z wcześniej pobranymi utworami. Uwzględnione zostaną tylko utwory już zarejestrowane w aplikacji. Następnie wybierz „Przeskanuj foldery ponownie”.</string>
     <string name="dl_migrate_action">Przenieś</string>
+    <string name="dl_move_failed_title">Nie udało się przenieść pobranego utworu</string>
+    <string name="dl_move_failed_count_text">Liczba utworów, których nie udało się przenieść: %d.</string>
     <string name="dl_path_not_set">Nie wybrano</string>
     <string name="dl_add_folder">Dodaj folder</string>
     <string name="dl_subfolders_tooltip">Podfoldery również zostaną uwzględnione.</string>

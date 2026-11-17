@@ -112,6 +112,7 @@ You can transfer your data using the app's built-in backup feature.
 ### Playback and Downloads
 - Added a sleep timer that fades out and stops playback completely
 - Added a toggle to download only when connected to Wi-Fi
+- Changed to save downloaded songs to the specified folder
 
 </details>
 

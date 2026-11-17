@@ -37,8 +37,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.exoplayer.offline.Download.STATE_STOPPED
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
+import com.zionhuang.innertube.YouTube
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalNetworkConnected
@@ -48,13 +48,11 @@ import io.github.yuuichi_s.astertune.db.entities.Album
 import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.ui.component.items.AlbumListItem
 import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
 import io.github.yuuichi_s.astertune.ui.dialog.ArtistDialog
 import io.github.yuuichi_s.astertune.utils.getDownloadState
-import com.zionhuang.innertube.YouTube
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -211,12 +209,7 @@ fun AlbumMenu(
                 },
                 onRemoveDownload = {
                     songs.forEach { song ->
-                        DownloadService.sendRemoveDownload(
-                            context,
-                            ExoDownloadService::class.java,
-                            song.id,
-                            false
-                        )
+                        downloadUtil.removeDownload(song.id)
                     }
                 }
             )

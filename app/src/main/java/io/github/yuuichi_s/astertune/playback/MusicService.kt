@@ -1127,25 +1127,26 @@ class MusicService : MediaLibraryService(),
                 song = runBlocking { database.song(dataSpec.key).first()?.toMediaMetadata() }
             }
             // local song
-            if (song?.localPath != null) {
-                if (song.isLocal) {
-                    if (SERVICE_DEBUG) Log.d(TAG, "PLAYING: local song")
-                    val file = File(song.localPath)
-                    if (!file.exists()) {
-                        throw PlaybackException(
-                            "File not found",
-                            Throwable(),
-                            PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND
-                        )
-                    }
+            if (song?.isLocal == true && song.localPath != null) {
+                if (SERVICE_DEBUG) Log.d(TAG, "PLAYING: local song")
+                val file = File(song.localPath)
+                if (!file.exists()) {
+                    throw PlaybackException(
+                        "File not found",
+                        Throwable(),
+                        PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND
+                    )
+                }
 
-                    return@Factory dataSpec.withUri(file.toUri())
-                } else {
-                    val isDownloadNew = downloadUtil.localMgr.getFilePathIfExists(mediaId)
-                    isDownloadNew?.let {
-                        if (SERVICE_DEBUG) Log.d(TAG, "PLAYING: Custom downloaded song")
-                        return@Factory dataSpec.withUri(it)
-                    }
+                return@Factory dataSpec.withUri(file.toUri())
+            }
+
+            // song in a download directory. queue items built from online lists don't carry its path
+            if (song?.isLocal != true) {
+                downloadUtil.localMgr.getFilePathIfExists(mediaId)?.let {
+                    if (SERVICE_DEBUG) Log.d(TAG, "PLAYING: Custom downloaded song")
+                    offloadScope.launch { recoverSong(mediaId) }
+                    return@Factory dataSpec.withUri(it)
                 }
             }
 

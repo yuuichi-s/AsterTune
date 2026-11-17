@@ -210,14 +210,14 @@
     <string name="dl_extra_path_title">Pastas de origem adicionais</string>
     <string name="dl_migrate_confirm">Mover as músicas baixadas para esta pasta?\n\n%s\n\nOs dados originais no armazenamento privado do app serão excluídos.</string>
     <string name="dl_rescan_description">Verificar a pasta de destino e as pastas de origem adicionais para atualizar quais músicas estão baixadas.</string>
-    <string name="dl_migrate_description">Mover as músicas baixadas para fora do armazenamento privado do app.</string>
+    <string name="dl_migrate_description">Mover as músicas do armazenamento privado do app para a pasta selecionada.</string>
     <string name="scan_paths_description">Escolha as pastas para a busca</string>
-    <string name="dl_main_path_description">Após escolher uma pasta, use “Mover as músicas baixadas para a pasta”. Os novos downloads continuarão sendo salvos no armazenamento privado do app.</string>
+    <string name="dl_main_path_description">As músicas baixadas são movidas automaticamente para esta pasta. As músicas que já estão no armazenamento privado do app também são movidas.</string>
     <string name="oobe_ad_free_exp_description">Aproveite uma reprodução de música sem interrupções</string>
     <string name="oobe_local_music_support">Amplo suporte a músicas locais</string>
     <string name="oobe_cross_platform_sync">Sincronização entre plataformas</string>
     <string name="oobe_ytm_logon_subtitle">Conecte-se à sua conta do YouTube Music para sincronizar e acessar conteúdo privado da conta. Isso é opcional.</string>
-    <string name="oobe_downloads_subtitle">Escolha uma pasta para mover as músicas baixadas (opcional).</string>
+    <string name="oobe_downloads_subtitle">Escolha uma pasta de destino para as músicas baixadas (opcional).</string>
     <string name="oobe_complete_title">Está tudo pronto!</string>
     <string name="disable_lm_confirm">Desativar a mídia local? Os arquivos de música e os dados das músicas que já estão na biblioteca não serão excluídos.</string>
     <string name="oobe_local_media_title">Mídia local</string>
@@ -227,7 +227,7 @@
     <string name="clear_downloads_confirm">Excluir todas as músicas baixadas do armazenamento privado do app?\nOs arquivos nas pastas serão mantidos.</string>
     <string name="clear_image_cache_confirm">Limpar todo o cache de imagens?</string>
     <string name="clear_song_cache_confirm">Limpar todo o cache de músicas?</string>
-    <string name="dl_oobe_tooltip">Os novos downloads são salvos no armazenamento privado do app. Escolher uma pasta não move as músicas. Para movê-las depois, use “Mover as músicas baixadas para a pasta” em Configurações → Armazenamento.</string>
+    <string name="dl_oobe_tooltip">Se você definir uma pasta, as músicas baixadas serão salvas nela. Caso contrário, serão salvas no armazenamento privado do app.</string>
     <string name="oobe_ytm_integration">Integração com o YouTube Music</string>
     <string name="oobe_ytm_integration_description">Acesse as suas músicas favoritas</string>
     <string name="oobe_interface_subtitle">Customize como o AsterTune parece e que conteúdo ele te mostra.</string>
@@ -236,7 +236,7 @@
     <string name="oobe_downloads_title">Downloads de músicas</string>
     <string name="dl_size_used_cache">Armazenamento privado do app: %s</string>
     <string name="dl_size_used_extra">Pastas de origem adicionais: %s</string>
-    <string name="dl_storage_tooltip">Armazenamento privado do app\nAs novas músicas baixadas são salvas aqui. Os gerenciadores de arquivos comuns não conseguem acessá-las diretamente.\n\nPasta de destino das músicas baixadas\nAs músicas são movidas para cá com “Mover as músicas baixadas para a pasta”. Depois, você pode continuar ouvindo as músicas no AsterTune e acessá-las com um gerenciador de arquivos. Escolha uma pasta vazia exclusiva para essas músicas.\n\nPastas de origem adicionais\nPermitem carregar músicas baixadas que estejam fora da pasta de destino. Por exemplo, após restaurar os dados do app, adicione as pastas e selecione “Verificar pastas novamente”. Serão consideradas apenas as músicas já registradas no app.</string>
+    <string name="dl_storage_tooltip">Armazenamento privado do app\nAs músicas baixadas são salvas aqui por padrão. Os gerenciadores de arquivos comuns não conseguem acessá-las diretamente.\n\nPasta de destino das músicas baixadas\nAo definir a pasta de destino, as músicas que já estão no armazenamento privado do app também são movidas. Para tentar mover de novo as músicas que não puderam ser movidas, use “Mover as músicas baixadas para a pasta”. Depois disso, elas continuam podendo ser tocadas no AsterTune e abertas com um gerenciador de arquivos. Escolha uma pasta vazia reservada para essas músicas.\n\nPastas de origem adicionais\nPermitem carregar músicas baixadas que estejam fora da pasta de destino. Por exemplo, após restaurar os dados do app, adicione as pastas e selecione “Verificar pastas novamente”. Serão consideradas apenas as músicas já registradas no app.</string>
     <string name="dl_calculate_size">Calcular o espaço ocupado pelas pastas</string>
     <string name="dl_size_used_main">Pasta de destino das músicas baixadas: %s</string>
     <string name="scanner_sensitivity_L0">Usar o primeiro resultado fornecido pelo YouTube quando a pesquisa no YouTube está ativada, caso contrário corresponder o título</string>
@@ -321,6 +321,8 @@
     <string name="clear_downloads_description">Os arquivos da pasta de destino e das pastas de origem adicionais serão mantidos.</string>
     <string name="dl_extra_path_dialog_description">Adicione pastas com músicas baixadas anteriormente. Serão consideradas apenas as músicas já registradas no app. Depois, selecione “Verificar pastas novamente”.</string>
     <string name="dl_migrate_action">Mover</string>
+    <string name="dl_move_failed_title">Não foi possível mover a música baixada</string>
+    <string name="dl_move_failed_count_text">Músicas que não foi possível mover: %d.</string>
     <string name="dl_path_not_set">Não definida</string>
     <string name="dl_add_folder">Adicionar pasta</string>
     <string name="dl_subfolders_tooltip">As subpastas também serão incluídas.</string>
