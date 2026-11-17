@@ -16,6 +16,8 @@
     <string name="sort_by_like_date">Дата на харесване</string>
     <string name="grp_audio">Аудио</string>
     <string name="slim_navbar_title">Тънка навигационна лента</string>
+    <string name="show_scrollbar_title">Лента за превъртане</string>
+    <string name="show_scrollbar_description">Показване на лентата за превъртане</string>
     <string name="create_sync_playlist_description">Забележка: Това позволява синхронизиране с YouTube Music. Това НЕ може да се промени по-късно. Не можете да добавяте локални песни към синхронизирани плейлисти.</string>
     <string name="play_count">Брой пускания</string>
     <string name="grp_general">Основни</string>

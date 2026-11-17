@@ -79,6 +79,7 @@ import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
@@ -377,6 +378,9 @@ fun LibrarySongsScreen(
                 }
             }
         }
+        LazyColumnScrollbar(
+            state = lazyListState,
+        )
 
         Indicator(
             isRefreshing = isSyncingRemoteLikedSongs || isSyncingRemoteSongs,

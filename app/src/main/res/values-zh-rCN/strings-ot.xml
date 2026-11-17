@@ -49,6 +49,8 @@
     <string name="player_background_gradient">渐变</string>
     <string name="show_liked_and_downloaded_playlist">在媒体库中显示喜欢和已下载歌曲的播放列表</string>
     <string name="slim_navbar_title">细长导航栏</string>
+    <string name="show_scrollbar_title">滚动条</string>
+    <string name="show_scrollbar_description">显示滚动条</string>
     <string name="tab_arrangement">排列选项卡</string>
     <string name="tab_arrangement_disable_tip">--- 拖到此线下方以禁用 ---</string>
     <string name="tab_arrangement_home_required">主页选项卡是必需的。</string>

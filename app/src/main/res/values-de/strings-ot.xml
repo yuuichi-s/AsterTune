@@ -57,6 +57,8 @@
     <string name="grp_lyrics_source">Songtextquellen</string>
     <string name="special_thanks">Besonderer Dank</string>
     <string name="slim_navbar_title">Schmale Navigationsleiste</string>
+    <string name="show_scrollbar_title">Bildlaufleiste</string>
+    <string name="show_scrollbar_description">Bildlaufleiste anzeigen</string>
     <string name="token_hidden">Antippen, um Token zu zeigen</string>
     <string name="wifi_only">Nur über WLAN</string>
     <string name="grp_behavior">Verhalten</string>

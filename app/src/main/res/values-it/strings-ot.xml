@@ -32,6 +32,8 @@
     <string name="grp_interface">Interfaccia</string>
     <string name="show_liked_and_downloaded_playlist">Mostra le playlist dei brani piaciuti e scaricati nella libreria</string>
     <string name="slim_navbar_title">Barra di navigazione sottile</string>
+    <string name="show_scrollbar_title">Barra di scorrimento</string>
+    <string name="show_scrollbar_description">Mostra la barra di scorrimento</string>
     <string name="m3u_import_playlist">Importa una playlist (m3u)</string>
     <string name="sync_progress_active">Sincronizzazione con l\'account di YouTube…</string>
     <string name="sync_progress_success">Sincronizzazione completata</string>

@@ -43,6 +43,8 @@
     <string name="show_liked_and_downloaded_playlist">Mostrar listas de músicas favoritas e baixadas na biblioteca</string>
     <string name="slim_navbar_title">Barra de navegação pequena</string>
     <string name="slim_navbar_description">Remover legendas para diminuir a altura da barra de navegação</string>
+    <string name="show_scrollbar_title">Barra de rolagem</string>
+    <string name="show_scrollbar_description">Mostrar a barra de rolagem</string>
     <string name="tab_arrangement">Organizar abas</string>
     <string name="like_autodownload">Baixar suas músicas favoritas automaticamente</string>
     <string name="grp_localization">Idioma e região</string>

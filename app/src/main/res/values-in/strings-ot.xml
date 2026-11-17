@@ -102,6 +102,8 @@
     <string name="show_liked_and_downloaded_playlist">Tampilkan playlist lagu disukai &amp; diunduh di Koleksi</string>
     <string name="slim_navbar_title">Bilah navigasi tipis</string>
     <string name="slim_navbar_description">Hilangkan label teks untuk mengurangi tinggi bilah navigasi</string>
+    <string name="show_scrollbar_title">Bilah gulir</string>
+    <string name="show_scrollbar_description">Tampilkan bilah gulir</string>
     <string name="tab_arrangement">Pengaturan tab</string>
     <string name="tab_arrangement_disable_tip">--- Seret ke bawah sini untuk menonaktifkan ---</string>
     <string name="tab_arrangement_home_required">Tab Beranda diperlukan.</string>

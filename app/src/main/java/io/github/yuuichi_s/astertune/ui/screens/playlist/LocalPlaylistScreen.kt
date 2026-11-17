@@ -122,6 +122,7 @@ import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
 import io.github.yuuichi_s.astertune.ui.component.FontSizeRange
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.ScrollToTopManager
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
@@ -557,6 +558,10 @@ fun LocalPlaylistScreen(
                 }
             }
         }
+
+        LazyColumnScrollbar(
+            state = lazyListState,
+        )
 
         TopAppBar(
             title = {

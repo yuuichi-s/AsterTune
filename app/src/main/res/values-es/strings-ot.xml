@@ -49,6 +49,8 @@
     <string name="new_interface">Nueva disposición de interfaz</string>
     <string name="show_liked_and_downloaded_playlist">Mostrar listas de reproducción de canciones que te gustan y que has descargado en la biblioteca</string>
     <string name="slim_navbar_title">Barra de navegación delgada</string>
+    <string name="show_scrollbar_title">Barra de desplazamiento</string>
+    <string name="show_scrollbar_description">Mostrar la barra de desplazamiento</string>
     <string name="tab_arrangement">Organizar pestañas</string>
     <string name="tab_arrangement_home_required">La pestaña Inicio es necesaria.</string>
     <string name="token_hidden">Pulsa para mostrar el token</string>

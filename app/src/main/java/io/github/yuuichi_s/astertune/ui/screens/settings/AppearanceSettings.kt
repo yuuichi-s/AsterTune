@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.MoreHoriz
+import androidx.compose.material.icons.rounded.UnfoldMore
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.SettingsGroupSpacing
+import io.github.yuuichi_s.astertune.constants.ShowScrollbarKey
 import io.github.yuuichi_s.astertune.constants.SlimNavBarKey
 import io.github.yuuichi_s.astertune.ui.component.PreferenceEntry
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
@@ -48,6 +50,7 @@ fun AppearanceSettings(
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
     val (slimNav, onSlimNavChange) = rememberPreference(SlimNavBarKey, defaultValue = false)
+    val (showScrollbar, onShowScrollbarChange) = rememberPreference(ShowScrollbarKey, defaultValue = true)
 
     SettingsScaffold(
         title = stringResource(R.string.grp_appearance_controls),
@@ -87,6 +90,13 @@ fun AppearanceSettings(
                 icon = { Icon(Icons.Rounded.MoreHoriz, null) },
                 checked = slimNav,
                 onCheckedChange = onSlimNavChange
+            )
+            SwitchPreference(
+                title = { Text(stringResource(R.string.show_scrollbar_title)) },
+                description = stringResource(R.string.show_scrollbar_description),
+                icon = { Icon(Icons.Rounded.UnfoldMore, null) },
+                checked = showScrollbar,
+                onCheckedChange = onShowScrollbarChange
             )
             PreferenceEntry(
                 title = { Text(stringResource(R.string.home_sections_title)) },

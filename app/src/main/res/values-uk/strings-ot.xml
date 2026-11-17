@@ -36,6 +36,8 @@
     <string name="player_background_style">Стиль фону програвача</string>
     <string name="show_liked_and_downloaded_playlist">Показувати списки відтворення для пісень, які сподобалися та завантажених у бібліотеці</string>
     <string name="slim_navbar_title">Тонка панель навігації</string>
+    <string name="show_scrollbar_title">Смуга прокручування</string>
+    <string name="show_scrollbar_description">Показувати смугу прокручування</string>
     <string name="tab_arrangement">Упорядкувати вкладки</string>
     <string name="like_autodownload">Автоматично завантажувати вподобані пісні</string>
     <string name="grp_localization">Локалізація</string>

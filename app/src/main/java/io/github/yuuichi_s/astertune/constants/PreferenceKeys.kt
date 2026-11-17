@@ -25,6 +25,7 @@ val EnabledTabsKey = stringPreferencesKey("enabledTabs")
 val EnabledFiltersKey = stringPreferencesKey("enabledFilters")
 val DefaultOpenTabKey = stringPreferencesKey("defaultOpenTab")
 val SlimNavBarKey = booleanPreferencesKey("slimNavBar")
+val ShowScrollbarKey = booleanPreferencesKey("showScrollbar")
 val SliderStyleKey = stringPreferencesKey("sliderStyle")
 
 val HomeQuickPicksKey = booleanPreferencesKey("homeQuickPicks")

@@ -103,6 +103,8 @@
     <string name="show_liked_and_downloaded_playlist">在媒體庫中顯示喜歡和已下載歌曲的播放清單</string>
     <string name="slim_navbar_title">窄性導航列</string>
     <string name="slim_navbar_description">移除文字標籤以降低導覽列高度</string>
+    <string name="show_scrollbar_title">捲動軸</string>
+    <string name="show_scrollbar_description">顯示捲動軸</string>
     <string name="tab_arrangement">排列選項卡</string>
     <string name="tab_arrangement_disable_tip">--- 拖曳到此線下方以停用 ---</string>
     <string name="tab_arrangement_home_required">必須保留主頁。</string>
