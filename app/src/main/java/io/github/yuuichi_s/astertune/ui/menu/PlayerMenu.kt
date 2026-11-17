@@ -81,8 +81,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastSumBy
 import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.PlaybackParameters
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
+import com.zionhuang.innertube.YouTube
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -93,7 +93,6 @@ import io.github.yuuichi_s.astertune.constants.SleepTimerDefaults
 import io.github.yuuichi_s.astertune.constants.SleepTimerFadeDurationKey
 import io.github.yuuichi_s.astertune.constants.SleepTimerFadeKey
 import io.github.yuuichi_s.astertune.models.MediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.BigSeekBar
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
@@ -102,7 +101,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
 import io.github.yuuichi_s.astertune.ui.dialog.ArtistDialog
 import io.github.yuuichi_s.astertune.ui.dialog.DetailsDialog
 import io.github.yuuichi_s.astertune.utils.rememberPreference
-import com.zionhuang.innertube.YouTube
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -275,12 +273,7 @@ fun PlayerMenu(
                     downloadUtil.download(mediaMetadata)
                 },
                 onRemoveDownload = {
-                    DownloadService.sendRemoveDownload(
-                        context,
-                        ExoDownloadService::class.java,
-                        mediaMetadata.id,
-                        false
-                    )
+                    downloadUtil.removeDownload(mediaMetadata.id)
                 }
             )
         if (librarySong?.song?.inLibrary != null && !librarySong!!.song.isLocal) {

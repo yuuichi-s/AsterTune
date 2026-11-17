@@ -90,9 +90,9 @@ import androidx.compose.ui.util.fastAny
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.zionhuang.innertube.models.SongItem
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalMenuState
@@ -110,7 +110,6 @@ import io.github.yuuichi_s.astertune.db.entities.PlaylistSongMap
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.AutoResizeText
 import io.github.yuuichi_s.astertune.ui.component.FloatingFooter
@@ -129,7 +128,6 @@ import io.github.yuuichi_s.astertune.ui.menu.YouTubeSongMenu
 import io.github.yuuichi_s.astertune.utils.getDownloadState
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.viewmodels.OnlinePlaylistViewModel
-import com.zionhuang.innertube.models.SongItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -271,12 +269,7 @@ fun OnlinePlaylistScreen(
                         }
 
                         songs.forEach { song ->
-                            DownloadService.sendRemoveDownload(
-                                context,
-                                ExoDownloadService::class.java,
-                                song.id,
-                                false
-                            )
+                            downloadUtil.removeDownload(song.id)
                         }
                     }
                 ) {
@@ -428,12 +421,7 @@ fun OnlinePlaylistScreen(
                                                         IconButton(
                                                             onClick = {
                                                                 songs.forEach { song ->
-                                                                    DownloadService.sendRemoveDownload(
-                                                                        context,
-                                                                        ExoDownloadService::class.java,
-                                                                        song.id,
-                                                                        false
-                                                                    )
+                                                                    downloadUtil.removeDownload(song.id)
                                                                 }
                                                             }
                                                         ) {

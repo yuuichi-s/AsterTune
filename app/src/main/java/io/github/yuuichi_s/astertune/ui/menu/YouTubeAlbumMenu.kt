@@ -30,15 +30,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.models.AlbumItem
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeAlbumRadio
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.dialog.AddToPlaylistDialog
@@ -46,8 +46,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.AddToQueueDialog
 import io.github.yuuichi_s.astertune.ui.dialog.ArtistDialog
 import io.github.yuuichi_s.astertune.utils.getDownloadState
 import io.github.yuuichi_s.astertune.utils.reportException
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.models.AlbumItem
 
 @Composable
 fun YouTubeAlbumMenu(
@@ -165,12 +163,7 @@ fun YouTubeAlbumMenu(
             },
             onRemoveDownload = {
                 album?.songs?.forEach { song ->
-                    DownloadService.sendRemoveDownload(
-                        context,
-                        ExoDownloadService::class.java,
-                        song.id,
-                        false
-                    )
+                    downloadUtil.removeDownload(song.id)
                 }
             }
         )

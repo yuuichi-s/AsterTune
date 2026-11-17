@@ -174,7 +174,7 @@
     <string name="local_library_enable_description">Võimaldab seadmes olevaid lugusid skaneerida ja kaustavaadet kasutada</string>
     <string name="flat_subfolders_description">Kui soovid säilitada failipuu struktuuri kettal, siis lülita see valik välja</string>
     <string name="dl_migrate_title">Teisalda allalaaditud lood kausta</string>
-    <string name="dl_migrate_description">Teisalda allalaaditud lood rakenduse privaatsest andmeruumist välja.</string>
+    <string name="dl_migrate_description">Teisalda lood rakenduse privaatsest salvestusruumist valitud kausta.</string>
     <string name="off">Väljas</string>
     <string name="download_on_wifi_only_description">Oota mobiilse andmeside kasutamisel ja alusta allalaadimist Wi-Fi-ühenduse loomisel.</string>
     <string name="clear_downloads_confirm">Kas kustutada kõik allalaaditud lood rakenduse privaatsest andmeruumist?\nKaustades olevad failid jäävad alles.</string>
@@ -187,12 +187,14 @@
     <string name="dl_extra_path_dialog_description">Lisa kaustad varem allalaaditud lugudega. Arvesse võetakse ainult rakenduses juba registreeritud lugusid. Seejärel vali „Loe kaustad uuesti sisse“.</string>
     <string name="dl_migrate_confirm">Kas teisaldada allalaaditud lood sellesse kausta?\n\n%s\n\nRakenduse privaatses andmeruumis olevad algandmed kustutatakse.</string>
     <string name="dl_migrate_action">Teisalda</string>
+    <string name="dl_move_failed_title">Allalaaditud lugu ei õnnestunud teisaldada</string>
+    <string name="dl_move_failed_count_text">%d lugu ei õnnestunud teisaldada.</string>
     <string name="dl_main_path_title">Allalaaditud lugude sihtkaust</string>
-    <string name="dl_main_path_description">Pärast kausta valimist kasuta valikut „Teisalda allalaaditud lood kausta“. Uued allalaadimised salvestatakse endiselt rakenduse privaatsesse andmeruumi.</string>
+    <string name="dl_main_path_description">Allalaaditud lood teisaldatakse sellesse kausta automaatselt. Teisaldatakse ka lood, mis on juba rakenduse privaatses andmeruumis.</string>
     <string name="dl_path_not_set">Määramata</string>
     <string name="dl_add_folder">Lisa kaust</string>
     <string name="dl_subfolders_tooltip">Kaasatakse ka alamkaustad.</string>
-    <string name="dl_oobe_tooltip">Uued allalaadimised salvestatakse rakenduse privaatsesse andmeruumi. Ainuüksi kausta valimine lugusid ei teisalda. Hiljem teisaldamiseks vali „Teisalda allalaaditud lood kausta“ menüüs Seadistused → Failid ja meedia.</string>
+    <string name="dl_oobe_tooltip">Kui määrad kausta, salvestatakse allalaaditud lood sinna. Kui kausta pole määratud, salvestatakse need rakenduse privaatsesse andmeruumi.</string>
     <string name="dl_rescan_title">Loe kaustad uuesti sisse</string>
     <string name="dl_rescan_description">Kontrolli sihtkausta ja täiendavaid lähtekaustu, et uuendada allalaaditud lugude andmeid.</string>
     <string name="dl_rescan_confirm">Kas lugeda sihtkaust ja täiendavad lähtekaustad uuesti sisse?\nSõltuvalt failide arvust võib selleks kuluda mõni minut.</string>
@@ -200,9 +202,9 @@
     <string name="dl_size_used_cache">Rakenduse privaatne andmeruum: %s</string>
     <string name="dl_size_used_main">Allalaaditud lugude sihtkaust: %s</string>
     <string name="dl_size_used_extra">Täiendavad lähtekaustad: %s</string>
-    <string name="dl_storage_tooltip">Rakenduse privaatne andmeruum\nSiia salvestatakse äsja allalaaditud lood. Tavalised failihaldurid ei pääse neile otse ligi.\n\nAllalaaditud lugude sihtkaust\nLood teisaldatakse siia valikuga „Teisalda allalaaditud lood kausta“. Seejärel saad neid endiselt AsterTune’is kuulata ja failihalduriga avada. Vali tühi kaust, mis on mõeldud ainult nende lugude jaoks.\n\nTäiendavad lähtekaustad\nNendest loetakse sisse väljaspool sihtkausta asuvad allalaaditud lood. Näiteks pärast rakenduse andmete taastamist lisa kaustad ja vali „Loe kaustad uuesti sisse“. Arvesse võetakse ainult rakenduses juba registreeritud lugusid.</string>
+    <string name="dl_storage_tooltip">Rakenduse privaatne andmeruum\nSiin salvestatakse vaikimisi allalaaditud lood. Tavalised failihaldurid ei pääse neile otse ligi.\n\nAllalaaditud lugude sihtkaust\nSihtkausta määramisel teisaldatakse ka lood, mis on juba rakenduse privaatses andmeruumis. Lugude uuesti teisaldamiseks, mida ei õnnestunud teisaldada, vali „Teisalda allalaaditud lood kausta“. Teisaldatud lugusid saab endiselt kuulata AsterTune’is ja avada failihalduriga. Vali tühi kaust ainult nende lugude jaoks.\n\nTäiendavad lähtekaustad\nNendest loetakse sisse väljaspool sihtkausta asuvad allalaaditud lood. Näiteks pärast rakenduse andmete taastamist lisa kaustad ja vali „Loe kaustad uuesti sisse“. Arvesse võetakse ainult rakenduses juba registreeritud lugusid.</string>
     <string name="restart_to_apply_changes">Muudatuste rakendamiseks käivita rakendus uuesti.</string>
-    <string name="oobe_downloads_subtitle">Vali kaust, kuhu allalaaditud lood teisaldada (valikuline).</string>
+    <string name="oobe_downloads_subtitle">Vali allalaaditud lugude sihtkaust (valikuline).</string>
     <string name="dl_saved_files_title">Salvestatud failide sisselugemine</string>
     <string name="scan_paths_dialog_title">Määra skaneerimiskohad</string>
     <string name="scan_paths_excluded_description">Vali kaustad, mis skaneerimisest välja jätta</string>

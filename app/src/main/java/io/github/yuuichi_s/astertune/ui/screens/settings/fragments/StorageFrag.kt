@@ -84,7 +84,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.ActionPromptDialog
 import io.github.yuuichi_s.astertune.ui.dialog.DefaultDialog
 import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
 import io.github.yuuichi_s.astertune.utils.LocalArtworkDiskCache
-import io.github.yuuichi_s.astertune.utils.dlCoroutine
 import io.github.yuuichi_s.astertune.utils.formatFileSize
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.scanners.absoluteFilePathFromUri
@@ -152,7 +151,7 @@ fun ColumnScope.DownloadsFrag() {
     val downloadCache = LocalPlayerConnection.current?.service?.downloadCache ?: return
     val downloadUtil = LocalDownloadUtil.current
 
-    val (downloadPath, onDownloadPathChange) = rememberPreference(DownloadPathKey, "")
+    val (downloadPath, _) = rememberPreference(DownloadPathKey, "")
     val (scanPaths, onScanPathsChange) = rememberPreference(ScanPathsKey, defaultValue = "")
     val (downloadOnWifiOnly, onDownloadOnWifiOnlyChange) = rememberPreference(DownloadOnWifiOnlyKey, defaultValue = true)
 
@@ -179,7 +178,7 @@ fun ColumnScope.DownloadsFrag() {
     }
 
     // advanced
-    val (dlPathExtra, onDlPathExtraChange) = rememberPreference(DownloadExtraPathKey, "")
+    val (dlPathExtra, _) = rememberPreference(DownloadExtraPathKey, "")
     val isLoading by downloadUtil.isProcessingDownloads.collectAsState()
     var showMigrationDialog by rememberSaveable {
         mutableStateOf(false)
@@ -385,15 +384,10 @@ fun ColumnScope.DownloadsFrag() {
             },
             onConfirm = {
                 val uris = stringFromUriList(listOfNotNull(tempFilePath))
-                onDownloadPathChange(uris)
+                downloadUtil.setDownloadPath(uris, scanFirst = false)
 
                 showDlPathDialog = false
                 tempFilePath = null
-
-                coroutineScope.launch {
-                    delay(1000)
-                    downloadUtil.cd()
-                }
             },
             onReset = {
                 tempFilePath = null
@@ -565,12 +559,7 @@ fun ColumnScope.DownloadsFrag() {
                 tempScanPaths.clear()
             },
             onConfirm = {
-                onDlPathExtraChange(stringFromUriList(tempScanPaths.toList()))
-                coroutineScope.launch(dlCoroutine) {
-                    delay(1000)
-                    downloadUtil.cd()
-                    downloadUtil.scanDownloads()
-                }
+                downloadUtil.setExtraDownloadPaths(stringFromUriList(tempScanPaths.toList()))
 
                 showPathsDialog = false
                 tempScanPaths.clear()
@@ -694,9 +683,7 @@ fun ColumnScope.DownloadsFrag() {
                 TextButton(
                     onClick = {
                         showImportDialog = false
-                        coroutineScope.launch(dlCoroutine) {
-                            downloadUtil.scanDownloads()
-                        }
+                        downloadUtil.startScanDownloads()
                     }
                 ) {
                     Text(text = stringResource(R.string.dl_rescan_action))
@@ -731,9 +718,7 @@ fun ColumnScope.DownloadsFrag() {
                     onClick = {
                         showMigrationDialog = false
 
-                        coroutineScope.launch(dlCoroutine) {
-                            downloadUtil.migrateDownloads()
-                        }
+                        downloadUtil.startMigrateDownloads()
                     }
                 ) {
                     Text(text = stringResource(R.string.dl_migrate_action))

@@ -206,11 +206,11 @@
     <string name="dl_extra_path_title">Pastas de origem adicionais</string>
     <string name="dl_extra_path_description">Carregar músicas transferidas que estejam fora da pasta de destino.</string>
     <string name="dl_migrate_title">Mover as músicas transferidas para a pasta</string>
-    <string name="dl_migrate_description">Mover as músicas transferidas para fora do armazenamento privado da aplicação.</string>
+    <string name="dl_migrate_description">Mover as músicas do armazenamento privado da aplicação para a pasta selecionada.</string>
     <string name="dl_migrate_confirm">Mover as músicas transferidas para esta pasta?\n\n%s\n\nOs dados originais no armazenamento privado da aplicação serão eliminados.</string>
     <string name="dl_main_path_title">Pasta de destino das músicas transferidas</string>
-    <string name="dl_main_path_description">Depois de escolher uma pasta, utilize «Mover as músicas transferidas para a pasta». As novas transferências continuarão a ser guardadas no armazenamento privado da aplicação.</string>
-    <string name="dl_oobe_tooltip">As novas transferências são guardadas no armazenamento privado da aplicação. Escolher uma pasta não move as músicas. Para as mover mais tarde, utilize «Mover as músicas transferidas para a pasta» em Definições → Armazenamento.</string>
+    <string name="dl_main_path_description">As músicas transferidas são movidas automaticamente para esta pasta. As músicas que já estão no armazenamento privado da aplicação também são movidas.</string>
+    <string name="dl_oobe_tooltip">Se definir uma pasta, as músicas transferidas serão guardadas nela. Caso contrário, serão guardadas no armazenamento privado da aplicação.</string>
     <string name="dl_rescan_title">Voltar a analisar pastas</string>
     <string name="dl_rescan_description">Verificar a pasta de destino e as pastas de origem adicionais para atualizar quais as músicas transferidas.</string>
     <string name="dl_rescan_confirm">Voltar a analisar a pasta de destino e as pastas de origem adicionais?\nA operação pode demorar alguns minutos, consoante o número de ficheiros.</string>
@@ -242,7 +242,7 @@
     <string name="oobe_local_media_title">Ficheiros locais</string>
     <string name="oobe_local_media_subtitle">Selecione as pastas que contêm as suas músicas. Iremos analisá-las para encontrar músicas a importar.</string>
     <string name="oobe_downloads_title">Transferências de músicas</string>
-    <string name="oobe_downloads_subtitle">Escolha uma pasta para onde mover as músicas transferidas (opcional).</string>
+    <string name="oobe_downloads_subtitle">Escolha uma pasta de destino para as músicas transferidas (opcional).</string>
     <string name="oobe_complete_title">Tudo pronto!</string>
     <string name="oobe_complete">AsterTune está configurado e pronto para ser usado. Explore as suas músicas, descubra novas faixas e aproveite a experiência!</string>
     <string name="import_failed_songs">Não foi possível importar</string>
@@ -286,7 +286,7 @@
     <string name="scanner_auto_start">A recarregar ficheiros locais e pastas de transferências…</string>
     <string name="scanner_strict_file_paths_title">Correspondência com caminho dos ficheiros em vez de metadados</string>
     <string name="scanner_strict_file_paths_description">Os ficheiros com caminhos diferentes são tratados como músicas distintas. Mover um ficheiro ou mudar-lhe o nome pode adicioná-lo à biblioteca como outra música</string>
-    <string name="dl_storage_tooltip">Armazenamento privado da aplicação\nÉ aqui que são guardadas as novas músicas transferidas. Os gestores de ficheiros comuns não lhes conseguem aceder diretamente.\n\nPasta de destino das músicas transferidas\nAs músicas são movidas para aqui com «Mover as músicas transferidas para a pasta». Depois, pode continuar a ouvi-las no AsterTune e aceder-lhes com um gestor de ficheiros. Escolha uma pasta vazia reservada para estas músicas.\n\nPastas de origem adicionais\nPermitem carregar músicas transferidas que estejam fora da pasta de destino. Por exemplo, após restaurar os dados da aplicação, adicione as pastas e selecione «Voltar a analisar pastas». Apenas serão consideradas as músicas já registadas na aplicação.</string>
+    <string name="dl_storage_tooltip">Armazenamento privado da aplicação\nAs músicas transferidas são guardadas aqui por predefinição. Os gestores de ficheiros habituais não conseguem aceder-lhes diretamente.\n\nPasta de destino das músicas transferidas\nAo definir a pasta de destino, as músicas que já estão no armazenamento privado da aplicação também são movidas. Para tentar mover novamente as músicas que não foi possível mover, utilize «Mover as músicas transferidas para a pasta». Depois disso, pode continuar a ouvi-las no AsterTune e abri-las com um gestor de ficheiros. Escolha uma pasta vazia reservada a estas músicas.\n\nPastas de origem adicionais\nPermitem carregar músicas transferidas que estejam fora da pasta de destino. Por exemplo, após restaurar os dados da aplicação, adicione as pastas e selecione «Voltar a analisar pastas». Apenas serão consideradas as músicas já registadas na aplicação.</string>
     <string name="restore_lm_tooltip">Para novas instalações da aplicação, os caminhos de ficheiros locais e/ou de transferências podem não funcionar. Se isso acontecer, experimente remover as pastas e adicionar novamente.</string>
     <string name="off">Desativado</string>
     <string name="song_playing_in_new_queue">\"%s\" em reprodução numa nova fila</string>
@@ -321,6 +321,8 @@
     <string name="clear_downloads_description">Os ficheiros na pasta de destino e nas pastas de origem adicionais serão mantidos.</string>
     <string name="dl_extra_path_dialog_description">Adicione pastas com músicas transferidas anteriormente. Apenas serão consideradas as músicas já registadas na aplicação. Depois, selecione «Voltar a analisar pastas».</string>
     <string name="dl_migrate_action">Mover</string>
+    <string name="dl_move_failed_title">Não foi possível mover a música transferida</string>
+    <string name="dl_move_failed_count_text">Músicas que não foi possível mover: %d.</string>
     <string name="dl_path_not_set">Não definida</string>
     <string name="dl_add_folder">Adicionar pasta</string>
     <string name="dl_subfolders_tooltip">As subpastas também são incluídas.</string>

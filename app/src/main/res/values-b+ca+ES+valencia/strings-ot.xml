@@ -106,7 +106,7 @@
     <string name="import_failed_songs">No s’ha pogut importar</string>
     <string name="oobe_complete">AsterTune està configurat i llest per a utilitzar-se. Explora la teua música, descobreix noves cançons i gaudeix de l’experiència!</string>
     <string name="oobe_complete_title">Ja està tot a punt!</string>
-    <string name="oobe_downloads_subtitle">Tria una carpeta de destinació per moure-hi les cançons baixades (opcional).</string>
+    <string name="oobe_downloads_subtitle">Tria una carpeta de destinació per a les cançons baixades (opcional).</string>
     <string name="oobe_downloads_title">Descàrregues de cançons</string>
     <string name="grp_general">General</string>
     <string name="new_interface">Nou disseny de la interfície</string>

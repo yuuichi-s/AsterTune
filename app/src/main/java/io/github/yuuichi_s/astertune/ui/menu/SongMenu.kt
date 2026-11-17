@@ -45,9 +45,9 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastSumBy
-import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.zionhuang.innertube.YouTube
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
@@ -63,7 +63,6 @@ import io.github.yuuichi_s.astertune.db.entities.PlaylistSong
 import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
-import io.github.yuuichi_s.astertune.playback.ExoDownloadService
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.items.ListItem
@@ -76,7 +75,6 @@ import io.github.yuuichi_s.astertune.utils.joinByBullet
 import io.github.yuuichi_s.astertune.utils.makeTimeString
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.syncCoroutine
-import com.zionhuang.innertube.YouTube
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -256,16 +254,7 @@ fun SongMenu(
                     downloadUtil.download(song.toMediaMetadata())
                 },
                 onRemoveDownload = {
-                    if (song.song.localPath != null) {
-                        downloadUtil.delete(song)
-                    } else {
-                        DownloadService.sendRemoveDownload(
-                            context,
-                            ExoDownloadService::class.java,
-                            song.id,
-                            false
-                        )
-                    }
+                    downloadUtil.removeDownload(song.id)
                 }
             )
 

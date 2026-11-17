@@ -11,12 +11,18 @@ import io.github.yuuichi_s.astertune.utils.scanners.documentFileFromUri
 import java.io.IOException
 import java.io.InputStream
 
-class DownloadDirectoryManagerOt(private var context: Context, private var dir: Uri, extraDirs: List<Uri>) {
+class DownloadDirectoryManagerOt(private var context: Context, dir: Uri, extraDirs: List<Uri>) {
     val TAG = DownloadDirectoryManagerOt::class.simpleName.toString()
+
+    /** The main download directory passed to the last [doInit] call. */
+    var dir: Uri = dir
+        private set
+
     var mainDir: DocumentFile? = null
     var allDirs: List<DocumentFile> = mutableListOf()
 
-    var availableFiles: Set<DocumentFile> = mutableSetOf()
+    @Volatile
+    var availableFiles: Set<DocumentFile> = emptySet()
 
     init {
         doInit(context, dir, extraDirs)
@@ -31,11 +37,6 @@ class DownloadDirectoryManagerOt(private var context: Context, private var dir: 
             if (mainDir == null || !mainDir!!.isDirectory) {
                 throw IOException("Invalid directory")
             }
-
-            // TODO: .nomedia for downloads folder (permission denied)
-//            if (!mainDir!!.listFiles().any { it.name == ".nomedia" }) {
-//                documentFileFromUri(context, dir)?.createFile("audio/mka", ".nomedia")
-//            }
 
             val newAllDirs = mutableListOf<DocumentFile>()
             newAllDirs.add(mainDir!!)
@@ -57,44 +58,66 @@ class DownloadDirectoryManagerOt(private var context: Context, private var dir: 
 
             mainDir = null
             allDirs = mutableListOf()
-//            reportException(e)
-//            Toast.makeText(context, "Failed to initiate download manager: " + e.message, Toast.LENGTH_LONG).show()
-            // TODO: snackbar for failed uri or not set up?
         }
     }
 
+    /**
+     * Deletes the file for [mediaId] and removes its entry from [availableFiles].
+     *
+     * @return `true` if a matching entry is found and its file is deleted or reported as missing.
+     *     Otherwise, `false`.
+     */
     fun deleteFile(mediaId: String): Boolean {
-        val file = isExists(mediaId)
-        return file?.delete() == true
+        val file = findFile(mediaId) ?: return false
+        if (!file.delete() && file.exists()) return false
+
+        synchronized(this) { availableFiles = availableFiles - file }
+
+        return true
     }
 
-    fun saveFile(mediaId: String, input: InputStream, displayName: String?): Uri? {
-        val resolver = context.contentResolver
-        val directory = DocumentFile.fromTreeUri(context, dir)
-
-        if (directory == null || !directory.isDirectory) {
-            throw IOException("Invalid directory")
-        }
-
-        val fileName = "$displayName [$mediaId].mka"
-        val newFile = directory.createFile("audio/mka", fileName)
-
-        newFile?.uri?.let { uri ->
-            resolver.openOutputStream(uri)?.use { out ->
-                input.copyTo(out)
+    fun deleteTempFiles() {
+        mainDir?.listFiles()
+            ?.filter { file ->
+                val name = file.name ?: return@filter false
+                name.startsWith(TEMP_PREFIX) && name.endsWith(TEMP_SUFFIX) && file.isFile
             }
-            return uri
-        }
-
-        return null
+            ?.forEach { it.delete() }
     }
 
-    fun isExists(mediaId: String): DocumentFile? {
-        return availableFiles.find { (it as TreeDocumentFileOt).id == mediaId }
+    /**
+     * Saves [input] in the main download directory and adds the file to [availableFiles].
+     *
+     * @return the saved file, or `null` if the directory is unavailable or saving fails.
+     */
+    fun saveFile(mediaId: String, input: InputStream, displayName: String?): DocumentFile? {
+        val directory = mainDir ?: return null
+        val temp = directory.createFile(TEMP_MIME, "$TEMP_PREFIX$mediaId$TEMP_SUFFIX") ?: return null
+
+        try {
+            val out = context.contentResolver.openOutputStream(temp.uri) ?: throw IOException("Cannot open ${temp.uri}")
+            out.use { input.copyTo(it) }
+            val fileName = "${displayName.orEmpty()} [$mediaId].mka"
+            if (!temp.renameTo(fileName)) {
+                throw IOException("Cannot rename ${temp.uri}")
+            }
+
+            val saved = TreeDocumentFileOt(directory, context, temp.uri, temp.name ?: fileName, "audio/mka")
+            synchronized(this) { availableFiles = availableFiles + saved }
+            return saved
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to save $mediaId: ${e.message}")
+            temp.delete()
+            return null
+        }
+    }
+
+    fun findFile(mediaId: String): DocumentFile? {
+        return availableFiles.find { (it as? TreeDocumentFileOt)?.id == mediaId }
     }
 
     fun getFilePathIfExists(mediaId: String): Uri? {
-        return isExists(mediaId)?.uri
+        return findFile(mediaId)?.uri
     }
 
     fun getMissingFiles(mediaId: List<Song>): List<Song> {
@@ -103,8 +126,6 @@ class DownloadDirectoryManagerOt(private var context: Context, private var dir: 
         missingFiles.removeIf { f -> result.any { it.key == f.id } }
         return missingFiles.toList()
     }
-
-    fun getAvailableFiles() = getAvailableFiles(true)
 
     fun getAvailableFiles(useCache: Boolean = true): Map<String, Uri> {
         val availableFiles = HashMap<String, Uri>()
@@ -122,8 +143,9 @@ class DownloadDirectoryManagerOt(private var context: Context, private var dir: 
             availableFiles.put(path.substringAfterLast('[').substringBeforeLast(']'), file.uri)
         }
         if (!useCache) {
-            this.availableFiles = result.toSet()
+            synchronized(this) { this.availableFiles = result.toSet() }
         }
+
         return availableFiles
     }
 
@@ -135,14 +157,6 @@ class DownloadDirectoryManagerOt(private var context: Context, private var dir: 
         return result.filter { it.name != null }.sumOf { it.length() }
     }
 
-    fun getTotalDlStorageUsage(): Long {
-        if (allDirs.isEmpty()) return 0
-        val result = ArrayList<DocumentFile>()
-        availableFiles.sumOf { it.length() }
-
-        return availableFiles.sumOf { it.length() }
-    }
-
     fun getExtraDlStorageUsage(): Long {
         val dirs = allDirs.filter { it != mainDir }
         if (dirs.isEmpty()) return 0
@@ -152,5 +166,11 @@ class DownloadDirectoryManagerOt(private var context: Context, private var dir: 
         }
 
         return result.filter { it.name != null }.sumOf { it.length() }
+    }
+
+    companion object {
+        private const val TEMP_PREFIX = ".astertune-"
+        private const val TEMP_SUFFIX = ".part"
+        private const val TEMP_MIME = "application/octet-stream"
     }
 }
