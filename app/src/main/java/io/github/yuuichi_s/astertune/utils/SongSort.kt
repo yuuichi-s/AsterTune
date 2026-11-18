@@ -37,6 +37,14 @@ fun sortLocalSongs(
     return if (descending) sorted.reversed() else sorted
 }
 
+internal fun sortLocalAlbumSongs(songs: List<Song>): List<Song> =
+    songs.sortedWith(
+        compareBy<Song> { it.song.discNumber?.takeIf { number -> number > 0 } ?: 1 }
+            .thenBy(nullsLast<Int>()) { it.song.trackNumber?.takeIf { number -> number > 0 } }
+                .thenBy { it.title.lowercase() }
+                .thenBy { it.id }
+)
+
 /**
  * Applies the song order used for playlists stored in the database.
  *

@@ -2,6 +2,7 @@ package io.github.yuuichi_s.astertune.db.daos
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Embedded
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -26,6 +27,7 @@ import io.github.yuuichi_s.astertune.db.entities.SongAlbumMap
 import io.github.yuuichi_s.astertune.db.entities.SongEntity
 import io.github.yuuichi_s.astertune.extensions.reversed
 import io.github.yuuichi_s.astertune.utils.IMAGE_DEBUG_NEWEST_ARTIST_ALBUM_QUERY
+import io.github.yuuichi_s.astertune.utils.sortLocalAlbumSongs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -241,20 +243,27 @@ interface AlbumsDao : ArtistsDao {
             }
         }
 
-    /**
-     * Observes songs linked to [albumId], omitting disabled local songs. Uses each song's own
-     * isLocal/inLibrary rather than the album's isLocal; see [albumWithSongs].
-     */
+    /** Observes the album's songs in local metadata order or the stored online album order. */
+    fun albumSongs(albumId: String): Flow<List<Song>> = albumSongRows(albumId).map { rows ->
+        val songs = rows.map(AlbumSongRow::song)
+        if (rows.firstOrNull()?.albumIsLocal == true) {
+            sortLocalAlbumSongs(songs)
+        } else {
+            songs
+        }
+    }
+
     @Transaction
     @Query("""
-        SELECT song.*
+        SELECT song.*, album.isLocal AS albumIsLocal
         FROM song
             INNER JOIN song_album_map ON song.id = song_album_map.songId
+            INNER JOIN album ON song_album_map.albumId = album.id
         WHERE song_album_map.albumId = :albumId
             AND (song.isLocal = 0 OR song.inLibrary IS NOT NULL)
         ORDER BY song_album_map.`index`
     """)
-    fun albumSongs(albumId: String): Flow<List<Song>>
+    fun albumSongRows(albumId: String): Flow<List<AlbumSongRow>>
 
     @Transaction
     @Query("""
@@ -562,3 +571,8 @@ interface AlbumsDao : ArtistsDao {
     fun nukeLocalAlbums()
     // endregion
 }
+
+data class AlbumSongRow(
+    @Embedded val song: Song,
+    val albumIsLocal: Boolean,
+)
