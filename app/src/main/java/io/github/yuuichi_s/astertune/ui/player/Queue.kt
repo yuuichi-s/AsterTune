@@ -465,8 +465,12 @@ fun BoxScope.QueueContent(
 
     // Helpers
     fun exitDetachHead() {
-        detachedHead = false
-        detachedQueue = null // detachedQueue should only exist in detached mode
+        // Saved queues are not loaded into the player until playback is requested.
+        // While the player is empty, keep showing the saved current queue.
+        val savedQueue = if (playerConnection.player.mediaItemCount == 0) qb.getCurrentQueue() else null
+
+        detachedHead = savedQueue != null
+        detachedQueue = savedQueue // detachedQueue should only exist in detached mode
         onExitSelectionMode()
     }
 
@@ -1003,7 +1007,7 @@ fun BoxScope.QueueContent(
                             .border(1.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
                             .padding(2.dp)
                             .weight(1f)
-                            .clickable(enabled = !landscape && !queueWindows.isEmpty()) {
+                            .clickable(enabled = !landscape) {
                                 mqExpand = !mqExpand
                                 if (mqExpand) {
                                     exitDetachHead()
@@ -1021,7 +1025,7 @@ fun BoxScope.QueueContent(
                         )
                         ResizableIconButton(
                             icon = if (mqExpand) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore,
-                            enabled = !landscape && !queueWindows.isEmpty(),
+                            enabled = !landscape,
                             onClick = {
                                 mqExpand = !mqExpand
                                 if (mqExpand) {
