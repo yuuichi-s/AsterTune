@@ -29,6 +29,34 @@ import java.time.LocalDateTime
  */
 class SongSortTest {
     @Test
+    fun localAlbumSortsByDiscThenTrackThenTitleAndId() {
+        fun song(id: String, title: String, disc: Int?, track: Int?) = Song(
+            song = SongEntity(id = id, title = title, discNumber = disc, trackNumber = track, localPath = null),
+            artists = emptyList(),
+        )
+
+        val songs = listOf(
+            song("disc2-missing", "A", 2, null),
+            song("disc1-missing-z", "Z", -1, 0),
+            song("disc2-track1", "B", 2, 1),
+            song("disc1-tie-b", "écho", 1, null),
+            song("disc1-missing-a", "a", 0, -1),
+            song("disc1-track-max", "Y", 1, Int.MAX_VALUE),
+            song("disc1-tie-a", "Écho", null, 0),
+            song("disc1-track1-z", "Z", null, 1),
+            song("disc1-track1-a", "a", 1, 1),
+        )
+
+        assertEquals(
+            listOf(
+                "disc1-track1-a", "disc1-track1-z", "disc1-track-max", "disc1-missing-a",
+                "disc1-missing-z", "disc1-tie-a", "disc1-tie-b", "disc2-track1", "disc2-missing",
+            ),
+            sortLocalAlbumSongs(songs).map { it.id },
+        )
+    }
+
+    @Test
     fun localSongsAreSortedByEveryType() = runBlocking {
         val failures = sortFailures(
             "sortLocalSongs", FolderSongSortType.entries,
