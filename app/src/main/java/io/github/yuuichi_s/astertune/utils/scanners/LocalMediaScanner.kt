@@ -53,7 +53,9 @@ import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.reportException
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -1019,6 +1021,9 @@ class LocalMediaScanner(context: Context) {
         private var ownerId = -1
         private var localScanner: LocalMediaScanner? = null
 
+
+        /** Runs local media scans so that closing the screen that started one does not stop it. */
+        val scannerScope = CoroutineScope(SupervisorJob() + lmScannerCoroutine)
 
         var scannerRequestCancel = false
 

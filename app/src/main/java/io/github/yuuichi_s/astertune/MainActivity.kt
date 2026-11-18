@@ -192,9 +192,9 @@ import io.github.yuuichi_s.astertune.utils.ActivityLauncherHelper
 import io.github.yuuichi_s.astertune.utils.NetworkConnectivityObserver
 import io.github.yuuichi_s.astertune.utils.ObserveImageLoadNavigation
 import io.github.yuuichi_s.astertune.utils.SyncUtils
-import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
+import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerScope
 import io.github.yuuichi_s.astertune.utils.updater.UpdateChecker
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -303,7 +303,7 @@ class MainActivity : ComponentActivity() {
 
             LaunchedEffect(Unit) {
                 // local media & download folders auto scan
-                coroutineScope.launch(lmScannerCoroutine) {
+                scannerScope.launch {
                     scanInit(
                         this@MainActivity, database, downloadUtil, coroutineScope, playerConnection,
                         snackbarHostState

@@ -68,6 +68,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.datastore.preferences.core.edit
 import io.github.yuuichi_s.astertune.LocalDatabase
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
 import io.github.yuuichi_s.astertune.LocalSnackbarHostState
@@ -90,7 +91,7 @@ import io.github.yuuichi_s.astertune.ui.dialog.ActionPromptDialog
 import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
 import io.github.yuuichi_s.astertune.ui.utils.MEDIA_PERMISSION_LEVEL
 import io.github.yuuichi_s.astertune.ui.utils.clearDtCache
-import io.github.yuuichi_s.astertune.utils.lmScannerCoroutine
+import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.reportException
@@ -100,6 +101,7 @@ import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerProgressCurrent
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerProgressTotal
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerRequestCancel
+import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerScope
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerState
 import io.github.yuuichi_s.astertune.utils.scanners.ScannerAbortException
 import io.github.yuuichi_s.astertune.utils.scanners.absoluteFilePathFromUri
@@ -156,8 +158,6 @@ fun ColumnScope.LocalScannerFrag() {
 
     var fullRescan by remember { mutableStateOf(false) }
 
-    val (lastLocalScan, onLastLocalScanChange) = rememberPreference(LastLocalScanKey, 0L)
-
     LaunchedEffect(scanPaths) {
         if (scanPaths.isBlank()) {
             showAddFolderDialog = true
@@ -208,7 +208,7 @@ fun ColumnScope.LocalScannerFrag() {
 
                 playerConnection?.player?.pause()
 
-                coroutineScope.launch(lmScannerCoroutine) {
+                scannerScope.launch {
                     if (scannerState > 0) {
                         return@launch
                     }
@@ -225,22 +225,26 @@ fun ColumnScope.LocalScannerFrag() {
                             scannerFailure = true
                             Log.i(TAG, "Manual scan canceled: ${e.message}")
 
-                            snackbarHostState.showSnackbar(
-                                message = resources.getString(R.string.scanner_scan_canceled),
-                                withDismissAction = true,
-                                duration = SnackbarDuration.Short
-                            )
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = resources.getString(R.string.scanner_scan_canceled),
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
                         } catch (e: CancellationException) {
                             throw e
                         } catch (e: Exception) {
                             scannerFailure = true
                             reportException(e)
 
-                            snackbarHostState.showSnackbar(
-                                message = scanFailMessage,
-                                withDismissAction = true,
-                                duration = SnackbarDuration.Short
-                            )
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = scanFailMessage,
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
                         } finally {
                             clearDtCache()
                             destroyScanner(SCANNER_OWNER_LM)
@@ -260,22 +264,26 @@ fun ColumnScope.LocalScannerFrag() {
                             scannerFailure = true
                             Log.i(TAG, "Manual scan canceled: ${e.message}")
 
-                            snackbarHostState.showSnackbar(
-                                message = resources.getString(R.string.scanner_scan_canceled),
-                                withDismissAction = true,
-                                duration = SnackbarDuration.Short
-                            )
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = resources.getString(R.string.scanner_scan_canceled),
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
                         } catch (e: CancellationException) {
                             throw e
                         } catch (e: Exception) {
                             scannerFailure = true
                             reportException(e)
 
-                            snackbarHostState.showSnackbar(
-                                message = scanFailMessage,
-                                withDismissAction = true,
-                                duration = SnackbarDuration.Short
-                            )
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = scanFailMessage,
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
                         } finally {
                             clearDtCache()
                             destroyScanner(SCANNER_OWNER_LM)
@@ -285,7 +293,9 @@ fun ColumnScope.LocalScannerFrag() {
                     // post scan actions
                     playerConnection?.service?.initQueue()
 
-                    onLastLocalScanChange(LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli())
+                    context.dataStore.edit { settings ->
+                        settings[LastLocalScanKey] = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+                    }
                 }
             }
         ) {
