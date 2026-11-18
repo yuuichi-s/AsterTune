@@ -1,0 +1,11 @@
+AsterTune 1.0.8
+
+Features
+- Show scrollbars on screens. You can turn them off with Scrollbar in Settings > Appearance and controls.
+
+Improvements
+- Move downloaded songs automatically to the Destination for downloaded songs set in Settings > Storage.
+
+Fixes
+- Show and play local album tracks in disc and track number order.
+- Keep the saved queue's song count and total duration visible after you close the list of queues before playback.
