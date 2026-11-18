@@ -73,6 +73,8 @@
     <string name="lyrics_settings_title">Paroles</string>
     <string name="new_interface">Nouvelle présentation de l\'interface</string>
     <string name="slim_navbar_title">Barre de navigation fine</string>
+    <string name="show_scrollbar_title">Barre de défilement</string>
+    <string name="show_scrollbar_description">Afficher la barre de défilement</string>
     <string name="scanner_warning">Si vous cochez la case « Réanalyser », les titres, les noms des artistes et les autres métadonnées sont relus depuis les fichiers, y compris pour les titres déjà analysés. Cela peut prendre du temps selon le nombre de titres.</string>
     <string name="slim_navbar_description">Supprimer les étiquettes de texte pour réduire la hauteur de la barre de navigation</string>
     <string name="show_liked_and_downloaded_playlist">Afficher les playlists des titres appréciés et téléchargés dans la bibliothèque</string>

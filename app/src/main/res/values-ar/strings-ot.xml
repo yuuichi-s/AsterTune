@@ -104,6 +104,8 @@
     <string name="show_liked_and_downloaded_playlist">عرض قوائم التشغيل للأغاني المعجب بها والمحملة في المكتبة</string>
     <string name="slim_navbar_title">شريط تنقل نحيف</string>
     <string name="slim_navbar_description">إزالة تسميات النص لتقليل ارتفاع شريط التنقل</string>
+    <string name="show_scrollbar_title">شريط التمرير</string>
+    <string name="show_scrollbar_description">إظهار شريط التمرير</string>
     <string name="tab_arrangement">ترتيب علامات التبويب</string>
     <string name="tab_arrangement_disable_tip">--- اسحب أدناه للتعطيل ---</string>
     <string name="tab_arrangement_home_required">علامة تبويب الصفحة الرئيسية مطلوبة.</string>

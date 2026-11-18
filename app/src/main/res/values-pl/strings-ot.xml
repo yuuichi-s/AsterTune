@@ -95,6 +95,8 @@
     <string name="action_next">Następne</string>
     <string name="grp_proxy">Proxy</string>
     <string name="slim_navbar_title">Wąski pasek nawigacji</string>
+    <string name="show_scrollbar_title">Pasek przewijania</string>
+    <string name="show_scrollbar_description">Pokaż pasek przewijania</string>
     <string name="info">Informacja</string>
     <string name="min_playback_duration_description">Najmniejsza długość piosenki jaka musi być odtworzona aby uznać ją za \"odtworzoną\"</string>
     <string name="lyrics_multiline_description">Traktuj wszystkie wersy między punktami synchronizacji jako jeden kawałek tekstu</string>

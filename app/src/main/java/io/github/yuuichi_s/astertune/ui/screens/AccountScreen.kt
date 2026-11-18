@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Settings
@@ -40,6 +41,7 @@ import io.github.yuuichi_s.astertune.constants.AccountNameKey
 import io.github.yuuichi_s.astertune.constants.GridThumbnailHeight
 import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
+import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.PreferenceGroupTitle
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeGridItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.GridItemPlaceHolder
@@ -75,7 +77,10 @@ fun AccountScreen(
     val artists by viewModel.artists.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
+    val lazyGridState = rememberLazyGridState()
+
     LazyVerticalGrid(
+        state = lazyGridState,
         columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
         contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
     ) {
@@ -172,6 +177,9 @@ fun AccountScreen(
             }
         }
     }
+    LazyVerticalGridScrollbar(
+        state = lazyGridState,
+    )
 
     TopAppBar(
         title = {

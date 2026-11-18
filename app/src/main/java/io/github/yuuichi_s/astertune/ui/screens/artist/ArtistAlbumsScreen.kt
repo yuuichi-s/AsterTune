@@ -49,6 +49,7 @@ import io.github.yuuichi_s.astertune.constants.CONTENT_TYPE_ALBUM
 import io.github.yuuichi_s.astertune.constants.CONTENT_TYPE_HEADER
 import io.github.yuuichi_s.astertune.constants.GridThumbnailHeight
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
+import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.LibraryAlbumGridItem
 import io.github.yuuichi_s.astertune.viewmodels.ArtistAlbumsViewModel
 
@@ -130,6 +131,9 @@ fun ArtistAlbumsScreen(
                 )
             }
         }
+        LazyVerticalGridScrollbar(
+            state = lazyGridState,
+        )
 
         TopAppBar(
             title = { Text(artist?.artist?.name.orEmpty()) },

@@ -90,6 +90,7 @@ import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.SortHeader
 import io.github.yuuichi_s.astertune.ui.component.items.ItemThumbnail
 import io.github.yuuichi_s.astertune.ui.component.items.ListItem
@@ -337,6 +338,9 @@ fun LocalArtistScreen(
                 )
             }
         }
+        LazyColumnScrollbar(
+            state = lazyListState,
+        )
 
         TopAppBar(
             title = { },

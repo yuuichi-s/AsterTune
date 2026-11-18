@@ -104,6 +104,8 @@
     <string name="show_liked_and_downloaded_playlist">Mostrar listas de reprodução das músicas favoritas e das faixas transferidas</string>
     <string name="slim_navbar_title">Barra de navegação pequena</string>
     <string name="slim_navbar_description">Remover textos para diminuir a altura da barra de navegação</string>
+    <string name="show_scrollbar_title">Barra de deslocamento</string>
+    <string name="show_scrollbar_description">Mostrar a barra de deslocamento</string>
     <string name="tab_arrangement">Organizar separadores</string>
     <string name="tab_arrangement_disable_tip">--- Arraste para baixo daqui para desativar ---</string>
     <string name="tab_arrangement_home_required">O separador Início não pode ser removido.</string>

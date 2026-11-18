@@ -101,6 +101,8 @@
     <string name="player_background_gradient">グラデーション効果</string>
     <string name="slim_navbar_title">細いナビバー</string>
     <string name="slim_navbar_description">テキストラベルを削除してナビバーの高さを減らす</string>
+    <string name="show_scrollbar_title">スクロールバー</string>
+    <string name="show_scrollbar_description">スクロールバーを表示する</string>
     <string name="home_sections_title">ホームのセクション</string>
     <string name="home_sections_chips">カテゴリボタン</string>
     <string name="home_sections_chips_description">ホーム上部に、YouTube Musicのセクションを絞り込むボタンを表示します</string>

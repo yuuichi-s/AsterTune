@@ -152,6 +152,8 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="show_liked_and_downloaded_playlist">Kütüphanede beğenilen ve indirilen şarkıların çalma listelerini göster</string>
     <string name="slim_navbar_title">İnce gezinme çubuğu</string>
     <string name="slim_navbar_description">Gezinme çubuğunun yüksekliğini azaltmak için metin etiketlerini kaldır</string>
+    <string name="show_scrollbar_title">Kaydırma çubuğu</string>
+    <string name="show_scrollbar_description">Kaydırma çubuğunu göster</string>
     <string name="slider_style_title">Kaydırıcı biçimi</string>
     <string name="slider_style_squiggly">Dalgalı</string>
     <string name="slider_style_default">Varsayılan</string>

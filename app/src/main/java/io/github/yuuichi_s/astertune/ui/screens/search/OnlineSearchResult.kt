@@ -50,6 +50,7 @@ import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.ListQueue
 import io.github.yuuichi_s.astertune.ui.component.ChipsRow
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.SwipeToQueueBox
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
@@ -288,6 +289,9 @@ fun OnlineSearchResult(
             }
         }
     }
+    LazyColumnScrollbar(
+        state = lazyListState,
+    )
 
     Box(
         modifier = Modifier.fillMaxSize()

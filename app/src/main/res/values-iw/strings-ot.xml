@@ -85,6 +85,8 @@
     <string name="song_added_to_queue_end">\"%s\" נוסף לסוף התור</string>
     <string name="delete_lyric_confirm">האם אתה באמת רוצה למחוק את המילים המאוחסנות עבור \"%s\"?</string>
     <string name="slim_navbar_title">סרגל ניווט צר</string>
+    <string name="show_scrollbar_title">פס גלילה</string>
+    <string name="show_scrollbar_description">הצג את פס הגלילה</string>
     <string name="audio_offload_description">השתמש בנתיב offload להשמעת שמע. הפעלתו עשויה להפחית את צריכת החשמל, אך עלולה לגרום לבעיות בהשמעת שמע או בעיבוד לאחר מכן. להגדרה זו אין השפעה על רכיבי codec או מכשירים שאינם נתמכים</string>
     <string name="library_empty">תוכן הספרייה שלך יופיע כאן</string>
     <string name="tap_show_more">הקש כדי להציג מידע נוסף</string>

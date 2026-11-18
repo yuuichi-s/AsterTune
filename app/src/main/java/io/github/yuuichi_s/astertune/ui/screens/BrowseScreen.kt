@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +28,7 @@ import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
 import io.github.yuuichi_s.astertune.LocalPlayerConnection
 import io.github.yuuichi_s.astertune.constants.GridThumbnailHeight
 import io.github.yuuichi_s.astertune.constants.TopBarInsets
+import io.github.yuuichi_s.astertune.ui.component.LazyVerticalGridScrollbar
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeGridItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.GridItemPlaceHolder
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerHost
@@ -57,8 +59,10 @@ fun BrowseScreen(
     val items by viewModel.items.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
+    val lazyGridState = rememberLazyGridState()
 
     LazyVerticalGrid(
+        state = lazyGridState,
         columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
         contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
     ) {
@@ -129,6 +133,9 @@ fun BrowseScreen(
             }
         }
     }
+    LazyVerticalGridScrollbar(
+        state = lazyGridState,
+    )
 
     TopAppBar(
         title = { Text(title ?: "") },

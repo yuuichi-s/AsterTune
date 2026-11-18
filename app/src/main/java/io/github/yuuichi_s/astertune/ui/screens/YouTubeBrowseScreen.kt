@@ -29,6 +29,7 @@ import io.github.yuuichi_s.astertune.constants.TopBarInsets
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.NavigationTitle
 import io.github.yuuichi_s.astertune.ui.component.items.YouTubeListItem
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ListItemPlaceHolder
@@ -151,6 +152,9 @@ fun YouTubeBrowseScreen(
             }
         }
     }
+    LazyColumnScrollbar(
+        state = lazyListState,
+    )
 
     TopAppBar(
         title = { Text(browseResult?.title.orEmpty()) },

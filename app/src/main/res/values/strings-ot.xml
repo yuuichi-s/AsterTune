@@ -163,6 +163,8 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="show_liked_and_downloaded_playlist">Show playlists for liked and downloaded songs in library</string>
     <string name="slim_navbar_title">Slim navbar</string>
     <string name="slim_navbar_description">Remove text labels to reduce navbar height</string>
+    <string name="show_scrollbar_title">Scrollbar</string>
+    <string name="show_scrollbar_description">Show the scrollbar</string>
     <string name="slider_style_title">Slider style</string>
     <string name="slider_style_squiggly">Squiggly</string>
     <string name="slider_style_default">Default</string>

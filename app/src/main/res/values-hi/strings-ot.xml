@@ -82,6 +82,8 @@
     <string name="player_background_style">प्लेयर बैकग्राउंड स्टाइल</string>
     <string name="show_liked_and_downloaded_playlist">लाइब्रेरी में पसंद और डाउनलोड किए गए गानों की प्लेलिस्ट दिखाएं</string>
     <string name="slim_navbar_title">संकरी नेवबार</string>
+    <string name="show_scrollbar_title">स्क्रॉल बार</string>
+    <string name="show_scrollbar_description">स्क्रॉल बार दिखाएं</string>
     <string name="tab_arrangement">टैब्स को व्यवस्थित करें</string>
     <string name="tab_arrangement_home_required">होम टैब आवश्यक है।</string>
     <string name="filter_arrangement">फ़िल्टर्स व्यवस्थित करें</string>

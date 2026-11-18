@@ -74,6 +74,8 @@
     <string name="tab_arrangement">Расположение вкладок</string>
     <string name="show_liked_and_downloaded_playlist">Показывать плейлисты для понравившихся треков и загруженной музыки в библиотеке</string>
     <string name="slim_navbar_title">Тонкая панель навигации</string>
+    <string name="show_scrollbar_title">Полоса прокрутки</string>
+    <string name="show_scrollbar_description">Показывать полосу прокрутки</string>
     <string name="like_autodownload">Автоматически скачивать понравившиеся песни</string>
     <string name="token_hidden">Нажмите, чтобы показать токен</string>
     <string name="token_shown">Нажмите еще раз, чтобы скопировать или изменить</string>

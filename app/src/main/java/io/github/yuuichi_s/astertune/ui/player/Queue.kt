@@ -144,6 +144,7 @@ import io.github.yuuichi_s.astertune.playback.PlayerConnection
 import io.github.yuuichi_s.astertune.ui.component.BottomSheet
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
 import io.github.yuuichi_s.astertune.ui.component.EmptyPlaceholder
+import io.github.yuuichi_s.astertune.ui.component.LazyColumnScrollbar
 import io.github.yuuichi_s.astertune.ui.component.SelectHeader
 import io.github.yuuichi_s.astertune.ui.component.button.ResizableIconButton
 import io.github.yuuichi_s.astertune.ui.component.items.MediaMetadataListItem
@@ -594,99 +595,107 @@ fun BoxScope.QueueContent(
             Text(text = stringResource(R.string.queues_empty))
         }
 
-        LazyColumn(
-            state = lazyQueuesListState,
-            contentPadding = contentPadding,
-            modifier = if (queueState != null) Modifier.nestedScroll(queueState.preUpPostDownNestedScrollConnection) else Modifier
-        ) {
-            itemsIndexed(
-                items = mutableQueues,
-                key = { _, item -> item.id }
-            ) { index, mq ->
-                ReorderableItem(
-                    state = reorderableStateEx,
-                    key = mq.id
-                ) {
-                    Row( // wrapper
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(
-                                if (playingQueue == index) {
-                                    MaterialTheme.colorScheme.tertiary.copy(0.3f)
-                                } else if (detachedHead && detachedQueue == mq) {
-                                    MaterialTheme.colorScheme.tertiary.copy(0.1f)
-                                } else {
-                                    Color.Transparent
-                                }
-                            )
-                            .combinedClickable(
-                                onClick = {
-                                    // clicking on queue shows it in the ui
+        Box {
+            LazyColumn(
+                state = lazyQueuesListState,
+                contentPadding = contentPadding,
+                modifier = if (queueState != null) Modifier.nestedScroll(queueState.preUpPostDownNestedScrollConnection) else Modifier
+            ) {
+                itemsIndexed(
+                    items = mutableQueues,
+                    key = { _, item -> item.id }
+                ) { index, mq ->
+                    ReorderableItem(
+                        state = reorderableStateEx,
+                        key = mq.id
+                    ) {
+                        Row( // wrapper
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(
                                     if (playingQueue == index) {
-                                        exitDetachHead()
+                                        MaterialTheme.colorScheme.tertiary.copy(0.3f)
+                                    } else if (detachedHead && detachedQueue == mq) {
+                                        MaterialTheme.colorScheme.tertiary.copy(0.1f)
                                     } else {
-                                        detachedHead = true
-                                        isSearching = false // no searching in detach mode
-                                        detachedQueue = mq
-                                        onExitSelectionMode()
+                                        Color.Transparent
                                     }
-                                },
-                                onLongClick = {
-                                    menuState.show {
-                                        QueueMenu(
-                                            navController = navController,
-                                            mq = mq,
-                                            onDismiss = menuState::dismiss
+                                )
+                                .combinedClickable(
+                                    onClick = {
+                                        // clicking on queue shows it in the ui
+                                        if (playingQueue == index) {
+                                            exitDetachHead()
+                                        } else {
+                                            detachedHead = true
+                                            isSearching = false // no searching in detach mode
+                                            detachedQueue = mq
+                                            onExitSelectionMode()
+                                        }
+                                    },
+                                    onLongClick = {
+                                        menuState.show {
+                                            QueueMenu(
+                                                navController = navController,
+                                                mq = mq,
+                                                onDismiss = menuState::dismiss
+                                            )
+                                        }
+                                    }
+                                )
+                        ) {
+                            Row( // row contents (wrapper is needed for margin)
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(horizontal = 40.dp, vertical = 8.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier.weight(1f, false)
+                                ) {
+                                    if (!lockQueue) {
+                                        ResizableIconButton(
+                                            icon = Icons.Rounded.Close,
+                                            onClick = {
+                                                val remainingQueues =
+                                                    qb.deleteQueue(mq)
+                                                if (playingQueue == index) {
+                                                    qb.setCurrQueue()
+                                                }
+                                                exitDetachHead()
+                                                if (remainingQueues < 1) {
+                                                    onTerminate.invoke()
+                                                }
+                                            },
                                         )
                                     }
-                                }
-                            )
-                    ) {
-                        Row( // row contents (wrapper is needed for margin)
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(horizontal = 40.dp, vertical = 8.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                modifier = Modifier.weight(1f, false)
-                            ) {
-                                if (!lockQueue) {
-                                    ResizableIconButton(
-                                        icon = Icons.Rounded.Close,
-                                        onClick = {
-                                            val remainingQueues =
-                                                qb.deleteQueue(mq)
-                                            if (playingQueue == index) {
-                                                qb.setCurrQueue()
-                                            }
-                                            exitDetachHead()
-                                            if (remainingQueues < 1) {
-                                                onTerminate.invoke()
-                                            }
-                                        },
+                                    Text(
+                                        text = "${index + 1}. ${mq.title}",
+                                        maxLines = 1,
+                                        overflow = TextOverflow.MiddleEllipsis,
+                                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 0.dp)
                                     )
                                 }
-                                Text(
-                                    text = "${index + 1}. ${mq.title}",
-                                    maxLines = 1,
-                                    overflow = TextOverflow.MiddleEllipsis,
-                                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 0.dp)
-                                )
-                            }
 
-                            if (!lockQueue) {
-                                Icon(
-                                    imageVector = Icons.Rounded.DragHandle,
-                                    contentDescription = null,
-                                    modifier = Modifier.draggableHandle()
-                                )
+                                if (!lockQueue) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.DragHandle,
+                                        contentDescription = null,
+                                        modifier = Modifier.draggableHandle()
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
+            LazyColumnScrollbar(
+                state = lazyQueuesListState,
+                modifier = Modifier
+                    .matchParentSize()
+                    .padding(contentPadding),
+            )
         }
     }
 
@@ -736,162 +745,170 @@ fun BoxScope.QueueContent(
 
     val songList: @Composable ColumnScope.(PaddingValues) -> Unit = { contentPadding ->
         if (PLAYER_DEBUG) Log.v("QueueContent", "QC-s_b")
-        LazyColumn(
-            state = lazySongsListState,
-            contentPadding = contentPadding,
-            modifier = if (queueState != null) Modifier.nestedScroll(queueState.preUpPostDownNestedScrollConnection) else Modifier
-        ) {
-            if ((if (isSearching) filteredSongs else mutableSongs).isEmpty()) {
-                item {
-                    EmptyPlaceholder(
-                        icon = Icons.Rounded.MusicNote,
-                        text = stringResource(if (isSearching) R.string.no_results_found else R.string.queues_empty),
-                        modifier = Modifier.animateItem()
-                    )
+        Box {
+            LazyColumn(
+                state = lazySongsListState,
+                contentPadding = contentPadding,
+                modifier = if (queueState != null) Modifier.nestedScroll(queueState.preUpPostDownNestedScrollConnection) else Modifier
+            ) {
+                if ((if (isSearching) filteredSongs else mutableSongs).isEmpty()) {
+                    item {
+                        EmptyPlaceholder(
+                            icon = Icons.Rounded.MusicNote,
+                            text = stringResource(if (isSearching) R.string.no_results_found else R.string.queues_empty),
+                            modifier = Modifier.animateItem()
+                        )
+                    }
                 }
-            }
 
-            val thumbnailSize = (ListThumbnailSize.value * density.density).roundToInt()
-            itemsIndexed(
-                items = if (isSearching) filteredSongs else mutableSongs,
-                key = { _, item -> item.hashCode() },
-                contentType = { _, _ -> CONTENT_TYPE_SONG }
-            ) { index, window ->
-                ReorderableItem(
-                    state = reorderableState,
-                    key = window.hashCode()
-                ) {
-                    val dismissState = rememberSwipeToDismissBoxState(
-                        positionalThreshold = { totalDistance ->
-                            totalDistance
-                        },
-                        confirmValueChange = { dismissValue ->
-                            when (dismissValue) {
-                                SwipeToDismissBoxValue.StartToEnd -> {
-                                    if (qb.removeCurrentQueueSong(index)) {
-                                        playerConnection.player.removeMediaItem(index)
-                                        mutableSongs.removeAt(index)
+                val thumbnailSize = (ListThumbnailSize.value * density.density).roundToInt()
+                itemsIndexed(
+                    items = if (isSearching) filteredSongs else mutableSongs,
+                    key = { _, item -> item.hashCode() },
+                    contentType = { _, _ -> CONTENT_TYPE_SONG }
+                ) { index, window ->
+                    ReorderableItem(
+                        state = reorderableState,
+                        key = window.hashCode()
+                    ) {
+                        val dismissState = rememberSwipeToDismissBoxState(
+                            positionalThreshold = { totalDistance ->
+                                totalDistance
+                            },
+                            confirmValueChange = { dismissValue ->
+                                when (dismissValue) {
+                                    SwipeToDismissBoxValue.StartToEnd -> {
+                                        if (qb.removeCurrentQueueSong(index)) {
+                                            playerConnection.player.removeMediaItem(index)
+                                            mutableSongs.removeAt(index)
+                                        }
+                                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                                        return@rememberSwipeToDismissBoxState true
                                     }
-                                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                                    return@rememberSwipeToDismissBoxState true
-                                }
 
-                                SwipeToDismissBoxValue.EndToStart -> {
-                                    if (qb.removeCurrentQueueSong(index)) {
-                                        playerConnection.player.removeMediaItem(index)
-                                        mutableSongs.removeAt(index)
+                                    SwipeToDismissBoxValue.EndToStart -> {
+                                        if (qb.removeCurrentQueueSong(index)) {
+                                            playerConnection.player.removeMediaItem(index)
+                                            mutableSongs.removeAt(index)
+                                        }
+                                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                                        return@rememberSwipeToDismissBoxState true
                                     }
-                                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                                    return@rememberSwipeToDismissBoxState true
-                                }
 
-                                SwipeToDismissBoxValue.Settled -> {
-                                    return@rememberSwipeToDismissBoxState false
+                                    SwipeToDismissBoxValue.Settled -> {
+                                        return@rememberSwipeToDismissBoxState false
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
 
-                    val onCheckedChange: (Boolean) -> Unit = {
-                        haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
-                        if (it) {
-                            selectedItems.add(window.hashCode())
-                        } else {
-                            selectedItems.remove(window.hashCode())
+                        val onCheckedChange: (Boolean) -> Unit = {
+                            haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
+                            if (it) {
+                                selectedItems.add(window.hashCode())
+                            } else {
+                                selectedItems.remove(window.hashCode())
+                            }
                         }
-                    }
 
-                    val content = @Composable {
-                        MediaMetadataListItem(
-                            mediaMetadata = window,
-                            isActive = (index == currentWindowIndex && !detachedHead) || index == detachedQueue?.getQueuePosShuffled(),
-                            isPlaying = isPlaying && !detachedHead,
-                            trailingContent = {
-                                if (inSelectMode) {
-                                    Checkbox(
-                                        checked = window.hashCode() in selectedItems,
-                                        onCheckedChange = onCheckedChange
-                                    )
-                                } else {
-                                    IconButton(
-                                        onClick = {
-                                            menuState.show {
-                                                PlayerMenu(
-                                                    mediaMetadata = window,
-                                                    navController = navController,
-                                                    playerBottomSheetState = playerState,
-                                                    onDismiss = {
-                                                        menuState.dismiss()
-                                                    },
-                                                )
+                        val content = @Composable {
+                            MediaMetadataListItem(
+                                mediaMetadata = window,
+                                isActive = (index == currentWindowIndex && !detachedHead) || index == detachedQueue?.getQueuePosShuffled(),
+                                isPlaying = isPlaying && !detachedHead,
+                                trailingContent = {
+                                    if (inSelectMode) {
+                                        Checkbox(
+                                            checked = window.hashCode() in selectedItems,
+                                            onCheckedChange = onCheckedChange
+                                        )
+                                    } else {
+                                        IconButton(
+                                            onClick = {
+                                                menuState.show {
+                                                    PlayerMenu(
+                                                        mediaMetadata = window,
+                                                        navController = navController,
+                                                        playerBottomSheetState = playerState,
+                                                        onDismiss = {
+                                                            menuState.dismiss()
+                                                        },
+                                                    )
+                                                }
+                                                haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                                             }
-                                            haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.MoreVert,
+                                                contentDescription = null
+                                            )
                                         }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.MoreVert,
-                                            contentDescription = null
-                                        )
+                                        if (!lockQueue && !detachedHead) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.DragHandle,
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .padding(end = 16.dp)
+                                                    .draggableHandle()
+                                            )
+                                        }
                                     }
-                                    if (!lockQueue && !detachedHead) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.DragHandle,
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .padding(end = 16.dp)
-                                                .draggableHandle()
-                                        )
-                                    }
-                                }
-                            },
-                            isSelected = inSelectMode && window.hashCode() in selectedItems,
-                            preferredSize = thumbnailSize,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .combinedClickable(
-                                    onClick = {
-                                        if (inSelectMode) {
-                                            onCheckedChange(window.hashCode() !in selectedItems)
-                                        } else {
-                                            coroutineScope.launch(Dispatchers.Main) {
-                                                if (index == currentWindowIndex && !detachedHead) {
-                                                    playerConnection.player.togglePlayPause()
-                                                } else {
-                                                    val index = index // race condition...?
-                                                    if (detachedHead) {
-                                                        detachedQueue?.setCurrentQueuePos(index)
-                                                        qb.setCurrQueue(detachedQueue, false)
+                                },
+                                isSelected = inSelectMode && window.hashCode() in selectedItems,
+                                preferredSize = thumbnailSize,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable(
+                                        onClick = {
+                                            if (inSelectMode) {
+                                                onCheckedChange(window.hashCode() !in selectedItems)
+                                            } else {
+                                                coroutineScope.launch(Dispatchers.Main) {
+                                                    if (index == currentWindowIndex && !detachedHead) {
+                                                        playerConnection.player.togglePlayPause()
                                                     } else {
-                                                        playerConnection.player.seekToDefaultPosition(index)
+                                                        val index = index // race condition...?
+                                                        if (detachedHead) {
+                                                            detachedQueue?.setCurrentQueuePos(index)
+                                                            qb.setCurrQueue(detachedQueue, false)
+                                                        } else {
+                                                            playerConnection.player.seekToDefaultPosition(index)
+                                                        }
+                                                        playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
+                                                        playerConnection.player.playWhenReady = true
+                                                        exitDetachHead()
                                                     }
-                                                    playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
-                                                    playerConnection.player.playWhenReady = true
-                                                    exitDetachHead()
                                                 }
                                             }
+                                        },
+                                        onLongClick = {
+                                            if (!inSelectMode) {
+                                                inSelectMode = true
+                                                selectedItems.add(window.hashCode())
+                                            }
                                         }
-                                    },
-                                    onLongClick = {
-                                        if (!inSelectMode) {
-                                            inSelectMode = true
-                                            selectedItems.add(window.hashCode())
-                                        }
-                                    }
-                                )
-                        )
-                    }
+                                    )
+                            )
+                        }
 
-                    if (!lockQueue && !inSelectMode && !detachedHead) {
-                        SwipeToDismissBox(
-                            state = dismissState,
-                            backgroundContent = {},
-                            content = { content() }
-                        )
-                    } else {
-                        content()
+                        if (!lockQueue && !inSelectMode && !detachedHead) {
+                            SwipeToDismissBox(
+                                state = dismissState,
+                                backgroundContent = {},
+                                content = { content() }
+                            )
+                        } else {
+                            content()
+                        }
                     }
                 }
             }
+            LazyColumnScrollbar(
+                state = lazySongsListState,
+                modifier = Modifier
+                    .matchParentSize()
+                    .padding(contentPadding),
+            )
         }
     }
 
