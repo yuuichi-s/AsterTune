@@ -391,6 +391,7 @@ dependencies {
     implementation(project(":lrclib"))
     implementation(project(":lastfm"))
     implementation(project(":betterlyrics"))
+    implementation(project(":lyricsplus"))
 
     // misc
     implementation(libs.aboutlibraries.compose.m3)

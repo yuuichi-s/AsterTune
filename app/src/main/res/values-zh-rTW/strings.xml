@@ -278,4 +278,5 @@
     <string name="artist_image_auto">自動（最新專輯）</string>
     <string name="minimize_player">最小化播放器</string>
     <string name="enable_betterlyrics">使用 BetterLyrics 提供歌詞</string>
+    <string name="enable_lyricsplus">使用 Lyrics+ 提供歌詞</string>
 </resources>

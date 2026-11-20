@@ -12,14 +12,15 @@ class RemoteLyricsAggregatorTest {
 
     private val classify: (String) -> FoundKind = { raw ->
         when (raw) {
-            "synced" -> FoundKind.SYNCED
+            "word" -> FoundKind.WORD_SYNCED
+            "synced" -> FoundKind.LINE_SYNCED
             "unsynced" -> FoundKind.UNSYNCED
             else -> FoundKind.UNPARSEABLE
         }
     }
 
     private fun aggregate(enabledCount: Int, outcomes: List<Pair<String, LyricsFetchResult>>): RemoteLyricsResult {
-        val aggregator = RemoteLyricsAggregator(enabledCount)
+        val aggregator = RemoteLyricsAggregator(enabledCount, preferWordSynced = true)
         for ((name, result) in outcomes) {
             if (aggregator.offer(name, result, classify)) break
         }
@@ -74,13 +75,32 @@ class RemoteLyricsAggregatorTest {
     }
 
     @Test
-    fun syncedWins_andStopsEarly() {
-        val aggregator = RemoteLyricsAggregator(3)
-        assertTrue(aggregator.offer("a", LyricsFetchResult.Found("synced"), classify))
-        // Later outcomes are never offered because production breaks on the true return.
+    fun wordSyncedWins_andStopsEarly() {
+        val aggregator = RemoteLyricsAggregator(3, preferWordSynced = true)
+        assertTrue(aggregator.offer("a", LyricsFetchResult.Found("word"), classify))
         val result = aggregator.result()
         assertTrue(result is RemoteLyricsResult.Found)
-        assertTrue((result as RemoteLyricsResult.Found).synced)
+        assertTrue((result as RemoteLyricsResult.Found).wordSynced)
+    }
+
+    @Test
+    fun wordSyncedPreferredOverEarlierLineSynced() {
+        val aggregator = RemoteLyricsAggregator(2, preferWordSynced = true)
+        assertTrue(!aggregator.offer("a", LyricsFetchResult.Found("synced"), classify))
+        assertTrue(aggregator.hasLineSynced)
+        assertTrue(aggregator.offer("b", LyricsFetchResult.Found("word"), classify))
+        val result = aggregator.result() as RemoteLyricsResult.Found
+        assertEquals("b", result.provider)
+        assertTrue(result.wordSynced)
+    }
+
+    @Test
+    fun lineSyncedStopsEarly_whenWordSyncedNotPreferred() {
+        val aggregator = RemoteLyricsAggregator(2, preferWordSynced = false)
+        assertTrue(aggregator.offer("a", LyricsFetchResult.Found("synced"), classify))
+        val result = aggregator.result() as RemoteLyricsResult.Found
+        assertEquals("a", result.provider)
+        assertTrue(result.synced)
     }
 
     @Test

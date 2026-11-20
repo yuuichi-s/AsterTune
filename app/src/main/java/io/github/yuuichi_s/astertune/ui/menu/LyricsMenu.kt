@@ -214,7 +214,7 @@ fun LyricsMenu(
         ListDialog(
             onDismiss = { showSearchResultDialog = false }
         ) {
-            itemsIndexed(results) { index, result ->
+            itemsIndexed(results) { index, candidate ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -225,12 +225,12 @@ fun LyricsMenu(
                                 upsert(
                                     LyricsEntity(
                                         id = searchMediaMetadata.id,
-                                        lyrics = result.lyrics
+                                        lyrics = candidate.result.lyrics
                                     )
                                 )
                             }
 
-                            onRefreshRequest(LrcUtils.parseLyrics(result.lyrics, null, parserOptions, null))
+                            onRefreshRequest(LrcUtils.parseLyrics(candidate.result.lyrics, null, parserOptions, null))
                         }
                         .padding(12.dp)
                         .animateContentSize()
@@ -239,7 +239,7 @@ fun LyricsMenu(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = result.lyrics,
+                            text = candidate.preview,
                             style = MaterialTheme.typography.bodyMedium,
                             maxLines = if (index == expandedItemIndex) Int.MAX_VALUE else 2,
                             overflow = TextOverflow.Ellipsis,
@@ -250,12 +250,12 @@ fun LyricsMenu(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = result.providerName,
+                                text = candidate.result.providerName,
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.secondary,
                                 maxLines = 1
                             )
-                            if (result.lyrics.startsWith("[")) {
+                            if (candidate.synced) {
                                 Icon(
                                     imageVector = Icons.Rounded.Sync,
                                     contentDescription = null,

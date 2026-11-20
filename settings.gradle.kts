@@ -16,6 +16,7 @@ include(":kugou")
 include(":lrclib")
 include(":lastfm")
 include(":betterlyrics")
+include(":lyricsplus")
 
 // Use a local copy of NewPipe Extractor by uncommenting the lines below.
 // We assume, that AsterTune and NewPipe Extractor have the same parent directory.
