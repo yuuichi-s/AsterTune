@@ -132,6 +132,7 @@ val PauseSearchHistoryKey = booleanPreferencesKey("pauseSearchHistory")
 val EnableKugouKey = booleanPreferencesKey("enableKugou")
 val EnableLrcLibKey = booleanPreferencesKey("enableLrcLib")
 val EnableBetterLyricsKey = booleanPreferencesKey("enableBetterLyrics")
+val EnableLyricsPlusKey = booleanPreferencesKey("enableLyricsPlus")
 val UseLoginForBrowse = booleanPreferencesKey("useLoginForBrowse")
 
 

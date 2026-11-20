@@ -1377,7 +1377,8 @@ fun parseTtml(audioMimeType: String?, lyricText: String): SemanticLyrics? {
         } while (cur != -1)
         out
     }
-    if (paragraphs.find { it.time != null } == null) {
+    // Treat iTunes timing "None" as unsynced even when paragraphs have timestamps.
+    if (timing.equals("None", ignoreCase = true) || paragraphs.find { it.time != null } == null) {
         return UnsyncedLyrics(paragraphs.map {
             val text = it.texts.joinToString("") { it.text }
             val isBg = it.role == "x-bg"

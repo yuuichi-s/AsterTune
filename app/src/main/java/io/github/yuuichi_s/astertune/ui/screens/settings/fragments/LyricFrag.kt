@@ -37,6 +37,7 @@ import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.EnableBetterLyricsKey
 import io.github.yuuichi_s.astertune.constants.EnableKugouKey
 import io.github.yuuichi_s.astertune.constants.EnableLrcLibKey
+import io.github.yuuichi_s.astertune.constants.EnableLyricsPlusKey
 import io.github.yuuichi_s.astertune.constants.EnableLyricsPrefetchKey
 import io.github.yuuichi_s.astertune.constants.LyricClickable
 import io.github.yuuichi_s.astertune.constants.LyricFontSizeKey
@@ -144,6 +145,7 @@ fun ColumnScope.LyricSourceFrag() {
     val (enableKugou, onEnableKugouChange) = rememberPreference(key = EnableKugouKey, defaultValue = true)
     val (enableLrcLib, onEnableLrcLibChange) = rememberPreference(key = EnableLrcLibKey, defaultValue = true)
     val (enableBetterLyrics, onEnableBetterLyricsChange) = rememberPreference(key = EnableBetterLyricsKey, defaultValue = false)
+    val (enableLyricsPlus, onEnableLyricsPlusChange) = rememberPreference(key = EnableLyricsPlusKey, defaultValue = true)
     val (preferLocalLyric, onPreferLocalLyric) = rememberPreference(LyricSourcePrefKey, defaultValue = true)
     val (enablePrefetch, onEnablePrefetchChange) = rememberPreference(EnableLyricsPrefetchKey, defaultValue = true)
     val (prefetchCount, onPrefetchCountChange) = rememberPreference(LyricsPrefetchCountKey, defaultValue = 3)
@@ -157,6 +159,12 @@ fun ColumnScope.LyricSourceFrag() {
         icon = { Icon(Icons.Rounded.Lyrics, null) },
         checked = enableBetterLyrics,
         onCheckedChange = onEnableBetterLyricsChange
+    )
+    SwitchPreference(
+        title = { Text(stringResource(R.string.enable_lyricsplus)) },
+        icon = { Icon(Icons.Rounded.Lyrics, null) },
+        checked = enableLyricsPlus,
+        onCheckedChange = onEnableLyricsPlusChange
     )
     SwitchPreference(
         title = { Text(stringResource(R.string.enable_lrclib)) },

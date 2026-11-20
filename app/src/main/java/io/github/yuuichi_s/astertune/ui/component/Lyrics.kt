@@ -12,6 +12,7 @@ package io.github.yuuichi_s.astertune.ui.component
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.icu.text.BreakIterator
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -73,6 +74,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
@@ -341,38 +343,22 @@ fun Lyrics(
                                 haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
                             }
                     ) {
-                        if (currentPos.toULong() in item.start..item.end + 100.toULong() && lyricsFancy
-                            && item.words != null && !context.isPowerSaver()
-                        ) { // word by word
-                            // now do eye bleach to make lyric line babies
-                            val style = LocalTextStyle.current.copy(
-                                fontSize = lyricsFontSize.sp,
-                                color = textColor,
-                                fontWeight = FontWeight.Bold
-                            )
-                            val rawSplitLines = splitTextToLines(item.text, style, maxW)
-                            val lyricLines = ArrayList<LyricLine>()
-                            if (rawSplitLines.size > 1) {
-                                var from = 0
-                                for (i in rawSplitLines) {
-                                    val to = from + i.split(' ').size
-                                    val words = item.words.subList(from, to.coerceIn(from, item.words.size))
-                                    lyricLines.add(
-                                        item.copy(
-                                            text = i,
-                                            start = words.first().timeRange.start,
-                                            end = words.last().timeRange.endInclusive,
-                                            words = words
-                                        )
-                                    )
-                                    from = to
-                                }
+                        val karaokeLines =
+                            if (currentPos.toULong() in item.start..item.end + 100.toULong() && lyricsFancy
+                                && item.words != null && !context.isPowerSaver()
+                                ) {
+                                val style = LocalTextStyle.current.copy(
+                                    fontSize = lyricFontSizeAdjusted.sp,
+                                    color = textColor,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                splitKaraokeLines(item, style, maxW)
                             } else {
-                                lyricLines.add(item)
+                                null
                             }
 
-
-                            lyricLines.forEach {
+                        if (karaokeLines != null) {
+                            karaokeLines.forEach {
                                 HorizontalReveal(
                                     progress = calculateLineProgress(it, currentPos),
                                     modifier = Modifier
@@ -381,13 +367,14 @@ fun Lyrics(
                                         text = it.text,
                                         fontSize = lyricFontSizeAdjusted.sp,
                                         color = textColor,
-                                        fontWeight = FontWeight.Bold
+                                        fontWeight = FontWeight.Bold,
+                                        softWrap = false,
                                     )
                                 }
                             }
 
 
-                        } else { // regular
+                        } else {
                             val isConsumed = currentPos.toULong() > (item.end + 100.toULong())
                             val isHighlighted =
                                 ((index == displayedCurrentLineIndex || (index == displayedCurrentLineIndex + 1 && item.isTranslated)))
@@ -524,39 +511,157 @@ fun HorizontalReveal(
 }
 
 @Composable
-fun splitTextToLines(
-    text: String,
+fun splitKaraokeLines(
+    line: LyricLine,
     style: TextStyle,
     maxWidth: Dp
-): List<String> {
+): List<LyricLine>? {
     val textMeasurer = rememberTextMeasurer()
-    val density = LocalDensity.current
-
-    val words = text.split(" ")
-    val lines = mutableListOf<String>()
-    var currentLine = ""
-
-    for (word in words) {
-        val tentativeLine = if (currentLine.isEmpty()) word else "$currentLine $word"
-        val tentativeWidth = with(density) {
-            textMeasurer.measure(
-                tentativeLine, style,
-            ).size.width.toDp()
+    // HorizontalReveal draws its content 1dp in from the start edge.
+    val rowWidthPx = with(LocalDensity.current) { maxWidth.roundToPx() - 1.dp.roundToPx() }.coerceAtLeast(1)
+    return remember(line, style, rowWidthPx, textMeasurer) {
+        val text = line.text
+        val fits = { start: Int, end: Int ->
+            textMeasurer.measure(text.substring(start, end).trimEnd(), style).size.width <= rowWidthPx
         }
-
-        if (tentativeWidth < maxWidth) {
-            currentLine = tentativeLine
+        val words = line.words
+        if (words == null) {
+            null
+        } else if (words.isEmpty()) {
+            if ('\n' !in text.trimEnd() && fits(0, text.length)) {
+                listOf(line)
+            } else {
+                null
+            }
         } else {
-            lines.add(currentLine)
-            currentLine = word
+            val breaks = BreakIterator.getLineInstance().apply { setText(text) }
+            val rowStarts = karaokeRowStarts(
+                text = text,
+                words = words,
+                fits = fits,
+                wrapInside = { start, end ->
+                    val layout = textMeasurer.measure(
+                        text = text.substring(start, end),
+                        style = style,
+                        constraints = Constraints(maxWidth = rowWidthPx),
+                    )
+                    (1 until layout.lineCount).map { start + layout.getLineStart(it) }
+                },
+                isBreak = { breaks.isBoundary(it) },
+            )
+            if (rowStarts.size <= 1) listOf(line) else assignWordsToRows(line, words, rowStarts)
         }
     }
+}
 
-    if (currentLine.isNotEmpty()) {
-        lines.add(currentLine)
+/** Row start offsets, with 0 for the first row. */
+private fun karaokeRowStarts(
+    text: String,
+    words: List<SemanticLyrics.Word>,
+    fits: (Int, Int) -> Boolean,
+    wrapInside: (Int, Int) -> List<Int>,
+    isBreak: (Int) -> Boolean,
+): List<Int> {
+    val wordStarts = words.map { visibleStart(text, it.charRange) }
+    val firstWordStart = wordStarts.min()
+    // Explicit newlines create breaks even outside timed-word boundaries.
+    val hardStops = (1 until text.length).filter { text[it - 1] == '\n' }.toSet()
+    // A break before the first word would leave a row without any timed word.
+    val stops = (wordStarts.filter { it > firstWordStart && it < text.length && isBreak(it) } + hardStops)
+        .distinct()
+        .sorted() + text.length
+    val rowStarts = mutableListOf(0)
+    var rowStart = 0
+    var lastFit = -1
+    var i = 0
+    while (i < stops.size) {
+        val stop = stops[i]
+        when {
+            stop <= rowStart -> i++
+            fits(rowStart, stop) -> {
+                if (stop in hardStops) {
+                    rowStart = stop
+                    rowStarts += rowStart
+                }
+                lastFit = stop
+                i++
+            }
+            lastFit > rowStart -> {
+                rowStart = lastFit
+                rowStarts += rowStart
+            }
+            else -> {
+                val inner = wrapInside(rowStart, stop).filter { it in rowStart + 1 until stop }
+                if (inner.isEmpty()) {
+                    lastFit = stop
+                    i++
+                } else {
+                    rowStarts += inner
+                    rowStart = inner.last()
+                }
+            }
+        }
+    }
+    return rowStarts
+}
+
+/** First non-whitespace offset in [range], falling back to the range start. */
+private fun visibleStart(text: String, range: IntRange): Int =
+    range.firstOrNull { it < text.length && !text[it].isWhitespace() } ?: range.first
+
+private fun assignWordsToRows(
+    line: LyricLine,
+    allWords: List<SemanticLyrics.Word>,
+    rowStarts: List<Int>,
+): List<LyricLine>? {
+    val text = line.text
+    return rowStarts.indices.map { r ->
+        val row = rowStarts[r] until (rowStarts.getOrNull(r + 1) ?: text.length)
+        val words = allWords.mapNotNull { word -> clipWord(text, word, row) }
+        if (words.isEmpty()) {
+            return null
+        }
+
+        line.copy(
+            text = text.substring(row.first, row.last + 1).trimEnd(),
+            start = words.first().timeRange.first,
+            end = words.last().timeRange.last,
+            words = words.toMutableList(),
+        )
+    }
+}
+
+/** The part of [word] inside [row], or null when that part is empty or only whitespace. */
+private fun clipWord(text: String, word: SemanticLyrics.Word, row: IntRange): SemanticLyrics.Word? {
+    val chars = word.charRange.first.coerceAtLeast(0)..word.charRange.last.coerceAtMost(text.length - 1)
+    if (chars.isEmpty()) {
+        return null
     }
 
-    return lines
+    val first = maxOf(chars.first, row.first)
+    val last = minOf(chars.last, row.last)
+
+    if (first > last || text.substring(first, last + 1).isBlank()) {
+        return null
+    }
+
+    if (first == chars.first && last == chars.last) {
+        return word
+    }
+
+    // Keep the full time range when clipping only whitespace.
+    val outsideBlank = text.substring(chars.first, first).isBlank() && text.substring(last + 1, chars.last + 1).isBlank()
+
+    if (outsideBlank) {
+        return word.copy(charRange = first..last)
+    }
+
+    val total = chars.count().toULong()
+    val duration = word.timeRange.last - word.timeRange.first
+    val startTime = word.timeRange.first + duration * (first - chars.first).toULong() / total
+    val endTime = word.timeRange.first + duration * (last + 1 - chars.first).toULong() / total
+
+    return word.copy(charRange = first..last, timeRange = startTime..endTime)
 }
 
 /**
