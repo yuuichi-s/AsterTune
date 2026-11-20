@@ -368,8 +368,7 @@ fun SearchBarContainer(
             onHistoryClick = { navController.navigate("history") },
             onStatsClick = { navController.navigate("stats") },
             onScannerClick = { navController.navigate("settings/local") },
-            onSettingsClick = { navController.navigate("settings") },
-            onAccountClick = { navController.navigate("settings/account_sync") },
+            onAccountClick = { navController.navigate("settings") },
             onSearchClick = { onSearchActiveChange(true) },
         )
     }
@@ -384,7 +383,6 @@ private fun TopIconBar(
     onHistoryClick: () -> Unit,
     onStatsClick: () -> Unit,
     onScannerClick: () -> Unit,
-    onSettingsClick: () -> Unit,
     onAccountClick: () -> Unit,
     onSearchClick: () -> Unit,
 ) {
@@ -458,12 +456,6 @@ private fun TopIconBar(
                     contentDescription = stringResource(R.string.scanner_local_title)
                 )
             }
-        }
-        IconButton(onClick = onSettingsClick) {
-            Icon(
-                imageVector = Icons.Rounded.Settings,
-                contentDescription = stringResource(R.string.settings)
-            )
         }
         IconButton(onClick = onAccountClick) {
             AccountAvatar(contentDescription = stringResource(R.string.account)) {
