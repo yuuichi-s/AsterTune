@@ -74,7 +74,8 @@
     <string name="scanner_sensitivity_L2">Збіг назви та виконавця</string>
     <string name="scanner_variant_rescan">Також перечитати інформацію про вже додані композиції</string>
     <string name="import_failed_songs">Не вдалось імпортувати</string>
-    <string name="oobe_use_backup">У мене є резервна копія</string>
+    <string name="oobe_use_backup">Відновити дані з резервної копії</string>
+    <string name="oobe_skip_setup">Пропустити налаштування</string>
     <string name="sort_by_play_count">Кількість відтворень</string>
     <string name="auto_playlist">Автоматичний плейлист</string>
     <string name="audio_offload_description">Використовуйте шлях для розвантаження аудіо для відтворення аудіо. Увімкнення цієї опції може зменшити споживання енергії, але може призвести до проблем із відтворенням аудіо або постобробкою. Ця настройка не впливає на непідтримувані кодеки або пристрої</string>
@@ -196,7 +197,6 @@
     <string name="oobe_ytm_logon_title">Обліковий запис</string>
     <string name="oobe_local_media_title">Локальні медіа</string>
     <string name="oobe_complete_title">Все готово!</string>
-    <string name="oobe_cross_platform_sync">Міжплатформна синхронізація</string>
     <string name="oobe_ytm_logon_subtitle">Увійдіть у свій обліковий запис YouTube Music, щоб синхронізувати та отримати доступ до контенту приватного облікового запису. Це необов’язково.</string>
     <string name="oobe_local_media_subtitle">Виберіть папки, що містять вашу музику. Ми проскануємо їх на наявність пісень для імпорту.</string>
     <string name="dl_rescan_description">Перевірити цільову теку та додаткові вихідні теки, щоб оновити відомості про завантажені композиції.</string>
@@ -211,7 +211,6 @@
     <string name="oobe_ytm_integration">Інтеграція з YouTube Music</string>
     <string name="clear_song_cache_confirm">Очистити весь кеш музики?</string>
     <string name="oobe_ad_free_exp_description">Насолоджуйтесь безперервним відтворенням музики</string>
-    <string name="oobe_cross_platform_sync_description">Зберігайте гармонію своєї музики на різних пристроях</string>
     <string name="oobe_downloads_title">Завантаження пісень</string>
     <string name="dl_oobe_tooltip">Якщо задати теку, завантажені композиції зберігатимуться в ній. Якщо теку не задано, вони зберігаються в приватному сховищі застосунку.</string>
     <string name="dl_extra_path_description">Зчитувати завантажені композиції, що зберігаються поза цільовою текою.</string>
@@ -266,7 +265,6 @@
     <string name="audio_decoder_system_only">Тільки системні декодери</string>
     <string name="audio_decoder_system_with_ffmpeg">Пріоритет системних декодерів</string>
     <string name="max_queues_title">Максимальна кількість черг</string>
-    <string name="oobe_welcome_tip">Для найкращого досвіду рекомендуємо виконати швидке налаштування, щоб персоналізувати ключові параметри, такі як тема, обліковий запис YouTube, локальні медіа та завантаження.</string>
     <string name="oobe_cache_title">Кеш пісень</string>
     <string name="oobe_cache_subtitle">Виберіть розмір кешу пісні. Це може допомогти зменшити проблеми з відтворенням через Інтернет або YouTube API</string>
     <string name="grp_more_settings">Більше налаштувань</string>

@@ -193,9 +193,8 @@
     <string name="oobe_ad_free_exp_description">از پخش موسیقی بدون وقفه لذت ببرید</string>
     <string name="oobe_local_music_support">پشتیبانی گسترده از موسیقی محلی</string>
     <string name="oobe_local_music_support_description">فایل‌های موسیقی خود را پخش کنید (مثلاً MP3، OGG، FLAC و غیره)</string>
-    <string name="oobe_cross_platform_sync">همگام‌ سازی بین پلتفرمی</string>
-    <string name="oobe_cross_platform_sync_description">موسیقی خود را در دستگاه‌های مختلف با هماهنگی پخش کنید</string>
-    <string name="oobe_use_backup">من یک نسخه پشتیبان دارم</string>
+    <string name="oobe_use_backup">بازگردانی داده‌ها از نسخه پشتیبان</string>
+    <string name="oobe_skip_setup">رد شدن از راه‌اندازی</string>
     <string name="oobe_interface_subtitle">ظاهر AsterTune و محتوایی که به شما نشان می‌دهد را سفارشی کنید.</string>
     <string name="oobe_ytm_logon_title">حساب کاربری</string>
     <string name="oobe_ytm_logon_subtitle">برای همگام‌ سازی و دسترسی به محتوای حساب خصوصی، وارد حساب YouTube Music خود شوید. این گزینه اختیاری است.</string>

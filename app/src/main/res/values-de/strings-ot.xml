@@ -235,9 +235,8 @@
     <string name="oobe_ad_free_exp_description">Unterbrechungsfreies Musikhören genießen</string>
     <string name="oobe_local_music_support">Breite lokale Musikunterstützung</string>
     <string name="oobe_local_music_support_description">Spiele deine Musikdateien ab (z. B. MP3, OGG, FLAC, usw.)</string>
-    <string name="oobe_cross_platform_sync">Plattformübergreifende Synchronisierung</string>
-    <string name="oobe_cross_platform_sync_description">Halte deine Musik auf allen Geräten synchron</string>
-    <string name="oobe_use_backup">Ich habe ein Backup</string>
+    <string name="oobe_use_backup">Daten aus einer Sicherung wiederherstellen</string>
+    <string name="oobe_skip_setup">Einrichtung überspringen</string>
     <string name="oobe_interface_subtitle">Passe an, wie AsterTune aussieht und welche Inhalte dir angezeigt werden.</string>
     <string name="oobe_ytm_logon_title">Konto</string>
     <string name="oobe_ytm_logon_subtitle">Melde dich bei deinem YouTube Music-Konto an, um private Inhalte zu synchronisieren und darauf zuzugreifen. Dies ist optional.</string>
@@ -278,7 +277,6 @@
     <string name="max_queues_title">Maximale Anzahl an Warteschlangen</string>
     <string name="oobe_cache_title">Song-Cache</string>
     <string name="toggle_lyrics">Songtext ein-/ausblenden</string>
-    <string name="oobe_welcome_tip">Für ein optimales Erlebnis empfehlen wir dir, die kurze Einrichtung abzuschließen und wichtige Einstellungen wie Design, YouTube-Konto, lokale Medien und Downloads anzupassen.</string>
     <string name="oobe_cache_subtitle">Wähle eine Größe für den Song-Cache. Dies kann helfen, Wiedergabeprobleme im Zusammenhang mit dem Internet oder der YouTube-API zu reduzieren</string>
     <string name="library_filter">Bibliotheksfilter</string>
     <string name="off">Aus</string>

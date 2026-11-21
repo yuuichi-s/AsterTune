@@ -374,7 +374,6 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Setup wizard -->
     <string name="oobe_welcome_message">Welcome to AsterTune</string>
-    <string name="oobe_welcome_tip">For the best experience, we recommend completing a quick setup to personalize key settings like theme, YouTube account, local media, and downloads.</string>
 
     <!-- Landing -->
     <string name="oobe_ytm_integration">YouTube Music Integration</string>
@@ -383,9 +382,8 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="oobe_ad_free_exp_description">Enjoy uninterrupted music playback</string>
     <string name="oobe_local_music_support">Extensive Local Music Support</string>
     <string name="oobe_local_music_support_description">Play your music files (ex. MP3, OGG, FLAC, etc.)</string>
-    <string name="oobe_cross_platform_sync">Cross-Platform Sync</string>
-    <string name="oobe_cross_platform_sync_description">Keep your music in harmony across devices</string>
-    <string name="oobe_use_backup">I have a backup</string>
+    <string name="oobe_use_backup">Restore data from backup</string>
+    <string name="oobe_skip_setup">Skip setup</string>
 
     <!-- Interface setup page -->
     <string name="oobe_interface_subtitle">Customize how AsterTune looks and what content it shows you.</string>

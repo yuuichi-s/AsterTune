@@ -72,7 +72,7 @@ class BackupRestoreViewModel @Inject constructor(
         }
     }
 
-    fun restore(uri: Uri) {
+    fun restore(uri: Uri, showSetupComplete: Boolean = false) {
         runCatching {
             context.applicationContext.contentResolver.openInputStream(uri)?.use { stream ->
                 // The scanner changes the database and the archive together under this lock.
@@ -156,6 +156,10 @@ class BackupRestoreViewModel @Inject constructor(
                 }
             }
 
+            if (showSetupComplete) {
+                (context.filesDir / SETUP_COMPLETE_MARKER_FILENAME).createNewFile()
+            }
+
             val stopIntent = Intent(context, MusicService::class.java)
             context.stopService(stopIntent)
             val startIntent = Intent(context, MainActivity::class.java)
@@ -170,5 +174,6 @@ class BackupRestoreViewModel @Inject constructor(
 
     companion object {
         const val SETTINGS_FILENAME = "settings.preferences_pb"
+        const val SETUP_COMPLETE_MARKER_FILENAME = "show_setup_complete"
     }
 }

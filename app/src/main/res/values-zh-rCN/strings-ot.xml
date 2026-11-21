@@ -114,7 +114,8 @@
     <string name="dev_settings_description">显示用于开发的其他高级设置</string>
     <string name="oobe_welcome_message">欢迎来到 AsterTune</string>
     <string name="oobe_complete">AsterTune设置完成，可立即使用。探索你的音乐，发现新歌曲，享受美好的体验吧！</string>
-    <string name="oobe_use_backup">我有备份</string>
+    <string name="oobe_use_backup">从备份还原数据</string>
+    <string name="oobe_skip_setup">跳过设置</string>
     <string name="action_back">返回</string>
     <string name="action_next">下一个</string>
     <string name="action_skip">跳过</string>
@@ -171,14 +172,12 @@
     <string name="missing_media_permission_warning">需要获取存储权限以获得本地媒体。点此授予权限。</string>
     <string name="oobe_ad_free_exp">去除 YouTube 广告</string>
     <string name="oobe_ad_free_exp_description">享受不间断的音乐播放</string>
-    <string name="oobe_cross_platform_sync">跨平台同步</string>
     <string name="swipe_to_skip_title">水平划动以更换曲目</string>
     <string name="swipe_to_skip_description">开启在播放器中水平划动切换曲目</string>
     <string name="oobe_ytm_integration">YouTube Music 集成</string>
     <string name="oobe_ytm_integration_description">无缝进入你最喜欢的曲目</string>
     <string name="oobe_local_music_support">广泛的本地音乐支持</string>
     <string name="oobe_local_music_support_description">播放你的歌曲文件（例如MP3, OGG, FLAC等）</string>
-    <string name="oobe_cross_platform_sync_description">在不同设备间保持音乐同步</string>
     <string name="oobe_interface_subtitle">个性化AsterTune样式以及显示的内容。</string>
     <string name="action_cancel">取消</string>
     <string name="grp_sync">同步</string>
@@ -280,7 +279,6 @@
     <string name="dl_rescan_confirm">重新扫描目标文件夹和其他来源文件夹？\n根据文件数量，此过程可能需要几分钟。</string>
     <string name="dl_storage_tooltip">应用专用存储空间\n下载的歌曲默认保存在这里。普通文件管理器无法直接访问这些歌曲。\n\n已下载歌曲的目标文件夹\n设置目标文件夹时，已在应用专用存储空间中的歌曲也会一并移动。如需重新移动未能移动的歌曲，请使用“将已下载的歌曲移至文件夹”。移动后，这些歌曲仍可在 AsterTune 中播放，也可以用文件管理器打开。请选择一个专门存放这些歌曲的空文件夹。\n\n其他来源文件夹\n用于读取保存在目标文件夹以外的已下载歌曲。例如，恢复应用数据后，添加相应文件夹并选择“重新扫描文件夹”。仅识别已在应用中登记的歌曲。</string>
     <string name="max_queues_title">最大播放队列数</string>
-    <string name="oobe_welcome_tip">为了获得最佳体验，我们建议您立即完成快速设置，以便对主题、YouTube 帐户、本地媒体和下载等关键功能进行个性化配置。</string>
     <string name="oobe_cache_title">歌曲缓存</string>
     <string name="oobe_cache_subtitle">设置歌曲缓存容量。此操作有助于解决网络或 YouTube API 播放时出现的问题</string>
     <string name="restore_lm_tooltip">对于全新安装的应用，自定义下载路径和本地媒体扫描路径可能无法正常工作。要解决此问题，请先移除这些路径，然后重新添加。</string>

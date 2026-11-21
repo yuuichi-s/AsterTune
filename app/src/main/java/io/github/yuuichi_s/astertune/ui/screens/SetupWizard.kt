@@ -59,7 +59,6 @@ import androidx.compose.material.icons.rounded.LibraryMusic
 import androidx.compose.material.icons.rounded.Lyrics
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.SdCard
-import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -68,6 +67,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -96,6 +96,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.BuildConfig
@@ -135,11 +136,13 @@ import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.scanners.absoluteFilePathFromUri
 import io.github.yuuichi_s.astertune.utils.scanners.stringFromUriList
 import io.github.yuuichi_s.astertune.utils.scanners.uriListFromString
+import io.github.yuuichi_s.astertune.viewmodels.BackupRestoreViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetupWizard(
     navController: NavController,
+    backupRestoreViewModel: BackupRestoreViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -147,6 +150,12 @@ fun SetupWizard(
     val uriHandler = LocalUriHandler.current
 
     var oobeStatus by rememberPreference(OobeStatusKey, defaultValue = 0)
+
+    val restoreLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) {
+            backupRestoreViewModel.restore(uri, showSetupComplete = true)
+        }
+    }
 
     // content prefs
     var filter by rememberEnumPreference(LibraryFilterKey, LibraryFilter.ALL)
@@ -164,16 +173,18 @@ fun SetupWizard(
     val (enabledTabs, onEnabledTabsChange) = rememberPreference(EnabledTabsKey, defaultValue = DEFAULT_ENABLED_TABS)
     val (enabledFilters, onEnabledFiltersChange) = rememberPreference(EnabledFiltersKey, defaultValue = DEFAULT_ENABLED_FILTERS)
 
-    LaunchedEffect(localLibEnable) {
+    val onLocalLibEnableToggle: (Boolean) -> Unit = { enable ->
+        onLocalLibEnableChange(enable)
+
         var containsFolders = enabledTabs.contains('F')
-        if (localLibEnable && !containsFolders) {
+        if (enable && !containsFolders) {
             onEnabledTabsChange(enabledTabs + "F")
-        } else if (!localLibEnable && containsFolders) {
+        } else if (!enable && containsFolders) {
             onEnabledTabsChange(enabledTabs.filterNot { it == 'F' })
         }
 
         containsFolders = enabledFilters.contains('F')
-        if (!localLibEnable && containsFolders) {
+        if (!enable && containsFolders) {
             onEnabledFiltersChange(enabledFilters.filterNot { it == 'F' })
         }
     }
@@ -341,12 +352,6 @@ fun SetupWizard(
                                 Color.Red
                             )
                             OobeFeatureRow(
-                                title = stringResource(R.string.oobe_cross_platform_sync),
-                                description = stringResource(R.string.oobe_cross_platform_sync_description),
-                                icon = Icons.Rounded.Sync,
-                                MaterialTheme.colorScheme.tertiary
-                            )
-                            OobeFeatureRow(
                                 title = stringResource(R.string.oobe_local_music_support),
                                 description = stringResource(R.string.oobe_local_music_support_description),
                                 icon = Icons.Rounded.SdCard,
@@ -354,41 +359,39 @@ fun SetupWizard(
                             )
                         }
 
-                        Spacer(Modifier.height(16.dp))
-                        InfoLabel(
-                            text = stringResource(R.string.oobe_welcome_tip),
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                        )
-                        Spacer(Modifier.height(16.dp))
-
-                        Row(
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 48.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .padding(horizontal = 16.dp, vertical = 16.dp)
                         ) {
-                            TextButton(
+                            OutlinedButton(
                                 onClick = {
-                                    navController.navigate("settings/backup_restore")
-                                }
+                                    restoreLauncher.launch(arrayOf("application/octet-stream"))
+                                },
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text(
-                                    text = stringResource(R.string.oobe_use_backup),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
+                                Text(stringResource(R.string.oobe_use_backup))
+                            }
+
+                            Button(
+                                onClick = {
+                                    oobeStatus += 1
+                                    haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(stringResource(R.string.action_next))
                             }
 
                             TextButton(
                                 onClick = {
                                     oobeStatus = OOBE_VERSION
                                     navController.navigateUp()
-                                }
+                                },
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text(
-                                    text = stringResource(R.string.action_skip),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
+                                Text(stringResource(R.string.oobe_skip_setup))
                             }
                         }
                     }
@@ -520,7 +523,7 @@ fun SetupWizard(
                                 description = stringResource(R.string.local_library_enable_description),
                                 icon = { Icon(Icons.Rounded.SdCard, null) },
                                 checked = localLibEnable,
-                                onCheckedChange = onLocalLibEnableChange
+                                onCheckedChange = onLocalLibEnableToggle
                             )
                         }
 
@@ -813,18 +816,14 @@ fun SetupWizard(
                 Spacer(Modifier.height(NavigationBarHeight))
             }
 
-            if (oobeStatus == 0 || oobeStatus == OOBE_VERSION - 1) {
+            if (oobeStatus == OOBE_VERSION - 1) {
                 FloatingActionButton(
                     modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.BottomEnd),
                     onClick = {
-                        if (oobeStatus == 0) {
-                            oobeStatus += 1
-                        } else {
-                            oobeStatus = OOBE_VERSION
-                            navController.navigateUp()
-                        }
+                        oobeStatus = OOBE_VERSION
+                        navController.navigateUp()
                         haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                     }
                 ) {

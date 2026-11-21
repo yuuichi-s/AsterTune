@@ -114,9 +114,8 @@
     <string name="oobe_ad_free_exp_description">תיהנו מהשמעת מוזיקה ללא הפרעה</string>
     <string name="oobe_local_music_support">תמיכה נרחבת במוזיקה מקומית</string>
     <string name="oobe_local_music_support_description">השמעת קובצי המוזיקה שלך (למשל MP3, OGG, FLAC ועוד)</string>
-    <string name="oobe_cross_platform_sync">סנכרון בין פלטפורמות</string>
-    <string name="oobe_cross_platform_sync_description">שמירה על סנכרון המוזיקה שלך בין מכשירים</string>
-    <string name="oobe_use_backup">יש לי גיבוי</string>
+    <string name="oobe_use_backup">שחזור נתונים מגיבוי</string>
+    <string name="oobe_skip_setup">דילוג על ההגדרה</string>
     <string name="oobe_interface_subtitle">התאם אישית את מראה AsterTune ואת התוכן שהוא מציג לך.</string>
     <string name="oobe_ytm_logon_title">חשבון</string>
     <string name="oobe_ytm_logon_subtitle">היכנס לחשבון YouTube Music שלך כדי לסנכרן ולגשת לתוכן חשבון פרטי (אופציונלי).</string>
@@ -316,7 +315,6 @@
     <string name="tap_artwork_to_show_lyrics_title">הקשה על העטיפה להצגת מילות השיר</string>
     <string name="tap_artwork_to_show_lyrics_description">הצגת מילות השיר בעת הקשה על העטיפה בנגן</string>
     <string name="max_queues_title">מספר התורים המרבי</string>
-    <string name="oobe_welcome_tip">לחוויה מיטבית, מומלץ להשלים הגדרה מהירה ולהתאים אישית הגדרות מרכזיות כגון ערכת נושא, חשבון YouTube, מדיה מקומית והורדות.</string>
     <string name="oobe_cache_title">מטמון שירים</string>
     <string name="oobe_cache_subtitle">בחירת גודל מטמון השירים. הדבר עשוי לצמצם בעיות הפעלה הקשורות לאינטרנט או ל-API של YouTube</string>
     <string name="song_playing_in_new_queue">\"%s\" מתנגן בתור חדש</string>

@@ -231,9 +231,8 @@
     <string name="oobe_ad_free_exp_description">Nikmati musik tanpa gangguan</string>
     <string name="oobe_local_music_support">Dukungan lengkap untuk musik lokal</string>
     <string name="oobe_local_music_support_description">Putar file musik Anda (misalnya MP3, OGG, FLAC, dll.)</string>
-    <string name="oobe_cross_platform_sync">Sinkronisasi Lintas Platform</string>
-    <string name="oobe_cross_platform_sync_description">Musik Anda tetap sinkron di semua perangkat</string>
-    <string name="oobe_use_backup">Saya punya cadangan</string>
+    <string name="oobe_use_backup">Pulihkan data dari cadangan</string>
+    <string name="oobe_skip_setup">Lewati penyiapan</string>
     <string name="oobe_interface_subtitle">Sesuaikan tampilan AsterTune dan konten apa yang ingin Anda lihat.</string>
     <string name="oobe_ytm_logon_title">Akun</string>
     <string name="oobe_ytm_logon_subtitle">Masuk ke akun YouTube Music Anda untuk menyinkronkan dan mengakses konten privat akun. Ini bersifat opsional.</string>
@@ -281,7 +280,6 @@
     <string name="scanner_strict_file_paths_description">File dengan jalur berbeda dianggap sebagai lagu terpisah. Memindahkan atau mengganti nama file dapat menambahkannya sebagai lagu terpisah di koleksi</string>
     <string name="restore_lm_tooltip">Pada instalasi baru aplikasi, jalur unduhan khusus dan pemindaian media lokal mungkin tidak berfungsi. Untuk mengatasinya, hapus jalur tersebut lalu tambahkan kembali.</string>
     <string name="max_queues_title">Jumlah maksimal antrean</string>
-    <string name="oobe_welcome_tip">Untuk pengalaman terbaik, Kami merekomendasikan menyelesaikan pengaturan cepat untuk pengaturan lebih lanjut seperti tema, akun YouTube, media lokal, Dan unduhan.</string>
     <string name="oobe_cache_title">Cache lagu</string>
     <string name="oobe_cache_subtitle">Pilih ukuran cache lagu. Ini dapat membantu mengurangi masalah pemutaran akibat koneksi internet atau API YouTube</string>
     <string name="off">Nonaktif</string>

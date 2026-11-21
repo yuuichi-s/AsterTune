@@ -85,7 +85,8 @@
     <string name="dev_settings_title">Ativar configurações de desenvolvedor</string>
     <string name="dev_settings_description">Revela configurações avançadas adicionais utilizadas no desenvolvimento</string>
     <string name="oobe_complete">O AsterTune está configurado e pronto pra ser usado. Explore suas músicas, descubra novas faixas, e aproveite a experiência!</string>
-    <string name="oobe_use_backup">Eu tenho um backup</string>
+    <string name="oobe_use_backup">Restaurar dados de um backup</string>
+    <string name="oobe_skip_setup">Pular a configuração</string>
     <string name="action_back">Voltar</string>
     <string name="action_next">Avançar</string>
     <string name="action_skip">Pular</string>
@@ -218,13 +219,11 @@
     <string name="dl_main_path_description">As músicas baixadas são movidas automaticamente para esta pasta. As músicas que já estão no armazenamento privado do app também são movidas.</string>
     <string name="oobe_ad_free_exp_description">Aproveite uma reprodução de música sem interrupções</string>
     <string name="oobe_local_music_support">Amplo suporte a músicas locais</string>
-    <string name="oobe_cross_platform_sync">Sincronização entre plataformas</string>
     <string name="oobe_ytm_logon_subtitle">Conecte-se à sua conta do YouTube Music para sincronizar e acessar conteúdo privado da conta. Isso é opcional.</string>
     <string name="oobe_downloads_subtitle">Escolha uma pasta de destino para as músicas baixadas (opcional).</string>
     <string name="oobe_complete_title">Está tudo pronto!</string>
     <string name="disable_lm_confirm">Desativar a mídia local? Os arquivos de música e os dados das músicas que já estão na biblioteca não serão excluídos.</string>
     <string name="oobe_local_media_title">Mídia local</string>
-    <string name="oobe_cross_platform_sync_description">Mantenha sua música em harmonia entre dispositivos</string>
     <string name="oobe_ad_free_exp">Sem anúncios do YouTube</string>
     <string name="oobe_local_media_subtitle">Selecione as pastas que contêm suas músicas. Iremos buscar músicas nelas para importar.</string>
     <string name="clear_downloads_confirm">Excluir todas as músicas baixadas do armazenamento privado do app?\nOs arquivos nas pastas serão mantidos.</string>
@@ -280,7 +279,6 @@
     <string name="audio_decoder_system_only">Apenas decodificadores do sistema</string>
     <string name="audio_decoder_system_with_ffmpeg">Priorizar decodificadores do sistema</string>
     <string name="max_queues_title">Número máximo de filas</string>
-    <string name="oobe_welcome_tip">Para uma melhor experiência, recomendamos concluir uma configuração rápida para personalizar configurações principais, como o tema, conta do YouTube, mídia local, e downloads.</string>
     <string name="oobe_cache_title">Cache de músicas</string>
     <string name="oobe_cache_subtitle">Selecione um tamanho para a cache de músicas. Isso pode ajudar a reduzir problemas com a internet ou reprodução com a API do YouTube</string>
     <string name="grp_more_settings">Mais configurações</string>

@@ -106,7 +106,8 @@
     <string name="dev_settings_title">Включить настройки для разработчиков</string>
     <string name="dev_settings_description">Открывает дополнительные настройки, используемые во время разработки</string>
     <string name="oobe_welcome_message">Добро пожаловать в AsterTune</string>
-    <string name="oobe_use_backup">У меня есть резервная копия</string>
+    <string name="oobe_use_backup">Восстановить данные из резервной копии</string>
+    <string name="oobe_skip_setup">Пропустить настройку</string>
     <string name="action_back">Назад</string>
     <string name="action_next">Далее</string>
     <string name="action_skip">Пропустить</string>
@@ -215,7 +216,6 @@
     <string name="oobe_ytm_integration">Интеграция с YouTube Music</string>
     <string name="oobe_ad_free_exp">Без рекламы на YouTube</string>
     <string name="oobe_ad_free_exp_description">Наслаждайтесь непрерывным воспроизведением музыки</string>
-    <string name="oobe_cross_platform_sync">Кросс-платформенная синхронизация</string>
     <string name="oobe_local_media_title">Локальное медиа</string>
     <string name="oobe_local_media_subtitle">Выберите папки, содержащие вашу музыку. Мы проверим их на наличие песен для импорта.</string>
     <string name="oobe_downloads_title">Загрузки песен</string>
@@ -226,7 +226,6 @@
     <string name="oobe_ytm_logon_title">Аккаунт</string>
     <string name="dl_extra_path_title">Дополнительные исходные папки</string>
     <string name="oobe_ytm_integration_description">Получите легкий доступ к вашим любимым трекам</string>
-    <string name="oobe_cross_platform_sync_description">Поддерживайте гармонию вашей музыки на разных устройствах</string>
     <string name="oobe_local_music_support_description">Воспроизводите ваши музыкальные файлы (например, MP3, OGG, FLAC и т.д.)</string>
     <string name="oobe_interface_subtitle">Настройте внешний вид AsterTune и то, какой контент он вам показывает.</string>
     <string name="oobe_local_music_support">Широкая поддержка локальной музыки</string>
@@ -283,7 +282,6 @@
     <string name="audio_decoder_system_with_ffmpeg">Отдавать приоритет системным декодерам</string>
     <string name="toggle_lyrics">Показать текст песни</string>
     <string name="max_queues_title">Максимальное количество очередей</string>
-    <string name="oobe_welcome_tip">Для наилучшего опыта рекомендуем пройти быструю начальную настройку, чтобы персонализировать основные параметры, такие как тема, аккаунт YouTube, локальные медиа и загрузки.</string>
     <string name="oobe_cache_title">Кэш песен</string>
     <string name="oobe_cache_subtitle">Выберите размер кэша песен. Это может помочь уменьшить проблемы с воспроизведением, связанные с интернет-соединением или API YouTube</string>
     <string name="grp_more_settings">Больше настроек</string>

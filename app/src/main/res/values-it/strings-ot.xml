@@ -122,7 +122,8 @@
     <string name="dev_settings_description">Rivela impostazioni avanzate aggiuntive destinate all\'uso in fase di sviluppo</string>
     <string name="oobe_welcome_message">Benvenuto in AsterTune</string>
     <string name="info">Informazione</string>
-    <string name="oobe_use_backup">Ho un backup</string>
+    <string name="oobe_use_backup">Ripristina i dati da un backup</string>
+    <string name="oobe_skip_setup">Salta la configurazione</string>
     <string name="action_back">Indietro</string>
     <string name="action_next">Successivo</string>
     <string name="action_skip">Salta</string>
@@ -196,7 +197,6 @@
     <string name="oobe_ytm_integration_description">Accedi ai tuoi brani preferiti senza soluzione di continuità</string>
     <string name="oobe_ytm_integration">Integrazione musicale di YouTube Music</string>
     <string name="oobe_local_music_support_description">Riproduci i tuoi file musicali (Ex. MP3, OGG, FLAC, ecc.)</string>
-    <string name="oobe_cross_platform_sync">Sincronizzazione Multi piattaforma</string>
     <string name="oobe_local_music_support">Ampio Supporto Musicale Locale</string>
     <string name="oobe_ytm_logon_subtitle">Accedi al tuo account YouTube Music per sincronizzare e accedere ai contenuti privati del tuo account. È facoltativo.</string>
     <string name="oobe_interface_subtitle">Personalizza l\'aspetto di AsterTune e quale contenuto ti mostra.</string>
@@ -213,7 +213,6 @@
     <string name="dl_size_used_main">Destinazione dei brani scaricati: %s</string>
     <string name="oobe_ad_free_exp">Senza pubblicità di YouTube</string>
     <string name="oobe_ad_free_exp_description">Goditi la riproduzione musicale ininterrotta</string>
-    <string name="oobe_cross_platform_sync_description">Mantieni la tua musica in armonia su tutti i dispositivi</string>
     <string name="oobe_local_media_title">Media locali</string>
     <string name="oobe_local_media_subtitle">Scegli le cartelle che contengono la tua musica. Le scansioneremo per trovare i brani da importare.</string>
     <string name="oobe_downloads_title">Download brani</string>
@@ -281,7 +280,6 @@
     <string name="audio_decoder_system_with_ffmpeg">Dare priorità ai decoder di sistema</string>
     <string name="oobe_cache_subtitle">Scegli la dimensione della cache del brano. Questo può aiutare a ridurre i problemi di riproduzione da internet o con API di YouTube</string>
     <string name="oobe_cache_title">Cache del brano</string>
-    <string name="oobe_welcome_tip">Per la migliore esperienza, ti consigliamo di completare una configurazione rapida per personalizzare le impostazioni chiave come il tema, account YouTube, media locali e downloads.</string>
     <string name="max_queues_title">Numero massimo di code</string>
     <string name="grp_more_settings">Altre impostazioni</string>
     <string name="auto_scanner_tooltip">La scansione automatica rileva i brani aggiunti e rimossi. Per aggiornare anche i metadati dei brani già scansionati, seleziona la casella per ripetere la scansione in «Scanner manuale».</string>

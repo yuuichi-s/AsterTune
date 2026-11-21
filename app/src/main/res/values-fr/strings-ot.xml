@@ -96,7 +96,8 @@
     <string name="flat_subfolders_description">Désactiver pour conserver la structure du fichier telle qu\'elle se trouve sur le disque</string>
     <string name="import_innertune_tooltip">La restauration des sauvegardes InnerTune est prise en charge, malgré un risque d\'anomalies dues à des limitations techniques. Les forks ne sont PAS pris en charge.</string>
     <string name="action_back">Retour</string>
-    <string name="oobe_use_backup">J\'ai une sauvegarde</string>
+    <string name="oobe_use_backup">Restaurer les données à partir d\'une sauvegarde</string>
+    <string name="oobe_skip_setup">Passer la configuration</string>
     <string name="scan_paths_incl">Dossiers à analyser</string>
     <string name="scanner_strict_file_name_title">Noms de fichiers stricts</string>
     <string name="dev_settings_description">Révèle des paramètres avancés supplémentaires destinés à une utilisation en développement</string>
@@ -199,8 +200,6 @@
     <string name="oobe_ad_free_exp">Pas de publicités sur YouTube</string>
     <string name="oobe_local_music_support">Prise en charge de la musique locale</string>
     <string name="oobe_local_music_support_description">Lisez vos fichiers musicaux (ex. MP3, OGG, FLAC, etc.)</string>
-    <string name="oobe_cross_platform_sync">Synchronisation multiplateforme</string>
-    <string name="oobe_cross_platform_sync_description">Gardez votre musique en harmonie sur tous vos appareils</string>
     <string name="oobe_ytm_logon_title">Compte</string>
     <string name="oobe_local_media_title">Médias locaux</string>
     <string name="oobe_local_media_subtitle">Choisissez les dossiers contenant votre musique. Nous les analyserons pour trouver les morceaux à importer.</string>
@@ -264,7 +263,6 @@
     <string name="audio_decoder_system_only">Décodeurs système uniquement</string>
     <string name="audio_decoder_system_with_ffmpeg">Donner la priorité aux décodeurs système</string>
     <string name="max_queues_title">Nombre maximal de files d\'attente</string>
-    <string name="oobe_welcome_tip">Pour une expérience optimale, nous vous recommandons d\'effectuer une configuration rapide pour personnaliser les paramètres clés tels que le thème, le compte YouTube, les médias locaux et les téléchargements.</string>
     <string name="oobe_cache_title">Cache de chansons</string>
     <string name="oobe_cache_subtitle">Choisissez la taille du cache des chansons. Cela peut contribuer à réduire les problèmes de lecture sur Internet ou via l\'API YouTube.</string>
     <string name="grp_more_settings">Plus de paramètres</string>

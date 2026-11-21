@@ -212,9 +212,8 @@
     <string name="oobe_ad_free_exp_description">Uživaj u muzici bez prekidanja</string>
     <string name="oobe_local_music_support">Opsežna podrška lokalnom sadržaju</string>
     <string name="oobe_local_music_support_description">Puštaj svoje audio datoteke (npr. MP3, OGG, FLAC, itd.)</string>
-    <string name="oobe_cross_platform_sync">Sinhronizacija na više platformi</string>
-    <string name="oobe_cross_platform_sync_description">Održavaj svoju muziku u harmoniji na svim uredajima</string>
-    <string name="oobe_use_backup">Imam rezervnu kopiju</string>
+    <string name="oobe_use_backup">Vrati podatke iz rezervne kopije</string>
+    <string name="oobe_skip_setup">Preskoči podešavanje</string>
     <string name="oobe_interface_subtitle">Prilagodi izgled aplikacije AsterTune i koji sadržaj da prikazuje.</string>
     <string name="oobe_ytm_logon_title">Nalog</string>
     <string name="oobe_ytm_logon_subtitle">Prijavite se na svoj YouTube Music nalog da biste sinhronizovali i pristupili sadržaju privatnog naloga. Ovo je opciono.</string>

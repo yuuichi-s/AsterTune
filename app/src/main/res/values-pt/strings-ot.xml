@@ -236,9 +236,8 @@
     <string name="oobe_ad_free_exp_description">Aproveite a reprodução ininterrupta de músicas</string>
     <string name="oobe_local_music_support">Suporte a músicas locais</string>
     <string name="oobe_local_music_support_description">Reprodução dos seus ficheiros de música (ex: MP3, OGG, FLAC, etc.)</string>
-    <string name="oobe_cross_platform_sync">Sincronização entre plataformas</string>
-    <string name="oobe_cross_platform_sync_description">Mantenha a sua música sincronizada entre dispositivos</string>
-    <string name="oobe_use_backup">Tenho um backup</string>
+    <string name="oobe_use_backup">Restaurar dados a partir de uma cópia de segurança</string>
+    <string name="oobe_skip_setup">Saltar a configuração</string>
     <string name="oobe_interface_subtitle">Personalize o aspeto e o conteúdo mostrado em AsterTune.</string>
     <string name="oobe_ytm_logon_title">Conta</string>
     <string name="oobe_ytm_logon_subtitle">Ligue-se à sua conta YouTube Music para sincronizar e aceder ao conteúdo privado da conta. OPCIONAL.</string>
@@ -279,7 +278,6 @@
         <item quantity="other">%d segundos</item>
     </plurals>
     <string name="max_queues_title">Número máximo de filas</string>
-    <string name="oobe_welcome_tip">Para uma melhor experiência, recomendamos concluir uma configuração rápida para personalizar as principais definições tais como tema, conta YouTube, ficheiros locais e transferências.</string>
     <string name="oobe_cache_title">Cache de músicas</string>
     <string name="oobe_cache_subtitle">Escolha um tamanho para a cache de músicas. Isto pode ajudar a reduzir problemas de reprodução relacionados com a Internet ou com a API do YouTube</string>
     <string name="grp_more_settings">Mais definições</string>
