@@ -76,7 +76,6 @@
     <string name="grp_general">General</string>
     <string name="grp_interface">Interfície</string>
     <string name="grp_layout">Disposició</string>
-    <string name="grp_library_and_content">Libreria i contingut</string>
     <string name="grp_localization">Localització</string>
     <string name="grp_lyrics_format">Formatejar</string>
     <string name="grp_lyrics_parser">Parser</string>
@@ -114,11 +113,13 @@
     <string name="slim_navbar_title">Barra de navegació fina</string>
     <string name="slim_navbar_description">Elimina les etiquetes de text per reduir l’alçada de la barra de navegació</string>
     <string name="tab_arrangement">Organitza les pestanyes</string>
+    <string name="tab_arrangement_description">Tria quines pestanyes es mostren a la part inferior de l’aplicació i en quin ordre. Reinicia l’aplicació per aplicar els canvis</string>
     <string name="tab_arrangement_disable_tip">--- Arrossega a sota per desactivar ---</string>
     <string name="tab_arrangement_home_required">La pestanya Inici és obligatòria.</string>
     <string name="tablet_ui_title">Força la interfície de tauleta</string>
     <string name="tablet_ui_title_description">Força una interfície dividida optimitzada per a pantalles grans. Aquesta configuració no té efecte si no es compleixen els requisits mínims d’amplada</string>
     <string name="filter_arrangement">Organitza els filtres</string>
+    <string name="filter_arrangement_description">Tria quins filtres es mostren a la pantalla de la biblioteca</string>
     <string name="home_sections_title">Seccions de l’inici</string>
     <string name="home_sections_chips">Botons de categories</string>
     <string name="home_sections_chips_description">Mostra botons a la part superior de l’inici per filtrar les seccions de YouTube Music</string>
@@ -128,7 +129,6 @@
     <string name="home_sections_mood_description">Mostra botons a la part inferior de l’inici per explorar música per estat d’ànim o gènere</string>
     <string name="home_sections_keep_one">Mantén almenys un element activat.</string>
     <string name="like_autodownload">Descarrega automàticament les cançons marcades com a preferides</string>
-    <string name="action_logout_tooltip">Per tancar la sessió completament, si us plau, tanca la sessió del teu compte de YouTube al portal web abans d’utilitzar aquest botó de sortida</string>
     <string name="token_adv_login_description">Aquest és un mètode d’inici de sessió AVANÇAT. Com a alternativa al portal web, pots introduir o actualitzar directament aquí el teu testimoni d’inici de sessió. Per exemple, això pot agilitzar l’inici de sessió en diversos dispositius. Tingues en compte que no s’acceptarà cap format de testimoni invàlid que l’aplicació no pugui analitzar</string>
     <string name="token_hidden">Toca per mostrar el testimoni</string>
     <string name="token_shown">Torna a tocar per copiar o editar</string>

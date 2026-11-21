@@ -90,7 +90,6 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="grp_general">Genel</string>
     <string name="grp_interface">Arayüz</string>
     <string name="grp_layout">Düzen</string>
-    <string name="grp_library_and_content">Kütüphane ve içerik</string>
 	<string name="grp_localization">Dil ve bölge</string>
     <string name="grp_lyrics_format">Biçimlendirme</string>
     <string name="grp_lyrics_parser">Ayrıştırıcı</string>
@@ -159,11 +158,13 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="slider_style_default">Varsayılan</string>
     <string name="slider_style_slim">İnce</string>
     <string name="tab_arrangement">Sekmeleri düzenle</string>
+    <string name="tab_arrangement_description">Uygulamanın alt kısmında hangi sekmelerin hangi sırada görüneceğini seçin. Değişiklikleri uygulamak için uygulamayı yeniden başlatın</string>
     <string name="tab_arrangement_disable_tip">--- Devre dışı bırakmak için buranın altına sürükleyin ---</string>
     <string name="tab_arrangement_home_required">Ana Sayfa sekmesi zorunludur.</string>
     <string name="tablet_ui_title">Tablet arayüzünü zorla</string>
     <string name="tablet_ui_title_description">Büyük ekranlar için iyileştirilmiş bölünmüş arayüzü zorla. En düşük genişlik gereksinimleri karşılanmıyorsa bu ayarın etkisi olmaz</string>
     <string name="filter_arrangement">Filtreleri düzenle</string>
+    <string name="filter_arrangement_description">Kütüphane ekranında hangi filtrelerin görüneceğini seçin</string>
     <string name="home_sections_title">Ana Sayfa bölümleri</string>
     <string name="home_sections_chips">Kategori düğmeleri</string>
     <string name="home_sections_chips_description">Ana Sayfanın üst kısmında YouTube Music bölümlerini filtrelemek için düğmeler gösterir</string>
@@ -175,7 +176,6 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Content settings -->
     <string name="like_autodownload">Beğenilen şarkıları otomatik indir</string>
-    <string name="action_logout_tooltip">Tamamen çıkış yapmak için bu çıkış düğmesini kullanmadan önce web portalında YouTube hesabınızdan çıkış yapın</string>
     <string name="token_adv_login_description">Bu, GELİŞMİŞ bir oturum açma yöntemidir. Web portalına alternatif olarak oturum açma belirtecinizi buraya doğrudan girebilir veya güncelleyebilirsiniz. Örneğin bu, birden fazla cihazda oturum açmayı hızlandırabilir. Uygulamanın ayrıştıramadığı geçersiz belirteç biçimleri kabul edilmez</string>
     <string name="token_hidden">Belirteci göstermek için dokunun</string>
     <string name="token_shown">Kopyalamak veya düzenlemek için tekrar dokunun</string>

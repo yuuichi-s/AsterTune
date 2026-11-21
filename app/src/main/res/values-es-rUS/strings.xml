@@ -263,8 +263,8 @@
     <string name="use_login_for_browse_desc">Esto puede influir en el contenido que ves y, por ejemplo, muestra álbumes exclusivos para usuarios Premium si has iniciado sesión con una cuenta Premium</string>
     <string name="disable_screenshot">Desactivar captura de pantalla</string>
     <string name="disable_screenshot_desc">Cuando esta opción está activada, las capturas de pantalla y la vista de la aplicación en Recientes están desactivadas.</string>
-    <string name="enable_lrclib">Activitar proveedor de letras LrcLib</string>
-    <string name="enable_kugou">Activitar proveedor de letras KuGou</string>
+    <string name="enable_lrclib">Usar LrcLib</string>
+    <string name="enable_kugou">Usar KuGou</string>
     <string name="hide_explicit">Ocultar contenido explícito</string>
     <string name="backup_restore">Copia de seguridad y restauración</string>
     <string name="action_backup">Copia de seguridad</string>
@@ -290,6 +290,6 @@
     <string name="accent_color">Color de acento</string>
     <string name="ignore_audio_focus">Mantener el foco de audio</string>
     <string name="ignore_audio_focus_desc">Continuar la reproducción cuando otra aplicación tome el foco de audio. La música no se pausará por otras fuentes de audio, incluidas las llamadas telefónicas.</string>
-    <string name="enable_betterlyrics">Activar el proveedor de letras BetterLyrics</string>
-    <string name="enable_lyricsplus">Activar el proveedor de letras Lyrics+</string>
+    <string name="enable_betterlyrics">Usar BetterLyrics</string>
+    <string name="enable_lyricsplus">Usar Lyrics+</string>
 </resources>

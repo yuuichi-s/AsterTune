@@ -39,6 +39,7 @@
     <string name="show_scrollbar_title">Смуга прокручування</string>
     <string name="show_scrollbar_description">Показувати смугу прокручування</string>
     <string name="tab_arrangement">Упорядкувати вкладки</string>
+    <string name="tab_arrangement_description">Виберіть, які вкладки відображатимуться внизу екрана та в якому порядку. Перезапустіть застосунок, щоб застосувати зміни</string>
     <string name="like_autodownload">Автоматично завантажувати вподобані пісні</string>
     <string name="grp_localization">Локалізація</string>
     <string name="token_hidden">Натисніть, щоб показати токен</string>
@@ -145,6 +146,7 @@
     <string name="swipe_to_skip_description">Увімкніть горизонтальне гортання в плеєрі для перемикання пісень</string>
     <string name="restart_to_apply_changes">Перезапустіть застосунок, щоб застосувати зміни.</string>
     <string name="filter_arrangement">Упорядкувати фільтри</string>
+    <string name="filter_arrangement_description">Виберіть, які фільтри відображатимуться на екрані бібліотеки</string>
     <string name="home_sections_title">Розділи головної</string>
     <string name="home_sections_chips">Кнопки категорій</string>
     <string name="home_sections_chips_description">Показує вгорі головної кнопки для фільтрування розділів YouTube Music</string>
@@ -156,7 +158,6 @@
     <string name="android_auto">Android Auto</string>
     <string name="more_settings">Більше налаштувань</string>
     <string name="sync_mode_rw">Читати, записувати (також дозволити змінювати віддалений вміст)</string>
-    <string name="grp_library_and_content">Бібліотека та контент</string>
     <string name="sync_conflict_add_only">Зберігати весь локальний вміст, додавати новий віддалений вміст</string>
     <string name="grp_account_sync">Обліковий запис і синхронізація</string>
     <string name="missing_media_permission_warning">Для локальних носіїв потрібні дозволи на зберігання. Натисніть, щоб надати дозвіл.</string>
@@ -268,7 +269,6 @@
     <string name="oobe_welcome_tip">Для найкращого досвіду рекомендуємо виконати швидке налаштування, щоб персоналізувати ключові параметри, такі як тема, обліковий запис YouTube, локальні медіа та завантаження.</string>
     <string name="oobe_cache_title">Кеш пісень</string>
     <string name="oobe_cache_subtitle">Виберіть розмір кешу пісні. Це може допомогти зменшити проблеми з відтворенням через Інтернет або YouTube API</string>
-    <string name="action_logout_tooltip">Щоб повністю вийти, вийдіть зі свого облікового запису YouTube на веб-порталі, перш ніж використовувати цю кнопку виходу</string>
     <string name="grp_more_settings">Більше налаштувань</string>
     <string name="auto_scanner_tooltip">Автоматичне сканування враховує додавання й видалення пісень. Щоб оновити також метадані раніше сканованих пісень, установіть прапорець повторного сканування в розділі «Ручне сканування».</string>
     <string name="scanner_auto_end">Оновлення завантажень локальних медіафайлів та пісень завершено!</string>

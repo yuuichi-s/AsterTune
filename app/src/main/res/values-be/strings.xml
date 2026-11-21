@@ -218,7 +218,10 @@
     <string name="pause_search_history">Прыпыніць гісторыю пошуку</string>
     <string name="clear_search_history">Ачысціць гісторыю пошуку</string>
     <string name="clear_search_history_confirm">Сапраўды ачысціць гісторыю пошуку?</string>
-    <string name="enable_kugou">Шукаць тэксты песен у KuGou</string>
+    <string name="enable_kugou">Выкарыстоўваць KuGou</string>
+    <string name="enable_lrclib">Выкарыстоўваць LrcLib</string>
+    <string name="enable_betterlyrics">Выкарыстоўваць BetterLyrics</string>
+    <string name="enable_lyricsplus">Выкарыстоўваць Lyrics+</string>
     <string name="backup_restore">Рэзервовае капіраванне ды аднеўленне</string>
     <string name="action_backup">Рэзервовае капіраванне</string>
     <string name="action_restore">Аднаўленне з рэзервовай копіі</string>

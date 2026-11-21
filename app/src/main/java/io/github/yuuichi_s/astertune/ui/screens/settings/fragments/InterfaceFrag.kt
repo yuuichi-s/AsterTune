@@ -179,6 +179,7 @@ fun ColumnScope.TabArrangementFrag() {
 
     PreferenceEntry(
         title = { Text(stringResource(R.string.tab_arrangement)) },
+        description = stringResource(R.string.tab_arrangement_description),
         icon = { Icon(Icons.Rounded.Reorder, null) },
         onClick = {
             showTabArrangement = true
@@ -186,6 +187,7 @@ fun ColumnScope.TabArrangementFrag() {
     )
     PreferenceEntry(
         title = { Text(stringResource(R.string.filter_arrangement)) },
+        description = stringResource(R.string.filter_arrangement_description),
         icon = { Icon(Icons.Rounded.Reorder, null) },
         onClick = {
             showFilterArrangement = true

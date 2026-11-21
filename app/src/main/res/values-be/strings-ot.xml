@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Гэта папка ўжо ўключана ў сканаванне. Выдаліце яе з аднаго са спісаў.</string>
     <string name="scan_paths_rejected_dir">Нельга выбраць папку спампоўванняў і яе падпапкі</string>
     <string name="dl_select_folder">Выбраць папку</string>
+    <string name="tab_arrangement_description">Выберыце, якія ўкладкі будуць паказвацца ўнізе праграмы і ў якім парадку. Перазапусціце праграму, каб ужыць змены</string>
+    <string name="filter_arrangement_description">Выберыце, якія фільтры будуць паказвацца на экране бібліятэкі</string>
 </resources>

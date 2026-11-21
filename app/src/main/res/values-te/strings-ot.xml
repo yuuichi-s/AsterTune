@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">ఈ ఫోల్డర్ ఇప్పటికే స్కాన్‌లో చేర్చబడింది. రెండు జాబితాల్లో ఏదో ఒకదాని నుండి దీన్ని తీసివేయండి.</string>
     <string name="scan_paths_rejected_dir">డౌన్‌లోడ్ ఫోల్డర్‌ను, దాని ఉపఫోల్డర్‌లను ఎంచుకోలేరు</string>
     <string name="dl_select_folder">ఫోల్డర్‌ను ఎంచుకో</string>
+    <string name="tab_arrangement_description">యాప్ దిగువన ఏ ట్యాబ్‌లు ఏ క్రమంలో కనిపించాలో ఎంచుకోండి. మార్పులు అమలవడానికి యాప్‌ను పునఃప్రారంభించండి</string>
+    <string name="filter_arrangement_description">లైబ్రరీ స్క్రీన్‌లో ఏ ఫిల్టర్‌లు కనిపించాలో ఎంచుకోండి</string>
 </resources>

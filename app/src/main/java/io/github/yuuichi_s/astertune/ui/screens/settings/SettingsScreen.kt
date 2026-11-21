@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.LibraryBooks
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Lyrics
@@ -95,11 +94,6 @@ fun SettingsScreen(
         ElevatedCard(
             modifier = Modifier.fillMaxWidth()
         ) {
-            PreferenceEntry(
-                title = { Text(stringResource(R.string.grp_library_and_content)) },
-                icon = { Icon(Icons.AutoMirrored.Rounded.LibraryBooks, null) },
-                onClick = { navController.navigate("settings/library") }
-            )
             PreferenceEntry(
                 title = { Text(stringResource(R.string.local_player_settings_title)) },
                 icon = { Icon(Icons.Rounded.SdCard, null) },

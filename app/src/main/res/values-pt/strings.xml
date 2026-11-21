@@ -200,8 +200,8 @@
     <string name="clear_search_history_confirm">Deseja limpar todo o histórico de pesquisa?</string>
     <string name="disable_screenshot">Desativar captura de ecrã</string>
     <string name="disable_screenshot_desc">Quando esta opção está ativada, as capturas de ecrã e a visualização da aplicação em \"Recentes\" estão desativadas.</string>
-    <string name="enable_lrclib">Ativar provedor de letras LrcLib</string>
-    <string name="enable_kugou">Ativar provedor de letras KuGou</string>
+    <string name="enable_lrclib">Utilizar LrcLib</string>
+    <string name="enable_kugou">Utilizar KuGou</string>
     <string name="hide_explicit">Ocultar conteúdo explícito</string>
     <string name="backup_restore">Cópia de segurança e restauro</string>
     <string name="audio_quality_low">Baixa</string>
@@ -293,8 +293,8 @@
     <string name="custom_accent_color">Cor de destaque personalizada</string>
     <string name="custom_accent_color_description">Utilizar uma cor fixa à sua escolha como destaque em toda a aplicação</string>
     <string name="accent_color">Cor de destaque</string>
-    <string name="enable_betterlyrics">Ativar fornecedor de letras BetterLyrics</string>
-    <string name="enable_lyricsplus">Ativar fornecedor de letras Lyrics+</string>
+    <string name="enable_betterlyrics">Utilizar BetterLyrics</string>
+    <string name="enable_lyricsplus">Utilizar Lyrics+</string>
     <string name="ignore_audio_focus">Manter o foco de áudio</string>
     <string name="ignore_audio_focus_desc">Continuar a reproduzir quando outra aplicação assumir o foco de áudio. A música não será pausada por outras fontes de áudio, incluindo chamadas telefónicas.</string>
 </resources>

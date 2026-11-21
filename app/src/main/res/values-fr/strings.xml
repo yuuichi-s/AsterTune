@@ -216,7 +216,7 @@
     <string name="pause_search_history">Suspendre l\'historique de recherche</string>
     <string name="clear_search_history">Effacer l\'historique de recherche</string>
     <string name="clear_search_history_confirm">Voulez-vous vraiment effacer tout l’historique des recherches ?</string>
-    <string name="enable_kugou">Activer le fournisseur de paroles KuGou</string>
+    <string name="enable_kugou">Utiliser KuGou</string>
     <string name="backup_restore">Sauvegarder et Restaurer</string>
     <string name="action_backup">Sauvegarder</string>
     <string name="action_restore">Restaurer</string>
@@ -235,7 +235,7 @@
     <string name="add_anyway">Ajouter quand même</string>
     <string name="duplicates_description_single">Le titre est déjà dans votre playlist</string>
     <string name="duplicates_description_multiple">%d titres sont déjà dans votre playlist</string>
-    <string name="enable_lrclib">Activer le fournisseur de paroles LrcLib</string>
+    <string name="enable_lrclib">Utiliser LrcLib</string>
     <string name="hide_explicit">Masquer le contenu explicite</string>
     <string name="discord_integration">Intégration Discord</string>
     <string name="dismiss">Ignorer</string>
@@ -290,8 +290,8 @@
     <string name="accent_color">Couleur d\'accentuation</string>
     <string name="ignore_audio_focus">Conserver le focus audio</string>
     <string name="ignore_audio_focus_desc">Continuer la lecture lorsqu\'une autre application prend le focus audio. La musique ne sera pas mise en pause par d\'autres sources audio, y compris les appels téléphoniques.</string>
-    <string name="enable_betterlyrics">Activer le fournisseur de paroles BetterLyrics</string>
-    <string name="enable_lyricsplus">Activer le fournisseur de paroles Lyrics+</string>
+    <string name="enable_betterlyrics">Utiliser BetterLyrics</string>
+    <string name="enable_lyricsplus">Utiliser Lyrics+</string>
     <string name="duration_hours_minutes">%1$d h %2$d min</string>
     <string name="duration_minutes">%d min</string>
     <string name="heading_with_count">%1$s - %2$d</string>

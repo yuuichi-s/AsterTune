@@ -28,7 +28,6 @@
     <string name="grp_general">כללי</string>
     <string name="grp_interface">ממשק</string>
     <string name="grp_layout">פריסה</string>
-    <string name="grp_library_and_content">ספרייה ותוכן</string>
     <string name="grp_localization">שפה ואזור</string>
     <string name="grp_lyrics_format">עיצוב</string>
     <string name="grp_lyrics_parser">ניתוח מילות שירים</string>
@@ -45,8 +44,10 @@
     <string name="show_liked_and_downloaded_playlist">הצג רשימות השמעה של שירים שהורדו או שנתנת להם לייק בספרייה</string>
     <string name="slim_navbar_description">הסר תוויות טקסט כדי להקטין את גובה סרגל הניווט</string>
     <string name="tab_arrangement">סידור טאבים</string>
+    <string name="tab_arrangement_description">אפשר לבחור אילו טאבים יופיעו בתחתית האפליקציה ובאיזה סדר. יש להפעיל מחדש את האפליקציה כדי להחיל את השינויים</string>
     <string name="tab_arrangement_disable_tip">--- גרור למטה לכאן כדי להשבית ---</string>
     <string name="filter_arrangement">סידור מסננים</string>
+    <string name="filter_arrangement_description">אפשר לבחור אילו מסננים יופיעו במסך הספרייה</string>
     <string name="home_sections_title">מקטעי דף הבית</string>
     <string name="home_sections_chips">כפתורי קטגוריות</string>
     <string name="home_sections_chips_description">מציג כפתורים בחלק העליון של דף הבית לסינון המקטעים של YouTube Music</string>
@@ -284,7 +285,6 @@
     <string name="slider_style_squiggly">גלי</string>
     <string name="slider_style_default">ברירת מחדל</string>
     <string name="slider_style_slim">דק</string>
-    <string name="action_logout_tooltip">כדי להתנתק לחלוטין, יש לצאת מחשבון YouTube בפורטל האינטרנט לפני השימוש בלחצן ההתנתקות הזה</string>
     <string name="sleep_timer_fade">עמעום הדרגתי</string>
     <string name="sleep_timer_fade_duration">משך העמעום</string>
     <string name="sleep_timer_fade_duration_desc">מספר השניות להנמכת עוצמת הקול לפני העצירה</string>

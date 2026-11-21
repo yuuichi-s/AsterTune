@@ -52,6 +52,7 @@
     <string name="show_scrollbar_title">Barra de desplazamiento</string>
     <string name="show_scrollbar_description">Mostrar la barra de desplazamiento</string>
     <string name="tab_arrangement">Organizar pestañas</string>
+    <string name="tab_arrangement_description">Elige qué pestañas se muestran en la parte inferior de la aplicación y en qué orden. Reinicia la aplicación para aplicar los cambios</string>
     <string name="tab_arrangement_home_required">La pestaña Inicio es necesaria.</string>
     <string name="token_hidden">Pulsa para mostrar el token</string>
     <string name="token_shown">Pulsa de nuevo para copiar o editar</string>
@@ -141,6 +142,7 @@
     <string name="lyrics_prefer_local_description">Priorizar la resolución de archivos de letras locales antes de utilizar todos los proveedores de nube. Desactiva esta opción para dar prioridad a los proveedores de nube</string>
     <string name="local_library_enable_title">Habilitar medios locales</string>
     <string name="filter_arrangement">Organizar filtros</string>
+    <string name="filter_arrangement_description">Elige qué filtros se muestran en la pantalla de la biblioteca</string>
     <string name="home_sections_title">Secciones de Inicio</string>
     <string name="home_sections_chips">Botones de categorías</string>
     <string name="home_sections_chips_description">Muestra botones en la parte superior de Inicio para filtrar las secciones de YouTube Music</string>
@@ -155,7 +157,6 @@
     <string name="restart_to_apply_changes">Reinicia la aplicación para aplicar los cambios.</string>
     <string name="more_settings">Más ajustes</string>
     <string name="grp_account_sync">Cuenta y sincronización</string>
-    <string name="grp_library_and_content">Biblioteca y contenido</string>
     <string name="sync_mode_rw">Lectura/escritura (también permite cambios en el contenido remoto)</string>
     <string name="sync_conflict_add_only">Mantener todo el contenido local, añadir nuevo contenido remoto</string>
     <string name="sync_conflict_overwrite">Sobrescribir el contenido local con contenido remoto</string>
@@ -278,7 +279,6 @@
     <string name="audio_decoder_preference">Decodificador de audio</string>
     <string name="audio_decoder_system_only">Sólo decodificadores del sistema</string>
     <string name="audio_decoder_system_with_ffmpeg">Priorizar los decodificadores del sistema</string>
-    <string name="action_logout_tooltip">Para cerrar sesión completamente, sal de tu cuenta de YouTube en el portal web antes de utilizar este botón de cierre de sesión</string>
     <string name="max_queues_title">Número máximo de colas</string>
     <string name="oobe_welcome_tip">Para disfrutar de la mejor experiencia, te recomendamos completar una configuración rápida para personalizar ajustes clave como el tema, la cuenta de YouTube, los medios locales y las descargas.</string>
     <string name="oobe_cache_title">Caché de canciones</string>

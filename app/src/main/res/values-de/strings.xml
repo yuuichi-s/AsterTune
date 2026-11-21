@@ -206,7 +206,7 @@
     <string name="pause_search_history">Suchverlauf anhalten</string>
     <string name="clear_search_history">Suchverlauf löschen</string>
     <string name="clear_search_history_confirm">Bist du sicher, dass du den gesamten Suchverlauf löschen willst?</string>
-    <string name="enable_kugou">KuGou-Songtext-Anbieter aktivieren</string>
+    <string name="enable_kugou">KuGou verwenden</string>
     <string name="backup_restore">Sichern und Wiederherstellen</string>
     <string name="action_backup">Sichern</string>
     <string name="action_restore">Wiederherstellen</string>
@@ -261,7 +261,7 @@
     <string name="squiggly">Schnörkelig</string>
     <string name="grid_cell_size">Größe der Rasterzellen</string>
     <string name="search_history">Suchverlauf</string>
-    <string name="enable_lrclib">LrcLib-Songtext-Anbieter aktivieren</string>
+    <string name="enable_lrclib">LrcLib verwenden</string>
     <string name="hide_explicit">Explizite Inhalte ausblenden</string>
     <string name="discord_integration">Discord-Integration</string>
     <string name="library_song_empty">Songs aus der Bibliothek werden hier angezeigt</string>
@@ -284,8 +284,8 @@
     <string name="custom_accent_color">Benutzerdefinierte Akzentfarbe</string>
     <string name="custom_accent_color_description">Eine feste Farbe deiner Wahl als Akzentfarbe in der gesamten App verwenden</string>
     <string name="accent_color">Akzentfarbe</string>
-    <string name="enable_betterlyrics">BetterLyrics-Songtext-Anbieter aktivieren</string>
-    <string name="enable_lyricsplus">Lyrics+-Songtext-Anbieter aktivieren</string>
+    <string name="enable_betterlyrics">BetterLyrics verwenden</string>
+    <string name="enable_lyricsplus">Lyrics+ verwenden</string>
     <string name="ignore_audio_focus">Audiofokus beibehalten</string>
     <string name="ignore_audio_focus_desc">Die Wiedergabe fortsetzen, wenn eine andere App den Audiofokus übernimmt. Die Musik wird bei anderen Audioquellen, einschließlich Telefonanrufen, nicht pausiert.</string>
 </resources>

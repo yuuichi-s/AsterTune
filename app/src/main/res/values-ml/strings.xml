@@ -269,8 +269,10 @@
     <string name="clear_listen_history">കേട്ടതിന്റെ ചരിത്രം കളയുക</string>
     <string name="clear_listen_history_confirm">എല്ലാ കേട്ട ചരിത്രവും കളയണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?</string>
     <string name="use_login_for_browse">കണ്ടെന്റ് കാണുവാൻ ലോഗിൻ ചെയ്യുക</string>
-    <string name="enable_lrclib">LrcLib വരികൾ ഓൺ ആക്കുക</string>
-    <string name="enable_kugou">KuGou വരികൾ ഓൺ ആക്കുക</string>
+    <string name="enable_lrclib">LrcLib ഉപയോഗിക്കുക</string>
+    <string name="enable_kugou">KuGou ഉപയോഗിക്കുക</string>
+    <string name="enable_betterlyrics">BetterLyrics ഉപയോഗിക്കുക</string>
+    <string name="enable_lyricsplus">Lyrics+ ഉപയോഗിക്കുക</string>
     <string name="imported_playlist">കൊണ്ടുവന്ന പ്ലേലിസ്റ്റ്</string>
     <string name="discord_integration">Discord യോജിപ്പിക്കുക</string>
     <string name="enable_discord_rpc">റിച്ഛ് പ്രെസെൻസ് ഓൺ ആക്കുക</string>

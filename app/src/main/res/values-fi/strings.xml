@@ -209,7 +209,7 @@
     <string name="stop_music_on_task_clear">Pysäytä musiikki, kun sovellus suljetaan</string>
     <string name="search_history">Hakuhistoria</string>
     <string name="disable_screenshot_desc">Kun tämä asetus on päällä, kuvakaappaukset ja sovelluksen näkyminen äskeisissä sovelluksissa poistetaan käytöstä.</string>
-    <string name="enable_lrclib">Ota LrcLib-lyriikantarjoaja käyttöön</string>
+    <string name="enable_lrclib">Käytä LrcLib-palvelua</string>
     <string name="hide_explicit">Piilota sopimaton sisältö</string>
     <string name="dismiss">Hylkää</string>
     <string name="discord_information">AsterTune käyttää KizzyRPC-kirjastoa asettaaksesi Discord-tilisi tilan. Tämä edellyttää Discord Gateway-yhteyttä, jota voidaan katsoa Discordin käyttöehtojen rikkomuksena. Ei kuitenkaan ole tiedossa tapauksia, joissa käyttäjätilit olisi jäädytetty tästä syystä. Käytä omalla vastuullasi. \n \nAsterTune poimii ainoastaan tunnuksesi, ja kaikki muu säilytetään paikallisesti.</string>
@@ -266,7 +266,9 @@
     <string name="clear_search_history_confirm">Oletko varma, että haluat tyhjentää kaiken hakuhistorian?</string>
     <string name="use_login_for_browse">Käytä kirjautumista sisällön selaamista varten</string>
     <string name="use_login_for_browse_desc">Tämä voi vaikuttaa näkemääsi sisältöön ja näyttää esimerkiksi vain ensiluokkaisia albumeita, jos olet kirjautunut sisään Premium-tilillä</string>
-    <string name="enable_kugou">Ota KuGou-sanoitukset käyttöön</string>
+    <string name="enable_kugou">Käytä KuGou-palvelua</string>
+    <string name="enable_betterlyrics">Käytä BetterLyrics-palvelua</string>
+    <string name="enable_lyricsplus">Käytä Lyrics+-palvelua</string>
     <string name="backup_restore">Varmuuskopiointi ja palautus</string>
     <string name="action_backup">Varmuuskopio</string>
     <string name="action_restore">Palauta</string>

@@ -101,7 +101,6 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="grp_general">General</string>
     <string name="grp_interface">Interface</string>
     <string name="grp_layout">Layout</string>
-    <string name="grp_library_and_content">Library and content</string>
 	<string name="grp_localization">Localization</string>
     <string name="grp_lyrics_format">Formatting</string>
     <string name="grp_lyrics_parser">Parser</string>
@@ -170,12 +169,15 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="slider_style_default">Default</string>
     <string name="slider_style_slim">Slim</string>
     <string name="tab_arrangement">Arrange tabs</string>
+    <string name="tab_arrangement_description">Choose which tabs appear at the bottom of the app and in what order. Restart the app to apply changes</string>
     <string name="tab_arrangement_disable_tip">--- Drag below here to disable ---</string>
     <string name="tab_arrangement_home_required">The Home tab is required.</string>
     <string name="tablet_ui_title">Force tablet UI</string>
     <string name="tablet_ui_title_description">Force a split interface optimized for large screens. This setting has no effect if minimum width requirements are not met</string>
     <string name="filter_arrangement">Arrange filters</string>
+    <string name="filter_arrangement_description">Choose which filters appear on the Library screen</string>
     <string name="home_sections_title">Home sections</string>
+    <string name="home_sections_description">Choose what to show on the Home screen</string>
     <string name="home_sections_chips">Category buttons</string>
     <string name="home_sections_chips_description">Shows buttons at the top of Home for filtering YouTube Music sections</string>
     <string name="home_sections_ytm">YouTube Music sections</string>
@@ -186,7 +188,6 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Content settings -->
     <string name="like_autodownload">Automatically download your liked songs</string>
-    <string name="action_logout_tooltip">To fully log out, please sign out of your YouTube account in the web portal before using this logout button</string>
     <string name="token_adv_login_description">This is an ADVANCED login method. As an alternative to the web portal, you may directly enter or update your login token here. For example, this can speed up logging in on multiple devices. Please note that any invalid token formats the app fails to parse will not be accepted</string>
     <string name="token_hidden">Tap to show token</string>
     <string name="token_shown">Tap again to copy or edit</string>

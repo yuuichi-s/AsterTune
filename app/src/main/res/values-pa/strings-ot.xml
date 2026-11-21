@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">ਇਹ ਫੋਲਡਰ ਪਹਿਲਾਂ ਹੀ ਸਕੈਨ ਵਿੱਚ ਸ਼ਾਮਲ ਹੈ। ਇਸ ਨੂੰ ਦੋ ਸੂਚੀਆਂ ਵਿੱਚੋਂ ਕਿਸੇ ਇੱਕ ਤੋਂ ਹਟਾਓ।</string>
     <string name="scan_paths_rejected_dir">ਡਾਊਨਲੋਡ ਫੋਲਡਰ ਅਤੇ ਇਸ ਦੇ ਸਬਫੋਲਡਰ ਨਹੀਂ ਚੁਣੇ ਜਾ ਸਕਦੇ</string>
     <string name="dl_select_folder">ਫੋਲਡਰ ਚੁਣੋ</string>
+    <string name="tab_arrangement_description">ਚੁਣੋ ਕਿ ਐਪ ਦੇ ਹੇਠਾਂ ਕਿਹੜੀਆਂ ਟੈਬਾਂ ਦਿਖਾਈ ਦੇਣ ਅਤੇ ਕਿਸ ਕ੍ਰਮ ਵਿੱਚ। ਤਬਦੀਲੀਆਂ ਲਾਗੂ ਕਰਨ ਲਈ ਐਪ ਮੁੜ ਚਾਲੂ ਕਰੋ</string>
+    <string name="filter_arrangement_description">ਚੁਣੋ ਕਿ ਲਾਇਬ੍ਰੇਰੀ ਸਕ੍ਰੀਨ ’ਤੇ ਕਿਹੜੇ ਫ਼ਿਲਟਰ ਦਿਖਾਈ ਦੇਣ</string>
 </resources>

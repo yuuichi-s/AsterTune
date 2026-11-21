@@ -43,7 +43,6 @@
     <string name="grp_general">सामान्य</string>
     <string name="grp_interface">इंटरफेस</string>
     <string name="grp_layout">लेआउट</string>
-    <string name="grp_library_and_content">संग्रह और सामग्री</string>
     <string name="grp_localization">स्थानीयकरण</string>
     <string name="grp_lyrics_format">स्वरूपण</string>
     <string name="create_sync_playlist_description">ध्यान दें: इससे YouTube Music के साथ सिंक करने की सुविधा मिलती है। इसे बाद में बदला नहीं जा सकता। आप सिंक की गई प्लेलिस्ट में लोकल गीत नहीं जोड़ सकते।</string>
@@ -85,8 +84,10 @@
     <string name="show_scrollbar_title">स्क्रॉल बार</string>
     <string name="show_scrollbar_description">स्क्रॉल बार दिखाएं</string>
     <string name="tab_arrangement">टैब्स को व्यवस्थित करें</string>
+    <string name="tab_arrangement_description">चुनें कि ऐप के नीचे कौन-से टैब किस क्रम में दिखें। बदलाव लागू करने के लिए ऐप को दोबारा शुरू करें</string>
     <string name="tab_arrangement_home_required">होम टैब आवश्यक है।</string>
     <string name="filter_arrangement">फ़िल्टर्स व्यवस्थित करें</string>
+    <string name="filter_arrangement_description">चुनें कि संग्रह स्क्रीन पर कौन-से फ़िल्टर दिखें</string>
     <string name="home_sections_title">होम के अनुभाग</string>
     <string name="home_sections_chips">श्रेणी बटन</string>
     <string name="home_sections_chips_description">होम स्क्रीन पर सबसे ऊपर YouTube Music के अनुभागों को फ़िल्टर करने के लिए बटन दिखाता है</string>
@@ -194,7 +195,6 @@
     <string name="seek_increment">आगे/पीछे जाने का अंतराल</string>
     <string name="lyrics_synced_clickable">क्लिक करने योग्य लिरिक्स</string>
     <string name="att_translator">अनुवादक (%s)</string>
-    <string name="action_logout_tooltip">पूरी तरह से लॉग आउट करने के लिए, कृपया वेब पोर्टल में अपने YouTube खाते से साइन आउट करें इस लॉगआउट बटन का उपयोग करने से पहले</string>
     <plurals name="scanner_n_song_processed">
         <item quantity="one">%d गीत संसाधित</item>
         <item quantity="other">%d गीत संसाधित</item>

@@ -206,8 +206,10 @@
     <string name="pause_search_history">Pauziraj istoriju pretrage</string>
     <string name="disable_screenshot">Onemogući slikanje ekrana</string>
     <string name="disable_screenshot_desc">Kada je opcija omogućena, slikanje zaslona i pregled aplikacije u Nedavnim je onemogućeno.</string>
-    <string name="enable_lrclib">Omogući LrcLib dobavljača teksta pesama</string>
-    <string name="enable_kugou">Omogući KuGou dobavljača teksta</string>
+    <string name="enable_lrclib">Koristi LrcLib</string>
+    <string name="enable_kugou">Koristi KuGou</string>
+    <string name="enable_betterlyrics">Koristi BetterLyrics</string>
+    <string name="enable_lyricsplus">Koristi Lyrics+</string>
     <string name="hide_explicit">Sakrij eksplicitan sadržaj</string>
     <string name="backup_restore">Rezervne kopije i vraćanje</string>
     <string name="action_backup">Rezervna kopija</string>

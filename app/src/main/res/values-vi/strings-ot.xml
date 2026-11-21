@@ -33,6 +33,7 @@
     <string name="player_background_blur">Làm mờ</string>
     <string name="slim_navbar_title">Làm thanh điều chỉnh mỏng hơn</string>
     <string name="tab_arrangement">Sắp xếp các tab</string>
+    <string name="tab_arrangement_description">Chọn các tab sẽ hiển thị ở dưới cùng của màn hình và sắp xếp thứ tự của chúng. Khởi động lại ứng dụng để áp dụng thay đổi</string>
     <string name="tab_arrangement_home_required">Tag Home là cần thiết (phải giữ lại).</string>
     <string name="like_autodownload">Tự động tải xuống các bài hát được đánh dấu là đã thích</string>
     <string name="folders">Thư mục</string>
@@ -51,6 +52,7 @@
     <string name="sort_by_play_count">Số lần nghe</string>
     <string name="attrib_zhuang">Zion Huang về InnerTune</string>
     <string name="filter_arrangement">Sắp xếp bộ lọc</string>
+    <string name="filter_arrangement_description">Chọn các bộ lọc sẽ hiển thị trên màn hình Thư viện</string>
     <string name="home_sections_title">Các mục trên Trang chủ</string>
     <string name="home_sections_chips">Nút danh mục</string>
     <string name="home_sections_chips_description">Hiển thị các nút ở đầu Trang chủ để lọc các mục của YouTube Music</string>
@@ -68,7 +70,6 @@
     <string name="grp_lyrics_source">Nguồn lời bài hát</string>
     <string name="grp_manual_scanner">Quét bằng tay</string>
     <string name="grp_sync">Đồng bộ</string>
-    <string name="grp_library_and_content">Thư viện và nội dung</string>
     <string name="sync_conflict_overwrite">Ghi đè nội dung cục bộ với nội dung từ xa</string>
     <string name="sync_conflict_add_only">Giữ tất cả nội dung cục bộ, thêm nội dung mới từ xa</string>
     <string name="token_hidden">Chạm để hiện thị token</string>

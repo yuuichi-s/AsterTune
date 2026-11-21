@@ -26,6 +26,7 @@
     <string name="token_adv_login_description">Dies ist eine erweiterte Anmeldemethode. Als Alternative zum Webportal kannst du hier dein Anmeldetoken direkt eingeben oder aktualisieren. Dies kann zum Beispiel die Anmeldung auf mehreren Geräten beschleunigen. Ungültige Tokenformate, die die App nicht verarbeiten kann, werden nicht akzeptiert</string>
     <string name="grp_sync">Synchronisation</string>
     <string name="filter_arrangement">Filter anordnen</string>
+    <string name="filter_arrangement_description">Wähle, welche Filter in der Bibliothek angezeigt werden</string>
     <string name="home_sections_title">Abschnitte der Startseite</string>
     <string name="home_sections_chips">Kategorie-Schaltflächen</string>
     <string name="home_sections_chips_description">Zeigt oben auf der Startseite Schaltflächen zum Filtern der YouTube-Music-Abschnitte</string>
@@ -40,7 +41,6 @@
     <string name="create_sync_playlist">Playlist synchronisieren</string>
     <string name="prefs_advanced">Erweitert</string>
     <string name="grp_account_sync">Konto und Synchronisation</string>
-    <string name="grp_library_and_content">Bibliothek und Inhalt</string>
     <string name="tab_arrangement_home_required">Die Startseite ist notwendig.</string>
     <string name="like_autodownload">Favorisierte Titel automatisch herunterladen</string>
     <string name="sync_conflict_add_only">Alle lokalen Inhalte behalten und neue Online-Inhalte hinzufügen</string>
@@ -74,6 +74,7 @@
     <string name="player_background_blur">Unscharfer Hintergrund</string>
     <string name="slim_navbar_description">Entferne Beschriftung, um die Höhe der Navigationsleiste zu reduzieren</string>
     <string name="tab_arrangement">Navigationselemente anordnen</string>
+    <string name="tab_arrangement_description">Wähle, welche Navigationselemente unten in der App erscheinen und in welcher Reihenfolge. Starte die App neu, damit die Änderungen wirksam werden</string>
     <string name="sync_progress_success">Synchronisation abgeschlossen</string>
     <string name="create_sync_playlist_description">Hinweis: Dies ermöglicht die Synchronisierung mit YouTube Music. Diese Einstellung kann später nicht geändert werden. Du kannst synchronisierten Playlists keine lokalen Songs hinzufügen.</string>
     <string name="attrib_zhuang">Zion Huang für InnerTune</string>
@@ -281,7 +282,6 @@
     <string name="oobe_cache_subtitle">Wähle eine Größe für den Song-Cache. Dies kann helfen, Wiedergabeprobleme im Zusammenhang mit dem Internet oder der YouTube-API zu reduzieren</string>
     <string name="library_filter">Bibliotheksfilter</string>
     <string name="off">Aus</string>
-    <string name="action_logout_tooltip">Um dich vollständig abzumelden, melde dich zuerst im Webportal von deinem YouTube-Konto ab, bevor du diese Abmeldeschaltfläche verwendest</string>
     <string name="att_based_on">Basiert auf</string>
     <string name="auto_scanner_tooltip">Automatische Scans erfassen hinzugefügte und entfernte Songs. Um auch die Metadaten bereits gescannter Songs zu aktualisieren, aktiviere unter „Manueller Scan“ das Kontrollkästchen zum erneuten Scannen.</string>
     <string name="download_on_wifi_only_description">Bei mobilen Daten warten und erst bei einer WLAN-Verbindung herunterladen.</string>

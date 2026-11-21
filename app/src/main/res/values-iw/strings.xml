@@ -265,8 +265,8 @@
     <string name="use_login_for_browse_desc">זה יכול להשפיע על התוכן שתראו, לדוגמה, יציג אלבומים למשתמשי פרימיום בלבד אם אתם מחוברים לחשבון פרימיום</string>
     <string name="disable_screenshot">השבתת צילום מסך</string>
     <string name="disable_screenshot_desc">כאשר אפשרות זו מופעלת, צילומי מסך ותצוגת האפליקציה תחת \'אחרונים\' מושבתות.</string>
-    <string name="enable_lrclib">הפעל את ספק המילים של LrcLib</string>
-    <string name="enable_kugou">הפעלת ספק מילות השיר KuGou</string>
+    <string name="enable_lrclib">שימוש ב־LrcLib</string>
+    <string name="enable_kugou">שימוש ב־KuGou</string>
     <string name="hide_explicit">הסתר תוכן בוטה</string>
     <string name="backup_restore">גיבוי ושחזור</string>
     <string name="action_backup">גיבוי</string>
@@ -290,8 +290,8 @@
     <string name="accent_color">צבע הדגשה</string>
     <string name="ignore_audio_focus">שמירה על מיקוד השמע</string>
     <string name="ignore_audio_focus_desc">המשך ההפעלה כאשר אפליקציה אחרת מקבלת מיקוד שמע. המוזיקה לא תושהה בגלל מקורות שמע אחרים, כולל שיחות טלפון.</string>
-    <string name="enable_betterlyrics">הפעלת ספק מילות השיר BetterLyrics</string>
-    <string name="enable_lyricsplus">הפעלת ספק מילות השיר Lyrics+</string>
+    <string name="enable_betterlyrics">שימוש ב־BetterLyrics</string>
+    <string name="enable_lyricsplus">שימוש ב־Lyrics+</string>
     <string name="duration_hours_minutes">%1$d שע׳ %2$d דק׳</string>
     <string name="duration_minutes">%d דק׳</string>
     <string name="heading_with_count">%1$s - %2$d</string>

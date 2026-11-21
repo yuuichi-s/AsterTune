@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Deze map staat al bij de te scannen mappen. Verwijder de map uit een van de twee lijsten.</string>
     <string name="scan_paths_rejected_dir">De downloadmap en de bijbehorende submappen kunnen niet worden geselecteerd</string>
     <string name="dl_select_folder">Map selecteren</string>
+    <string name="tab_arrangement_description">Kies welke tabbladen onderaan de app worden weergegeven en in welke volgorde. Start de app opnieuw om de wijzigingen toe te passen</string>
+    <string name="filter_arrangement_description">Kies welke filters in de bibliotheek worden weergegeven</string>
 </resources>

@@ -18,6 +18,7 @@
     <string name="tab_arrangement_disable_tip">--- Przeciągnij poniżej tego miejsca, aby wyłączyć ---</string>
     <string name="slim_navbar_description">Usuń etykiety aby zmniejszyć wysokość paska nawigacji</string>
     <string name="filter_arrangement">Ułóż filtry</string>
+    <string name="filter_arrangement_description">Wybierz, które filtry mają się pojawiać na ekranie biblioteki</string>
     <string name="home_sections_title">Sekcje ekranu głównego</string>
     <string name="home_sections_chips">Przyciski kategorii</string>
     <string name="home_sections_chips_description">Wyświetla u góry ekranu głównego przyciski do filtrowania sekcji YouTube Music</string>
@@ -47,6 +48,7 @@
     <string name="player_background_default">Jak motyw</string>
     <string name="show_liked_and_downloaded_playlist">Pokaż playlisty polubionych i pobranych utworów w bibliotece</string>
     <string name="tab_arrangement">Ułóż karty</string>
+    <string name="tab_arrangement_description">Wybierz, które karty mają się pojawiać u dołu aplikacji i w jakiej kolejności. Uruchom aplikację ponownie, aby zastosować zmiany</string>
     <string name="token_hidden">Kliknij aby pokazać token</string>
     <string name="lyrics_settings_title">Tekst</string>
     <string name="scan_paths_title">Skonfiguruj lokalizacje skanowania…</string>
@@ -157,7 +159,6 @@
     <string name="more_settings">Więcej ustawień</string>
     <string name="grp_account_sync">Konto oraz synchronizacja</string>
     <string name="sync_mode">Tryb synchronizacji</string>
-    <string name="grp_library_and_content">Biblioteka i treści</string>
     <string name="missing_media_permission_warning">Dostęp do pamięci jest niezbędny dla mediów lokalnych. Kliknij aby dać pozwolenie.</string>
     <string name="sync_conflict_add_only">Zachowaj całą zawartość lokalną, dodaj nową zawartość zdalną</string>
     <string name="sync_conflict_overwrite">Nadpisz zawartość lokalną zawartością zdalną</string>
@@ -253,7 +254,6 @@
     <string name="library_filter">Filter biblioteki</string>
     <string name="toggle_lyrics">Włącz/wyłącz tekst piosenki</string>
     <string name="ffmpeg_lgpl">To oprogramowanie używa biblioteki z projektu FFmpeg pod LGPLv2.1</string>
-    <string name="action_logout_tooltip">By w pełni się wylogować, proszę o wylogowanie się że swojego konta YouTube q przeglądarce przed naciśnięciem przycisku wylogowania</string>
     <string name="audio_decoder_ffmpeg_only">Priorytetyzuj dekoder FFmpeg</string>
     <string name="audio_decoder_preference">Dekoder audio</string>
     <string name="audio_decoder_system_only">Wyłącznie systemowe dekodery</string>

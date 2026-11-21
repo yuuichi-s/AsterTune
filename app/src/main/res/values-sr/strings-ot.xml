@@ -47,7 +47,6 @@
     <string name="grp_general">Opšte</string>
     <string name="grp_interface">Interfejs</string>
     <string name="grp_layout">Raspored</string>
-    <string name="grp_library_and_content">Biblioteka i sadržaj</string>
     <string name="grp_localization">Lokalizacija</string>
     <string name="grp_lyrics_format">Formatiranje</string>
     <string name="grp_lyrics_parser">Parser</string>
@@ -83,11 +82,13 @@
     <string name="slim_navbar_title">Tanka navigaciona traka</string>
     <string name="slim_navbar_description">Uklonite tekstualne oznake da biste smanjili visinu navigacione trake</string>
     <string name="tab_arrangement">Rasporedi kartice</string>
+    <string name="tab_arrangement_description">Izaberi koje se kartice prikazuju na dnu aplikacije i kojim redosledom. Ponovo pokreni aplikaciju da bi se promene primenile</string>
     <string name="tab_arrangement_disable_tip">--- Prevucite ovde ispod da biste onemogućili ---</string>
     <string name="tab_arrangement_home_required">Početna kartica je obavezna.</string>
     <string name="tablet_ui_title">Prisilno koristi tablet interfejs</string>
     <string name="tablet_ui_title_description">Prisilno koristi podeljeni interfejs optimizovan za velike ekrane. Ovo podešavanje nema efekta ako nisu ispunjeni zahtevi za minimalnu širinu</string>
     <string name="filter_arrangement">Rasporedi filtere</string>
+    <string name="filter_arrangement_description">Izaberi koji se filteri prikazuju na ekranu biblioteke</string>
     <string name="home_sections_title">Odeljci početne stranice</string>
     <string name="home_sections_chips">Dugmad kategorija</string>
     <string name="home_sections_chips_description">Prikazuje dugmad na vrhu početne stranice za filtriranje YouTube Music odeljaka</string>

@@ -8,9 +8,8 @@
  */
 package io.github.yuuichi_s.astertune.ui.screens.settings.fragments
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Person
@@ -28,10 +27,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.edit
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.App.Companion.forgetAccount
 import io.github.yuuichi_s.astertune.LocalAccountImageFetcher
 import io.github.yuuichi_s.astertune.R
@@ -51,11 +53,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
 import io.github.yuuichi_s.astertune.ui.dialog.TextFieldDialog
 import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.rememberPreference
-import com.zionhuang.innertube.YouTube
-import com.zionhuang.innertube.utils.parseCookieString
-import androidx.compose.foundation.layout.Column
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -101,9 +98,6 @@ fun ColumnScope.AccountFrag(navController: NavController) {
                 forgetAccount(context)
             }
         )
-        Spacer(Modifier.height(8.dp))
-        InfoLabel(stringResource(R.string.action_logout_tooltip))
-        Spacer(Modifier.height(24.dp))
     }
 
     PreferenceEntry(

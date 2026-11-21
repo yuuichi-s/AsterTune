@@ -58,7 +58,6 @@
     <string name="err_invalid_ytm_song">Musiqini oxutmaq mümkün olmadı. Yalnız YouTube Music-də əlçatan olan məzmun oxuna bilər</string>
     <string name="grp_account_sync">Hesab və sinxronizasiya</string>
     <string name="grp_behavior">Davranış</string>
-    <string name="grp_library_and_content">Kitabxana və kontentlər</string>
     <string name="grp_sync">Sinxronizasiya</string>
     <string name="app_info_title">Tətbiq məlumatları</string>
     <string name="check_for_update">Yeniləmələri yoxlayın</string>
@@ -113,4 +112,6 @@
     <string name="scan_paths_already_included">Bu qovluq artıq skana daxil edilib. Onu siyahılardan birindən çıxarın.</string>
     <string name="scan_paths_rejected_dir">Endirmə qovluğunu və onun alt qovluqlarını seçmək olmaz</string>
     <string name="dl_select_folder">Qovluq seç</string>
+    <string name="tab_arrangement_description">Tətbiqin aşağı hissəsində hansı tabların hansı ardıcıllıqla göstəriləcəyini seçin. Dəyişiklikləri tətbiq etmək üçün tətbiqi yenidən başladın</string>
+    <string name="filter_arrangement_description">Kitabxana ekranında hansı filtrlərin göstəriləcəyini seçin</string>
 </resources>

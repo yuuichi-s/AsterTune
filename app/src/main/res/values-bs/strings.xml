@@ -75,7 +75,7 @@
     <string name="search_history">Historija pretrage</string>
     <string name="pause_search_history">Pauziraj historiju pretrage</string>
     <string name="disable_screenshot">Onemogući slikanje zaslona</string>
-    <string name="enable_kugou">Omogući KuGou dobavljača teksta</string>
+    <string name="enable_kugou">Koristi KuGou</string>
     <string name="backup_create_success">Rezervna kopija je uspješno sagrađena</string>
     <string name="backup_create_failed">Nije moguće napraviti rezervnu kopiju</string>
     <string name="restore_failed">Neuspješan povratak rezervne kopije</string>
@@ -266,7 +266,9 @@
     <string name="clear_listen_history">Izbriši historiju slušanja</string>
     <string name="clear_search_history_confirm">Da li ste sigurni da želite da izbrišete svu historiju pretrage?</string>
     <string name="disable_screenshot_desc">Kada je opcija omogućena, slikanje zaslona i pregled aplikacije u Nedavnim je onemogućeno.</string>
-    <string name="enable_lrclib">Omogući LrcLib dobavljača teksta</string>
+    <string name="enable_lrclib">Koristi LrcLib</string>
+    <string name="enable_betterlyrics">Koristi BetterLyrics</string>
+    <string name="enable_lyricsplus">Koristi Lyrics+</string>
     <string name="hide_explicit">Sakrij eksplicitan sadržaj</string>
     <string name="backup_restore">Rezervne kopije i povratak</string>
     <string name="action_backup">Rezervna kopija</string>

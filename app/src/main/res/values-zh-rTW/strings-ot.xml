@@ -53,7 +53,6 @@
     <string name="grp_behavior">操作</string>
     <string name="grp_extra_scanner_settings">歌曲比對條件</string>
     <string name="grp_general">一般</string>
-    <string name="grp_library_and_content">音樂庫和內容</string>
     <string name="grp_localization">本地化</string>
     <string name="grp_lyrics_parser">解析器</string>
     <string name="grp_lyrics_source">歌詞來源</string>
@@ -106,11 +105,13 @@
     <string name="show_scrollbar_title">捲動軸</string>
     <string name="show_scrollbar_description">顯示捲動軸</string>
     <string name="tab_arrangement">排列選項卡</string>
+    <string name="tab_arrangement_description">選擇應用程式底部要顯示的選項卡，並調整排列順序。請重新啟動應用程式以套用變更</string>
     <string name="tab_arrangement_disable_tip">--- 拖曳到此線下方以停用 ---</string>
     <string name="tab_arrangement_home_required">必須保留主頁。</string>
     <string name="tablet_ui_title">強制使用平板佈局</string>
     <string name="tablet_ui_title_description">強制使用針對大螢幕最佳化的分割介面。如果不符合最小寬度要求，此設定不會生效</string>
     <string name="filter_arrangement">修改篩選順序</string>
+    <string name="filter_arrangement_description">選擇要在媒體庫畫面顯示的篩選項目</string>
     <string name="home_sections_title">首頁區塊</string>
     <string name="home_sections_chips">分類按鈕</string>
     <string name="home_sections_chips_description">在首頁頂端顯示用來篩選 YouTube Music 區塊的按鈕</string>
@@ -120,7 +121,6 @@
     <string name="home_sections_mood_description">在首頁底部顯示依情境或類型瀏覽音樂的按鈕</string>
     <string name="home_sections_keep_one">請至少保留一個項目為開啟狀態。</string>
     <string name="like_autodownload">自動下載你喜歡的歌曲</string>
-    <string name="action_logout_tooltip">為了全面登出賬號，請先按下用戶名打開網頁端登出後再返回應用登出</string>
     <string name="token_adv_login_description">這是一個進階的登入方法，一個在網頁端登入的替代方法。你可以直接輸入或更新你的登錄令牌。這樣就可以加速你在多個裝置的登入速度。請確認任何錯誤的登入令牌格式都不被接受</string>
     <string name="token_hidden">點擊以顯示令牌</string>
     <string name="token_shown">再次點擊以複製或編輯</string>

@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Ovaj folder je već uključen u skeniranje. Uklonite ga s jedne od lista.</string>
     <string name="scan_paths_rejected_dir">Folder za preuzimanja i njegovi podfolderi ne mogu se odabrati</string>
     <string name="dl_select_folder">Odaberi folder</string>
+    <string name="tab_arrangement_description">Odaberi koje će se kartice prikazivati pri dnu aplikacije i kojim redoslijedom. Ponovo pokreni aplikaciju da bi se promjene primijenile</string>
+    <string name="filter_arrangement_description">Odaberi koji će se filteri prikazivati na ekranu biblioteke</string>
 </resources>

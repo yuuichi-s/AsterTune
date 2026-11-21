@@ -198,7 +198,7 @@
     <string name="pause_search_history">검색 기록 일시 중지</string>
     <string name="clear_search_history">검색 기록 지우기</string>
     <string name="clear_search_history_confirm">모든 검색 기록을 지우시겠습니까?</string>
-    <string name="enable_kugou">KuGou 가사 제공자 활성화</string>
+    <string name="enable_kugou">KuGou 사용</string>
     <string name="backup_restore">백업 및 복구</string>
     <string name="action_backup">백업</string>
     <string name="action_restore">복구</string>
@@ -244,7 +244,7 @@
     <string name="disable_screenshot">스크린샷 비활성화</string>
     <string name="auto_load_more_desc">가능하다면 대기열 끝에 도달하면 자동으로 노래를 더 추가합니다</string>
     <string name="listen_history">재생 기록</string>
-    <string name="enable_lrclib">LrcLib 가사 제공자 활성화</string>
+    <string name="enable_lrclib">LrcLib 사용</string>
     <string name="hide_explicit">선정적이거나 부적절한 콘텐츠 숨기기</string>
     <string name="preview">미리보기</string>
     <string name="login_failed">로그인 실패</string>
@@ -272,8 +272,8 @@
     <string name="accent_color">강조 색상</string>
     <string name="ignore_audio_focus">오디오 포커스 유지</string>
     <string name="ignore_audio_focus_desc">다른 앱이 오디오 포커스를 가져가도 계속 재생합니다. 전화 통화를 포함한 다른 오디오 소스가 재생되어도 음악이 일시중지되지 않습니다.</string>
-    <string name="enable_betterlyrics">BetterLyrics 가사 제공자 사용</string>
-    <string name="enable_lyricsplus">Lyrics+ 가사 제공자 사용</string>
+    <string name="enable_betterlyrics">BetterLyrics 사용</string>
+    <string name="enable_lyricsplus">Lyrics+ 사용</string>
     <string name="duration_hours_minutes">%1$d시간 %2$d분</string>
     <string name="duration_minutes">%d분</string>
     <string name="heading_with_count">%1$s - %2$d</string>

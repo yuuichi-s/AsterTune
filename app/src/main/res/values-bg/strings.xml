@@ -219,7 +219,7 @@
     <string name="content">Съдържание</string>
     <string name="auto_skip_next_on_error_desc">Осигурете си непрекъснато изживяване при възпроизвеждане</string>
     <string name="pause_listen_history">Пауза на историята на слушане</string>
-    <string name="enable_kugou">Активирай доставчик на текстове KuGou</string>
+    <string name="enable_kugou">Използвай KuGou</string>
     <string name="squiggly">Криволичещо</string>
     <string name="system_default">Система по подразбиране</string>
     <string name="customize_navigation_tabs">Персонализирай разделите за навигация</string>
@@ -263,7 +263,9 @@
     <string name="clear_search_history">Изчисти историята на търсене</string>
     <string name="disable_screenshot">Деактивирай снимка на екрана</string>
     <string name="disable_screenshot_desc">Когато тази опция е включена, снимка на екрана и изгледът на приложението в Скорошни са деактивирани.</string>
-    <string name="enable_lrclib">Активирай доставчик на текстове LrcLib</string>
+    <string name="enable_lrclib">Използвай LrcLib</string>
+    <string name="enable_betterlyrics">Използвай BetterLyrics</string>
+    <string name="enable_lyricsplus">Използвай Lyrics+</string>
     <string name="hide_explicit">Скрий нецензурно съдържание</string>
     <string name="backup_create_success">Архивирането е създадено успешно</string>
     <string name="restore_failed">Неуспешно възстановяване на резервно копие</string>

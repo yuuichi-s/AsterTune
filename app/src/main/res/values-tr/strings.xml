@@ -207,8 +207,8 @@
     <string name="pause_search_history">Arama geçmişini duraklat</string>
     <string name="clear_search_history">Arama geçmişini temizle</string>
     <string name="clear_search_history_confirm">Tüm arama geçmişini temizlemekten emin misiniz?</string>
-    <string name="enable_lrclib">LrcLib şarkı sözü sağlayıcısını etkinleştir</string>
-    <string name="enable_kugou">KuGou şarkı sözü sağlayıcısını etkinleştir</string>
+    <string name="enable_lrclib">LrcLib kullan</string>
+    <string name="enable_kugou">KuGou kullan</string>
     <string name="backup_restore">Yedekleme ve geri yükleme</string>
     <string name="action_backup">Yedekle</string>
     <string name="action_restore">Geri yükle</string>
@@ -284,8 +284,8 @@
     <string name="custom_accent_color">Özel vurgu rengi</string>
     <string name="custom_accent_color_description">Uygulama genelinde vurgu rengi olarak seçtiğiniz sabit bir rengi kullanın</string>
     <string name="accent_color">Vurgu rengi</string>
-    <string name="enable_betterlyrics">BetterLyrics şarkı sözü sağlayıcısını etkinleştir</string>
-    <string name="enable_lyricsplus">Lyrics+ şarkı sözü sağlayıcısını etkinleştir</string>
+    <string name="enable_betterlyrics">BetterLyrics kullan</string>
+    <string name="enable_lyricsplus">Lyrics+ kullan</string>
     <string name="ignore_audio_focus">Ses odağını koru</string>
     <string name="ignore_audio_focus_desc">Başka bir uygulama ses odağını aldığında çalmaya devam et. Telefon aramaları dahil diğer ses kaynakları için müzik duraklatılmaz.</string>
 </resources>

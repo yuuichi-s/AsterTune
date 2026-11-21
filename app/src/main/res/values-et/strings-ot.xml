@@ -56,7 +56,6 @@
     <string name="grp_general">Üldised seadistused</string>
     <string name="grp_interface">Kasutajaliides</string>
     <string name="grp_layout">Paigutus</string>
-    <string name="grp_library_and_content">Meediakogu ja sisu</string>
     <string name="grp_localization">Lokaliseerimine</string>
     <string name="grp_lyrics_format">Vormindus</string>
     <string name="grp_lyrics_parser">Parser</string>
@@ -84,7 +83,6 @@
     <string name="scanner_local_title">Kohalik skaneerija</string>
     <string name="scanner_manual_btn">Käivita käsitsi sünkroonimine</string>
     <string name="library_filter">Muusikakogu filter</string>
-    <string name="action_logout_tooltip">Täielikuks väljalogimiseks enne selle väljalogimise nupu kasutamist logi välja oma YouTube\'i kontolt veebiportaalis</string>
     <string name="token_adv_login_description">See on TÄIENDATUD sisselogimismeetod. Veebiportaali alternatiivina võid oma sisselogimistunnuse otse siin sisestada või uuendada. See võib näiteks kiirendada sisselogimist mitmes seadmes. Pane tähele, et rakendus ei aktsepteeri kehtetuid tunnuslube, mida ta ei suuda töödelda</string>
     <string name="token_hidden">Tunnusloa näitamiseks klõpsa</string>
     <string name="token_shown">Kopeerimiseks või muutmiseks vajuta uuesti</string>
@@ -151,7 +149,9 @@
     <string name="attribution_title">Tänuavaldused</string>
     <string name="slim_navbar_title">Napp tööriistariba</string>
     <string name="tab_arrangement">Muuda vahekaartide järjekorda</string>
+    <string name="tab_arrangement_description">Vali, milliseid vahekaarte rakenduse allservas kuvatakse ja mis järjekorras need ilmuvad. Muudatuste rakendamiseks käivita rakendus uuesti</string>
     <string name="filter_arrangement">Muuda filtreid</string>
+    <string name="filter_arrangement_description">Vali, milliseid filtreid muusikakogu vaates kuvatakse</string>
     <string name="home_sections_title">Avalehe jaotised</string>
     <string name="home_sections_chips">Kategooria nupud</string>
     <string name="home_sections_chips_description">Näitab avalehe ülaosas nuppe YouTube Musicu jaotiste filtreerimiseks</string>

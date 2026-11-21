@@ -261,10 +261,10 @@
     <string name="use_login_for_browse_desc">यह आपको दिखाई देने वाली सामग्री को प्रभावित कर सकता है; उदाहरण के लिए, Premium खाते से लॉग इन होने पर केवल Premium वाले एल्बम दिख सकते हैं</string>
     <string name="disable_screenshot">स्क्रीनशॉट अक्षम करें</string>
     <string name="disable_screenshot_desc">यह विकल्प चालू होने पर स्क्रीनशॉट और हालिया ऐप्स में ऐप का दृश्य अक्षम हो जाता है।</string>
-    <string name="enable_lrclib">गीत के बोल के लिए LrcLib सक्षम करें</string>
-    <string name="enable_kugou">गीत के बोल के लिए KuGou सक्षम करें</string>
-    <string name="enable_betterlyrics">गीत के बोल के लिए BetterLyrics सक्षम करें</string>
-    <string name="enable_lyricsplus">गीत के बोल के लिए Lyrics+ सक्षम करें</string>
+    <string name="enable_lrclib">LrcLib का उपयोग करें</string>
+    <string name="enable_kugou">KuGou का उपयोग करें</string>
+    <string name="enable_betterlyrics">BetterLyrics का उपयोग करें</string>
+    <string name="enable_lyricsplus">Lyrics+ का उपयोग करें</string>
     <string name="hide_explicit">अश्लील सामग्री छिपाएँ</string>
     <string name="backup_restore">बैकअप और पुनर्स्थापना</string>
     <string name="action_backup">बैकअप</string>

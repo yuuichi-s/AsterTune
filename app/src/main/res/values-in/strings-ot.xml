@@ -53,7 +53,6 @@
     <string name="grp_general">Umum</string>
     <string name="grp_interface">Antarmuka</string>
     <string name="grp_layout">Tata letak</string>
-    <string name="grp_library_and_content">Koleksi dan konten</string>
     <string name="grp_localization">Lokalisasi</string>
     <string name="grp_lyrics_format">Pemformatan</string>
     <string name="grp_lyrics_parser">Analisis lirik</string>
@@ -105,11 +104,13 @@
     <string name="show_scrollbar_title">Bilah gulir</string>
     <string name="show_scrollbar_description">Tampilkan bilah gulir</string>
     <string name="tab_arrangement">Pengaturan tab</string>
+    <string name="tab_arrangement_description">Pilih tab yang tampil di bagian bawah aplikasi dan atur urutannya. Mulai ulang aplikasi untuk menerapkan perubahan</string>
     <string name="tab_arrangement_disable_tip">--- Seret ke bawah sini untuk menonaktifkan ---</string>
     <string name="tab_arrangement_home_required">Tab Beranda diperlukan.</string>
     <string name="tablet_ui_title">Paksa tampilan tablet</string>
     <string name="tablet_ui_title_description">Paksa antarmuka terbagi yang dioptimalkan untuk layar besar. Pengaturan ini tidak berpengaruh jika persyaratan lebar minimum tidak terpenuhi</string>
     <string name="filter_arrangement">Pengaturan filter</string>
+    <string name="filter_arrangement_description">Pilih filter yang ditampilkan di layar Koleksi</string>
     <string name="home_sections_title">Bagian Beranda</string>
     <string name="home_sections_chips">Tombol kategori</string>
     <string name="home_sections_chips_description">Menampilkan tombol di bagian atas Beranda untuk memfilter bagian YouTube Music</string>
@@ -269,7 +270,6 @@
     <string name="library_filter">Saring koleksi</string>
     <string name="toggle_lyrics">Tampilkan/sembunyikan lirik</string>
     <string name="grp_more_settings">Pengaturan lebih lanjut</string>
-    <string name="action_logout_tooltip">Untuk keluar sepenuhnya, silahkan logout akun YouTube-mu lewat web terlebih dahulu sebelum memakai tombol logout ini</string>
     <string name="audio_decoder_ffmpeg_only">Prioritaskan dekoder FFmpeg</string>
     <string name="audio_decoder_preference">Dekoder Audio</string>
     <string name="audio_decoder_system_only">Hanya dekoder sistem</string>

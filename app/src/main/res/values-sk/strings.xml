@@ -274,8 +274,10 @@
     <string name="use_login_for_browse_desc">Toto môže ovplyvniť, aký obsah uvidíte, napríklad zobrazí len prémiové albumy, ak ste prihlásený pomocou účtu</string>
     <string name="disable_screenshot">Zakázať snímky obrazovky</string>
     <string name="disable_screenshot_desc">Keď je táto možnosť zapnutá, snímky obrazovky a zobrazenie aplikácie v nedávnych položkách sú zakázané.</string>
-    <string name="enable_lrclib">Povoliť poskytovateľa textov LrcLib</string>
-    <string name="enable_kugou">Povoliť poskytovateľa textov KuGou</string>
+    <string name="enable_lrclib">Používať LrcLib</string>
+    <string name="enable_kugou">Používať KuGou</string>
+    <string name="enable_betterlyrics">Používať BetterLyrics</string>
+    <string name="enable_lyricsplus">Používať Lyrics+</string>
     <string name="hide_explicit">Skryť nevhodný obsah</string>
     <string name="backup_restore">Záloha a obnova</string>
     <string name="action_backup">Zálohovať</string>

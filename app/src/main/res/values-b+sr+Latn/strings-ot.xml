@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Ova fascikla je već uključena u skeniranje. Ukloni je sa jednog od spiskova.</string>
     <string name="scan_paths_rejected_dir">Nije moguće izabrati fasciklu za preuzimanje ni njene potfascikle</string>
     <string name="dl_select_folder">Izaberi fasciklu</string>
+    <string name="tab_arrangement_description">Izaberi koje se kartice prikazuju na dnu aplikacije i kojim redosledom. Ponovo pokreni aplikaciju da bi se promene primenile</string>
+    <string name="filter_arrangement_description">Izaberi koji se filteri prikazuju na ekranu biblioteke</string>
 </resources>

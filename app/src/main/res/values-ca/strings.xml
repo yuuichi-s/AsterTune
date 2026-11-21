@@ -208,8 +208,10 @@
     <string name="pause_search_history">Pausa l’historial de cerques</string>
     <string name="clear_search_history_confirm">Segur que voleu netejar tot l’historial de cerques?</string>
     <string name="disable_screenshot">Desactiva les captures de pantalla</string>
-    <string name="enable_lrclib">Activa el proveïdor de lletres LrcLib</string>
-    <string name="enable_kugou">Activa el proveïdor de lletres KuGou</string>
+    <string name="enable_lrclib">Utilitza LrcLib</string>
+    <string name="enable_kugou">Utilitza KuGou</string>
+    <string name="enable_betterlyrics">Utilitza BetterLyrics</string>
+    <string name="enable_lyricsplus">Utilitza Lyrics+</string>
     <string name="action_backup">Fes una còpia de seguretat</string>
     <string name="action_restore">Restaura</string>
     <string name="imported_playlist">Llista importada</string>

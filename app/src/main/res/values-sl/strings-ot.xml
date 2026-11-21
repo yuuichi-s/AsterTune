@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Ta mapa je že vključena v pregledovanje. Odstranite jo z enega od seznamov.</string>
     <string name="scan_paths_rejected_dir">Mape za prenose in njenih podmap ni mogoče izbrati</string>
     <string name="dl_select_folder">Izberi mapo</string>
+    <string name="tab_arrangement_description">Izberi, kateri zavihki se prikažejo na dnu aplikacije in v kakšnem vrstnem redu. Za uveljavitev sprememb znova zaženi aplikacijo</string>
+    <string name="filter_arrangement_description">Izberi, kateri filtri se prikažejo na zaslonu knjižnice</string>
 </resources>

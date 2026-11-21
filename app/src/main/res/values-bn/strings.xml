@@ -207,7 +207,7 @@
     <string name="pause_search_history">সার্চ হিস্ট্রি বন্ধ করুন</string>
     <string name="clear_search_history">সার্চ হিস্ট্রি ক্লিয়ার করুন</string>
     <string name="clear_search_history_confirm">সার্চ হিস্ট্রি মুছে ফেলবেন?</string>
-    <string name="enable_kugou">KuGou থেকে লিরিক নিন</string>
+    <string name="enable_kugou">KuGou ব্যবহার করুন</string>
     <string name="backup_restore">ব্যাকআপ এবং রিস্টোর</string>
     <string name="action_backup">ব্যাকআপ</string>
     <string name="action_restore">রিস্টোর</string>
@@ -268,7 +268,9 @@
     <string name="use_login_for_browse_desc">এটি আপনার দেখা কন্টেন্টকে প্রভাবিত করতে পারে এবং উদাহরণস্বরূপ, যদি আপনি একটি প্রিমিয়াম অ্যাকাউন্ট দিয়ে লগইন করেন তবে শুধুমাত্র প্রিমিয়াম অ্যালবামগুলি দেখায়</string>
     <string name="disable_screenshot">স্ক্রিনশট নিষ্ক্রিয় করুন</string>
     <string name="disable_screenshot_desc">যখন এই বিকল্পটি চালু থাকে, তখন স্ক্রিনশট এবং রিসেন্টস-এ অ্যাপের ভিউ নিষ্ক্রিয় থাকে।</string>
-    <string name="enable_lrclib">LrcLib গানের লিরিক্স প্রদানকারী সক্রিয় করুন</string>
+    <string name="enable_lrclib">LrcLib ব্যবহার করুন</string>
+    <string name="enable_betterlyrics">BetterLyrics ব্যবহার করুন</string>
+    <string name="enable_lyricsplus">Lyrics+ ব্যবহার করুন</string>
     <string name="hide_explicit">স্পষ্ট বিষয়বস্তু লুকান</string>
     <string name="discord_integration">ডিসকর্ড ইন্টিগ্রেশন</string>
     <string name="discord_information">AsterTune আপনার Discord অ্যাকাউন্টের স্ট্যাটাস সেট করার জন্য KizzyRPC লাইব্রেরি ব্যবহার করে। এর মধ্যে Discord Gateway সংযোগ ব্যবহার করা হয়, যা Discord-এর পরিষেবার শর্তাবলীর (TOS) লঙ্ঘন হিসেবে বিবেচিত হতে পারে। তবে, এই কারণে ব্যবহারকারীর অ্যাকাউন্ট সাসপেন্ড হওয়ার কোনো পরিচিত ঘটনা নেই। ব্যবহার আপনার নিজের ঝুঁকিতে করুন।\n\nAsterTune শুধুমাত্র আপনার টোকেন সংগ্রহ করবে, এবং বাকী সবকিছু স্থানীয়ভাবে সংরক্ষিত থাকবে।</string>

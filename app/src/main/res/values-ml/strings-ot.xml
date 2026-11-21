@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">ഈ ഫോൾഡർ ഇതിനകം സ്കാനിൽ ഉൾപ്പെടുത്തിയിട്ടുണ്ട്. രണ്ട് ലിസ്റ്റുകളിൽ ഒന്നിൽ നിന്ന് ഇത് നീക്കം ചെയ്യുക.</string>
     <string name="scan_paths_rejected_dir">ഡൗൺലോഡ് ഫോൾഡറും അതിന്റെ ഉപഫോൾഡറുകളും തിരഞ്ഞെടുക്കാനാവില്ല</string>
     <string name="dl_select_folder">ഫോൾഡർ തിരഞ്ഞെടുക്കുക</string>
+    <string name="tab_arrangement_description">ആപ്പിന്റെ താഴെ ഏതൊക്കെ ടാബുകൾ ഏത് ക്രമത്തിൽ കാണിക്കണമെന്ന് തിരഞ്ഞെടുക്കുക. മാറ്റങ്ങൾ പ്രാബല്യത്തിൽ വരാൻ ആപ്പ് പുനരാരംഭിക്കുക</string>
+    <string name="filter_arrangement_description">ലൈബ്രറി സ്ക്രീനിൽ ഏതൊക്കെ ഫിൽട്ടറുകൾ കാണിക്കണമെന്ന് തിരഞ്ഞെടുക്കുക</string>
 </resources>

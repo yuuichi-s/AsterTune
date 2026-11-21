@@ -216,7 +216,7 @@
     <string name="pause_search_history">Sospendi la cronologia delle ricerche</string>
     <string name="clear_search_history">Pulisci la cronologia delle ricerche</string>
     <string name="clear_search_history_confirm">Sei sicuro di voler cancellare la cronologia delle ricerche?</string>
-    <string name="enable_kugou">Attiva il fornitore di testi KuGou</string>
+    <string name="enable_kugou">Usa KuGou</string>
     <string name="backup_restore">Backup e ripristino</string>
     <string name="action_backup">Fai un backup</string>
     <string name="action_restore">Ripristina</string>
@@ -265,7 +265,7 @@
     <string name="auto_load_more">Carica automaticamente più canzoni</string>
     <string name="auto_skip_next_on_error">Salta alla prossima canzone quando si verifica un errore</string>
     <string name="auto_load_more_desc">Aggiungi automaticamente canzoni quando si raggiunge la fine della coda, se possibile</string>
-    <string name="enable_lrclib">Attiva il fornitore di testi LrcLib</string>
+    <string name="enable_lrclib">Usa LrcLib</string>
     <string name="grid_cell_size">Dimensione delle celle della griglia</string>
     <string name="auto_skip_next_on_error_desc">Garantisci la tua esperienza di riproduzione continua</string>
     <string name="stop_music_on_task_clear">Interrompi la musica quando l\'attività è interrotta</string>
@@ -290,8 +290,8 @@
     <string name="accent_color">Colore di accento</string>
     <string name="ignore_audio_focus">Mantieni il focus audio</string>
     <string name="ignore_audio_focus_desc">Continua la riproduzione quando un\'altra app acquisisce il focus audio. La musica non verrà messa in pausa da altre sorgenti audio, incluse le chiamate.</string>
-    <string name="enable_betterlyrics">Attiva il fornitore di testi BetterLyrics</string>
-    <string name="enable_lyricsplus">Attiva il fornitore di testi Lyrics+</string>
+    <string name="enable_betterlyrics">Usa BetterLyrics</string>
+    <string name="enable_lyricsplus">Usa Lyrics+</string>
     <string name="duration_hours_minutes">%1$dh %2$dmin</string>
     <string name="duration_minutes">%dmin</string>
     <string name="heading_with_count">%1$s - %2$d</string>

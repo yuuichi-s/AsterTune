@@ -46,6 +46,7 @@
     <string name="show_scrollbar_title">Barra de rolagem</string>
     <string name="show_scrollbar_description">Mostrar a barra de rolagem</string>
     <string name="tab_arrangement">Organizar abas</string>
+    <string name="tab_arrangement_description">Escolha quais abas aparecem na parte de baixo do app e em que ordem. Reinicie o app para aplicar as alterações</string>
     <string name="like_autodownload">Baixar suas músicas favoritas automaticamente</string>
     <string name="grp_localization">Idioma e região</string>
     <string name="token_hidden">Toque para mostrar o token</string>
@@ -143,6 +144,7 @@
     <string name="swipe_to_skip_description">Deslize horizontalmente no reprodutor para mudar de música</string>
     <string name="swipe_to_skip_title">Deslizar horizontalmente para mudar de música</string>
     <string name="filter_arrangement">Organizar filtros</string>
+    <string name="filter_arrangement_description">Escolha quais filtros aparecem na tela da biblioteca</string>
     <string name="home_sections_title">Seções do Início</string>
     <string name="home_sections_chips">Botões de categorias</string>
     <string name="home_sections_chips_description">Mostra botões no topo do Início para filtrar as seções do YouTube Music</string>
@@ -156,7 +158,6 @@
     <string name="sync_conflict_overwrite">Sobrescrever conteúdo local com o conteúdo remoto</string>
     <string name="sync_mode">Modo de sincronização</string>
     <string name="sync_mode_ro">Somente leitura (ver o conteúdo remoto)</string>
-    <string name="grp_library_and_content">Biblioteca e conteúdos</string>
     <string name="missing_media_permission_warning">As permissões de armazenamento são necessárias para mídia local. Toque para conceder a permissão.</string>
     <string name="more_settings">Mais configurações</string>
     <string name="grp_account_sync">Conta e sincronização</string>
@@ -282,7 +283,6 @@
     <string name="oobe_welcome_tip">Para uma melhor experiência, recomendamos concluir uma configuração rápida para personalizar configurações principais, como o tema, conta do YouTube, mídia local, e downloads.</string>
     <string name="oobe_cache_title">Cache de músicas</string>
     <string name="oobe_cache_subtitle">Selecione um tamanho para a cache de músicas. Isso pode ajudar a reduzir problemas com a internet ou reprodução com a API do YouTube</string>
-    <string name="action_logout_tooltip">Para desconectar-se totalmente, desconecte-se da sua conta do YouTube pelo portal web antes de usar este botão</string>
     <string name="grp_more_settings">Mais configurações</string>
     <string name="auto_scanner_tooltip">A busca automática reflete as músicas adicionadas e removidas. Para atualizar também os metadados das músicas já encontradas, marque a opção de buscar novamente em «Busca manual».</string>
     <string name="scanner_auto_end">Recarregamento da mídia local e downloads de músicas concluído!</string>

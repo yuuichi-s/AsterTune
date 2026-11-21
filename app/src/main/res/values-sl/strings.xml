@@ -46,4 +46,8 @@
     <string name="clear_image_cache">Počisti predpomnilnik</string>
     <string name="clear_song_cache">Počisti predpomnilnik</string>
     <string name="size_used">Zasedeni prostor: %s</string>
+    <string name="enable_lrclib">Uporabi LrcLib</string>
+    <string name="enable_kugou">Uporabi KuGou</string>
+    <string name="enable_betterlyrics">Uporabi BetterLyrics</string>
+    <string name="enable_lyricsplus">Uporabi Lyrics+</string>
 </resources>

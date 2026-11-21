@@ -52,6 +52,7 @@
     <string name="show_scrollbar_title">滚动条</string>
     <string name="show_scrollbar_description">显示滚动条</string>
     <string name="tab_arrangement">排列选项卡</string>
+    <string name="tab_arrangement_description">选择应用底部要显示的选项卡及其顺序。重启应用后更改才会生效</string>
     <string name="tab_arrangement_disable_tip">--- 拖到此线下方以禁用 ---</string>
     <string name="tab_arrangement_home_required">主页选项卡是必需的。</string>
     <string name="like_autodownload">自动下载您喜欢的歌曲</string>
@@ -136,7 +137,6 @@
     <string name="speed_very_fast">非常快速</string>
     <string name="android_auto">Android Auto</string>
     <string name="err_restore_incompatible_database">无法恢复不兼容的数据库</string>
-    <string name="grp_library_and_content">音乐库和内容</string>
     <string name="grp_account_sync">账号和同步</string>
     <string name="grp_behavior">行为</string>
     <string name="help_bug_report_action">提交BUG报告（通过GitHub）</string>
@@ -209,6 +209,7 @@
     <string name="tablet_ui_title">强制使用平板布局</string>
     <string name="tablet_ui_title_description">强制启用针对大屏幕优化的分屏界面。如果不满足最小宽度要求，则此设置无效</string>
     <string name="filter_arrangement">设置筛选</string>
+    <string name="filter_arrangement_description">选择媒体库中要显示的筛选项</string>
     <string name="home_sections_title">首页版块</string>
     <string name="home_sections_chips">分类按钮</string>
     <string name="home_sections_chips_description">在首页顶部显示用于筛选 YouTube Music 版块的按钮</string>
@@ -269,7 +270,6 @@
     <string name="disc_number">碟号</string>
     <string name="track_number">曲目编号</string>
     <string name="grp_more_settings">更多设置</string>
-    <string name="action_logout_tooltip">要完全退出登录，请先在网页上退出您的 YouTube 帐户，然后再点击此退出按钮。</string>
     <string name="seek_increment">快进/快退间隔</string>
     <string name="auto_scanner_tooltip">自动扫描会反映歌曲的添加和删除。若要同时更新已扫描歌曲的元数据，请在手动扫描中勾选重新扫描选项。</string>
     <string name="scanner_auto_end">本地媒体和歌曲下载刷新完成！</string>

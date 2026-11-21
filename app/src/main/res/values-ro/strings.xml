@@ -262,8 +262,10 @@
     <string name="use_login_for_browse_desc">Această setare poate influența ce conținut vezi, de exemplu poate arăta albume doar pentru utilizatorii Premium dacă ești autentificat cu un cont Premium</string>
     <string name="disable_screenshot">Dezactivează capturile de ecran</string>
     <string name="disable_screenshot_desc">Când această opțiune este pornită, capturile de ecran sunt dezactivate și aplicația nu poate fi văzută în Recente.</string>
-    <string name="enable_lrclib">Activează furnizorul de versuri LrcLib</string>
-    <string name="enable_kugou">Activează furnizorul de versuri KuGou</string>
+    <string name="enable_lrclib">Folosește LrcLib</string>
+    <string name="enable_kugou">Folosește KuGou</string>
+    <string name="enable_betterlyrics">Folosește BetterLyrics</string>
+    <string name="enable_lyricsplus">Folosește Lyrics+</string>
     <string name="hide_explicit">Ascunde conținutul explicit</string>
     <string name="backup_restore">Backup și restaurare</string>
     <string name="action_backup">Fă backup</string>

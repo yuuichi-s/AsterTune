@@ -5,4 +5,8 @@
     <string name="clear_image_cache">I-clear ang cache</string>
     <string name="clear_song_cache">I-clear ang cache</string>
     <string name="size_used">Espasyong nagamit: %s</string>
+    <string name="enable_lrclib">Gamitin ang LrcLib</string>
+    <string name="enable_kugou">Gamitin ang KuGou</string>
+    <string name="enable_betterlyrics">Gamitin ang BetterLyrics</string>
+    <string name="enable_lyricsplus">Gamitin ang Lyrics+</string>
 </resources>

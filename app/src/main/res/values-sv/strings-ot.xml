@@ -52,4 +52,6 @@
     <string name="scan_paths_already_included">Den här mappen ingår redan i skanningen. Ta bort den från en av listorna.</string>
     <string name="scan_paths_rejected_dir">Nedladdningsmappen och dess undermappar kan inte väljas</string>
     <string name="dl_select_folder">Välj mapp</string>
+    <string name="tab_arrangement_description">Välj vilka flikar som visas längst ner i appen och i vilken ordning. Starta om appen för att tillämpa ändringarna</string>
+    <string name="filter_arrangement_description">Välj vilka filter som visas i biblioteket</string>
 </resources>

@@ -72,6 +72,7 @@
     <string name="player_background_style">Стиль фона плеера</string>
     <string name="slim_navbar_description">Убрать подписи с панели навигации чтобы уменьшить её высоту</string>
     <string name="tab_arrangement">Расположение вкладок</string>
+    <string name="tab_arrangement_description">Выберите, какие вкладки отображаются внизу экрана и в каком порядке. Перезапустите приложение, чтобы применить изменения</string>
     <string name="show_liked_and_downloaded_playlist">Показывать плейлисты для понравившихся треков и загруженной музыки в библиотеке</string>
     <string name="slim_navbar_title">Тонкая панель навигации</string>
     <string name="show_scrollbar_title">Полоса прокрутки</string>
@@ -146,6 +147,7 @@
     <string name="swipe_to_skip_description">Использовать горизонтальные свайпы в плеере для переключения треков</string>
     <string name="restart_to_apply_changes">Перезапустите приложение, чтобы применить изменения.</string>
     <string name="filter_arrangement">Порядок фильтров</string>
+    <string name="filter_arrangement_description">Выберите, какие фильтры отображаются на экране библиотеки</string>
     <string name="home_sections_title">Разделы главной</string>
     <string name="home_sections_chips">Кнопки категорий</string>
     <string name="home_sections_chips_description">Показывает вверху главной кнопки для фильтрации разделов YouTube Music</string>
@@ -164,7 +166,6 @@
     <string name="sync_conflict_add_only">Сохранить весь локальный контент, добавить новый удалённый контент</string>
     <string name="missing_media_permission_warning">Для доступа к локальным медиафайлам требуется разрешение на доступ к хранилищу. Нажмите, чтобы предоставить разрешение.</string>
     <string name="sync_mode_ro">Только чтение (просмотр удаленного контента)</string>
-    <string name="grp_library_and_content">Библиотека и контент</string>
     <string name="grp_sync">Синхронизация</string>
     <string name="check_for_update">Проверить обновления</string>
     <string name="checking_for_update">Поиск обновлений</string>
@@ -281,7 +282,6 @@
     <string name="audio_decoder_system_only">Только системные декодеры</string>
     <string name="audio_decoder_system_with_ffmpeg">Отдавать приоритет системным декодерам</string>
     <string name="toggle_lyrics">Показать текст песни</string>
-    <string name="action_logout_tooltip">Чтобы выйти полностью, сначала выйдите из аккаунта YouTube в веб-портале, затем используйте эту кнопку выхода</string>
     <string name="max_queues_title">Максимальное количество очередей</string>
     <string name="oobe_welcome_tip">Для наилучшего опыта рекомендуем пройти быструю начальную настройку, чтобы персонализировать основные параметры, такие как тема, аккаунт YouTube, локальные медиа и загрузки.</string>
     <string name="oobe_cache_title">Кэш песен</string>

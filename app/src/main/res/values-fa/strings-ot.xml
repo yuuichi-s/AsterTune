@@ -45,7 +45,6 @@
     <string name="grp_general">عمومی</string>
     <string name="grp_interface">رابط</string>
     <string name="grp_layout">طرح بندی</string>
-    <string name="grp_library_and_content">کتابخانه و محتوا</string>
     <string name="grp_localization">محلی کردن</string>
     <string name="grp_lyrics_format">قالب بندی</string>
     <string name="grp_lyrics_parser">تجزیه کننده</string>
@@ -69,11 +68,13 @@
     <string name="slim_navbar_title">نوار باریک</string>
     <string name="slim_navbar_description">برچسب‌های متنی را برای کاهش ارتفاع نوار حذف کنید</string>
     <string name="tab_arrangement">مرتب سازی برگه ها</string>
+    <string name="tab_arrangement_description">انتخاب کنید کدام برگه‌ها و به چه ترتیبی در پایین برنامه نمایش داده شوند. برای اعمال تغییرات، برنامه را دوباره راه‌اندازی کنید</string>
     <string name="tab_arrangement_disable_tip">--- برای غیرفعال کردن، اینجا را به پایین بکشید ---</string>
     <string name="tab_arrangement_home_required">برگه خانه الزامی است.</string>
     <string name="tablet_ui_title">رابط تبلت اجباری</string>
     <string name="tablet_ui_title_description">یک رابط تقسیم‌شده بهینه‌شده برای صفحه‌نمایش‌های بزرگ را اجباری کنید. اگر الزامات حداقل عرض برآورده نشود، این تنظیم اثری ندارد</string>
     <string name="filter_arrangement">مرتب سازی فیلترها</string>
+    <string name="filter_arrangement_description">انتخاب کنید کدام فیلترها در صفحهٔ کتابخانه نمایش داده شوند</string>
     <string name="home_sections_title">بخش‌های خانه</string>
     <string name="home_sections_chips">دکمه‌های دسته‌بندی</string>
     <string name="home_sections_chips_description">دکمه‌هایی در بالای خانه برای فیلتر کردن بخش‌های YouTube Music نمایش می‌دهد</string>

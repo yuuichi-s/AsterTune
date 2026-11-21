@@ -131,8 +131,8 @@ import io.github.yuuichi_s.astertune.playback.MediaControllerViewModel
 import io.github.yuuichi_s.astertune.playback.MusicService
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
 import io.github.yuuichi_s.astertune.ui.component.UpdateAnnouncement
-import io.github.yuuichi_s.astertune.ui.component.announceUpdate
 import io.github.yuuichi_s.astertune.ui.component.UpdateInstaller
+import io.github.yuuichi_s.astertune.ui.component.announceUpdate
 import io.github.yuuichi_s.astertune.ui.component.rememberBottomSheetState
 import io.github.yuuichi_s.astertune.ui.component.shimmer.ShimmerTheme
 import io.github.yuuichi_s.astertune.ui.menu.BottomSheetMenu
@@ -176,7 +176,6 @@ import io.github.yuuichi_s.astertune.ui.screens.settings.BackupAndRestore
 import io.github.yuuichi_s.astertune.ui.screens.settings.ExperimentalSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.HomeSectionsSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.LibrariesScreen
-import io.github.yuuichi_s.astertune.ui.screens.settings.LibrarySettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.LocalPlayerSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.LyricsSettings
 import io.github.yuuichi_s.astertune.ui.screens.settings.PlayerSettings
@@ -713,9 +712,6 @@ class MainActivity : ComponentActivity() {
                                     }
                                     composable("settings/home_sections") {
                                         HomeSectionsSettings(navController, scrollBehavior)
-                                    }
-                                    composable("settings/library") {
-                                        LibrarySettings(navController, scrollBehavior)
                                     }
                                     composable("settings/lyrics") {
                                         LyricsSettings(navController, scrollBehavior)

@@ -75,6 +75,7 @@
     <string name="grp_proxy">Proxy</string>
     <string name="slim_navbar_description">Rimuovere le etichette del testo per ridurre l\'altezza della barra di navigazione</string>
     <string name="tab_arrangement">Organizzare le schede</string>
+    <string name="tab_arrangement_description">Scegli quali schede mostrare nella parte inferiore dell’app e in quale ordine. Riavvia l’app per applicare le modifiche</string>
     <string name="like_autodownload">Scaricamento automatico delle canzoni che ti piacciono</string>
     <string name="token_shown">Premi di nuovo per copiare o modificare</string>
     <string name="wifi_only">Solo Wi-Fi</string>
@@ -141,6 +142,7 @@
     <string name="queues_title">Code</string>
     <string name="queues_empty">Nessuna coda</string>
     <string name="filter_arrangement">Organizzare i filtri</string>
+    <string name="filter_arrangement_description">Scegli quali filtri mostrare nella schermata della libreria</string>
     <string name="home_sections_title">Sezioni della Home</string>
     <string name="home_sections_chips">Pulsanti delle categorie</string>
     <string name="home_sections_chips_description">Mostra in alto nella Home i pulsanti per filtrare le sezioni di YouTube Music</string>
@@ -157,7 +159,6 @@
     <string name="missing_media_permission_warning">Le autorizzazioni di archiviazione sono necessarie per i media locali. Fai clic per concedere l\'autorizzazione.</string>
     <string name="sync_mode_ro">Solo lettura (Visualizza contenuto remoto)</string>
     <string name="more_settings">Altre impostazioni</string>
-    <string name="grp_library_and_content">Libreria e Contenuti</string>
     <string name="grp_account_sync">Account e Sincronizzazione</string>
     <string name="sync_conflict_overwrite">Sovrascrivi i contenuti locali con contenuti remoti</string>
     <string name="sync_conflict_title">Risoluzione dei conflitti</string>
@@ -278,7 +279,6 @@
     <string name="audio_decoder_preference">Decodificatore audio</string>
     <string name="audio_decoder_system_only">Solo decoder di sistema</string>
     <string name="audio_decoder_system_with_ffmpeg">Dare priorità ai decoder di sistema</string>
-    <string name="action_logout_tooltip">Per disconnettersi completamente, si prega di uscire dal tuo account YouTube nel portale web, prima di utilizzare questo pulsante di logout</string>
     <string name="oobe_cache_subtitle">Scegli la dimensione della cache del brano. Questo può aiutare a ridurre i problemi di riproduzione da internet o con API di YouTube</string>
     <string name="oobe_cache_title">Cache del brano</string>
     <string name="oobe_welcome_tip">Per la migliore esperienza, ti consigliamo di completare una configurazione rapida per personalizzare le impostazioni chiave come il tema, account YouTube, media locali e downloads.</string>

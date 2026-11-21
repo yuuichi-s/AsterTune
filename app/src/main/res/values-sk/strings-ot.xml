@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Tento priečinok je už zahrnutý do skenovania. Odstráňte ho z jedného zo zoznamov.</string>
     <string name="scan_paths_rejected_dir">Nie je možné vybrať priečinok sťahovania ani jeho podpriečinky</string>
     <string name="dl_select_folder">Vybrať priečinok</string>
+    <string name="tab_arrangement_description">Vyberte, ktoré karty sa zobrazia v dolnej časti aplikácie a v akom poradí. Zmeny sa prejavia po reštartovaní aplikácie</string>
+    <string name="filter_arrangement_description">Vyberte, ktoré filtre sa zobrazia na obrazovke knižnice</string>
 </resources>

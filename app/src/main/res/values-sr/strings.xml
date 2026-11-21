@@ -5,4 +5,8 @@
     <string name="clear_image_cache">Obriši keš</string>
     <string name="clear_song_cache">Obriši keš</string>
     <string name="size_used">Zauzeti prostor: %s</string>
+    <string name="enable_lrclib">Koristi LrcLib</string>
+    <string name="enable_kugou">Koristi KuGou</string>
+    <string name="enable_betterlyrics">Koristi BetterLyrics</string>
+    <string name="enable_lyricsplus">Koristi Lyrics+</string>
 </resources>

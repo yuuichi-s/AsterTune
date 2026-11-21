@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Tämä kansio on jo mukana skannauksessa. Poista se jommastakummasta luettelosta.</string>
     <string name="scan_paths_rejected_dir">Latauskansiota ja sen alikansioita ei voi valita</string>
     <string name="dl_select_folder">Valitse kansio</string>
+    <string name="tab_arrangement_description">Valitse, mitkä välilehdet näkyvät sovelluksen alareunassa ja missä järjestyksessä. Ota muutokset käyttöön käynnistämällä sovellus uudelleen</string>
+    <string name="filter_arrangement_description">Valitse, mitkä suodattimet näkyvät kirjastonäkymässä</string>
 </resources>

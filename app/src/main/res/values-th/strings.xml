@@ -5,4 +5,8 @@
     <string name="clear_image_cache">ล้างแคช</string>
     <string name="clear_song_cache">ล้างแคช</string>
     <string name="size_used">พื้นที่ที่ใช้: %s</string>
+    <string name="enable_lrclib">ใช้ LrcLib</string>
+    <string name="enable_kugou">ใช้ KuGou</string>
+    <string name="enable_betterlyrics">ใช้ BetterLyrics</string>
+    <string name="enable_lyricsplus">ใช้ Lyrics+</string>
 </resources>

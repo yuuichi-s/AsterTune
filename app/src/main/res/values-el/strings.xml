@@ -241,8 +241,10 @@
     <string name="pause_search_history">Παύση ιστορικού αναζήτησης</string>
     <string name="clear_search_history">Εκκαθάριση ιστορικού αναζήτησης</string>
     <string name="clear_search_history_confirm">Είστε σίγουροι ότι θέλετε να διαγράψετε όλο το ιστορικό αναζήτησης;</string>
-    <string name="enable_lrclib">Ενεργοποίηση του παρόχου στίχων LrcLib</string>
-    <string name="enable_kugou">Ενεργοποίηση παρόχου στίχων KuGou</string>
+    <string name="enable_lrclib">Χρήση LrcLib</string>
+    <string name="enable_kugou">Χρήση KuGou</string>
+    <string name="enable_betterlyrics">Χρήση BetterLyrics</string>
+    <string name="enable_lyricsplus">Χρήση Lyrics+</string>
     <string name="hide_explicit">Απόκρυψη ρητού περιεχομένου</string>
     <string name="backup_restore">Αντίγραφα ασφ. και επαναφορά</string>
     <string name="action_backup">Αντίγραφο ασφαλείας</string>

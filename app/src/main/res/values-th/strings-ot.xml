@@ -89,4 +89,6 @@
     <string name="scan_paths_already_included">โฟลเดอร์นี้รวมอยู่ในการสแกนอยู่แล้ว โปรดนำออกจากรายการใดรายการหนึ่ง</string>
     <string name="scan_paths_rejected_dir">ไม่สามารถเลือกโฟลเดอร์ดาวน์โหลดและโฟลเดอร์ย่อยได้</string>
     <string name="dl_select_folder">เลือกโฟลเดอร์</string>
+    <string name="tab_arrangement_description">เลือกว่าจะแสดงแท็บใดที่ด้านล่างของแอปและจัดลำดับอย่างไร เริ่มแอปใหม่เพื่อใช้การเปลี่ยนแปลง</string>
+    <string name="filter_arrangement_description">เลือกตัวกรองที่จะแสดงในหน้าไลบรารี</string>
 </resources>

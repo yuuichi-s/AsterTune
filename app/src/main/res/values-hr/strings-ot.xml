@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Ova je mapa već uključena u skeniranje. Uklonite je s jednog od popisa.</string>
     <string name="scan_paths_rejected_dir">Mapa za preuzimanja i njezine podmape ne mogu se odabrati</string>
     <string name="dl_select_folder">Odaberi mapu</string>
+    <string name="tab_arrangement_description">Odaberi koje će se kartice prikazivati pri dnu aplikacije i kojim redoslijedom. Ponovno pokreni aplikaciju kako bi se promjene primijenile</string>
+    <string name="filter_arrangement_description">Odaberi koji će se filtri prikazivati na zaslonu zbirke</string>
 </resources>

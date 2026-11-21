@@ -29,6 +29,7 @@
     <string name="player_background_gradient">Dégradé</string>
     <string name="player_background_style">Style d\'arrière-plan du lecteur</string>
     <string name="tab_arrangement">Organiser les onglets</string>
+    <string name="tab_arrangement_description">Choisissez les onglets à afficher en bas de l’application et leur ordre. Redémarrez l’application pour appliquer les modifications</string>
     <string name="like_autodownload">Télécharger automatiquement vos titres préférés</string>
     <string name="grp_localization">Localisation</string>
     <string name="token_hidden">Appuyez pour afficher le jeton</string>
@@ -143,6 +144,7 @@
     <string name="swipe_to_skip_title">Balayer horizontalement pour changer de titre</string>
     <string name="swipe_to_skip_description">Activer le balayage horizontal dans le lecteur pour changer de titre</string>
     <string name="filter_arrangement">Organiser les filtres</string>
+    <string name="filter_arrangement_description">Choisissez les filtres à afficher sur l’écran de la bibliothèque</string>
     <string name="home_sections_title">Sections de l’accueil</string>
     <string name="home_sections_chips">Boutons de catégories</string>
     <string name="home_sections_chips_description">Affiche en haut de l’accueil des boutons pour filtrer les sections de YouTube Music</string>
@@ -160,7 +162,6 @@
     <string name="sync_conflict_title">Résolution des conflits</string>
     <string name="sync_mode">Mode de synchronisation</string>
     <string name="sync_mode_ro">Lecture seule (Afficher le contenu distant)</string>
-    <string name="grp_library_and_content">Bibliothèque et Contenu</string>
     <string name="sync_conflict_add_only">Conservez tout le contenu local, ajoutez du nouveau contenu distant</string>
     <string name="sync_mode_rw">Lecture / Écriture (permet également de modifier le contenu distant)</string>
     <string name="grp_sync">Synchroniser</string>
@@ -266,7 +267,6 @@
     <string name="oobe_welcome_tip">Pour une expérience optimale, nous vous recommandons d\'effectuer une configuration rapide pour personnaliser les paramètres clés tels que le thème, le compte YouTube, les médias locaux et les téléchargements.</string>
     <string name="oobe_cache_title">Cache de chansons</string>
     <string name="oobe_cache_subtitle">Choisissez la taille du cache des chansons. Cela peut contribuer à réduire les problèmes de lecture sur Internet ou via l\'API YouTube.</string>
-    <string name="action_logout_tooltip">Pour vous déconnecter complètement, veuillez vous déconnecter de votre compte YouTube dans le portail Web avant d\'utiliser ce bouton de déconnexion.</string>
     <string name="grp_more_settings">Plus de paramètres</string>
     <string name="auto_scanner_tooltip">L\'analyse automatique prend en compte les titres ajoutés et supprimés. Pour actualiser aussi les métadonnées des titres déjà analysés, cochez la case « Réanalyser » dans « Scanner manuel ».</string>
     <string name="scanner_auto_end">L\'actualisation des médias locaux et des téléchargements de titres est terminée !</string>

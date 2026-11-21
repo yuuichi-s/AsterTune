@@ -222,7 +222,7 @@
     <string name="size_used">المساحة المستخدمة: %s</string>
     <string name="pause_listen_history">إيقاف سجل الاستماع مؤقتًا</string>
     <string name="clear_listen_history">مسح سجل الاستماع</string>
-    <string name="enable_lrclib">تفعيل موفر كلمات الأغاني LrcLib</string>
+    <string name="enable_lrclib">استخدام LrcLib</string>
     <string name="backup_restore">النسخ الاحتياطي والاستعادة</string>
     <string name="action_restore">استعادة</string>
     <string name="imported_playlist">قائمة تشغيل مستوردة</string>
@@ -291,7 +291,7 @@
     <string name="listen_history">سجل الاستماع</string>
     <string name="pause_search_history">إيقاف سجل البحث مؤقتًا</string>
     <string name="clear_search_history">مسح سجل البحث</string>
-    <string name="enable_kugou">تفعيل موفر كلمات الأغاني KuGou</string>
+    <string name="enable_kugou">استخدام KuGou</string>
     <string name="clear_search_history_confirm">هل أنت متأكد أنك تريد مسح كل سجل البحث؟</string>
     <string name="disable_screenshot">تعطيل قابلية اخذ لقطة للشاشة</string>
     <string name="action_backup">نسخ احتياطي</string>
@@ -320,8 +320,8 @@
     <string name="custom_accent_color">لون تمييز مخصص</string>
     <string name="custom_accent_color_description">استخدام لون ثابت من اختيارك للتمييز في جميع أنحاء التطبيق</string>
     <string name="accent_color">لون التمييز</string>
-    <string name="enable_betterlyrics">تفعيل موفر كلمات الأغاني BetterLyrics</string>
-    <string name="enable_lyricsplus">تفعيل موفر كلمات الأغاني Lyrics+</string>
+    <string name="enable_betterlyrics">استخدام BetterLyrics</string>
+    <string name="enable_lyricsplus">استخدام Lyrics+</string>
     <string name="ignore_audio_focus">الاحتفاظ بالتركيز الصوتي</string>
     <string name="ignore_audio_focus_desc">متابعة التشغيل عندما يستحوذ تطبيق آخر على التركيز الصوتي. لن تتوقف الموسيقى مؤقتًا بسبب مصادر الصوت الأخرى، بما فيها المكالمات الهاتفية.</string>
 </resources>

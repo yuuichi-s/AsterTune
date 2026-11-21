@@ -216,7 +216,7 @@
     <string name="pause_search_history">Pausar o histórico de pesquisa</string>
     <string name="clear_search_history">Limpar o histórico de pesquisa</string>
     <string name="clear_search_history_confirm">Você tem certeza que deseja limpar todo o histórico de pesquisa?</string>
-    <string name="enable_kugou">Ativar o provedor de letras KuGou</string>
+    <string name="enable_kugou">Usar KuGou</string>
     <string name="backup_restore">Backup e restauração</string>
     <string name="action_backup">Fazer backup</string>
     <string name="action_restore">Restaurar</string>
@@ -232,7 +232,7 @@
     <string name="delete_playlist_confirm">Você tem certeza que deseja apagar a lista \"%s\"?</string>
     <string name="remove_from_playlist">Remover da lista</string>
     <string name="skip_duplicates">Pular duplicados</string>
-    <string name="enable_lrclib">Ativar o provedor de letras LrcLib</string>
+    <string name="enable_lrclib">Usar LrcLib</string>
     <string name="duplicates">Duplicados</string>
     <string name="add_anyway">Adicionar mesmo assim</string>
     <string name="duplicates_description_single">Esta música já está na sua lista</string>
@@ -290,8 +290,8 @@
     <string name="accent_color">Cor de destaque</string>
     <string name="ignore_audio_focus">Continuar tocando com outros apps</string>
     <string name="ignore_audio_focus_desc">Continuar tocando quando perder o foco do áudio. A música não irá parar para outras fontes de áudio, incluindo ligações.</string>
-    <string name="enable_betterlyrics">Ativar serviço BetterLyrics</string>
-    <string name="enable_lyricsplus">Ativar serviço Lyrics+</string>
+    <string name="enable_betterlyrics">Usar BetterLyrics</string>
+    <string name="enable_lyricsplus">Usar Lyrics+</string>
     <string name="duration_hours_minutes">%1$dh %2$dmin</string>
     <string name="duration_minutes">%dmin</string>
     <string name="heading_with_count">%1$s - %2$d</string>

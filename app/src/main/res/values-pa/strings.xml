@@ -207,7 +207,10 @@
     <string name="pause_search_history">ਖੋਜ ਇਤਿਹਾਸ ਨੂੰ ਰੋਕੋ</string>
     <string name="clear_search_history">ਖੋਜ ਇਤਿਹਾਸ ਸਾਫ਼ ਕਰੋ</string>
     <string name="clear_search_history_confirm">ਕੀ ਤੁਸੀਂ ਸਾਰੇ ਖੋਜ ਇਤਿਹਾਸ ਨੂੰ ਸਾਫ਼ ਕਰਨ ਲਈ ਯਕੀਨੀ ਹੋ?</string>
-    <string name="enable_kugou">KuGou ਬੋਲ ਪ੍ਰਦਾਤਾ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ</string>
+    <string name="enable_kugou">KuGou ਵਰਤੋ</string>
+    <string name="enable_lrclib">LrcLib ਵਰਤੋ</string>
+    <string name="enable_betterlyrics">BetterLyrics ਵਰਤੋ</string>
+    <string name="enable_lyricsplus">Lyrics+ ਵਰਤੋ</string>
     <string name="backup_restore">ਬੈਕਅੱਪ ਅਤੇ ਰੀਸਟੋਰ</string>
     <string name="action_backup">ਬੈਕਅੱਪ</string>
     <string name="action_restore">ਰੀਸਟੋਰ</string>

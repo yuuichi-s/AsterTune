@@ -63,6 +63,7 @@
     <string name="queues_title">Ουρές</string>
     <string name="queues_empty">Καμία ουρά</string>
     <string name="tab_arrangement">Αναδιάταξη καρτελών</string>
+    <string name="tab_arrangement_description">Επιλέξτε ποιες καρτέλες εμφανίζονται στο κάτω μέρος της εφαρμογής και με ποια σειρά. Επανεκκινήστε την εφαρμογή για να εφαρμοστούν οι αλλαγές</string>
     <string name="tab_arrangement_disable_tip">--– Σύρε προς τα κάτω για απενεργοποίηση ---</string>
     <string name="tab_arrangement_home_required">Η καρτέλα Αρχική απαιτείται.</string>
     <string name="android_auto">Android Auto</string>
@@ -80,7 +81,6 @@
     <string name="playlist_missing_note">Λείπουν λίστες αναπαραγωγής; Πατήστε εδώ για να ενεργοποιήσετε τη λειτουργία συγχρονισμού ανάγνωσης-εγγραφής στις ρυθμίσεις</string>
     <string name="grp_account_sync">Λογαριασμός και συγχρονισμός</string>
     <string name="grp_behavior">Συμπεριφορά</string>
-    <string name="grp_library_and_content">Βιβλιοθήκη και περιεχόμενο</string>
     <string name="grp_sync">Συγχρονισμός</string>
     <string name="app_info_title">Πληροφορίες εφαρμογής</string>
     <string name="check_for_update">Έλεγχος ενημερώσεων</string>
@@ -100,7 +100,6 @@
     <string name="grp_more_settings">Περισσότερες Ρυθμίσεις</string>
     <string name="att_maintainer">Συντηρητής</string>
     <string name="att_translator">Μεταφραστής (%s)</string>
-    <string name="action_logout_tooltip">Για πλήρη έξοδο, παρακαλώ εξέλθετε απο τον λογαριασμό σας στο YouTube στη διαδικτυακή πύλη του YouTube πρωτού εξέλθετε απο εδώ</string>
     <string name="off">Ανενεργός</string>
     <string name="download_on_wifi_only_description">Αναμονή κατά τη χρήση δεδομένων κινητής και έναρξη λήψης μόλις συνδεθείτε σε Wi-Fi.</string>
     <string name="clear_downloads_confirm">Να διαγραφούν όλα τα τραγούδια που έχουν ληφθεί από τον ιδιωτικό χώρο αποθήκευσης της εφαρμογής;\nΤα αρχεία στους φακέλους θα διατηρηθούν.</string>
@@ -140,4 +139,5 @@
     <string name="scan_paths_already_included">Αυτός ο φάκελος περιλαμβάνεται ήδη στη σάρωση. Αφαιρέστε τον από μία από τις δύο λίστες.</string>
     <string name="scan_paths_rejected_dir">Δεν είναι δυνατή η επιλογή του φακέλου λήψεων και των υποφακέλων του</string>
     <string name="dl_select_folder">Επιλογή φακέλου</string>
+    <string name="filter_arrangement_description">Επιλέξτε ποια φίλτρα θα εμφανίζονται στην οθόνη της βιβλιοθήκης</string>
 </resources>

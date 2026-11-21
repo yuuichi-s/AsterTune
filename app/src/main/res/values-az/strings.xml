@@ -5,4 +5,8 @@
     <string name="clear_image_cache">Keşi təmizlə</string>
     <string name="clear_song_cache">Keşi təmizlə</string>
     <string name="size_used">İstifadə olunan yer: %s</string>
+    <string name="enable_lrclib">LrcLib xidmətindən istifadə edin</string>
+    <string name="enable_kugou">KuGou xidmətindən istifadə edin</string>
+    <string name="enable_betterlyrics">BetterLyrics xidmətindən istifadə edin</string>
+    <string name="enable_lyricsplus">Lyrics+ xidmətindən istifadə edin</string>
 </resources>

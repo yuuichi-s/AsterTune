@@ -35,8 +35,8 @@
     <string name="grp_now_playing">再生画面</string>
     <string name="grp_lyrics_format">書式設定</string>
     <string name="grp_lyrics_parser">歌詞解析</string>
-    <string name="swipe2Queue">スワイプで、キューに追加</string>
-    <string name="swipe2Queue_description">曲をスワイプして、再生中の曲の直後のキューに追加</string>
+    <string name="swipe2Queue">スワイプでキューに追加</string>
+    <string name="swipe2Queue_description">曲のスワイプで、再生曲の次のキューに追加</string>
     <string name="lyrics_multiline_title">複数行の歌詞を読み込む</string>
     <string name="lyrics_multiline_description">同期ポイント間のすべての行を1つの歌詞テキストとして扱う</string>
     <string name="lyrics_trim_title">歌詞の前後の空白を削除する</string>
@@ -104,6 +104,7 @@
     <string name="show_scrollbar_title">スクロールバー</string>
     <string name="show_scrollbar_description">スクロールバーを表示する</string>
     <string name="home_sections_title">ホームのセクション</string>
+    <string name="home_sections_description">ホーム画面に表示する項目を設定します</string>
     <string name="home_sections_chips">カテゴリボタン</string>
     <string name="home_sections_chips_description">ホーム上部に、YouTube Musicのセクションを絞り込むボタンを表示します</string>
     <string name="home_sections_ytm">YouTube Musicのセクション</string>
@@ -116,6 +117,7 @@
     <string name="slider_style_default">標準</string>
     <string name="slider_style_slim">細線</string>
     <string name="tab_arrangement">タブを並べ替える</string>
+    <string name="tab_arrangement_description">アプリ下部のタブの並び順と表示を設定します。反映にはアプリの再起動が必要です</string>
     <string name="tab_arrangement_home_required">ホームタブは必須です。</string>
     <string name="token_shown">再度タップすると、コピーまたは編集</string>
     <string name="audio_offload">オフロードを有効にする</string>
@@ -180,6 +182,7 @@
     <string name="queues_empty">キューがありません</string>
     <string name="pause_remote_listen_history">YouTube Music への再生履歴の共有を一時停止</string>
     <string name="filter_arrangement">フィルターの配置</string>
+    <string name="filter_arrangement_description">ライブラリ画面に表示するフィルターを設定します</string>
     <string name="swipe_to_skip_title">再生中に横スワイプで曲を変更</string>
     <string name="swipe_to_skip_description">プレーヤー内で水平にスワイプして曲を切り替える</string>
     <string name="tap_artwork_to_show_lyrics_title">アートワークをタップして歌詞を表示</string>
@@ -190,7 +193,6 @@
     <string name="grp_account_sync">アカウントと同期</string>
     <string name="sync_conflict_overwrite">端末内コンテンツをリモートのコンテンツで上書きする</string>
     <string name="android_auto">Android Auto</string>
-    <string name="grp_library_and_content">ライブラリとコンテンツ</string>
     <string name="sync_conflict_add_only">すべての端末内コンテンツをそのままに、新しいリモートコンテンツを追加する</string>
     <string name="sync_mode_ro">読み取りのみ (リモートコンテンツを表示)</string>
     <string name="sync_mode_rw">読み取りと書き込み (リモートコンテンツの変更も許可)</string>
@@ -323,7 +325,6 @@
     <string name="audio_decoder_preference">オーディオデコーダー</string>
     <string name="audio_decoder_system_only">システムのデコーダーのみ</string>
     <string name="audio_decoder_system_with_ffmpeg">システムのデコーダーを優先</string>
-    <string name="action_logout_tooltip">完全にログアウトするには、このログアウトボタンを使う前に、ウェブポータルでYouTubeアカウントからサインアウトしてください</string>
     <string name="max_queues_title">キューの最大数</string>
     <string name="oobe_cache_title">曲のキャッシュ</string>
     <string name="oobe_welcome_tip">快適に使用するには、テーマ、YouTubeアカウント、端末内メディア、ダウンロードなど自分向けにするための主な設定を簡単に設定することをお勧めします。</string>

@@ -111,6 +111,7 @@
     <string name="download_waiting_for_wifi">Stáhne se po připojení k Wi-Fi</string>
     <string name="queue_remote_history">Historie (vzdálená)</string>
     <string name="filter_arrangement">Seřadit filtry</string>
+    <string name="filter_arrangement_description">Vyberte, které filtry se mají zobrazovat na obrazovce knihovny</string>
     <string name="scanner_strict_file_paths_description">Považovat soubory s jiným umístěním za odlišné skladby. Přesunutí nebo přejmenování souboru ho může přidat jako novou položku do Vaší knihovny</string>
     <string name="all_contributors">Zobrazit všechny přispěvovatele</string>
     <string name="import_innertune_tooltip">Obnovení InnerTune záloh je podporováno, i když může dojít k jistým anomáliím kvůli technickým limitacím. Jiné Forky nejsou podporovány</string>
@@ -130,7 +131,6 @@
     <string name="grp_general">Obecné</string>
     <string name="grp_interface">Rozhraní</string>
     <string name="grp_layout">Rozložení</string>
-    <string name="grp_library_and_content">Knihovna a její obsah</string>
     <string name="grp_localization">Lokalizace</string>
     <string name="grp_lyrics_format">Formátování</string>
     <string name="grp_lyrics_parser">Načítání textů</string>
@@ -168,11 +168,11 @@
     <string name="slider_style_default">Výchozí</string>
     <string name="slider_style_slim">Úzký</string>
     <string name="tab_arrangement">Složení záložek</string>
+    <string name="tab_arrangement_description">Vyberte, které záložky se mají zobrazovat ve spodní části aplikace a v jakém pořadí. Aby se změny projevily, restartujte aplikaci</string>
     <string name="tab_arrangement_disable_tip">--- Přesuňte níže pro vypnutí ---</string>
     <string name="tablet_ui_title">Vynutit zobrazení pro tablety</string>
     <string name="tablet_ui_title_description">Vynutit rozdělené zobrazení pro velké obrazovky. Pokud není obrazovka dostatečně široká, toto nastavení nemá vliv.</string>
     <string name="like_autodownload">Automaticky stahovat oblíbené skladby</string>
-    <string name="action_logout_tooltip">Pro plné odhlášení, odhlaste se prosím nejdříve z Vašeho účtu Youtube na webovém portálu a poté až použijte toto tlačítko pro odhlášení.</string>
     <string name="token_adv_login_description">Toto je POKROČILÝ způsob přihlášení. Na místo přihlašování přes webový portál, můžete sem přímo vložit Váš přihlašovací token. Například pro zrychlení přihlašování na více zařízeních. Prosím pamatujte že token ve formátu který aplikace neumí zpracovat nebude akceptován.</string>
     <string name="token_hidden">Klikněte pro zobrazení tokenu</string>
     <string name="token_shown">Klikněte znovu pro zkopírování nebo úpravu</string>

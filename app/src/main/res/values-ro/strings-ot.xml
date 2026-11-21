@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Acest dosar este deja selectat pentru scanare. Elimină-l din una dintre cele două liste.</string>
     <string name="scan_paths_rejected_dir">Dosarul de descărcări și subdosarele sale nu pot fi selectate</string>
     <string name="dl_select_folder">Selectează dosarul</string>
+    <string name="tab_arrangement_description">Alege ce file apar în partea de jos a aplicației și în ce ordine. Repornește aplicația pentru a aplica modificările</string>
+    <string name="filter_arrangement_description">Alege ce filtre apar pe ecranul bibliotecii</string>
 </resources>

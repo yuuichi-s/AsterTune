@@ -198,7 +198,7 @@
     <string name="pause_search_history">暂停搜索历史</string>
     <string name="clear_search_history">清除搜索历史</string>
     <string name="clear_search_history_confirm">是否确定要清除所有搜索历史？</string>
-    <string name="enable_kugou">使用酷狗音乐提供歌词</string>
+    <string name="enable_kugou">使用酷狗音乐</string>
     <string name="backup_restore">备份与还原</string>
     <string name="action_backup">备份</string>
     <string name="action_restore">还原</string>
@@ -230,7 +230,7 @@
     <string name="not_logged_in">未登录</string>
     <string name="queue">播放队列</string>
     <string name="hide_explicit">隐藏不适宜内容</string>
-    <string name="enable_lrclib">使用 LrcLib 提供歌词</string>
+    <string name="enable_lrclib">使用 LrcLib</string>
     <string name="options">选项</string>
     <string name="preview">预览</string>
     <string name="login_failed">登录失败</string>
@@ -277,6 +277,6 @@
     <string name="minimize_player">最小化播放器</string>
     <string name="ignore_audio_focus">保持音频焦点</string>
     <string name="ignore_audio_focus_desc">当其他应用获取音频焦点时继续播放。音乐不会因其他音源（包括来电）而暂停。</string>
-    <string name="enable_betterlyrics">使用 BetterLyrics 提供歌词</string>
-    <string name="enable_lyricsplus">使用 Lyrics+ 提供歌词</string>
+    <string name="enable_betterlyrics">使用 BetterLyrics</string>
+    <string name="enable_lyricsplus">使用 Lyrics+</string>
 </resources>

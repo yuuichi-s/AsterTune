@@ -192,8 +192,10 @@
     <string name="pause_search_history">Pauziraj povijest pretrage</string>
     <string name="clear_search_history">Izbriši povijest pretrage</string>
     <string name="disable_screenshot">Isključi snimanje slike ekrana</string>
-    <string name="enable_lrclib">Uključi LrcLib dobavljača tekstova pjesama</string>
-    <string name="enable_kugou">Uključi KuGou dobavljača tekstova pjesama</string>
+    <string name="enable_lrclib">Koristi LrcLib</string>
+    <string name="enable_kugou">Koristi KuGou</string>
+    <string name="enable_betterlyrics">Koristi BetterLyrics</string>
+    <string name="enable_lyricsplus">Koristi Lyrics+</string>
     <string name="hide_explicit">Sakrij eksplicitan sadržaj</string>
     <string name="backup_restore">Sigurnosna kopija i obnova</string>
     <string name="backup_create_success">Sigurnosna kopija je uspješno izrađena</string>

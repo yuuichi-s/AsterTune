@@ -269,8 +269,8 @@
     <string name="clear_search_history_confirm">Вы уверены, что хотите очистить всю историю поиска?</string>
     <string name="disable_screenshot">Отключить снимок экрана</string>
     <string name="disable_screenshot_desc">При включении этой опции скриншоты и отображение приложения в списке последних отключаются.</string>
-    <string name="enable_lrclib">Включить провайдера текстов LrcLib</string>
-    <string name="enable_kugou">Включить провайдера текстов KuGou</string>
+    <string name="enable_lrclib">Использовать LrcLib</string>
+    <string name="enable_kugou">Использовать KuGou</string>
     <string name="hide_explicit">Скрывать контент с нецензурной лексикой</string>
     <string name="backup_restore">Резервное копирование и восстановление</string>
     <string name="action_backup">Создать резервную копию</string>
@@ -304,6 +304,6 @@
     <string name="minimize_player">Свернуть плеер</string>
     <string name="ignore_audio_focus">Сохранять аудиофокус</string>
     <string name="ignore_audio_focus_desc">Продолжать воспроизведение, когда другое приложение получает аудиофокус. Музыка не будет приостанавливаться из-за других источников звука, включая телефонные звонки.</string>
-    <string name="enable_betterlyrics">Включить провайдера текстов BetterLyrics</string>
-    <string name="enable_lyricsplus">Включить провайдера текстов Lyrics+</string>
+    <string name="enable_betterlyrics">Использовать BetterLyrics</string>
+    <string name="enable_lyricsplus">Использовать Lyrics+</string>
 </resources>

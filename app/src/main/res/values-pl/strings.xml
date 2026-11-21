@@ -225,7 +225,7 @@
     <string name="pause_search_history">Wstrzymaj historię wyszukiwania</string>
     <string name="clear_search_history">Wyczyść historię wyszukiwania</string>
     <string name="clear_search_history_confirm">Czy na pewno chcesz wyczyścić całą historię wyszukiwania?</string>
-    <string name="enable_kugou">Pobieraj teksty utworów z KuGou</string>
+    <string name="enable_kugou">Używaj KuGou</string>
     <string name="backup_restore">Kopia zapasowa i przywracanie</string>
     <string name="action_backup">Kopia zapasowa</string>
     <string name="action_restore">Przywróć</string>
@@ -248,7 +248,9 @@
     <string name="auto_skip_next_on_error">Automatycznie pomiń do następnego utworu, gdy wystąpi błąd</string>
     <string name="stop_music_on_task_clear">Zatrzymaj muzykę po wykonaniu zadania</string>
     <string name="disable_screenshot_desc">Gdy ta opcja jest włączona, zrzuty ekranu i widok aplikacji na ekranie Ostatnie są wyłączone.</string>
-    <string name="enable_lrclib">Pobieraj teksty utworów z LrcLib</string>
+    <string name="enable_lrclib">Używaj LrcLib</string>
+    <string name="enable_betterlyrics">Używaj BetterLyrics</string>
+    <string name="enable_lyricsplus">Używaj Lyrics+</string>
     <string name="small">Mały</string>
     <string name="action_like_all">Polub wszystkie</string>
     <string name="default_">Domyślny</string>

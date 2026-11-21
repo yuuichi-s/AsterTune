@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Ez a mappa már szerepel a keresendő mappák között. Távolítsd el az egyik listából.</string>
     <string name="scan_paths_rejected_dir">A letöltési mappa és annak almappái nem választhatók ki</string>
     <string name="dl_select_folder">Mappa kiválasztása</string>
+    <string name="tab_arrangement_description">Válaszd ki, hogy mely lapok jelenjenek meg az alkalmazás alján, és milyen sorrendben. A módosítások alkalmazásához indítsd újra az alkalmazást</string>
+    <string name="filter_arrangement_description">Válaszd ki, hogy mely szűrők jelenjenek meg a Könyvtár képernyőn</string>
 </resources>

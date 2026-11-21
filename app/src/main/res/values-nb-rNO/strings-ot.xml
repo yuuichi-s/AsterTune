@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">Denne mappen er allerede valgt for skanning. Fjern den fra én av listene.</string>
     <string name="scan_paths_rejected_dir">Nedlastingsmappen og undermappene kan ikke velges</string>
     <string name="dl_select_folder">Velg mappe</string>
+    <string name="tab_arrangement_description">Velg hvilke faner som vises nederst i appen og i hvilken rekkefølge. Start appen på nytt for å ta i bruk endringene</string>
+    <string name="filter_arrangement_description">Velg hvilke filtre som vises i biblioteket</string>
 </resources>

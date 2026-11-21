@@ -47,4 +47,6 @@
     <string name="scan_paths_already_included">এই ফোল্ডারটি ইতিমধ্যেই স্ক্যানের অন্তর্ভুক্ত আছে। এটিকে দুটি তালিকার যেকোনো একটি থেকে সরিয়ে দিন।</string>
     <string name="scan_paths_rejected_dir">ডাউনলোড ফোল্ডার ও তার সাবফোল্ডার বেছে নেওয়া যাবে না</string>
     <string name="dl_select_folder">ফোল্ডার বেছে নিন</string>
+    <string name="tab_arrangement_description">অ্যাপের নিচে কোন ট্যাবগুলো কী ক্রমে দেখানো হবে তা বেছে নিন। পরিবর্তন কার্যকর করতে অ্যাপটি আবার চালু করুন</string>
+    <string name="filter_arrangement_description">লাইব্রেরি স্ক্রিনে কোন ফিল্টারগুলো দেখানো হবে তা বেছে নিন</string>
 </resources>

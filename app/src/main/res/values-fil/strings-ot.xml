@@ -56,4 +56,6 @@
     <string name="scan_paths_already_included">Kasama na ang folder na ito sa pag-scan. Alisin ito sa isa sa dalawang listahan.</string>
     <string name="scan_paths_rejected_dir">Hindi maaaring piliin ang folder ng mga download at ang mga subfolder nito</string>
     <string name="dl_select_folder">Pumili ng folder</string>
+    <string name="tab_arrangement_description">Piliin kung aling mga tab ang lalabas sa ibaba ng app at ayusin ang pagkakasunod-sunod ng mga ito. I-restart ang app para mailapat ang mga pagbabago</string>
+    <string name="filter_arrangement_description">Piliin kung aling mga filter ang lalabas sa screen ng Silid-Aklatan</string>
 </resources>

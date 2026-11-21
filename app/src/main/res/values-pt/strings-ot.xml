@@ -53,7 +53,6 @@
     <string name="grp_general">Geral</string>
     <string name="grp_interface">Interface</string>
     <string name="grp_layout">Disposição</string>
-    <string name="grp_library_and_content">Biblioteca e conteúdo</string>
     <string name="grp_localization">Localização</string>
     <string name="grp_lyrics_format">Formatação</string>
     <string name="grp_lyrics_parser">Interpretador</string>
@@ -107,11 +106,13 @@
     <string name="show_scrollbar_title">Barra de deslocamento</string>
     <string name="show_scrollbar_description">Mostrar a barra de deslocamento</string>
     <string name="tab_arrangement">Organizar separadores</string>
+    <string name="tab_arrangement_description">Escolha os separadores a mostrar na parte inferior da aplicação e a ordem em que aparecem. Reinicie a aplicação para aplicar as alterações</string>
     <string name="tab_arrangement_disable_tip">--- Arraste para baixo daqui para desativar ---</string>
     <string name="tab_arrangement_home_required">O separador Início não pode ser removido.</string>
     <string name="tablet_ui_title">Impor interface de tablet</string>
     <string name="tablet_ui_title_description">Forçar uma interface dividida otimizada para ecrãs grandes. Esta definição não tem efeito se os requisitos de largura mínima não forem cumpridos</string>
     <string name="filter_arrangement">Organizar filtros</string>
+    <string name="filter_arrangement_description">Escolha os filtros a mostrar no ecrã da biblioteca</string>
     <string name="home_sections_title">Secções do Início</string>
     <string name="home_sections_chips">Botões de categorias</string>
     <string name="home_sections_chips_description">Mostra botões no topo do Início para filtrar as secções do YouTube Music</string>
@@ -277,7 +278,6 @@
         <item quantity="many">%d segundos</item>
         <item quantity="other">%d segundos</item>
     </plurals>
-    <string name="action_logout_tooltip">Para sair completamente, saia da sua conta YouTube no portal web antes de usar este botão de saída</string>
     <string name="max_queues_title">Número máximo de filas</string>
     <string name="oobe_welcome_tip">Para uma melhor experiência, recomendamos concluir uma configuração rápida para personalizar as principais definições tais como tema, conta YouTube, ficheiros locais e transferências.</string>
     <string name="oobe_cache_title">Cache de músicas</string>

@@ -67,7 +67,6 @@
     <string name="grp_general">عام</string>
     <string name="grp_interface">الواجهة</string>
     <string name="grp_layout">التخطيط</string>
-    <string name="grp_library_and_content">المكتبة والمحتوى</string>
     <string name="grp_localization">اللغة والمنطقة</string>
     <string name="grp_lyrics_format">التنسيق</string>
     <string name="grp_lyrics_parser">المحلل</string>
@@ -107,9 +106,11 @@
     <string name="show_scrollbar_title">شريط التمرير</string>
     <string name="show_scrollbar_description">إظهار شريط التمرير</string>
     <string name="tab_arrangement">ترتيب علامات التبويب</string>
+    <string name="tab_arrangement_description">اختر علامات التبويب التي تظهر أسفل التطبيق وحدد ترتيبها. أعِد تشغيل التطبيق لتطبيق التغييرات</string>
     <string name="tab_arrangement_disable_tip">--- اسحب أدناه للتعطيل ---</string>
     <string name="tab_arrangement_home_required">علامة تبويب الصفحة الرئيسية مطلوبة.</string>
     <string name="filter_arrangement">ترتيب المرشحات</string>
+    <string name="filter_arrangement_description">اختر المرشحات التي تظهر على شاشة المكتبة</string>
     <string name="home_sections_title">أقسام الصفحة الرئيسية</string>
     <string name="home_sections_chips">أزرار الفئات</string>
     <string name="home_sections_chips_description">يعرض أزرارًا أعلى الصفحة الرئيسية لتصفية أقسام YouTube Music</string>
@@ -243,7 +244,6 @@
     <string name="dl_size_used_extra">مجلدات المصدر الإضافية: %s</string>
     <string name="grp_more_settings">إعدادات إضافية</string>
     <string name="ffmpeg_lgpl">يستخدم هذا البرنامج مكتبات من مشروع FFmpeg بموجب ترخيص LGPLv2.1</string>
-    <string name="action_logout_tooltip">لتسجيل الخروج تمامًا، سجّل الخروج من حساب YouTube في بوابة الويب قبل استخدام زر تسجيل الخروج هذا</string>
     <string name="audio_decoder_ffmpeg_only">إعطاء الأولوية لبرامج فك ترميز FFmpeg</string>
     <string name="off">غير مفعَّل</string>
     <string name="att_based_on">مبني على</string>

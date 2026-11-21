@@ -198,7 +198,7 @@
     <string name="pause_search_history">Jeda riwayat pencarian</string>
     <string name="clear_search_history">Bersihkan riwayat pencarian</string>
     <string name="clear_search_history_confirm">Apakah anda yakin ingin menghapus semua riwayat pencarian?</string>
-    <string name="enable_kugou">Aktifkan penyedia lirik KuGou</string>
+    <string name="enable_kugou">Gunakan KuGou</string>
     <string name="backup_restore">Cadangkan dan pulihkan</string>
     <string name="action_backup">Cadangkan</string>
     <string name="action_restore">Pulihkan</string>
@@ -258,7 +258,7 @@
     <string name="search_history">Riwayat pencarian</string>
     <string name="disable_screenshot">Nonaktifkan tangkapan layar</string>
     <string name="disable_screenshot_desc">Ketika pilihan ini diaktifkan, tangkapan layar dan tampilan aplikasi di Terkini dinonaktifkan.</string>
-    <string name="enable_lrclib">Aktifkan penyedia lirik LrcLib</string>
+    <string name="enable_lrclib">Gunakan LrcLib</string>
     <string name="discord_integration">Integrasi Discord</string>
     <string name="discord_information">AsterTune menggunakan pustaka KizzyRPC untuk mengatur status akun Discord Anda. Hal ini melibatkan penggunaan sambungan Discord Gateway, yang dapat dianggap sebagai pelanggaran TOS Discord. Namun, tidak ada kasus yang diketahui tentang akun pengguna yang ditangguhkan karena alasan ini. Gunakan dengan risiko Anda sendiri.\n\nAsterTune hanya akan mengekstrak token Anda, dan yang lainnya disimpan secara lokal.</string>
     <string name="dismiss">Abaikan</string>
@@ -275,8 +275,8 @@
     <string name="custom_accent_color">Warna aksen khusus</string>
     <string name="custom_accent_color_description">Gunakan warna tetap pilihan Anda sebagai aksen di seluruh aplikasi</string>
     <string name="accent_color">Warna aksen</string>
-    <string name="enable_betterlyrics">Aktifkan penyedia lirik BetterLyrics</string>
-    <string name="enable_lyricsplus">Aktifkan penyedia lirik Lyrics+</string>
+    <string name="enable_betterlyrics">Gunakan BetterLyrics</string>
+    <string name="enable_lyricsplus">Gunakan Lyrics+</string>
     <string name="ignore_audio_focus">Pertahankan fokus audio</string>
     <string name="ignore_audio_focus_desc">Tetap putar saat aplikasi lain mengambil fokus audio. Musik tidak akan dijeda untuk sumber audio lain, termasuk panggilan telepon.</string>
 </resources>

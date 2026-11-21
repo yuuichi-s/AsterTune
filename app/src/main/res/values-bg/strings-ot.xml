@@ -118,6 +118,7 @@
     <string name="grp_lyrics_format">Форматиране</string>
     <string name="slim_navbar_description">Премахнете текстовите етикети, за да намалите височината на навигационната лента</string>
     <string name="tab_arrangement">Подреждане на раздели</string>
+    <string name="tab_arrangement_description">Изберете кои раздели да се показват в долната част на приложението и в какъв ред. Рестартирайте приложението, за да приложите промените</string>
     <string name="tab_arrangement_disable_tip">--- Плъзнете тук отдолу, за да деактивирате ---</string>
     <string name="scan_paths_excl">Изключени папки</string>
     <string name="scanner_ytm_link_fail">Неуспешна задача за свързване на изпълнител в YouTube</string>
@@ -173,6 +174,7 @@
     <string name="dl_migrate_title">Преместване на изтеглените песни в папка</string>
     <string name="m3u_ytm_lookup">Търсене в YouTube Music за песни, които не са намерени в базата данни на приложението</string>
     <string name="filter_arrangement">Подреждане на филтри</string>
+    <string name="filter_arrangement_description">Изберете кои филтри да се показват на екрана на библиотеката</string>
     <string name="home_sections_title">Секции на началната страница</string>
     <string name="home_sections_chips">Бутони за категории</string>
     <string name="home_sections_chips_description">Показва бутони в горната част на началната страница за филтриране на секциите от YouTube Music</string>
@@ -190,7 +192,6 @@
     <string name="dl_main_path_title">Целева папка за изтеглените песни</string>
     <string name="missing_media_permission_warning">За локални медии са необходими разрешения за съхранение. Кликнете, за да предоставите разрешение.</string>
     <string name="android_auto">Android Auto</string>
-    <string name="grp_library_and_content">Библиотека и съдържание</string>
     <string name="playlist_missing_note">Липсват плейлисти? Кликнете тук, за да активирате режима за синхронизиране на четене и запис в настройките</string>
     <string name="check_for_update">Проверете за актуализации</string>
     <string name="checking_for_update">Проверка за актуализации</string>
@@ -258,7 +259,6 @@
     <string name="audio_decoder_preference">Аудио декодер</string>
     <string name="audio_decoder_system_only">Само системни декодери</string>
     <string name="audio_decoder_system_with_ffmpeg">Приоритизиране на системните декодери</string>
-    <string name="action_logout_tooltip">За да излезете напълно, моля, излезте от профила си в YouTube в уеб портала, преди да използвате този бутон за излизане</string>
     <string name="max_queues_title">Максимален брой опашки</string>
     <string name="oobe_welcome_tip">За най-добро изживяване препоръчваме да извършите бърза настройка, за да персонализирате ключови настройки, като тема, YouTube акаунт, локални медии и изтегляния.</string>
     <string name="oobe_cache_title">Кеш на песен</string>

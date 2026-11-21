@@ -258,8 +258,10 @@
     <string name="use_login_for_browse_desc">ఇది మీరు చూసే కంటెంట్‌ను ప్రభావితం చేస్తుంది మరియు ఉదాహరణకు మీరు ప్రీమియం ఖాతాతో లాగిన్ అయి ఉంటే ప్రీమియం-మాత్రమే ఆల్బమ్‌లను చూపుతుంది</string>
     <string name="disable_screenshot">స్క్రీన్‌షాట్‌ను నిలిపివేయండి</string>
     <string name="disable_screenshot_desc">ఈ ఎంపిక ఆన్‌లో ఉన్నప్పుడు, స్క్రీన్‌షాట్‌లు మరియు ఇటీవలి వాటిలో యాప్‌ల వీక్షణ నిలిపివేయబడతాయి.</string>
-    <string name="enable_lrclib">LrcLib లిరిక్స్ ప్రొవైడర్‌ను ప్రారంభించండి</string>
-    <string name="enable_kugou">KuGou లిరిక్స్ ప్రొవైడర్‌ను ప్రారంభించండి</string>
+    <string name="enable_lrclib">LrcLib ఉపయోగించండి</string>
+    <string name="enable_kugou">KuGou ఉపయోగించండి</string>
+    <string name="enable_betterlyrics">BetterLyrics ఉపయోగించండి</string>
+    <string name="enable_lyricsplus">Lyrics+ ఉపయోగించండి</string>
     <string name="hide_explicit">అభ్యంతరకరమైన కంటెంట్‌ను దాచు</string>
     <string name="backup_restore">బ్యాకప్ మరియు పునరుద్ధరణ</string>
     <string name="action_backup">బ్యాకప్</string>
