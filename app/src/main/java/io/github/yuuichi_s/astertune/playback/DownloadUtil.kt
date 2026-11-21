@@ -108,6 +108,7 @@ class DownloadUtil @Inject constructor(
                         .build()
                 )
             )
+            .setCacheWriteDataSinkFactory(null)
     ) { dataSpec ->
         val mediaId = dataSpec.key ?: error("No media id")
         val length = if (dataSpec.length >= 0) dataSpec.length else 1

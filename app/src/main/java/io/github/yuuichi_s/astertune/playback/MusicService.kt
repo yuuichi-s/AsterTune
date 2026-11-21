@@ -1105,9 +1105,9 @@ class MusicService : MediaLibraryService(),
                             null
                         } else {
                             HybridCacheDataSinkFactory(playerCache) { dataSpec ->
-                                val isLocal = queueBoard.value.getCurrentQueue()?.findSong(dataSpec.key ?: "")?.isLocal == true
-                                if (SERVICE_DEBUG) Log.d(TAG, "SONG CACHE: ${!isLocal}")
-                                !isLocal
+                                val isStream = dataSpec.uri.scheme.let { it == "http" || it == "https" }
+                                if (SERVICE_DEBUG) Log.d(TAG, "SONG CACHE: $isStream")
+                                isStream
                             }
                         }
                     )
