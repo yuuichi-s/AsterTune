@@ -44,25 +44,23 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.automirrored.rounded.NavigateBefore
-import androidx.compose.material.icons.automirrored.rounded.NavigateNext
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Autorenew
 import androidx.compose.material.icons.rounded.Block
 import androidx.compose.material.icons.rounded.Cached
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.LibraryMusic
-import androidx.compose.material.icons.rounded.Lyrics
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.SdCard
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -98,7 +96,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.zionhuang.innertube.utils.parseCookieString
 import io.github.yuuichi_s.astertune.BuildConfig
 import io.github.yuuichi_s.astertune.LocalDownloadUtil
 import io.github.yuuichi_s.astertune.R
@@ -108,10 +105,8 @@ import io.github.yuuichi_s.astertune.constants.DEFAULT_ENABLED_TABS
 import io.github.yuuichi_s.astertune.constants.DownloadPathKey
 import io.github.yuuichi_s.astertune.constants.EnabledFiltersKey
 import io.github.yuuichi_s.astertune.constants.EnabledTabsKey
-import io.github.yuuichi_s.astertune.constants.InnerTubeCookieKey
 import io.github.yuuichi_s.astertune.constants.LibraryFilterKey
 import io.github.yuuichi_s.astertune.constants.LocalLibraryEnableKey
-import io.github.yuuichi_s.astertune.constants.LyricTrimKey
 import io.github.yuuichi_s.astertune.constants.MaxSongCacheSizeKey
 import io.github.yuuichi_s.astertune.constants.NavigationBarHeight
 import io.github.yuuichi_s.astertune.constants.OOBE_VERSION
@@ -128,8 +123,6 @@ import io.github.yuuichi_s.astertune.ui.dialog.InfoLabel
 import io.github.yuuichi_s.astertune.ui.screens.Screens.LibraryFilter
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.AccountFrag
 import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalScannerFrag
-import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.LocalizationFrag
-import io.github.yuuichi_s.astertune.ui.screens.settings.fragments.ThemeAppFrag
 import io.github.yuuichi_s.astertune.utils.formatFileSize
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
@@ -159,13 +152,6 @@ fun SetupWizard(
 
     // content prefs
     var filter by rememberEnumPreference(LibraryFilterKey, LibraryFilter.ALL)
-
-
-    val innerTubeCookie by rememberPreference(InnerTubeCookieKey, "")
-    val isLoggedIn = remember(innerTubeCookie) {
-        "SAPISID" in parseCookieString(innerTubeCookie)
-    }
-    val (ytmSync, onYtmSyncChange) = rememberPreference(LyricTrimKey, defaultValue = true)
 
     // local media prefs
     val (localLibEnable, onLocalLibEnableChange) = rememberPreference(LocalLibraryEnableKey, defaultValue = true)
@@ -202,28 +188,26 @@ fun SetupWizard(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {
+            FloatingActionButton(
+                elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp),
+                onClick = {
                     if (oobeStatus > 0) {
                         oobeStatus -= 1
                     }
                     haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                 }
             ) {
-                Text(
-                    text = stringResource(R.string.action_back),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
-                )
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.NavigateBefore,
-                    contentDescription = null
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.action_back)
                 )
             }
+
+            Spacer(Modifier.width(12.dp))
 
             LinearProgressIndicator(
                 progress = { oobeStatus.toFloat() / (OOBE_VERSION - 1) },
@@ -232,14 +216,16 @@ fun SetupWizard(
                 strokeCap = StrokeCap.Butt,
                 drawStopIndicator = {},
                 modifier = Modifier
-                    .weight(1f, false)
+                    .weight(1f)
                     .height(8.dp)  // Height of the progress bar
                     .padding(2.dp),  // Add some padding at the top
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {
+            Spacer(Modifier.width(12.dp))
+
+            FloatingActionButton(
+                elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp),
+                onClick = {
                     if (oobeStatus == 1) {
                         filter = LibraryFilter.ALL // hax
                     }
@@ -252,14 +238,8 @@ fun SetupWizard(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.NavigateNext,
-                    contentDescription = null
-                )
-                Text(
-                    text = stringResource(R.string.action_next),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp)
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                    contentDescription = stringResource(R.string.action_next)
                 )
             }
         }
@@ -396,51 +376,8 @@ fun SetupWizard(
                         }
                     }
 
-                    // appearance
-                    1 -> {
-                        Icon(
-                            imageVector = Icons.Rounded.DarkMode,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .padding(16.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-
-                        Text(
-                            text = stringResource(R.string.grp_interface),
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-                        )
-
-                        Text(
-                            text = stringResource(R.string.oobe_interface_subtitle),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 32.dp)
-                        )
-
-
-                        ElevatedCard(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            ThemeAppFrag()
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        ElevatedCard(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            LocalizationFrag()
-                        }
-                    }
-
                     // account
-                    2 -> {
+                    1 -> {
                         Icon(
                             imageVector = Icons.Rounded.AccountCircle,
                             contentDescription = null,
@@ -472,24 +409,10 @@ fun SetupWizard(
                         ) {
                             AccountFrag(navController)
                         }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        ElevatedCard(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            SwitchPreference(
-                                title = { Text(stringResource(R.string.ytm_sync)) },
-                                icon = { Icon(Icons.Rounded.Lyrics, null) },
-                                checked = ytmSync,
-                                onCheckedChange = onYtmSyncChange,
-                                isEnabled = isLoggedIn
-                            )
-                        }
                     }
 
                     // local media
-                    3 -> {
+                    2 -> {
                         Icon(
                             imageVector = Icons.Rounded.LibraryMusic,
                             contentDescription = null,
@@ -550,7 +473,7 @@ fun SetupWizard(
                                     )
 
 
-                                    LocalScannerFrag()
+                                    LocalScannerFrag(fullRescanByDefault = true, showRescanWarning = false)
                                 }
                             }
 
@@ -558,7 +481,7 @@ fun SetupWizard(
                     }
 
                     // downloads
-                    4 -> {
+                    3 -> {
                         val downloadUtil = LocalDownloadUtil.current
                         val (downloadPath, _) = rememberPreference(DownloadPathKey, "")
                         val (maxSongCacheSize, onMaxSongCacheSizeChange) = rememberPreference(
@@ -765,7 +688,7 @@ fun SetupWizard(
                     }
 
                     // exit page
-                    5 -> {
+                    4 -> {
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -818,6 +741,7 @@ fun SetupWizard(
 
             if (oobeStatus == OOBE_VERSION - 1) {
                 FloatingActionButton(
+                    elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp),
                     modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.BottomEnd),

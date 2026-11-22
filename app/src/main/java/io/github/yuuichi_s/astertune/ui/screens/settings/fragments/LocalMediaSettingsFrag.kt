@@ -119,7 +119,10 @@ import java.time.ZoneOffset
  * Opens the folder selection dialog when no scan folders are configured.
  */
 @Composable
-fun ColumnScope.LocalScannerFrag() {
+fun ColumnScope.LocalScannerFrag(
+    fullRescanByDefault: Boolean = false,
+    showRescanWarning: Boolean = true,
+) {
     val context = LocalContext.current
     val resources = LocalResources.current
     val database = LocalDatabase.current
@@ -156,7 +159,7 @@ fun ColumnScope.LocalScannerFrag() {
     val (excludedScanPaths, onExcludedScanPathsChange) = rememberPreference(ExcludedScanPathsKey, defaultValue = "")
     val dlPathExtra by rememberPreference(DownloadExtraPathKey, "")
 
-    var fullRescan by remember { mutableStateOf(false) }
+    var fullRescan by remember { mutableStateOf(fullRescanByDefault) }
 
     LaunchedEffect(scanPaths) {
         if (scanPaths.isBlank()) {
@@ -420,22 +423,24 @@ fun ColumnScope.LocalScannerFrag() {
         },
     )
 
-    Row(
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            Icons.Rounded.WarningAmber,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.error,
-        )
+    if (showRescanWarning) {
+        Row(
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.Rounded.WarningAmber,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+            )
 
-        Text(
-            stringResource(R.string.scanner_warning),
-            color = MaterialTheme.colorScheme.secondary,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+            Text(
+                stringResource(R.string.scanner_warning),
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
     }
 
 
