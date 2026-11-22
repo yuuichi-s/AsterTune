@@ -294,7 +294,6 @@
     <string name="enable_lyricsplus">Usar Lyrics+</string>
     <string name="duration_hours_minutes">%1$dh %2$dmin</string>
     <string name="duration_minutes">%dmin</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Automática (álbum más reciente)</string>
     <string name="minimize_player">Minimizar reproductor</string>
 </resources>

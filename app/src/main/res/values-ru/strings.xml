@@ -296,7 +296,6 @@
     <string name="action_login">Войти</string>
     <string name="duration_hours_minutes">%1$d ч %2$d мин</string>
     <string name="duration_minutes">%d мин</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Автоматически (последний альбом)</string>
     <string name="custom_accent_color">Свой цвет акцента</string>
     <string name="custom_accent_color_description">Использовать выбранный вами фиксированный цвет акцента во всём приложении</string>

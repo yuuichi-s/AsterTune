@@ -269,7 +269,6 @@
     <string name="action_login">登录</string>
     <string name="duration_hours_minutes">%1$d 小时 %2$d 分钟</string>
     <string name="duration_minutes">%d 分钟</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">自动（最新专辑）</string>
     <string name="custom_accent_color">自定义强调色</string>
     <string name="custom_accent_color_description">选择一种固定颜色作为整个应用的强调色</string>

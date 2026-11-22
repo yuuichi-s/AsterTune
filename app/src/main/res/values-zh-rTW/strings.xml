@@ -274,7 +274,6 @@
     <string name="clear_translation_models">清除翻譯模型</string>
     <string name="duration_hours_minutes">%1$d 小時 %2$d 分鐘</string>
     <string name="duration_minutes">%d 分鐘</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">自動（最新專輯）</string>
     <string name="minimize_player">最小化播放器</string>
     <string name="enable_betterlyrics">使用 BetterLyrics</string>

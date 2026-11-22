@@ -289,7 +289,6 @@
     <string name="error_no_stream">Cap transmissió disponible</string>
     <string name="duration_hours_minutes">%1$d h %2$d min</string>
     <string name="duration_minutes">%d min</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Automàtica (àlbum més recent)</string>
     <string name="custom_accent_color">Color d\'accent personalitzat</string>
     <string name="custom_accent_color_description">Fes servir el color que triïs com a color d\'accent fix a tota l\'aplicació</string>

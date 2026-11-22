@@ -276,7 +276,6 @@
     <string name="enable_lyricsplus">Lyrics+ 사용</string>
     <string name="duration_hours_minutes">%1$d시간 %2$d분</string>
     <string name="duration_minutes">%d분</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">자동(최신 앨범)</string>
     <string name="minimize_player">플레이어 최소화</string>
 </resources>

@@ -280,7 +280,6 @@
     <string name="action_login">Вход</string>
     <string name="duration_hours_minutes">%1$d ч %2$d мин</string>
     <string name="duration_minutes">%d мин</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Автоматично (най-новият албум)</string>
     <string name="custom_accent_color">Персонализиран цвят за акцент</string>
     <string name="custom_accent_color_description">Използване на избран постоянен цвят за акцент в цялото приложение</string>

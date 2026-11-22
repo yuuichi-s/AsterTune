@@ -298,7 +298,6 @@
     <string name="action_login">Zaloguj</string>
     <string name="duration_hours_minutes">%1$d godz. %2$d min</string>
     <string name="duration_minutes">%d min</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Automatycznie (najnowszy album)</string>
     <string name="custom_accent_color">Własny kolor akcentu</string>
     <string name="custom_accent_color_description">Używaj wybranego, stałego koloru akcentu w całej aplikacji</string>

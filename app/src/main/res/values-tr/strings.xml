@@ -278,7 +278,6 @@
     <string name="action_login">Giriş Yap</string>
     <string name="duration_hours_minutes">%1$d sa %2$d dk</string>
     <string name="duration_minutes">%d dk</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Otomatik (en yeni albüm)</string>
     <string name="minimize_player">Oynatıcıyı küçült</string>
     <string name="custom_accent_color">Özel vurgu rengi</string>

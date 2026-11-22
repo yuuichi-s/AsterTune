@@ -314,7 +314,6 @@
     <string name="action_login">تسجيل دخول</string>
     <string name="duration_hours_minutes">%1$d س %2$d د</string>
     <string name="duration_minutes">%d د</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">تلقائي (أحدث ألبوم)</string>
     <string name="minimize_player">تصغير المشغل</string>
     <string name="custom_accent_color">لون تمييز مخصص</string>

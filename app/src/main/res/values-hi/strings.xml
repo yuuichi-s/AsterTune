@@ -285,7 +285,6 @@
     <string name="clear_translation_models">अनुवाद मॉडल साफ़ करें</string>
     <string name="duration_hours_minutes">%1$d घं. %2$d मि.</string>
     <string name="duration_minutes">%d मि.</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">स्वचालित (नवीनतम एलबम)</string>
     <string name="minimize_player">प्लेयर छोटा करें</string>
 </resources>
