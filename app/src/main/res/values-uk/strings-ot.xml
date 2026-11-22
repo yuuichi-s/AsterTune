@@ -331,4 +331,20 @@
     <string name="download_waiting_for_wifi">Завантаження почнеться після підключення до Wi-Fi</string>
     <string name="tap_artwork_to_show_lyrics_title">Торкніться обкладинки, щоб показати текст пісні</string>
     <string name="tap_artwork_to_show_lyrics_description">Показувати текст пісні після торкання обкладинки в плеєрі</string>
+    <string name="auto_update_check">Автоматично перевіряти наявність оновлень</string>
+    <string name="auto_update_check_description">Перевіряти наявність нової версії під час відкриття застосунку</string>
+    <string name="update_available_version">Доступна версія %1$s</string>
+    <string name="update_check_failed">Не вдалося перевірити наявність оновлень</string>
+    <string name="update_install">Установити</string>
+    <string name="update_downloading">Завантаження…</string>
+    <string name="update_downloading_percent">Завантаження… %1$d%%</string>
+    <string name="update_installing">Установлення…</string>
+    <string name="update_installed">Установлено</string>
+    <string name="update_download_failed">Не вдалося завантажити</string>
+    <string name="update_verify_failed">Завантажений файл не відповідає опублікованому, тому його видалено</string>
+    <string name="update_install_aborted">Установлення скасовано</string>
+    <string name="update_install_failed">Не вдалося встановити %1$s</string>
+    <string name="update_install_permission_title">Дозволити встановлення оновлень</string>
+    <string name="update_install_permission_message">Щоб установлювати оновлення, дозвольте AsterTune встановлювати невідомі застосунки в налаштуваннях Android.</string>
+    <string name="update_open_settings">Відкрити налаштування</string>
 </resources>

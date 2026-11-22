@@ -271,8 +271,8 @@
     <string name="disable_screenshot_desc">Якщо ця опція увімкнена, знімки екрана та відображення програми в списку останніх відключаються.</string>
     <string name="enable_lrclib">Використовувати LrcLib</string>
     <string name="enable_kugou">Використовувати KuGou</string>
-    <string name="enable_betterlyrics">Використовувати BetterLyrics</string>
-    <string name="enable_lyricsplus">Використовувати Lyrics+</string>
+    <string name="enable_betterlyrics">Увімкнути провайдера текстів BetterLyrics</string>
+    <string name="enable_lyricsplus">Увімкнути провайдера текстів Lyrics+</string>
     <string name="hide_explicit">Приховувати контент із нецензурною лексикою</string>
     <string name="backup_restore">Резервне копіювання та відновлення</string>
     <string name="action_backup">Резервне копіювання</string>
@@ -296,4 +296,17 @@
     <string name="use_login_for_browse_desc">Це може вплинути на те, який вміст ви бачите, і, наприклад, показує лише платні альбоми, якщо ви ввійшли в обліковий запис Premium</string>
     <string name="use_login_for_browse">Використовуйте логін для перегляду вмісту</string>
     <string name="action_login">Увійти</string>
+    <string name="duration_hours_minutes">%1$d год %2$d хв</string>
+    <string name="duration_minutes">%d хв</string>
+    <string name="heading_with_count">%1$s - %2$d</string>
+    <string name="artist_image_auto">Автоматично (найновіший альбом)</string>
+    <string name="custom_accent_color">Власний колір акценту</string>
+    <string name="custom_accent_color_description">Використовувати вибраний колір як постійний колір акценту в усьому застосунку</string>
+    <string name="accent_color">Колір акценту</string>
+    <string name="minimize_player">Згорнути плеєр</string>
+    <string name="ignore_audio_focus">Зберігати аудіофокус</string>
+    <string name="ignore_audio_focus_desc">Продовжувати відтворення, коли інший застосунок отримує аудіофокус. Музика не призупинятиметься під час відтворення звуку з інших джерел, зокрема під час телефонних дзвінків.</string>
+    <string name="local_image_cache">Кеш локальних зображень</string>
+    <string name="clear_local_image_cache_confirm">Очистити весь кеш локальних зображень?</string>
+    <string name="clear_listen_history_failed">Не вдалося очистити історію прослуховувань</string>
 </resources>

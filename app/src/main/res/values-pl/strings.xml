@@ -155,7 +155,7 @@
     <string name="sleep_timer">Wyłącznik czasowy</string>
     <string name="end_of_song">Koniec utworu</string>
     <plurals name="minute">
-        <item quantity="one">1 minuta</item>
+        <item quantity="one">%d minuta</item>
         <item quantity="few">%d minut</item>
         <item quantity="many">%d minut</item>
         <item quantity="other">%d minut</item>
@@ -189,7 +189,7 @@
     <string name="center">Na środku</string>
     <string name="right">Z prawej</string>
     <string name="content">Zawartość</string>
-    <string name="login">Login</string>
+    <string name="login">Logowanie</string>
     <string name="content_language">Domyślny język zawartości</string>
     <string name="content_country">Domyślny kraj zawartości</string>
     <string name="system_default">Domyślny systemu</string>
@@ -249,8 +249,8 @@
     <string name="stop_music_on_task_clear">Zatrzymaj muzykę po wykonaniu zadania</string>
     <string name="disable_screenshot_desc">Gdy ta opcja jest włączona, zrzuty ekranu i widok aplikacji na ekranie Ostatnie są wyłączone.</string>
     <string name="enable_lrclib">Używaj LrcLib</string>
-    <string name="enable_betterlyrics">Używaj BetterLyrics</string>
-    <string name="enable_lyricsplus">Używaj Lyrics+</string>
+    <string name="enable_betterlyrics">Pobieraj teksty utworów z BetterLyrics</string>
+    <string name="enable_lyricsplus">Pobieraj teksty utworów z Lyrics+</string>
     <string name="small">Mały</string>
     <string name="action_like_all">Polub wszystkie</string>
     <string name="default_">Domyślny</string>
@@ -296,4 +296,17 @@
     <string name="use_login_for_browse">Zaloguj się, aby przeglądać treści</string>
     <string name="use_login_for_browse_desc">Może mieć wpływ na to, jakie treści widzisz i np. pokazuje albumy tylko premium, jeśli jesteś zalogowany na konto Premium</string>
     <string name="action_login">Zaloguj</string>
+    <string name="duration_hours_minutes">%1$d godz. %2$d min</string>
+    <string name="duration_minutes">%d min</string>
+    <string name="heading_with_count">%1$s - %2$d</string>
+    <string name="artist_image_auto">Automatycznie (najnowszy album)</string>
+    <string name="custom_accent_color">Własny kolor akcentu</string>
+    <string name="custom_accent_color_description">Używaj wybranego, stałego koloru akcentu w całej aplikacji</string>
+    <string name="accent_color">Kolor akcentu</string>
+    <string name="minimize_player">Zminimalizuj odtwarzacz</string>
+    <string name="ignore_audio_focus">Zachowuj fokus audio</string>
+    <string name="ignore_audio_focus_desc">Kontynuuj odtwarzanie, gdy inna aplikacja przejmie fokus audio. Muzyka nie będzie wstrzymywana z powodu dźwięku z innych źródeł, w tym połączeń telefonicznych.</string>
+    <string name="local_image_cache">Pamięć podręczna lokalnych obrazów</string>
+    <string name="clear_local_image_cache_confirm">Wyczyścić całą pamięć podręczną lokalnych obrazów?</string>
+    <string name="clear_listen_history_failed">Nie udało się wyczyścić historii odtwarzania</string>
 </resources>

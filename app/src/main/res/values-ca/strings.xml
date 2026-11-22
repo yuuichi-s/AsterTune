@@ -146,7 +146,7 @@
         <item quantity="other">%d anys</item>
     </plurals>
     <plurals name="minute">
-        <item quantity="one">1 minut</item>
+        <item quantity="one">%d minut</item>
         <item quantity="many">%d minuts</item>
         <item quantity="other">%d minuts</item>
     </plurals>
@@ -210,8 +210,8 @@
     <string name="disable_screenshot">Desactiva les captures de pantalla</string>
     <string name="enable_lrclib">Utilitza LrcLib</string>
     <string name="enable_kugou">Utilitza KuGou</string>
-    <string name="enable_betterlyrics">Utilitza BetterLyrics</string>
-    <string name="enable_lyricsplus">Utilitza Lyrics+</string>
+    <string name="enable_betterlyrics">Activa el proveïdor de lletres BetterLyrics</string>
+    <string name="enable_lyricsplus">Activa el proveïdor de lletres Lyrics+</string>
     <string name="action_backup">Fes una còpia de seguretat</string>
     <string name="action_restore">Restaura</string>
     <string name="imported_playlist">Llista importada</string>
@@ -287,4 +287,17 @@
     <string name="dismiss">Ignora</string>
     <string name="enable_discord_rpc">Activa \"Rich Presence\"</string>
     <string name="error_no_stream">Cap transmissió disponible</string>
+    <string name="duration_hours_minutes">%1$d h %2$d min</string>
+    <string name="duration_minutes">%d min</string>
+    <string name="heading_with_count">%1$s - %2$d</string>
+    <string name="artist_image_auto">Automàtica (àlbum més recent)</string>
+    <string name="custom_accent_color">Color d\'accent personalitzat</string>
+    <string name="custom_accent_color_description">Fes servir el color que triïs com a color d\'accent fix a tota l\'aplicació</string>
+    <string name="accent_color">Color d\'accent</string>
+    <string name="minimize_player">Minimitza el reproductor</string>
+    <string name="ignore_audio_focus">Mantén el focus d\'àudio</string>
+    <string name="ignore_audio_focus_desc">Continua la reproducció quan una altra aplicació prengui el focus d\'àudio. La música no es posarà en pausa quan soni àudio d\'altres fonts, incloses les trucades telefòniques.</string>
+    <string name="local_image_cache">Memòria cau d\'imatges locals</string>
+    <string name="clear_local_image_cache_confirm">Vols esborrar tota la memòria cau d\'imatges locals?</string>
+    <string name="clear_listen_history_failed">No s\'ha pogut esborrar l\'historial de reproducció</string>
 </resources>
