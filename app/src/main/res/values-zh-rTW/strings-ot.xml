@@ -113,6 +113,7 @@
     <string name="filter_arrangement">修改篩選順序</string>
     <string name="filter_arrangement_description">選擇要在媒體庫畫面顯示的篩選項目</string>
     <string name="home_sections_title">首頁區塊</string>
+    <string name="home_sections_description">選擇要在首頁顯示的內容</string>
     <string name="home_sections_chips">分類按鈕</string>
     <string name="home_sections_chips_description">在首頁頂端顯示用來篩選 YouTube Music 區塊的按鈕</string>
     <string name="home_sections_ytm">YouTube Music 區塊</string>

@@ -234,6 +234,8 @@
     <string name="storage">Almacenamiento</string>
     <string name="cache">Caché</string>
     <string name="image_cache">Caché de imágenes</string>
+    <string name="local_image_cache">Caché de imágenes locales</string>
+    <string name="clear_local_image_cache_confirm">¿Borrar toda la caché de imágenes locales?</string>
     <string name="song_cache">Caché de canciones</string>
     <string name="max_cache_size">Límite de tamaño de la caché</string>
     <string name="unlimited">Ilimitado</string>
@@ -247,6 +249,7 @@
     <string name="pause_listen_history">Pausar historial de reproducciones</string>
     <string name="clear_listen_history">Borrar historial de reproducciones</string>
     <string name="clear_listen_history_confirm">¿Confirmas que quieres borrar todo el historial de reproducciones?</string>
+    <string name="clear_listen_history_failed">No se ha podido borrar el historial de reproducciones</string>
     <string name="pause_search_history">Pausar historial de búsquedas</string>
     <string name="clear_search_history">Borrar historial de búsquedas</string>
     <string name="clear_search_history_confirm">¿Confirmas que quieres borrar todo el historial de búsquedas?</string>

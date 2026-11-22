@@ -228,6 +228,8 @@
     <string name="storage">儲存</string>
     <string name="cache">快取</string>
     <string name="image_cache">圖片快取</string>
+    <string name="local_image_cache">本機圖片快取</string>
+    <string name="clear_local_image_cache_confirm">要清除所有本機圖片快取嗎？</string>
     <string name="song_cache">歌曲快取</string>
     <string name="max_cache_size">快取容量上限</string>
     <string name="unlimited">無限制</string>
@@ -242,6 +244,7 @@
     <string name="pause_listen_history">暫停聆聽記錄</string>
     <string name="clear_listen_history">清除聆聽記錄</string>
     <string name="clear_listen_history_confirm">您確定要清除所有收聽記錄嗎？</string>
+    <string name="clear_listen_history_failed">無法清除聆聽記錄</string>
     <string name="search_history">搜尋記錄</string>
     <string name="pause_search_history">暫停搜尋記錄</string>
     <string name="clear_search_history">清除搜尋記錄</string>

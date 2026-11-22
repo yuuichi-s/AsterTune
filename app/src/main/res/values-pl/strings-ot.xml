@@ -20,6 +20,7 @@
     <string name="filter_arrangement">Ułóż filtry</string>
     <string name="filter_arrangement_description">Wybierz, które filtry mają się pojawiać na ekranie biblioteki</string>
     <string name="home_sections_title">Sekcje ekranu głównego</string>
+    <string name="home_sections_description">Wybierz, co wyświetlać na ekranie głównym</string>
     <string name="home_sections_chips">Przyciski kategorii</string>
     <string name="home_sections_chips_description">Wyświetla u góry ekranu głównego przyciski do filtrowania sekcji YouTube Music</string>
     <string name="home_sections_ytm">Sekcje YouTube Music</string>

@@ -149,6 +149,7 @@
     <string name="filter_arrangement">Порядок фильтров</string>
     <string name="filter_arrangement_description">Выберите, какие фильтры отображаются на экране библиотеки</string>
     <string name="home_sections_title">Разделы главной</string>
+    <string name="home_sections_description">Выберите, что показывать на главном экране</string>
     <string name="home_sections_chips">Кнопки категорий</string>
     <string name="home_sections_chips_description">Показывает вверху главной кнопки для фильтрации разделов YouTube Music</string>
     <string name="home_sections_ytm">Разделы YouTube Music</string>

@@ -214,6 +214,8 @@
     <string name="equalizer">Equalizador</string>
     <string name="cache">Cache</string>
     <string name="image_cache">Cache de imagens</string>
+    <string name="local_image_cache">Cache de imagens locais</string>
+    <string name="clear_local_image_cache_confirm">Limpar toda a cache de imagens locais?</string>
     <string name="song_cache">Cache de músicas</string>
     <string name="max_cache_size">Limite do tamanho da cache</string>
     <string name="unlimited">Ilimitado</string>
@@ -277,6 +279,7 @@
     <string name="clear_song_cache">Limpar cache</string>
     <string name="auto_load_more_desc">Se possível, adicionar mais músicas automaticamente quando é atingido o fim da fila</string>
     <string name="clear_listen_history_confirm">Deseja limpar todo o histórico de reprodução?</string>
+    <string name="clear_listen_history_failed">Não foi possível limpar o histórico de reprodução</string>
     <string name="search_history">Histórico de pesquisas</string>
     <string name="auto_skip_next_on_error_desc">Garante uma experiência contínua de reprodução</string>
     <string name="auto_skip_next_on_error">Avançar automaticamente para a música seguinte se ocorrer algum erro</string>

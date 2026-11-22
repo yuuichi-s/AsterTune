@@ -28,6 +28,7 @@
     <string name="filter_arrangement">Filter anordnen</string>
     <string name="filter_arrangement_description">Wähle, welche Filter in der Bibliothek angezeigt werden</string>
     <string name="home_sections_title">Abschnitte der Startseite</string>
+    <string name="home_sections_description">Wähle aus, was auf der Startseite angezeigt wird</string>
     <string name="home_sections_chips">Kategorie-Schaltflächen</string>
     <string name="home_sections_chips_description">Zeigt oben auf der Startseite Schaltflächen zum Filtern der YouTube-Music-Abschnitte</string>
     <string name="home_sections_ytm">YouTube-Music-Abschnitte</string>

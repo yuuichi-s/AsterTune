@@ -190,6 +190,8 @@
     <string name="storage">Speicher</string>
     <string name="cache">Cache</string>
     <string name="image_cache">Bild-Cache</string>
+    <string name="local_image_cache">Cache für lokale Bilder</string>
+    <string name="clear_local_image_cache_confirm">Den gesamten Cache für lokale Bilder leeren?</string>
     <string name="song_cache">Song-Cache</string>
     <string name="max_cache_size">Cache-Größenlimit</string>
     <string name="unlimited">Unbegrenzt</string>
@@ -203,6 +205,7 @@
     <string name="pause_listen_history">Pausieren des Hörverlaufs</string>
     <string name="clear_listen_history">Hörverlauf löschen</string>
     <string name="clear_listen_history_confirm">Bist du sicher, dass du den gesamten Hörverlauf löschen willst?</string>
+    <string name="clear_listen_history_failed">Der Hörverlauf konnte nicht gelöscht werden</string>
     <string name="pause_search_history">Suchverlauf anhalten</string>
     <string name="clear_search_history">Suchverlauf löschen</string>
     <string name="clear_search_history_confirm">Bist du sicher, dass du den gesamten Suchverlauf löschen willst?</string>

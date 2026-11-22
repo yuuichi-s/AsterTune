@@ -240,6 +240,8 @@
     <string name="storage">स्टोरेज</string>
     <string name="cache">कैश</string>
     <string name="image_cache">इमेज कैश</string>
+    <string name="local_image_cache">स्थानीय इमेज कैश</string>
+    <string name="clear_local_image_cache_confirm">क्या आप स्थानीय इमेज का पूरा कैश साफ़ करना चाहते हैं?</string>
     <string name="song_cache">गीत कैश</string>
     <string name="max_cache_size">कैश के आकार की सीमा</string>
     <string name="unlimited">असीमित</string>
@@ -253,6 +255,7 @@
     <string name="pause_listen_history">सुनने का इतिहास रोकें</string>
     <string name="clear_listen_history">सुनने का इतिहास साफ़ करें</string>
     <string name="clear_listen_history_confirm">क्या आप वाकई सुनने का पूरा इतिहास साफ़ करना चाहते हैं?</string>
+    <string name="clear_listen_history_failed">सुनने का इतिहास साफ़ नहीं किया जा सका</string>
     <string name="search_history">खोज इतिहास</string>
     <string name="pause_search_history">खोज इतिहास रोकें</string>
     <string name="clear_search_history">खोज इतिहास साफ़ करें</string>

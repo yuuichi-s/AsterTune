@@ -166,6 +166,7 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="filter_arrangement">Filtreleri düzenle</string>
     <string name="filter_arrangement_description">Kütüphane ekranında hangi filtrelerin görüneceğini seçin</string>
     <string name="home_sections_title">Ana Sayfa bölümleri</string>
+    <string name="home_sections_description">Ana sayfada gösterilecek içerikleri seçin</string>
     <string name="home_sections_chips">Kategori düğmeleri</string>
     <string name="home_sections_chips_description">Ana Sayfanın üst kısmında YouTube Music bölümlerini filtrelemek için düğmeler gösterir</string>
     <string name="home_sections_ytm">YouTube Music bölümleri</string>

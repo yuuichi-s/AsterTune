@@ -89,6 +89,7 @@
     <string name="filter_arrangement">फ़िल्टर्स व्यवस्थित करें</string>
     <string name="filter_arrangement_description">चुनें कि संग्रह स्क्रीन पर कौन-से फ़िल्टर दिखें</string>
     <string name="home_sections_title">होम के अनुभाग</string>
+    <string name="home_sections_description">होम स्क्रीन पर दिखने वाली सामग्री चुनें</string>
     <string name="home_sections_chips">श्रेणी बटन</string>
     <string name="home_sections_chips_description">होम स्क्रीन पर सबसे ऊपर YouTube Music के अनुभागों को फ़िल्टर करने के लिए बटन दिखाता है</string>
     <string name="home_sections_ytm">YouTube Music के अनुभाग</string>
