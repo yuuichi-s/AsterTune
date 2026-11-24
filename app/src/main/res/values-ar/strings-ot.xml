@@ -112,6 +112,7 @@
     <string name="filter_arrangement">ترتيب المرشحات</string>
     <string name="filter_arrangement_description">اختر المرشحات التي تظهر على شاشة المكتبة</string>
     <string name="home_sections_title">أقسام الصفحة الرئيسية</string>
+    <string name="home_sections_description">اختر ما يظهر على الصفحة الرئيسية</string>
     <string name="home_sections_chips">أزرار الفئات</string>
     <string name="home_sections_chips_description">يعرض أزرارًا أعلى الصفحة الرئيسية لتصفية أقسام YouTube Music</string>
     <string name="home_sections_ytm">أقسام YouTube Music</string>

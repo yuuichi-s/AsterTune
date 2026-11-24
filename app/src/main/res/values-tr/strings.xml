@@ -191,6 +191,8 @@
     <string name="storage">Depolama</string>
     <string name="cache">Önbellek</string>
     <string name="image_cache">Görüntü Önbelleği</string>
+    <string name="local_image_cache">Yerel Görüntü Önbelleği</string>
+    <string name="clear_local_image_cache_confirm">Yerel görüntü önbelleğinin tamamı temizlensin mi?</string>
     <string name="song_cache">Şarkı Önbelleği</string>
     <string name="max_cache_size">Önbellek boyutu sınırı</string>
     <string name="unlimited">Sınırsız</string>
@@ -204,6 +206,7 @@
     <string name="pause_listen_history">Dinleme geçmişini duraklat</string>
     <string name="clear_listen_history">Dinleme geçmişini temizle</string>
     <string name="clear_listen_history_confirm">Tüm dinleme geçmişini temizlemekten emin misiniz?</string>
+    <string name="clear_listen_history_failed">Dinleme geçmişi temizlenemedi</string>
     <string name="pause_search_history">Arama geçmişini duraklat</string>
     <string name="clear_search_history">Arama geçmişini temizle</string>
     <string name="clear_search_history_confirm">Tüm arama geçmişini temizlemekten emin misiniz?</string>
@@ -278,7 +281,6 @@
     <string name="action_login">Giriş Yap</string>
     <string name="duration_hours_minutes">%1$d sa %2$d dk</string>
     <string name="duration_minutes">%d dk</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Otomatik (en yeni albüm)</string>
     <string name="minimize_player">Oynatıcıyı küçült</string>
     <string name="custom_accent_color">Özel vurgu rengi</string>

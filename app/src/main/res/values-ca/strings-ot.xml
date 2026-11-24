@@ -78,7 +78,7 @@
     <string name="grp_layout">Disposició</string>
     <string name="grp_localization">Localització</string>
     <string name="grp_lyrics_format">Formatejar</string>
-    <string name="grp_lyrics_parser">Parser</string>
+    <string name="grp_lyrics_parser">Analitzador</string>
     <string name="grp_lyrics_source">Fonts de lletres</string>
     <string name="grp_manual_scanner">Escàner manual</string>
     <string name="grp_more_settings">Més opcions</string>
@@ -324,4 +324,22 @@
     <string name="download_waiting_for_wifi">Es descarregarà quan hi hagi connexió Wi-Fi</string>
     <string name="tap_artwork_to_show_lyrics_title">Toca la portada per mostrar la lletra</string>
     <string name="tap_artwork_to_show_lyrics_description">Mostra la lletra en tocar la portada al reproductor</string>
+    <string name="auto_update_check">Cerca actualitzacions automàticament</string>
+    <string name="auto_update_check_description">Comprova si hi ha una versió nova en obrir l\'aplicació</string>
+    <string name="update_available_version">La versió %1$s està disponible</string>
+    <string name="update_check_failed">No s\'han pogut cercar actualitzacions</string>
+    <string name="update_install">Instal·la</string>
+    <string name="update_downloading">S\'està baixant…</string>
+    <string name="update_downloading_percent">S\'està baixant… %1$d%%</string>
+    <string name="update_installing">S\'està instal·lant…</string>
+    <string name="update_installed">S\'ha instal·lat</string>
+    <string name="update_download_failed">No s\'ha pogut baixar el fitxer</string>
+    <string name="update_verify_failed">El fitxer baixat no coincideix amb el fitxer publicat i s\'ha suprimit</string>
+    <string name="update_install_aborted">S\'ha cancel·lat la instal·lació</string>
+    <string name="update_install_failed">No s\'ha pogut completar la instal·lació %1$s</string>
+    <string name="update_install_permission_title">Permet la instal·lació d\'actualitzacions</string>
+    <string name="update_install_permission_message">Per instal·lar actualitzacions, permet que AsterTune instal·li aplicacions desconegudes a la configuració d\'Android.</string>
+    <string name="update_open_settings">Obre la configuració</string>
+    <string name="show_scrollbar_title">Barra de desplaçament</string>
+    <string name="show_scrollbar_description">Mostra la barra de desplaçament</string>
 </resources>

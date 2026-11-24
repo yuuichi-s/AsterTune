@@ -200,6 +200,8 @@
     <string name="storage">Archiviazione</string>
     <string name="cache">Cache</string>
     <string name="image_cache">Cache delle immagini</string>
+    <string name="local_image_cache">Cache delle immagini locali</string>
+    <string name="clear_local_image_cache_confirm">Svuotare tutta la cache delle immagini locali?</string>
     <string name="song_cache">Cache dei brani</string>
     <string name="max_cache_size">Limite della cache</string>
     <string name="unlimited">Illimitata</string>
@@ -213,6 +215,7 @@
     <string name="pause_listen_history">Sospendi la cronologia degli ascolti</string>
     <string name="clear_listen_history">Cancella la cronologia degli ascolti</string>
     <string name="clear_listen_history_confirm">Sei sicuro di voler cancellare la cronologia degli ascolti?</string>
+    <string name="clear_listen_history_failed">Impossibile cancellare la cronologia degli ascolti</string>
     <string name="pause_search_history">Sospendi la cronologia delle ricerche</string>
     <string name="clear_search_history">Pulisci la cronologia delle ricerche</string>
     <string name="clear_search_history_confirm">Sei sicuro di voler cancellare la cronologia delle ricerche?</string>
@@ -294,7 +297,6 @@
     <string name="enable_lyricsplus">Usa Lyrics+</string>
     <string name="duration_hours_minutes">%1$dh %2$dmin</string>
     <string name="duration_minutes">%dmin</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Automatica (album più recente)</string>
     <string name="minimize_player">Riduci il lettore</string>
 </resources>

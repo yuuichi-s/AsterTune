@@ -147,6 +147,7 @@
     <string name="filter_arrangement">Organiser les filtres</string>
     <string name="filter_arrangement_description">Choisissez les filtres à afficher sur l’écran de la bibliothèque</string>
     <string name="home_sections_title">Sections de l’accueil</string>
+    <string name="home_sections_description">Choisissez le contenu à afficher sur l’écran d’accueil</string>
     <string name="home_sections_chips">Boutons de catégories</string>
     <string name="home_sections_chips_description">Affiche en haut de l’accueil des boutons pour filtrer les sections de YouTube Music</string>
     <string name="home_sections_ytm">Sections de YouTube Music</string>
@@ -326,4 +327,20 @@
     <string name="lastfm_scrobble">Enregistrer les écoutes sur Last.fm</string>
     <string name="lastfm_disconnect">Se déconnecter</string>
     <string name="lastfm_disconnect_desc">La déconnexion efface l\'historique d\'écoute non envoyé. L\'accès d\'AsterTune reste actif jusqu\'à ce que vous le supprimiez dans vos paramètres Last.fm.</string>
+    <string name="auto_update_check">Vérifier automatiquement les mises à jour</string>
+    <string name="auto_update_check_description">Vérifier si une nouvelle version est disponible à l\'ouverture de l\'application</string>
+    <string name="update_available_version">La version %1$s est disponible</string>
+    <string name="update_check_failed">Impossible de vérifier les mises à jour</string>
+    <string name="update_install">Installer</string>
+    <string name="update_downloading">Téléchargement…</string>
+    <string name="update_downloading_percent">Téléchargement… %1$d %%</string>
+    <string name="update_installing">Installation…</string>
+    <string name="update_installed">Installation terminée</string>
+    <string name="update_download_failed">Échec du téléchargement</string>
+    <string name="update_verify_failed">Le fichier téléchargé ne correspond pas au fichier publié et a été supprimé</string>
+    <string name="update_install_aborted">L\'installation a été annulée</string>
+    <string name="update_install_failed">Échec de l\'installation %1$s</string>
+    <string name="update_install_permission_title">Autoriser l\'installation des mises à jour</string>
+    <string name="update_install_permission_message">Pour installer les mises à jour, autorisez AsterTune à installer des applications inconnues dans les paramètres Android.</string>
+    <string name="update_open_settings">Ouvrir les paramètres</string>
 </resources>

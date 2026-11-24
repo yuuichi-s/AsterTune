@@ -243,6 +243,8 @@
     <string name="storage">אחסון</string>
     <string name="cache">מטמון</string>
     <string name="image_cache">מטמון תמונה</string>
+    <string name="local_image_cache">מטמון תמונות מקומיות</string>
+    <string name="clear_local_image_cache_confirm">האם לנקות את כל מטמון התמונות המקומיות?</string>
     <string name="song_cache">מטמון שירים</string>
     <string name="max_cache_size">מגבלת גודל המטמון</string>
     <string name="unlimited">ללא הגבלה</string>
@@ -257,6 +259,7 @@
     <string name="pause_listen_history">השהיית היסטוריית ההאזנה</string>
     <string name="clear_listen_history">נקה את היסטוריית ההאזנה</string>
     <string name="clear_listen_history_confirm">האם אתה בטוח שברצונך לנקות את כל היסטוריית ההאזנה?</string>
+    <string name="clear_listen_history_failed">לא ניתן לנקות את היסטוריית ההאזנה</string>
     <string name="search_history">היסטוריית חיפוש</string>
     <string name="pause_search_history">השהיית היסטוריית החיפוש</string>
     <string name="clear_search_history">נקה את היסטוריית החיפוש</string>
@@ -294,7 +297,6 @@
     <string name="enable_lyricsplus">שימוש ב־Lyrics+</string>
     <string name="duration_hours_minutes">%1$d שע׳ %2$d דק׳</string>
     <string name="duration_minutes">%d דק׳</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">אוטומטי (האלבום החדש ביותר)</string>
     <string name="minimize_player">מזעור הנגן</string>
 </resources>

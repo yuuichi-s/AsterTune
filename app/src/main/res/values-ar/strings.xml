@@ -284,8 +284,11 @@
     <string name="storage">مساحة التخزين</string>
     <string name="cache">ذاكرة التخزين المؤقت</string>
     <string name="image_cache">ذاكرة تخزين الصور المؤقتة</string>
+    <string name="local_image_cache">ذاكرة التخزين المؤقت للصور المحلية</string>
+    <string name="clear_local_image_cache_confirm">هل تريد مسح ذاكرة التخزين المؤقت للصور المحلية بالكامل؟</string>
     <string name="song_cache">ذاكرة تخزين الأغاني المؤقتة</string>
     <string name="clear_listen_history_confirm">هل أنت متأكد أنك تريد مسح كل سجل الاستماع؟</string>
+    <string name="clear_listen_history_failed">تعذر مسح سجل الاستماع</string>
     <string name="search_history">سجل البحث</string>
     <string name="privacy">خصوصية</string>
     <string name="listen_history">سجل الاستماع</string>
@@ -314,7 +317,6 @@
     <string name="action_login">تسجيل دخول</string>
     <string name="duration_hours_minutes">%1$d س %2$d د</string>
     <string name="duration_minutes">%d د</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">تلقائي (أحدث ألبوم)</string>
     <string name="minimize_player">تصغير المشغل</string>
     <string name="custom_accent_color">لون تمييز مخصص</string>

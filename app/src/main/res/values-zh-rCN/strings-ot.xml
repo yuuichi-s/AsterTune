@@ -210,6 +210,7 @@
     <string name="filter_arrangement">设置筛选</string>
     <string name="filter_arrangement_description">选择媒体库中要显示的筛选项</string>
     <string name="home_sections_title">首页版块</string>
+    <string name="home_sections_description">选择首页显示的内容</string>
     <string name="home_sections_chips">分类按钮</string>
     <string name="home_sections_chips_description">在首页顶部显示用于筛选 YouTube Music 版块的按钮</string>
     <string name="home_sections_ytm">YouTube Music 版块</string>

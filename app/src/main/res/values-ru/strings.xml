@@ -249,6 +249,8 @@
     <string name="storage">Хранилище</string>
     <string name="cache">Кэш</string>
     <string name="image_cache">Кэш изображений</string>
+    <string name="local_image_cache">Кэш локальных изображений</string>
+    <string name="clear_local_image_cache_confirm">Очистить весь кэш локальных изображений?</string>
     <string name="song_cache">Кэш аудио</string>
     <string name="max_cache_size">Предельный размер кэша</string>
     <string name="unlimited">Неограниченно</string>
@@ -263,6 +265,7 @@
     <string name="pause_listen_history">Приостановить историю прослушивания</string>
     <string name="clear_listen_history">Очистить историю прослушивания</string>
     <string name="clear_listen_history_confirm">Вы уверены, что хотите очистить всю историю прослушивания?</string>
+    <string name="clear_listen_history_failed">Не удалось очистить историю прослушивания</string>
     <string name="search_history">История поиска</string>
     <string name="pause_search_history">Приостановить историю поиска</string>
     <string name="clear_search_history">Очистить историю поиска</string>
@@ -296,7 +299,6 @@
     <string name="action_login">Войти</string>
     <string name="duration_hours_minutes">%1$d ч %2$d мин</string>
     <string name="duration_minutes">%d мин</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">Автоматически (последний альбом)</string>
     <string name="custom_accent_color">Свой цвет акцента</string>
     <string name="custom_accent_color_description">Использовать выбранный вами фиксированный цвет акцента во всём приложении</string>

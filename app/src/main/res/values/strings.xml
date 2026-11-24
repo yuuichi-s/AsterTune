@@ -91,7 +91,7 @@
     <string name="add_to_queue">Add to queue</string>
     <string name="duration_hours_minutes">%1$dh %2$dmin</string>
     <string name="duration_minutes">%dmin</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
+    <string name="heading_with_count" translatable="false">%1$s - %2$d</string>
     <string name="artist_image_auto">Automatic (newest album)</string>
     <string name="add_to_library">Add to library</string>
     <string name="add_all_to_library">Add all to library</string>
@@ -204,7 +204,7 @@
     <string name="sleep_timer">Sleep timer</string>
     <string name="end_of_song">End of song</string>
     <plurals name="minute">
-        <item quantity="one">1 minute</item>
+        <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <string name="error_no_stream">No stream available</string>

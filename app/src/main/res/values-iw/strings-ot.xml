@@ -49,6 +49,7 @@
     <string name="filter_arrangement">סידור מסננים</string>
     <string name="filter_arrangement_description">אפשר לבחור אילו מסננים יופיעו במסך הספרייה</string>
     <string name="home_sections_title">מקטעי דף הבית</string>
+    <string name="home_sections_description">בחירת התוכן שיוצג במסך הבית</string>
     <string name="home_sections_chips">כפתורי קטגוריות</string>
     <string name="home_sections_chips_description">מציג כפתורים בחלק העליון של דף הבית לסינון המקטעים של YouTube Music</string>
     <string name="home_sections_ytm">מקטעים של YouTube Music</string>

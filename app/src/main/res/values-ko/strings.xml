@@ -182,6 +182,8 @@
     <string name="storage">저장공간</string>
     <string name="cache">캐시</string>
     <string name="image_cache">이미지 캐시</string>
+    <string name="local_image_cache">로컬 이미지 캐시</string>
+    <string name="clear_local_image_cache_confirm">로컬 이미지 캐시를 모두 삭제하시겠습니까?</string>
     <string name="song_cache">노래 캐시</string>
     <string name="max_cache_size">캐시 용량 제한</string>
     <string name="unlimited">무제한</string>
@@ -195,6 +197,7 @@
     <string name="pause_listen_history">재생 기록 일시 중지</string>
     <string name="clear_listen_history">재생 기록 지우기</string>
     <string name="clear_listen_history_confirm">모든 재생 기록을 지우시겠습니까?</string>
+    <string name="clear_listen_history_failed">재생 기록을 지울 수 없습니다</string>
     <string name="pause_search_history">검색 기록 일시 중지</string>
     <string name="clear_search_history">검색 기록 지우기</string>
     <string name="clear_search_history_confirm">모든 검색 기록을 지우시겠습니까?</string>
@@ -276,7 +279,6 @@
     <string name="enable_lyricsplus">Lyrics+ 사용</string>
     <string name="duration_hours_minutes">%1$d시간 %2$d분</string>
     <string name="duration_minutes">%d분</string>
-    <string name="heading_with_count">%1$s - %2$d</string>
     <string name="artist_image_auto">자동(최신 앨범)</string>
     <string name="minimize_player">플레이어 최소화</string>
 </resources>

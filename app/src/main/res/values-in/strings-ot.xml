@@ -112,6 +112,7 @@
     <string name="filter_arrangement">Pengaturan filter</string>
     <string name="filter_arrangement_description">Pilih filter yang ditampilkan di layar Koleksi</string>
     <string name="home_sections_title">Bagian Beranda</string>
+    <string name="home_sections_description">Pilih konten yang ditampilkan di Beranda</string>
     <string name="home_sections_chips">Tombol kategori</string>
     <string name="home_sections_chips_description">Menampilkan tombol di bagian atas Beranda untuk memfilter bagian YouTube Music</string>
     <string name="home_sections_ytm">Bagian YouTube Music</string>

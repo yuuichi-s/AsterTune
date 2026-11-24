@@ -145,6 +145,7 @@
     <string name="filter_arrangement">Organizzare i filtri</string>
     <string name="filter_arrangement_description">Scegli quali filtri mostrare nella schermata della libreria</string>
     <string name="home_sections_title">Sezioni della Home</string>
+    <string name="home_sections_description">Scegli cosa mostrare nella schermata Home</string>
     <string name="home_sections_chips">Pulsanti delle categorie</string>
     <string name="home_sections_chips_description">Mostra in alto nella Home i pulsanti per filtrare le sezioni di YouTube Music</string>
     <string name="home_sections_ytm">Sezioni di YouTube Music</string>

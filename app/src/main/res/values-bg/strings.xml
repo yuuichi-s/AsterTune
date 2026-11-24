@@ -118,7 +118,7 @@
         <item quantity="other">%d години</item>
     </plurals>
     <plurals name="minute">
-        <item quantity="one">1 минута</item>
+        <item quantity="one">%d минута</item>
         <item quantity="other">%d минути</item>
     </plurals>
     <string name="error_playlist_name_empty">Името на плейлиста не може да бъде празно.</string>
@@ -264,8 +264,8 @@
     <string name="disable_screenshot">Деактивирай снимка на екрана</string>
     <string name="disable_screenshot_desc">Когато тази опция е включена, снимка на екрана и изгледът на приложението в Скорошни са деактивирани.</string>
     <string name="enable_lrclib">Използвай LrcLib</string>
-    <string name="enable_betterlyrics">Използвай BetterLyrics</string>
-    <string name="enable_lyricsplus">Използвай Lyrics+</string>
+    <string name="enable_betterlyrics">Активирай доставчик на текстове BetterLyrics</string>
+    <string name="enable_lyricsplus">Активирай доставчик на текстове Lyrics+</string>
     <string name="hide_explicit">Скрий нецензурно съдържание</string>
     <string name="backup_create_success">Архивирането е създадено успешно</string>
     <string name="restore_failed">Неуспешно възстановяване на резервно копие</string>
@@ -278,4 +278,16 @@
     <string name="use_login_for_browse">Използвай вход за разглеждане на съдържание</string>
     <string name="use_login_for_browse_desc">Това може да повлияе какво съдържание виждате и например показва само премиум албуми, ако сте влезли с Премиум профил</string>
     <string name="action_login">Вход</string>
+    <string name="duration_hours_minutes">%1$d ч %2$d мин</string>
+    <string name="duration_minutes">%d мин</string>
+    <string name="artist_image_auto">Автоматично (най-новият албум)</string>
+    <string name="custom_accent_color">Персонализиран цвят за акцент</string>
+    <string name="custom_accent_color_description">Използване на избран постоянен цвят за акцент в цялото приложение</string>
+    <string name="accent_color">Цвят за акцент</string>
+    <string name="minimize_player">Минимизиране на плейъра</string>
+    <string name="ignore_audio_focus">Запазване на аудиофокуса</string>
+    <string name="ignore_audio_focus_desc">Възпроизвеждането продължава, когато друго приложение получи аудиофокуса. Музиката няма да се поставя на пауза заради звук от други източници, включително телефонни обаждания.</string>
+    <string name="local_image_cache">Кеш за локални изображения</string>
+    <string name="clear_local_image_cache_confirm">Да се изчисти ли целият кеш за локални изображения?</string>
+    <string name="clear_listen_history_failed">Историята на слушане не можа да бъде изчистена</string>
 </resources>

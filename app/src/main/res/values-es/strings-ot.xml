@@ -145,6 +145,7 @@
     <string name="filter_arrangement">Organizar filtros</string>
     <string name="filter_arrangement_description">Elige qué filtros se muestran en la pantalla de la biblioteca</string>
     <string name="home_sections_title">Secciones de Inicio</string>
+    <string name="home_sections_description">Elige qué mostrar en la pantalla de inicio</string>
     <string name="home_sections_chips">Botones de categorías</string>
     <string name="home_sections_chips_description">Muestra botones en la parte superior de Inicio para filtrar las secciones de YouTube Music</string>
     <string name="home_sections_ytm">Secciones de YouTube Music</string>
