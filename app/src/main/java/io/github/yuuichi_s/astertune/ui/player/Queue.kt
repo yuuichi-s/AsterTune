@@ -479,6 +479,16 @@ fun BoxScope.QueueContent(
         }
     }
 
+    fun playerIndexOf(song: MediaMetadata): Int? {
+        val uid = songUids[song] ?: return null
+        val timeline = playerConnection.player.currentTimeline
+        val window = Timeline.Window()
+
+        return (0 until timeline.windowCount).firstOrNull {
+            timeline.getWindow(it, window).uid == uid
+        }
+    }
+
     fun removeSwipedSong(song: MediaMetadata): Boolean {
         val uid = songUids[song] ?: return false
         if (uid in removedUids) return true
@@ -487,15 +497,11 @@ fun BoxScope.QueueContent(
         }
 
         val player = playerConnection.player
-        val timeline = player.currentTimeline
-        if (qb.getCurrentQueue()?.getSize() != timeline.windowCount) {
+        if (qb.getCurrentQueue()?.getSize() != player.currentTimeline.windowCount) {
             return false
         }
 
-        val window = Timeline.Window()
-        val index = (0 until timeline.windowCount).firstOrNull {
-            timeline.getWindow(it, window).uid == uid
-        } ?: return false
+        val index = playerIndexOf(song) ?: return false
 
         if (!qb.removeCurrentQueueSong(index)) {
             return false
@@ -866,10 +872,12 @@ fun BoxScope.QueueContent(
                             }
                         }
 
+                        val queueIndex = if (isSearching) mutableSongs.indexOf(window) else index
+
                         val content = @Composable {
                             MediaMetadataListItem(
                                 mediaMetadata = window,
-                                isActive = (index == currentWindowIndex && !detachedHead) || index == detachedQueue?.getQueuePosShuffled(),
+                                isActive = (queueIndex == currentWindowIndex && !detachedHead) || queueIndex == detachedQueue?.getQueuePosShuffled(),
                                 isPlaying = isPlaying && !detachedHead,
                                 trailingContent = {
                                     if (inSelectMode) {
@@ -919,20 +927,20 @@ fun BoxScope.QueueContent(
                                                 onCheckedChange(window.hashCode() !in selectedItems)
                                             } else {
                                                 coroutineScope.launch(Dispatchers.Main) {
-                                                    if (index == currentWindowIndex && !detachedHead) {
-                                                        playerConnection.player.togglePlayPause()
+                                                    if (detachedHead) {
+                                                        detachedQueue?.setCurrentQueuePos(index)
+                                                        qb.setCurrQueue(detachedQueue, false)
                                                     } else {
-                                                        val index = index // race condition...?
-                                                        if (detachedHead) {
-                                                            detachedQueue?.setCurrentQueuePos(index)
-                                                            qb.setCurrQueue(detachedQueue, false)
-                                                        } else {
-                                                            playerConnection.player.seekToDefaultPosition(index)
+                                                        val playerIndex = playerIndexOf(window) ?: return@launch
+                                                        if (playerIndex == currentWindowIndex) {
+                                                            playerConnection.player.togglePlayPause()
+                                                            return@launch
                                                         }
-                                                        playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
-                                                        playerConnection.player.playWhenReady = true
-                                                        exitDetachHead()
+                                                        playerConnection.player.seekToDefaultPosition(playerIndex)
                                                     }
+                                                    playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
+                                                    playerConnection.player.playWhenReady = true
+                                                    exitDetachHead()
                                                 }
                                             }
                                         },
