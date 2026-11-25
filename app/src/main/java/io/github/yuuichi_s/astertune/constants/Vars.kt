@@ -69,7 +69,7 @@ const val SNACKBAR_VERY_SHORT = 2000L
  * 5: pre 0.10.0-rc1
  * 6: 0.10.0-rc1 +
  */
-const val OOBE_VERSION = 6
+const val OOBE_VERSION = 5
 
 const val SCANNER_OWNER_DL = 32
 const val SCANNER_OWNER_LM = 1

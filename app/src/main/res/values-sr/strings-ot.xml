@@ -212,9 +212,8 @@
     <string name="oobe_ad_free_exp_description">Уживај у музици без прекидања</string>
     <string name="oobe_local_music_support">Широка подршка за локалну музику</string>
     <string name="oobe_local_music_support_description">Пуштај своје аудио датотеке (нпр. MP3, OGG, FLAC, итд.)</string>
-    <string name="oobe_cross_platform_sync">Синхронизација на више платформи</string>
-    <string name="oobe_cross_platform_sync_description">Синхронизуј музику на свим уређајима</string>
-    <string name="oobe_use_backup">Имам резервну копију</string>
+    <string name="oobe_use_backup">Врати податке из резервне копије</string>
+    <string name="oobe_skip_setup">Прескочи подешавање</string>
     <string name="oobe_interface_subtitle">Прилагоди изглед апликације AsterTune и који садржај да приказује.</string>
     <string name="oobe_ytm_logon_title">Налог</string>
     <string name="oobe_ytm_logon_subtitle">Пријави се на свој YouTube Music налог ради синхронизације и приступа приватном садржају налога. Ово је опционо.</string>
@@ -337,7 +336,6 @@
     <string name="tap_artwork_to_show_lyrics_title">Додирни омот за приказ текста песме</string>
     <string name="tap_artwork_to_show_lyrics_description">Прикажи текст песме када додирнеш омот у плејеру</string>
     <string name="max_queues_title">Максималан број редова</string>
-    <string name="oobe_welcome_tip">За најбоље искуство препоручујемо кратко почетно подешавање важних опција као што су тема, YouTube налог, локални медији и преузимања.</string>
     <string name="oobe_cache_title">Кеш песама</string>
     <string name="oobe_cache_subtitle">Изабери величину кеша песама. То може да смањи проблеме са репродукцијом повезане са интернетом или YouTube API-јем</string>
     <plurals name="second">

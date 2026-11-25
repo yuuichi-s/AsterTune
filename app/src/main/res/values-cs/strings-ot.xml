@@ -306,15 +306,12 @@
     <string name="tap_artwork_to_show_lyrics_description">Zobrazit text skladby po klepnutí na obal v přehrávači</string>
     <string name="max_queues_title">Maximální počet front</string>
     <string name="oobe_welcome_message">Vítejte v AsterTune</string>
-    <string name="oobe_welcome_tip">Pro co nejlepší zážitek doporučujeme krátké úvodní nastavení, kde si přizpůsobíte důležité volby, jako je motiv, účet YouTube, lokální média a stahování.</string>
     <string name="oobe_ytm_integration">Integrace YouTube Music</string>
     <string name="oobe_ytm_integration_description">Snadný přístup k oblíbeným skladbám</string>
     <string name="oobe_ad_free_exp">Bez reklam YouTube</string>
     <string name="oobe_ad_free_exp_description">Užívejte si hudbu bez přerušení</string>
     <string name="oobe_local_music_support">Široká podpora lokální hudby</string>
     <string name="oobe_local_music_support_description">Přehrávejte své hudební soubory (např. MP3, OGG, FLAC a další)</string>
-    <string name="oobe_cross_platform_sync">Synchronizace mezi platformami</string>
-    <string name="oobe_cross_platform_sync_description">Udržujte hudbu synchronizovanou mezi zařízeními</string>
     <string name="oobe_use_backup">Mám zálohu</string>
     <string name="oobe_interface_subtitle">Přizpůsobte si vzhled aplikace AsterTune a zobrazovaný obsah.</string>
     <string name="oobe_ytm_logon_title">Účet</string>

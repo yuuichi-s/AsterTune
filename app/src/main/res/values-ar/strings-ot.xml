@@ -185,7 +185,8 @@
     <string name="dev_settings_description">يكشف عن إعدادات متقدمة إضافية مخصصة للاستخدام التطويري</string>
     <string name="swipe_to_skip_title">اسحب أفقيًا لتغيير الأغنية</string>
     <string name="oobe_complete">تم إعداد AsterTune وأصبح جاهزًا للاستخدام. استكشف موسيقاك، واكتشف مقاطع جديدة، واستمتع بالتجربة!</string>
-    <string name="oobe_use_backup">لدي نسخة احتياطية</string>
+    <string name="oobe_use_backup">استعادة البيانات من نسخة احتياطية</string>
+    <string name="oobe_skip_setup">تخطي الإعداد</string>
     <string name="action_back">رجوع</string>
     <string name="action_next">التالي</string>
     <string name="action_skip">تخطي</string>
@@ -277,8 +278,6 @@
     <string name="oobe_cache_subtitle">اختر حجم ذاكرة التخزين المؤقت للأغاني. قد يساعد ذلك في تقليل مشكلات التشغيل المرتبطة بالإنترنت أو بواجهة YouTube API</string>
     <string name="oobe_cache_title">ذاكرة التخزين المؤقت للأغاني</string>
     <string name="oobe_complete_title">كل شيء جاهز!</string>
-    <string name="oobe_cross_platform_sync">المزامنة عبر المنصات</string>
-    <string name="oobe_cross_platform_sync_description">حافظ على مزامنة موسيقاك عبر أجهزتك</string>
     <string name="oobe_downloads_subtitle">اختر وجهة للأغاني المنزّلة (اختياري).</string>
     <string name="oobe_downloads_title">تنزيلات الأغاني</string>
     <string name="oobe_interface_subtitle">خصّص مظهر AsterTune والمحتوى الذي يعرضه لك.</string>
@@ -286,7 +285,6 @@
     <string name="oobe_local_media_title">الوسائط المحلية</string>
     <string name="oobe_local_music_support">دعم واسع للموسيقى المحلية</string>
     <string name="oobe_local_music_support_description">شغّل ملفات الموسيقى الخاصة بك (مثل MP3 وOGG وFLAC وغيرها)</string>
-    <string name="oobe_welcome_tip">للحصول على أفضل تجربة، نوصي بإكمال إعداد سريع لتخصيص الإعدادات الأساسية مثل المظهر وحساب YouTube والوسائط المحلية والتنزيلات.</string>
     <string name="oobe_ytm_integration">التكامل مع YouTube Music</string>
     <string name="oobe_ytm_integration_description">الوصول بسهولة إلى أغانيك المفضلة</string>
     <string name="oobe_ytm_logon_subtitle">سجّل الدخول إلى حسابك في YouTube Music للمزامنة والوصول إلى محتوى حسابك الخاص. هذه الخطوة اختيارية.</string>

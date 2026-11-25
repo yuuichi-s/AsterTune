@@ -167,7 +167,8 @@
     <string name="off">OFF</string>
     <string name="player_background_style">プレーヤーの背景スタイル</string>
     <string name="show_queue_title">プレーヤーにキュー名表示</string>
-    <string name="oobe_use_backup">バックアップがある</string>
+    <string name="oobe_use_backup">バックアップからデータを復元</string>
+    <string name="oobe_skip_setup">セットアップ画面をスキップ</string>
     <string name="token_adv_login_description">これは高度なログイン方法です。ウェブポータルの代わりに、ここでログイントークンを直接入力または更新できます。たとえば、複数の端末でのログインを速くできます。アプリが解析できない無効なトークン形式は受け付けられません</string>
     <string name="scanner_variant_rescan">登録済みの曲情報も再読み込み</string>
     <string name="new_interface">新しいレイアウト</string>
@@ -264,8 +265,6 @@
     <string name="dl_rescan_action">再スキャン</string>
     <string name="oobe_local_music_support">端末内の幅広い音楽ファイルに対応</string>
     <string name="oobe_local_music_support_description">音楽ファイルを再生 (例: MP3、OGG、FLAC など)</string>
-    <string name="oobe_cross_platform_sync">クロスプラットフォーム同期</string>
-    <string name="oobe_cross_platform_sync_description">デバイス間で気に入った音楽を同期</string>
     <string name="oobe_ad_free_exp_description">途切れない音楽再生を楽しもう</string>
     <string name="oobe_interface_subtitle">AsterTuneの外観と表示されるコンテンツをカスタマイズします。</string>
     <string name="oobe_ytm_logon_title">アカウント</string>
@@ -327,7 +326,6 @@
     <string name="audio_decoder_system_with_ffmpeg">システムのデコーダーを優先</string>
     <string name="max_queues_title">キューの最大数</string>
     <string name="oobe_cache_title">曲のキャッシュ</string>
-    <string name="oobe_welcome_tip">快適に使用するには、テーマ、YouTubeアカウント、端末内メディア、ダウンロードなど自分向けにするための主な設定を簡単に設定することをお勧めします。</string>
     <string name="oobe_cache_subtitle">曲のキャッシュのサイズを選択。ネット接続やYouTube APIの再生に関する問題を軽減します</string>
     <string name="library_filter">ライブラリを絞り込み</string>
     <string name="dl_saved_files_title">保存済みファイルの読み込み</string>

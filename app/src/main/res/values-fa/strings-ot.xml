@@ -193,9 +193,8 @@
     <string name="oobe_ad_free_exp_description">از پخش موسیقی بدون وقفه لذت ببرید</string>
     <string name="oobe_local_music_support">پشتیبانی گسترده از موسیقی محلی</string>
     <string name="oobe_local_music_support_description">فایل‌های موسیقی خود را پخش کنید (مثلاً MP3، OGG، FLAC و غیره)</string>
-    <string name="oobe_cross_platform_sync">همگام‌سازی بین پلتفرمی</string>
-    <string name="oobe_cross_platform_sync_description">همگام نگه داشتن موسیقی بین دستگاه‌ها</string>
-    <string name="oobe_use_backup">من یک نسخه پشتیبان دارم</string>
+    <string name="oobe_use_backup">بازگردانی داده‌ها از نسخه پشتیبان</string>
+    <string name="oobe_skip_setup">رد شدن از راه‌اندازی</string>
     <string name="oobe_interface_subtitle">ظاهر AsterTune و محتوایی که به شما نشان می‌دهد را سفارشی کنید.</string>
     <string name="oobe_ytm_logon_title">حساب کاربری</string>
     <string name="oobe_ytm_logon_subtitle">برای همگام‌سازی و دسترسی به محتوای حساب خصوصی، وارد حساب YouTube Music خود شوید. این گزینه اختیاری است.</string>
@@ -339,7 +338,6 @@
     <string name="tap_artwork_to_show_lyrics_title">نمایش متن آهنگ با لمس تصویر جلد</string>
     <string name="tap_artwork_to_show_lyrics_description">نمایش متن آهنگ با لمس تصویر جلد در پخش‌کننده</string>
     <string name="max_queues_title">حداکثر تعداد صف‌ها</string>
-    <string name="oobe_welcome_tip">برای بهترین تجربه، پیشنهاد می‌کنیم با یک راه‌اندازی سریع، تنظیمات مهمی مثل طرح زمینه، حساب YouTube، رسانه‌های محلی و بارگیری‌ها را شخصی‌سازی کنید.</string>
     <string name="oobe_cache_title">حافظهٔ پنهان آهنگ‌ها</string>
     <string name="oobe_cache_subtitle">اندازهٔ حافظهٔ پنهان آهنگ‌ها را انتخاب کنید. این کار می‌تواند مشکلات پخش مربوط به اینترنت یا YouTube API را کاهش دهد</string>
 </resources>

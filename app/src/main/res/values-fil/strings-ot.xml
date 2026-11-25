@@ -301,15 +301,12 @@
     <string name="tap_artwork_to_show_lyrics_description">Ipakita ang lyrics kapag tina-tap ang album art sa player</string>
     <string name="max_queues_title">Maximum na bilang ng queue</string>
     <string name="oobe_welcome_message">Maligayang pagdating sa AsterTune</string>
-    <string name="oobe_welcome_tip">Para sa mas magandang karanasan, inirerekomenda naming kumpletuhin ang mabilis na setup para iangkop ang mahahalagang setting gaya ng tema, YouTube account, lokal na media, at mga download.</string>
     <string name="oobe_ytm_integration">Pagsasama sa YouTube Music</string>
     <string name="oobe_ytm_integration_description">Madaling ma-access ang mga paborito mong kanta</string>
     <string name="oobe_ad_free_exp">Walang ad mula sa YouTube</string>
     <string name="oobe_ad_free_exp_description">Masiyahan sa tuloy-tuloy na pagpapatugtog ng musika</string>
     <string name="oobe_local_music_support">Malawak na suporta para sa lokal na musika</string>
     <string name="oobe_local_music_support_description">I-play ang mga music file mo (gaya ng MP3, OGG, FLAC, atbp.)</string>
-    <string name="oobe_cross_platform_sync">Pag-sync sa iba-ibang platform</string>
-    <string name="oobe_cross_platform_sync_description">Panatilihing naka-sync ang musika mo sa iba-ibang device</string>
     <string name="oobe_use_backup">May backup ako</string>
     <string name="oobe_interface_subtitle">I-customize ang hitsura ng AsterTune at ang content na ipinapakita nito.</string>
     <string name="oobe_ytm_logon_title">Account</string>

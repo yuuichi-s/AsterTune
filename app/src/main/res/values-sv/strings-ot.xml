@@ -301,15 +301,12 @@
     <string name="tap_artwork_to_show_lyrics_description">Visa låttext när du trycker på omslaget i spelaren</string>
     <string name="max_queues_title">Maximalt antal köer</string>
     <string name="oobe_welcome_message">Välkommen till AsterTune</string>
-    <string name="oobe_welcome_tip">För bästa upplevelse rekommenderar vi en snabb konfiguration där du anpassar viktiga inställningar som tema, YouTube-konto, lokala medier och nedladdningar.</string>
     <string name="oobe_ytm_integration">YouTube Music-integrering</string>
     <string name="oobe_ytm_integration_description">Kom åt dina favoritlåtar enkelt</string>
     <string name="oobe_ad_free_exp">Ingen YouTube-reklam</string>
     <string name="oobe_ad_free_exp_description">Njut av musik utan avbrott</string>
     <string name="oobe_local_music_support">Brett stöd för lokal musik</string>
     <string name="oobe_local_music_support_description">Spela dina musikfiler (t.ex. MP3, OGG och FLAC)</string>
-    <string name="oobe_cross_platform_sync">Synkronisering mellan plattformar</string>
-    <string name="oobe_cross_platform_sync_description">Håll musiken synkroniserad mellan dina enheter</string>
     <string name="oobe_use_backup">Jag har en säkerhetskopia</string>
     <string name="oobe_interface_subtitle">Anpassa hur AsterTune ser ut och vilket innehåll som visas.</string>
     <string name="oobe_ytm_logon_title">Konto</string>

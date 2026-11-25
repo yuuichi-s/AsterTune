@@ -299,15 +299,12 @@
     <string name="tap_artwork_to_show_lyrics_description">แสดงเนื้อเพลงเมื่อแตะปกอัลบั้มในเครื่องเล่น</string>
     <string name="max_queues_title">จำนวนคิวสูงสุด</string>
     <string name="oobe_welcome_message">ยินดีต้อนรับสู่ AsterTune</string>
-    <string name="oobe_welcome_tip">เพื่อให้ใช้งานได้อย่างราบรื่น ขอแนะนำให้ตั้งค่าพื้นฐานสั้นๆ เช่น ธีม บัญชี YouTube สื่อในเครื่อง และการดาวน์โหลด ให้เหมาะกับคุณ</string>
     <string name="oobe_ytm_integration">การเชื่อมต่อกับ YouTube Music</string>
     <string name="oobe_ytm_integration_description">เข้าถึงเพลงโปรดได้อย่างสะดวก</string>
     <string name="oobe_ad_free_exp">ไม่มีโฆษณาจาก YouTube</string>
     <string name="oobe_ad_free_exp_description">เพลิดเพลินกับการฟังเพลงต่อเนื่อง</string>
     <string name="oobe_local_music_support">รองรับเพลงในเครื่องหลากหลายรูปแบบ</string>
     <string name="oobe_local_music_support_description">เล่นไฟล์เพลงของคุณ (เช่น MP3, OGG, FLAC)</string>
-    <string name="oobe_cross_platform_sync">ซิงค์ข้ามแพลตฟอร์ม</string>
-    <string name="oobe_cross_platform_sync_description">ซิงค์เพลงของคุณระหว่างอุปกรณ์</string>
     <string name="oobe_use_backup">ฉันมีข้อมูลสำรอง</string>
     <string name="oobe_interface_subtitle">ปรับแต่งรูปลักษณ์ของ AsterTune และเนื้อหาที่แสดงให้เหมาะกับคุณ</string>
     <string name="oobe_ytm_logon_title">บัญชี</string>

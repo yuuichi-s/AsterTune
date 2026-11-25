@@ -124,7 +124,8 @@
     <string name="scanner_ytm_link_fail">Неуспешна задача за свързване на изпълнител в YouTube</string>
     <string name="experimental_settings_title">Експериментални</string>
     <string name="dev_settings_title">Активирайте настройките за програмисти</string>
-    <string name="oobe_use_backup">Имам резервно копие</string>
+    <string name="oobe_use_backup">Възстановяване на данните от архив</string>
+    <string name="oobe_skip_setup">Пропускане на настройката</string>
     <string name="grp_lyrics_source">Източници на текстовете</string>
     <string name="player_background_gradient">Градиент</string>
     <string name="dev_settings_description">Разкрива допълнителни разширени настройки, предназначени за използване при разработка</string>
@@ -143,8 +144,6 @@
     <string name="oobe_ytm_integration_description">Достъп до любимите си песни безпроблемно</string>
     <string name="oobe_ad_free_exp">Без реклами в YouTube</string>
     <string name="oobe_local_music_support">Обширна поддръжка на локална музика</string>
-    <string name="oobe_cross_platform_sync">Синхронизиране между платформи</string>
-    <string name="oobe_cross_platform_sync_description">Поддържайте музиката си в хармония на всички устройства</string>
     <string name="oobe_ytm_logon_title">Профил</string>
     <string name="oobe_local_media_title">Локални медии</string>
     <string name="oobe_local_media_subtitle">Изберете папки, в които се намира вашата музика. Ще ги сканираме за песни, които да внесеме.</string>
@@ -260,7 +259,6 @@
     <string name="audio_decoder_system_only">Само системни декодери</string>
     <string name="audio_decoder_system_with_ffmpeg">Приоритизиране на системните декодери</string>
     <string name="max_queues_title">Максимален брой опашки</string>
-    <string name="oobe_welcome_tip">За най-добро изживяване препоръчваме да извършите бърза настройка, за да персонализирате ключови настройки, като тема, YouTube акаунт, локални медии и изтегляния.</string>
     <string name="oobe_cache_title">Кеш на песен</string>
     <string name="oobe_cache_subtitle">Изберете размер на кеша на песента. Това може да помогне за намаляване на проблеми с възпроизвеждането с интернет или YouTube API</string>
     <string name="grp_more_settings">Още настройки</string>

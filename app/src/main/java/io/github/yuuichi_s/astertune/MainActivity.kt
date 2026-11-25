@@ -95,6 +95,7 @@ import androidx.compose.ui.util.fastForEach
 import androidx.core.net.toUri
 import androidx.core.util.Consumer
 import androidx.core.view.WindowCompat
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavType
@@ -124,6 +125,7 @@ import io.github.yuuichi_s.astertune.constants.SlimNavBarKey
 import io.github.yuuichi_s.astertune.constants.TabletUiKey
 import io.github.yuuichi_s.astertune.constants.UI_DEBUG
 import io.github.yuuichi_s.astertune.db.MusicDatabase
+import io.github.yuuichi_s.astertune.extensions.div
 import io.github.yuuichi_s.astertune.extensions.isTabMode
 import io.github.yuuichi_s.astertune.extensions.usesNavRail
 import io.github.yuuichi_s.astertune.playback.DownloadUtil
@@ -191,11 +193,15 @@ import io.github.yuuichi_s.astertune.utils.ActivityLauncherHelper
 import io.github.yuuichi_s.astertune.utils.NetworkConnectivityObserver
 import io.github.yuuichi_s.astertune.utils.ObserveImageLoadNavigation
 import io.github.yuuichi_s.astertune.utils.SyncUtils
+import io.github.yuuichi_s.astertune.utils.dataStore
 import io.github.yuuichi_s.astertune.utils.rememberEnumPreference
 import io.github.yuuichi_s.astertune.utils.rememberPreference
 import io.github.yuuichi_s.astertune.utils.scanners.LocalMediaScanner.Companion.scannerScope
 import io.github.yuuichi_s.astertune.utils.updater.UpdateChecker
+import io.github.yuuichi_s.astertune.viewmodels.BackupRestoreViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -261,6 +267,14 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         activityLauncher = ActivityLauncherHelper(this)
+
+        val setupCompleteMarker = filesDir / BackupRestoreViewModel.SETUP_COMPLETE_MARKER_FILENAME
+        if (setupCompleteMarker.exists()) {
+            runBlocking(Dispatchers.IO) {
+                dataStore.edit { it[OobeStatusKey] = OOBE_VERSION - 1 }
+            }
+            setupCompleteMarker.delete()
+        }
 
         setContent {
             if (UI_DEBUG) Log.v(MAIN_TAG, "RC-1")
@@ -1041,7 +1055,9 @@ class MainActivity : ComponentActivity() {
                             // Setup wizard
                             LaunchedEffect(Unit) {
                                 if (oobeStatus < OOBE_VERSION) {
-                                    navController.navigate("setup_wizard")
+                                    navController.navigate("setup_wizard") {
+                                        launchSingleTop = true
+                                    }
                                 }
                             }
 

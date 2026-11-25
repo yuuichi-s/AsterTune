@@ -348,7 +348,6 @@ while also allowing users to translate our app as well. New, specific strings to
 
 <!-- Setup wizard -->
     <string name="oobe_welcome_message">AsterTune\'a hoş geldiniz</string>
-    <string name="oobe_welcome_tip">En iyi deneyim için tema, YouTube hesabı, yerel medya ve indirmeler gibi temel ayarları kişiselleştiren hızlı kurulumu tamamlamanızı öneririz.</string>
 
     <!-- Landing -->
     <string name="oobe_ytm_integration">YouTube Music entegrasyonu</string>
@@ -357,9 +356,8 @@ while also allowing users to translate our app as well. New, specific strings to
     <string name="oobe_ad_free_exp_description">Kesintisiz müzik dinlemenin keyfini çıkarın</string>
     <string name="oobe_local_music_support">Kapsamlı yerel müzik desteği</string>
     <string name="oobe_local_music_support_description">Müzik dosyalarınızı çalın (ör. MP3, OGG, FLAC vb.)</string>
-    <string name="oobe_cross_platform_sync">Platformlar arası eşitleme</string>
-    <string name="oobe_cross_platform_sync_description">Müziğinizi tüm cihazlarınızda eşitlenmiş tutun</string>
-    <string name="oobe_use_backup">Yedeğim var</string>
+    <string name="oobe_use_backup">Verileri yedekten geri yükle</string>
+    <string name="oobe_skip_setup">Kurulumu atla</string>
 
     <!-- Interface setup page -->
     <string name="oobe_interface_subtitle">AsterTune\'un görünümünü ve gösterdiği içeriği özelleştirin.</string>

@@ -101,7 +101,8 @@
     <string name="import_failed_songs">No se pudo importar</string>
     <string name="dev_settings_title">Habilitar ajustes de desarrollador</string>
     <string name="oobe_welcome_message">Bienvenido a AsterTune</string>
-    <string name="oobe_use_backup">Tengo una copia de seguridad</string>
+    <string name="oobe_use_backup">Restaurar datos desde una copia de seguridad</string>
+    <string name="oobe_skip_setup">Omitir la configuración</string>
     <string name="action_back">Atrás</string>
     <string name="action_skip">Saltar</string>
     <string name="action_cancel">Cancelar</string>
@@ -194,7 +195,6 @@
     <string name="dl_main_path_description">Las canciones descargadas se mueven automáticamente a esta carpeta. También se mueven las canciones que ya están en el almacenamiento privado de la aplicación.</string>
     <string name="oobe_ytm_integration">Integración con YouTube Music</string>
     <string name="oobe_local_music_support_description">Reproduce tus archivos de música (por ejemplo, MP3, OGG, FLAC, etc.)</string>
-    <string name="oobe_cross_platform_sync">Sincronización multiplataforma</string>
     <string name="oobe_ytm_logon_title">Cuenta</string>
     <string name="import_success_songs">Importado correctamente</string>
     <string name="m3u_export">Exportar como archivo M3U</string>
@@ -222,7 +222,6 @@
     <string name="clear_image_cache_confirm">¿Borrar toda la caché de imágenes?</string>
     <string name="oobe_ytm_integration_description">Accede a tus pistas favoritas sin problemas</string>
     <string name="oobe_ad_free_exp_description">Disfruta la reproducción de música ininterrumpida</string>
-    <string name="oobe_cross_platform_sync_description">Mantén tu música en armonía en todos los dispositivos</string>
     <string name="oobe_ytm_logon_subtitle">Inicia sesión en tu cuenta de YouTube Music para sincronizar y acceder al contenido privado de la cuenta. Esto es opcional.</string>
     <string name="oobe_downloads_subtitle">Elige una carpeta de destino para las canciones descargadas (opcional).</string>
     <string name="m3u_ytm_lookup">Busca en YouTube Music canciones que no se encuentran en la base de datos de la aplicación</string>
@@ -281,7 +280,6 @@
     <string name="audio_decoder_system_only">Sólo decodificadores del sistema</string>
     <string name="audio_decoder_system_with_ffmpeg">Priorizar los decodificadores del sistema</string>
     <string name="max_queues_title">Número máximo de colas</string>
-    <string name="oobe_welcome_tip">Para disfrutar de la mejor experiencia, te recomendamos completar una configuración rápida para personalizar ajustes clave como el tema, la cuenta de YouTube, los medios locales y las descargas.</string>
     <string name="oobe_cache_title">Caché de canciones</string>
     <string name="oobe_cache_subtitle">Elige un tamaño para el caché de canciones. Esto puede ayudar a reducir los problemas de reproducción de Internet o de la API de YouTube</string>
     <string name="grp_more_settings">Más ajustes</string>

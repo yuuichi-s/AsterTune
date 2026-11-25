@@ -85,7 +85,8 @@
     <string name="action_skip">건너뛰기</string>
     <string name="action_cancel">취소</string>
     <string name="info">정보</string>
-    <string name="oobe_use_backup">백업 파일이 있습니다</string>
+    <string name="oobe_use_backup">백업에서 데이터 복구</string>
+    <string name="oobe_skip_setup">설정 건너뛰기</string>
     <string name="action_next">다음</string>
     <string name="android_auto">Android Auto</string>
     <string name="queue_local_history">최근 감상 기록(로컬)</string>
@@ -209,7 +210,6 @@
     <string name="dl_main_path_title">다운로드한 노래의 이동 대상 폴더</string>
     <string name="dl_main_path_description">다운로드한 노래는 이 폴더로 자동으로 이동합니다. 앱 전용 저장공간에 있는 노래도 이동합니다.</string>
     <string name="oobe_local_music_support_description">가지고 있는 음악 파일(예. MP3, OGG, FLAC 등)을 재생하세요</string>
-    <string name="oobe_cross_platform_sync_description">모든 기기에서 내 음악을 똑같이 유지하세요</string>
     <string name="oobe_local_media_title">로컬 미디어</string>
     <string name="oobe_ytm_logon_subtitle">YouTube Music 계정에 로그인하여 데이터를 동기화하고 비공개 콘텐츠를 이용하세요. 이는 선택 사항입니다.</string>
     <string name="oobe_downloads_title">노래 다운로드</string>
@@ -219,7 +219,6 @@
     <string name="dl_migrate_description">앱 전용 저장공간의 노래를 지정한 폴더로 이동합니다.</string>
     <string name="oobe_ad_free_exp_description">끊김 없는 음악 재생</string>
     <string name="clear_image_cache_confirm">이미지 캐시를 모두 삭제할까요?</string>
-    <string name="oobe_cross_platform_sync">여러 기기 간 동기화</string>
     <string name="clear_song_cache_confirm">노래 캐시를 모두 삭제할까요?</string>
     <string name="dl_oobe_tooltip">폴더를 설정하면 다운로드한 노래가 해당 폴더에 저장됩니다. 설정하지 않으면 앱 전용 저장공간에 저장됩니다.</string>
     <string name="oobe_ytm_integration_description">좋아하는 음악을 끊김 없이 감상하세요</string>
@@ -303,7 +302,6 @@
     <string name="err_restore_incompatible_database">호환되지 않는 데이터베이스를 복원할 수 없습니다</string>
     <string name="restore_lm_tooltip">앱을 새로 설치한 경우 사용자 지정 다운로드 및 로컬 미디어 스캔 경로가 작동하지 않을 수 있습니다. 이 문제를 해결하려면 해당 경로를 삭제한 후 다시 추가하세요.</string>
     <string name="max_queues_title">최대 대기열 수</string>
-    <string name="oobe_welcome_tip">최상의 경험을 위해 테마, YouTube 계정, 로컬 미디어, 다운로드 같은 주요 설정을 개인화하는 빠른 설정을 완료하는 것이 좋습니다.</string>
     <string name="oobe_cache_title">곡 캐시</string>
     <string name="oobe_cache_subtitle">곡 캐시 크기를 선택하세요. 인터넷 또는 YouTube API 재생 문제를 줄이는 데 도움이 될 수 있습니다</string>
     <string name="off">사용 안 함</string>
