@@ -77,6 +77,7 @@ import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.WatchEndpoint
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory
+import io.github.yuuichi_s.astertune.BuildConfig
 import io.github.yuuichi_s.astertune.MainActivity
 import io.github.yuuichi_s.astertune.R
 import io.github.yuuichi_s.astertune.constants.AudioDecoderKey
@@ -1799,6 +1800,71 @@ class MusicService : MediaLibraryService(),
         if (events.containsAny(EVENT_TIMELINE_CHANGED, EVENT_POSITION_DISCONTINUITY)) {
             currentMediaMetadata.value = player.currentMetadata
         }
+
+        if (BuildConfig.DEBUG && events.containsAny(
+                EVENT_TIMELINE_CHANGED,
+                EVENT_MEDIA_ITEM_TRANSITION,
+                Player.EVENT_SHUFFLE_MODE_ENABLED_CHANGED,
+            )
+        ) {
+            checkQueuePlayerMismatch(player)
+        }
+    }
+
+    // Debug builds only. Main thread only.
+    private var lastQueuePlayerMismatch: String? = null
+
+    /**
+     * Reports with a warning log and a Toast when the current queue and [player] differ in song
+     * order, current song or shuffle state. Repeats of the last report are skipped.
+     * Reads the queues without changing them. Main thread only.
+     */
+    private fun checkQueuePlayerMismatch(player: Player) {
+        if (!qbInit.value || queueDismissed || player.mediaItemCount < 1) {
+            lastQueuePlayerMismatch = null
+            return
+        }
+        val board = queueBoard.value
+        val queue = board.masterQueues.getOrNull(board.getMasterIndex())
+        val queueIds = queue?.getCurrentQueueShuffled()?.map { it.id }
+        val playerIds = List(player.mediaItemCount) { player.getMediaItemAt(it).mediaId }
+        val queueSongId = queue?.let { it.queue.getOrNull(it.queuePos)?.id }
+        val playerSongId = player.currentMediaItem?.mediaId
+        val queueShuffled = queue?.shuffled
+        val playerShuffled = player.shuffleModeEnabled
+
+        fun Any?.orNoQueue() = if (queue == null) "no queue" else toString()
+        val summaries = ArrayList<String>()
+        val details = ArrayList<String>()
+        if (queueIds != playerIds) {
+            val ids = queueIds.orEmpty()
+            val at = (0 until maxOf(ids.size, playerIds.size)).first { ids.getOrNull(it) != playerIds.getOrNull(it) }
+            summaries += "order ${queueIds?.size.orNoQueue()}/${playerIds.size} songs," +
+                    " #$at ${ids.getOrNull(at).orNoQueue()}/${playerIds.getOrNull(at)}"
+            details += "order queue=${queueIds.orNoQueue()} player=$playerIds"
+        }
+        if (queueSongId != playerSongId) {
+            summaries += "song ${queueSongId.orNoQueue()}/$playerSongId"
+            details += "song queue=${queueSongId.orNoQueue()} player=$playerSongId"
+        }
+        if (queueShuffled != playerShuffled) {
+            summaries += "shuffle ${queueShuffled.orNoQueue()}/$playerShuffled"
+            details += "shuffle queue=${queueShuffled.orNoQueue()} player=$playerShuffled"
+        }
+        if (details.isEmpty()) {
+            lastQueuePlayerMismatch = null
+            return
+        }
+
+        val detail = details.joinToString("; ")
+        if (detail == lastQueuePlayerMismatch) return
+        lastQueuePlayerMismatch = detail
+        Log.w(TAG, "Queue/player mismatch: $detail")
+        Toast.makeText(
+            this,
+            "Queue/player mismatch (queue/player): ${summaries.joinToString("; ")}",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onPlaybackStatsReady(eventTime: AnalyticsListener.EventTime, playbackStats: PlaybackStats) {
