@@ -435,11 +435,11 @@ fun BoxScope.QueueContent(
     }
     LaunchedEffect(reorderableState.isAnyItemDragging) {
         if (!reorderableState.isAnyItemDragging) {
-            dragInfo?.let { (from, to) ->
-                if (from == to) return@LaunchedEffect
+            val (from, to) = dragInfo ?: return@LaunchedEffect
+            dragInfo = null
+            if (from != to) {
                 qb.moveSong(from, to)
                 playerConnection.player.moveMediaItem(from, to)
-                dragInfo = null
             }
         }
     }
