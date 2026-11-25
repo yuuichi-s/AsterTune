@@ -69,7 +69,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -78,6 +77,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -112,6 +112,7 @@ import androidx.media3.common.Player.REPEAT_MODE_ALL
 import androidx.media3.common.Player.REPEAT_MODE_OFF
 import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.Player.STATE_ENDED
+import androidx.media3.common.Timeline
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
@@ -354,6 +355,8 @@ fun BoxScope.QueueContent(
      * SONG LIST
      */
     val mutableSongs = remember { mutableStateListOf<MediaMetadata>() }
+    val songUids = remember { HashMap<MediaMetadata, Any>() }
+    val removedUids = remember { HashSet<Any>() }
     var lastHandledQueueId by remember { mutableStateOf<Long?>(null) }
     val lazySongsListState = rememberLazyListState()
 
@@ -375,11 +378,16 @@ fun BoxScope.QueueContent(
     var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
     }
-    val filteredSongs = remember(mutableSongs, searchQuery) {
-        if (searchQuery.text.isEmpty()) mutableSongs
-        else mutableSongs.filter { song ->
-            song.title.contains(searchQuery.text, ignoreCase = true)
-                    || song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
+    val filteredSongs by remember {
+        derivedStateOf {
+            if (searchQuery.text.isEmpty()) {
+                mutableSongs.toList()
+            } else {
+                mutableSongs.filter { song ->
+                    song.title.contains(searchQuery.text, ignoreCase = true)
+                            || song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
+                }
+            }
         }
     }
     val focusRequester = remember { FocusRequester() }
@@ -411,29 +419,100 @@ fun BoxScope.QueueContent(
     var dragInfo by remember {
         mutableStateOf<Pair<Int, Int>?>(null)
     }
+    val dragStartSongs = remember { mutableListOf<MediaMetadata>() }
     val reorderableState = rememberReorderableLazyListState(
         lazyListState = lazySongsListState,
         scrollThresholdPadding = WindowInsets.systemBars.add(
             WindowInsets(top = ListItemHeight, bottom = ListItemHeight)
         ).asPaddingValues()
     ) { from, to ->
-        val currentDragInfo = dragInfo
-        dragInfo = if (currentDragInfo == null) {
-            from.index to to.index
-        } else {
-            currentDragInfo.first to to.index
+        if (!isSearching) {
+            val currentDragInfo = dragInfo
+            dragInfo = if (currentDragInfo == null) {
+                from.index to to.index
+            } else {
+                currentDragInfo.first to to.index
+            }
+            mutableSongs.move(from.index, to.index)
+            return@rememberReorderableLazyListState
         }
-        mutableSongs.move(from.index, to.index)
+
+        val song = filteredSongs.getOrNull(from.index) ?: return@rememberReorderableLazyListState
+
+        if (dragInfo == null) {
+            dragStartSongs.clear()
+            dragStartSongs.addAll(mutableSongs)
+        }
+
+        val startIndex = dragStartSongs.indexOf(song)
+        if (startIndex < 0) {
+            return@rememberReorderableLazyListState
+        }
+
+        val others = dragStartSongs.filter { it != song }
+        val shownOthers = filteredSongs.filter { it != song }
+        val shownSet = shownOthers.toHashSet()
+        val startRow = dragStartSongs.subList(0, startIndex).count { it in shownSet }
+        val newIndex = when {
+            to.index == startRow -> startIndex
+            to.index > startRow -> shownOthers.getOrNull(to.index - 1)?.let {
+                others.indexOf(it).takeIf { i -> i >= 0 }?.plus(1)
+            }
+            else -> shownOthers.getOrNull(to.index)?.let(others::indexOf)
+        }
+
+        if (newIndex == null || newIndex < 0) {
+            return@rememberReorderableLazyListState
+        }
+
+        mutableSongs.move(mutableSongs.indexOf(song), newIndex)
+        dragInfo = startIndex to newIndex
     }
     LaunchedEffect(reorderableState.isAnyItemDragging) {
         if (!reorderableState.isAnyItemDragging) {
-            dragInfo?.let { (from, to) ->
-                if (from == to) return@LaunchedEffect
+            val (from, to) = dragInfo ?: return@LaunchedEffect
+            dragInfo = null
+            if (from != to) {
                 qb.moveSong(from, to)
                 playerConnection.player.moveMediaItem(from, to)
-                dragInfo = null
             }
         }
+    }
+
+    fun playerIndexOf(song: MediaMetadata): Int? {
+        val uid = songUids[song] ?: return null
+        val timeline = playerConnection.player.currentTimeline
+        val window = Timeline.Window()
+
+        return (0 until timeline.windowCount).firstOrNull {
+            timeline.getWindow(it, window).uid == uid
+        }
+    }
+
+    fun removeSwipedSong(song: MediaMetadata): Boolean {
+        val uid = songUids[song] ?: return false
+        if (uid in removedUids) return true
+        if (lockQueue || inSelectMode || detachedHead || dragInfo != null || reorderableState.isAnyItemDragging) {
+            return false
+        }
+
+        val player = playerConnection.player
+        if (qb.getCurrentQueue()?.getSize() != player.currentTimeline.windowCount) {
+            return false
+        }
+
+        val index = playerIndexOf(song) ?: return false
+
+        if (!qb.removeCurrentQueueSong(index)) {
+            return false
+        }
+
+        player.removeMediaItem(index)
+        removedUids.add(uid)
+        mutableSongs.remove(song)
+        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+
+        return true
     }
 
     val lazyQueuesListState = rememberLazyListState()
@@ -475,7 +554,8 @@ fun BoxScope.QueueContent(
     }
 
     LaunchedEffect(queueWindows, detachedQueue) {
-        if (isSearching) return@LaunchedEffect
+        songUids.clear()
+        removedUids.clear()
         if (detachedQueue != null) {
             mutableSongs.apply {
                 clear()
@@ -491,7 +571,9 @@ fun BoxScope.QueueContent(
             return@LaunchedEffect
         }
 
-        val newSongs = queueWindows.mapIndexedNotNull { index, w -> w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble()) }
+        val newSongs = queueWindows.mapIndexedNotNull { index, w ->
+            w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble())?.also { songUids[it] = w.uid }
+        }
 
         // Appending can refresh the existing entries first. Preserve selection and scroll
         // while the same queue keeps the same song IDs at the existing indices.
@@ -778,31 +860,6 @@ fun BoxScope.QueueContent(
                         val dismissState = rememberSwipeToDismissBoxState(
                             positionalThreshold = { totalDistance ->
                                 totalDistance
-                            },
-                            confirmValueChange = { dismissValue ->
-                                when (dismissValue) {
-                                    SwipeToDismissBoxValue.StartToEnd -> {
-                                        if (qb.removeCurrentQueueSong(index)) {
-                                            playerConnection.player.removeMediaItem(index)
-                                            mutableSongs.removeAt(index)
-                                        }
-                                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                                        return@rememberSwipeToDismissBoxState true
-                                    }
-
-                                    SwipeToDismissBoxValue.EndToStart -> {
-                                        if (qb.removeCurrentQueueSong(index)) {
-                                            playerConnection.player.removeMediaItem(index)
-                                            mutableSongs.removeAt(index)
-                                        }
-                                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                                        return@rememberSwipeToDismissBoxState true
-                                    }
-
-                                    SwipeToDismissBoxValue.Settled -> {
-                                        return@rememberSwipeToDismissBoxState false
-                                    }
-                                }
                             }
                         )
 
@@ -815,10 +872,12 @@ fun BoxScope.QueueContent(
                             }
                         }
 
+                        val queueIndex = if (isSearching) mutableSongs.indexOf(window) else index
+
                         val content = @Composable {
                             MediaMetadataListItem(
                                 mediaMetadata = window,
-                                isActive = (index == currentWindowIndex && !detachedHead) || index == detachedQueue?.getQueuePosShuffled(),
+                                isActive = (queueIndex == currentWindowIndex && !detachedHead) || queueIndex == detachedQueue?.getQueuePosShuffled(),
                                 isPlaying = isPlaying && !detachedHead,
                                 trailingContent = {
                                     if (inSelectMode) {
@@ -868,20 +927,20 @@ fun BoxScope.QueueContent(
                                                 onCheckedChange(window.hashCode() !in selectedItems)
                                             } else {
                                                 coroutineScope.launch(Dispatchers.Main) {
-                                                    if (index == currentWindowIndex && !detachedHead) {
-                                                        playerConnection.player.togglePlayPause()
+                                                    if (detachedHead) {
+                                                        detachedQueue?.setCurrentQueuePos(index)
+                                                        qb.setCurrQueue(detachedQueue, false)
                                                     } else {
-                                                        val index = index // race condition...?
-                                                        if (detachedHead) {
-                                                            detachedQueue?.setCurrentQueuePos(index)
-                                                            qb.setCurrQueue(detachedQueue, false)
-                                                        } else {
-                                                            playerConnection.player.seekToDefaultPosition(index)
+                                                        val playerIndex = playerIndexOf(window) ?: return@launch
+                                                        if (playerIndex == currentWindowIndex) {
+                                                            playerConnection.player.togglePlayPause()
+                                                            return@launch
                                                         }
-                                                        playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
-                                                        playerConnection.player.playWhenReady = true
-                                                        exitDetachHead()
+                                                        playerConnection.player.seekToDefaultPosition(playerIndex)
                                                     }
+                                                    playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
+                                                    playerConnection.player.playWhenReady = true
+                                                    exitDetachHead()
                                                 }
                                             }
                                         },
@@ -899,6 +958,11 @@ fun BoxScope.QueueContent(
                             SwipeToDismissBox(
                                 state = dismissState,
                                 backgroundContent = {},
+                                onDismiss = {
+                                    if (!removeSwipedSong(window)) {
+                                        coroutineScope.launch { dismissState.reset() }
+                                    }
+                                },
                                 content = { content() }
                             )
                         } else {
