@@ -124,6 +124,7 @@ import io.github.yuuichi_s.astertune.extensions.currentMetadata
 import io.github.yuuichi_s.astertune.extensions.findNextMediaItemById
 import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.setOffloadEnabled
+import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.lyrics.LyricsFetchRole
 import io.github.yuuichi_s.astertune.lyrics.LyricsHelper
 import io.github.yuuichi_s.astertune.models.HybridCacheDataSinkFactory
@@ -226,8 +227,39 @@ class MusicService : MediaLibraryService(),
     private val binder = MusicBinder()
     private lateinit var connectivityManager: ConnectivityManager
 
+    private val queueBoardHost = object : QueueBoardHost {
+        override val mediaItemCount get() = player.mediaItemCount
+        override val currentMediaItemIndex get() = player.currentMediaItemIndex
+        override fun getMediaItemIdAt(index: Int) = player.getMediaItemAt(index).mediaId
+        override val currentSongId get() = player.currentMetadata?.id
+        override var shuffleModeEnabled: Boolean
+            get() = player.shuffleModeEnabled
+            set(value) {
+                player.shuffleModeEnabled = value
+            }
+
+        override fun setMediaItems(songs: List<MediaMetadata>) =
+            player.setMediaItems(songs.map { it.toMediaItem() })
+
+        override fun setMediaItems(songs: List<MediaMetadata>, startIndex: Int, startPositionMs: Long) =
+            player.setMediaItems(songs.map { it.toMediaItem() }, startIndex, startPositionMs)
+
+        override fun addMediaItems(songs: List<MediaMetadata>) =
+            player.addMediaItems(songs.map { it.toMediaItem() })
+
+        override fun removeMediaItems(fromIndex: Int, toIndex: Int) =
+            player.removeMediaItems(fromIndex, toIndex)
+
+        override fun replaceMediaItems(fromIndex: Int, toIndex: Int, songs: List<MediaMetadata>) =
+            player.replaceMediaItems(fromIndex, toIndex, songs.map { it.toMediaItem() })
+
+        override fun onQueueLoaded() = this@MusicService.onQueueLoaded()
+        override fun persistQueues() = dataStore.get(PersistentQueueKey, true)
+        override val database get() = this@MusicService.database
+    }
+
     val qbInit = MutableStateFlow(false)
-    var queueBoard = MutableStateFlow(QueueBoard(this, maxQueues = 1))
+    var queueBoard = MutableStateFlow(QueueBoard(queueBoardHost, maxQueues = 1))
     var queuePlaylistId: String? = null
 
     @Inject
@@ -293,7 +325,7 @@ class MusicService : MediaLibraryService(),
     )
 
     private var localPlaybackSequence = 0
-    private var lastPlaybackState = Player.STATE_IDLE
+    private var lastPlaybackState = STATE_IDLE
 
     private lateinit var playbackStatsListener: PlaybackStatsListener
 
@@ -980,7 +1012,7 @@ class MusicService : MediaLibraryService(),
         minFirstQueueIndex: Int = 0,
     ) {
         queueBoard.value = QueueBoard(
-            this, queueBoard.value.masterQueues, queues, maxQueues, minFirstQueueIndex, storedQueuesLoaded
+            queueBoardHost, queueBoard.value.masterQueues, queues, maxQueues, minFirstQueueIndex, storedQueuesLoaded
         )
         val playerHoldsOpenQueue = queueDismissed && queueBoard.value.selectQueueInPlayer()
         recordCurrentSongPosition()
@@ -1246,7 +1278,7 @@ class MusicService : MediaLibraryService(),
                     pcmEncodingRestrictionLifted: Boolean,
                     enableFloatOutput: Boolean,
                     enableAudioTrackPlaybackParams: Boolean
-                ): AudioSink? {
+                ): AudioSink {
                     return DefaultAudioSink.Builder(this@MusicService)
                         .setPcmEncodingRestrictionLifted(pcmEncodingRestrictionLifted)
                         .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
@@ -1300,7 +1332,7 @@ class MusicService : MediaLibraryService(),
                     pcmEncodingRestrictionLifted: Boolean,
                     enableFloatOutput: Boolean,
                     enableAudioTrackPlaybackParams: Boolean
-                ): AudioSink? {
+                ): AudioSink {
                     return DefaultAudioSink.Builder(this@MusicService)
                         .setPcmEncodingRestrictionLifted(pcmEncodingRestrictionLifted)
                         .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)

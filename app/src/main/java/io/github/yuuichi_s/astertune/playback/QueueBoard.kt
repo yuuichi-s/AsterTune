@@ -16,18 +16,13 @@ import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.media3.common.C
-import io.github.yuuichi_s.astertune.constants.PersistentQueueKey
 import io.github.yuuichi_s.astertune.constants.QUEUE_DEBUG
 import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.entities.QueueEntity
 import io.github.yuuichi_s.astertune.db.entities.QueueSongMap
-import io.github.yuuichi_s.astertune.extensions.currentMetadata
 import io.github.yuuichi_s.astertune.extensions.move
-import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
-import io.github.yuuichi_s.astertune.utils.dataStore
-import io.github.yuuichi_s.astertune.utils.get
 import io.github.yuuichi_s.astertune.utils.reportException
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -38,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 
 /**
@@ -45,12 +41,13 @@ import kotlin.math.min
  * otherwise explicitly stated.
  */
 class QueueBoard(
-    private val player: MusicService,
+    private val host: QueueBoardHost,
     val masterQueues: SnapshotStateList<MultiQueueObject> = mutableStateListOf(),
     queues: MutableList<MultiQueueObject> = ArrayList(),
     private var maxQueues: Int,
     minFirstQueueIndex: Int = 0,
     storedQueuesLoaded: Boolean = false,
+    private val random: Random = Random,
 ) {
     private val TAG = QueueBoard::class.simpleName.toString()
 
@@ -392,10 +389,7 @@ class QueueBoard(
      */
     fun removeCurrentQueueSong(index: Int): Boolean {
         val q = getCurrentQueue()
-        if (q == null) {
-            return false
-        }
-        return removeSong(q, index)
+        return q != null && removeSong(q, index)
     }
 
 
@@ -407,7 +401,7 @@ class QueueBoard(
      */
     fun removeSong(item: MultiQueueObject, index: Int): Boolean {
         var ret = false
-        val currentMediaItemIndex = player.player.currentMediaItemIndex
+        val currentMediaItemIndex = host.currentMediaItemIndex
         var newQueuePos = item.getQueuePosShuffled()
 
         if (item.shuffled) {
@@ -544,7 +538,7 @@ class QueueBoard(
         val currentSong = item.queue[item.queuePos]
 
         // shuffle & push the current song to top if requested to
-        shuffleInPlace(item.queue)
+        shuffleInPlace(item.queue, random)
         if (preserveCurrent) {
             val s2 = item.queue.find { it.shuffleIndex == 0 }
             if (s2 != null && currentSong != s2) {
@@ -620,7 +614,7 @@ class QueueBoard(
     ): Int {
         val items = queue.getCurrentQueueShuffled()
         var newQueuePos = queue.getQueuePosShuffled()
-        val currentMediaItemIndex = player.player.currentMediaItemIndex
+        val currentMediaItemIndex = host.currentMediaItemIndex
 
         // update current position only if the move will affect it
         if (currentMediaItemIndex >= min(fromIndex, toIndex) && currentMediaItemIndex <= max(fromIndex, toIndex)) {
@@ -685,7 +679,7 @@ class QueueBoard(
      * @return Whether a matching queue was found
      */
     fun selectQueueInPlayer(): Boolean {
-        val playerIds = List(player.player.mediaItemCount) { player.player.getMediaItemAt(it).mediaId }
+        val playerIds = List(host.mediaItemCount) { host.getMediaItemIdAt(it) }
         if (playerIds.isEmpty()) return false
         fun inPlayer(q: MultiQueueObject) = q.getCurrentQueueShuffled().map { it.id } == playerIds
         if (getCurrentQueue()?.let { inPlayer(it) } == true) return true
@@ -767,7 +761,7 @@ class QueueBoard(
         )
 
         if (item == null || item.queue.isEmpty()) {
-            player.player.setMediaItems(ArrayList())
+            host.setMediaItems(emptyList())
             return null
         }
 
@@ -781,44 +775,44 @@ class QueueBoard(
         Log.d(
             TAG, "Setting current queue. in bounds: ${queuePos >= 0 && queuePos < mediaItems.size}, " +
                     "queuePos: $queuePos, real queuePos: ${realQueuePos}, lastSongPos: $lastSongPos" +
-                    "ids: ${player.player.currentMetadata?.id}, ${mediaItems[queuePos].id}"
+                    "ids: ${host.currentSongId}, ${mediaItems[queuePos].id}"
         )
         // Keep the playing item when it matches the target song.
         val seamlessSupported = (queuePos < mediaItems.size)
-                && player.player.currentMetadata?.id == mediaItems[queuePos].id
+                && host.currentSongId == mediaItems[queuePos].id
         if (seamlessSupported) {
             Log.d(TAG, "Trying seamless queue switch. Is first song?: ${queuePos == 0}")
-            val playerIndex = player.player.currentMediaItemIndex
+            val playerIndex = host.currentMediaItemIndex
 
             if (queuePos == 0) {
-                val playerItemCount = player.player.mediaItemCount
+                val playerItemCount = host.mediaItemCount
                 if (playerIndex < playerItemCount - 1) {
-                    player.player.removeMediaItems(playerIndex + 1, playerItemCount)
+                    host.removeMediaItems(playerIndex + 1, playerItemCount)
                 }
                 if (playerIndex > 0) {
-                    player.player.removeMediaItems(0, playerIndex)
+                    host.removeMediaItems(0, playerIndex)
                 }
                 // add all songs except the first one since it is already present and playing
-                player.player.addMediaItems(mediaItems.drop(1).map { it.toMediaItem() })
+                host.addMediaItems(mediaItems.drop(1))
             } else {
                 // replace items up to current playing, then replace items after current
-                player.player.replaceMediaItems(
+                host.replaceMediaItems(
                     0, playerIndex,
-                    mediaItems.subList(0, queuePos).map { it.toMediaItem() })
-                player.player.replaceMediaItems(
+                    mediaItems.subList(0, queuePos))
+                host.replaceMediaItems(
                     queuePos + 1, Int.MAX_VALUE,
-                    mediaItems.subList(queuePos + 1, mediaItems.size).map { it.toMediaItem() })
+                    mediaItems.subList(queuePos + 1, mediaItems.size))
             }
         } else {
             Log.d(TAG, "Seamless is not supported. Loading songs in directly")
-            player.player.setMediaItems(mediaItems.map { it.toMediaItem() }, queuePos, lastSongPos)
+            host.setMediaItems(mediaItems, queuePos, lastSongPos)
         }
 
         bubbleUp(item)
-        if (player.player.shuffleModeEnabled != item.shuffled) {
-            player.player.shuffleModeEnabled = item.shuffled
+        if (host.shuffleModeEnabled != item.shuffled) {
+            host.shuffleModeEnabled = item.shuffled
         }
-        player.onQueueLoaded()
+        host.onQueueLoaded()
         return queuePos
     }
 
@@ -846,14 +840,14 @@ class QueueBoard(
      * ========================
      */
 
-    private fun persistQueues() = player.dataStore.get(PersistentQueueKey, true)
+    private fun persistQueues() = host.persistQueues()
 
     /**
      * Enqueues a database write to run after previously requested writes.
      */
     private fun writeToDatabase(block: MusicDatabase.() -> Unit) {
         writeCount++
-        val database = player.database
+        val database = host.database
         databaseScope.launch { database.block() }
     }
 
@@ -924,8 +918,8 @@ class QueueBoard(
             SupervisorJob() + databaseWriter + CoroutineExceptionHandler { _, e -> reportException(e) }
         )
 
-        fun shuffleInPlace(list: List<MediaMetadata>) {
-            val rng = (0..(list.size - 1)).shuffled()
+        fun shuffleInPlace(list: List<MediaMetadata>, random: Random = Random) {
+            val rng = (0..(list.size - 1)).shuffled(random)
 
             list.forEachIndexed { index, s ->
                 s.shuffleIndex = rng[index]
