@@ -69,7 +69,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -78,6 +77,7 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -112,6 +112,7 @@ import androidx.media3.common.Player.REPEAT_MODE_ALL
 import androidx.media3.common.Player.REPEAT_MODE_OFF
 import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.Player.STATE_ENDED
+import androidx.media3.common.Timeline
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
@@ -354,6 +355,8 @@ fun BoxScope.QueueContent(
      * SONG LIST
      */
     val mutableSongs = remember { mutableStateListOf<MediaMetadata>() }
+    val songUids = remember { HashMap<MediaMetadata, Any>() }
+    val removedUids = remember { HashSet<Any>() }
     var lastHandledQueueId by remember { mutableStateOf<Long?>(null) }
     val lazySongsListState = rememberLazyListState()
 
@@ -375,11 +378,16 @@ fun BoxScope.QueueContent(
     var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue())
     }
-    val filteredSongs = remember(mutableSongs, searchQuery) {
-        if (searchQuery.text.isEmpty()) mutableSongs
-        else mutableSongs.filter { song ->
-            song.title.contains(searchQuery.text, ignoreCase = true)
-                    || song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
+    val filteredSongs by remember {
+        derivedStateOf {
+            if (searchQuery.text.isEmpty()) {
+                mutableSongs.toList()
+            } else {
+                mutableSongs.filter { song ->
+                    song.title.contains(searchQuery.text, ignoreCase = true)
+                            || song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
+                }
+            }
         }
     }
     val focusRequester = remember { FocusRequester() }
@@ -436,6 +444,36 @@ fun BoxScope.QueueContent(
         }
     }
 
+    fun removeSwipedSong(song: MediaMetadata): Boolean {
+        val uid = songUids[song] ?: return false
+        if (uid in removedUids) return true
+        if (lockQueue || inSelectMode || detachedHead || dragInfo != null || reorderableState.isAnyItemDragging) {
+            return false
+        }
+
+        val player = playerConnection.player
+        val timeline = player.currentTimeline
+        if (qb.getCurrentQueue()?.getSize() != timeline.windowCount) {
+            return false
+        }
+
+        val window = Timeline.Window()
+        val index = (0 until timeline.windowCount).firstOrNull {
+            timeline.getWindow(it, window).uid == uid
+        } ?: return false
+
+        if (!qb.removeCurrentQueueSong(index)) {
+            return false
+        }
+
+        player.removeMediaItem(index)
+        removedUids.add(uid)
+        mutableSongs.remove(song)
+        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+
+        return true
+    }
+
     val lazyQueuesListState = rememberLazyListState()
     var dragInfoEx by remember {
         mutableStateOf<Pair<Int, Int>?>(null)
@@ -475,7 +513,8 @@ fun BoxScope.QueueContent(
     }
 
     LaunchedEffect(queueWindows, detachedQueue) {
-        if (isSearching) return@LaunchedEffect
+        songUids.clear()
+        removedUids.clear()
         if (detachedQueue != null) {
             mutableSongs.apply {
                 clear()
@@ -491,7 +530,9 @@ fun BoxScope.QueueContent(
             return@LaunchedEffect
         }
 
-        val newSongs = queueWindows.mapIndexedNotNull { index, w -> w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble()) }
+        val newSongs = queueWindows.mapIndexedNotNull { index, w ->
+            w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble())?.also { songUids[it] = w.uid }
+        }
 
         // Appending can refresh the existing entries first. Preserve selection and scroll
         // while the same queue keeps the same song IDs at the existing indices.
@@ -778,31 +819,6 @@ fun BoxScope.QueueContent(
                         val dismissState = rememberSwipeToDismissBoxState(
                             positionalThreshold = { totalDistance ->
                                 totalDistance
-                            },
-                            confirmValueChange = { dismissValue ->
-                                when (dismissValue) {
-                                    SwipeToDismissBoxValue.StartToEnd -> {
-                                        if (qb.removeCurrentQueueSong(index)) {
-                                            playerConnection.player.removeMediaItem(index)
-                                            mutableSongs.removeAt(index)
-                                        }
-                                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                                        return@rememberSwipeToDismissBoxState true
-                                    }
-
-                                    SwipeToDismissBoxValue.EndToStart -> {
-                                        if (qb.removeCurrentQueueSong(index)) {
-                                            playerConnection.player.removeMediaItem(index)
-                                            mutableSongs.removeAt(index)
-                                        }
-                                        haptic.performHapticFeedback(HapticFeedbackType.Confirm)
-                                        return@rememberSwipeToDismissBoxState true
-                                    }
-
-                                    SwipeToDismissBoxValue.Settled -> {
-                                        return@rememberSwipeToDismissBoxState false
-                                    }
-                                }
                             }
                         )
 
@@ -899,6 +915,11 @@ fun BoxScope.QueueContent(
                             SwipeToDismissBox(
                                 state = dismissState,
                                 backgroundContent = {},
+                                onDismiss = {
+                                    if (!removeSwipedSong(window)) {
+                                        coroutineScope.launch { dismissState.reset() }
+                                    }
+                                },
                                 content = { content() }
                             )
                         } else {
