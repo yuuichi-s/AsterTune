@@ -419,19 +419,54 @@ fun BoxScope.QueueContent(
     var dragInfo by remember {
         mutableStateOf<Pair<Int, Int>?>(null)
     }
+    val dragStartSongs = remember { mutableListOf<MediaMetadata>() }
     val reorderableState = rememberReorderableLazyListState(
         lazyListState = lazySongsListState,
         scrollThresholdPadding = WindowInsets.systemBars.add(
             WindowInsets(top = ListItemHeight, bottom = ListItemHeight)
         ).asPaddingValues()
     ) { from, to ->
-        val currentDragInfo = dragInfo
-        dragInfo = if (currentDragInfo == null) {
-            from.index to to.index
-        } else {
-            currentDragInfo.first to to.index
+        if (!isSearching) {
+            val currentDragInfo = dragInfo
+            dragInfo = if (currentDragInfo == null) {
+                from.index to to.index
+            } else {
+                currentDragInfo.first to to.index
+            }
+            mutableSongs.move(from.index, to.index)
+            return@rememberReorderableLazyListState
         }
-        mutableSongs.move(from.index, to.index)
+
+        val song = filteredSongs.getOrNull(from.index) ?: return@rememberReorderableLazyListState
+
+        if (dragInfo == null) {
+            dragStartSongs.clear()
+            dragStartSongs.addAll(mutableSongs)
+        }
+
+        val startIndex = dragStartSongs.indexOf(song)
+        if (startIndex < 0) {
+            return@rememberReorderableLazyListState
+        }
+
+        val others = dragStartSongs.filter { it != song }
+        val shownOthers = filteredSongs.filter { it != song }
+        val shownSet = shownOthers.toHashSet()
+        val startRow = dragStartSongs.subList(0, startIndex).count { it in shownSet }
+        val newIndex = when {
+            to.index == startRow -> startIndex
+            to.index > startRow -> shownOthers.getOrNull(to.index - 1)?.let {
+                others.indexOf(it).takeIf { i -> i >= 0 }?.plus(1)
+            }
+            else -> shownOthers.getOrNull(to.index)?.let(others::indexOf)
+        }
+
+        if (newIndex == null || newIndex < 0) {
+            return@rememberReorderableLazyListState
+        }
+
+        mutableSongs.move(mutableSongs.indexOf(song), newIndex)
+        dragInfo = startIndex to newIndex
     }
     LaunchedEffect(reorderableState.isAnyItemDragging) {
         if (!reorderableState.isAnyItemDragging) {
