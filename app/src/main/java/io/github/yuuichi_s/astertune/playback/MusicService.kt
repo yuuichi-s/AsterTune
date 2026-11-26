@@ -1131,6 +1131,60 @@ class MusicService : MediaLibraryService(),
         return true
     }
 
+    /**
+     * Moves a song of the current queue and the player's media item together.
+     * Main thread only.
+     *
+     * @param fromIndex Song index in playback order
+     * @param toIndex Destination index in playback order
+     */
+    fun moveCurrentQueueSong(fromIndex: Int, toIndex: Int) {
+        queueBoard.value.moveSong(fromIndex, toIndex)
+        player.moveMediaItem(fromIndex, toIndex)
+    }
+
+    enum class CurrentQueueSongRemoval {
+        /** Nothing was removed. */
+        NOT_REMOVED,
+
+        /** The song was removed from the current queue and the player. */
+        REMOVED,
+
+        /** The song was the last one, so its queue was removed and another queue became current. */
+        QUEUE_REMOVED,
+
+        /** The song was the last one, so its queue was removed and the player was closed. */
+        PLAYER_CLOSED,
+    }
+
+    /**
+     * Removes a song of the current queue and the player's media item together. Does nothing
+     * when the current queue and the player hold different numbers of songs.
+     * Removing the last song removes the queue and is handled as in [onCurrentQueueRemoved].
+     * Main thread only.
+     *
+     * @param index Song index in playback order
+     */
+    fun removeCurrentQueueSong(index: Int): CurrentQueueSongRemoval {
+        val board = queueBoard.value
+        if (board.getCurrentQueue()?.getSize() != player.currentTimeline.windowCount) {
+            return CurrentQueueSongRemoval.NOT_REMOVED
+        }
+        val queueId = board.getCurrentQueue()?.id
+        if (!board.removeCurrentQueueSong(index)) {
+            return CurrentQueueSongRemoval.NOT_REMOVED
+        }
+        if (board.masterQueues.none { it.id == queueId }) {
+            return if (onCurrentQueueRemoved()) {
+                CurrentQueueSongRemoval.PLAYER_CLOSED
+            } else {
+                CurrentQueueSongRemoval.QUEUE_REMOVED
+            }
+        }
+        player.removeMediaItem(index)
+        return CurrentQueueSongRemoval.REMOVED
+    }
+
     // Main thread only.
     private fun setQueueDismissed(dismissed: Boolean) {
         queueDismissed = dismissed
