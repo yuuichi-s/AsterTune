@@ -213,6 +213,13 @@ fun BottomSheetPlayer(
         }
     }
 
+    // The service also closes the player on its own, for example after a scan.
+    LaunchedEffect(Unit) {
+        playerConnection.service.playerClosed.collect {
+            if (!state.isDismissed) state.dismiss()
+        }
+    }
+
 
     BottomSheet(
         state = state,

@@ -158,6 +158,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -913,6 +914,8 @@ class MusicService : MediaLibraryService(),
      * Reloads the queue list up to the configured limit.
      * Uses stored queues when persistence is enabled, otherwise in-memory queues.
      * Updates the player when songs have been removed from its active queue.
+     * A current queue that lost all its songs is handled as in [onCurrentQueueRemoved].
+     * An empty player stays empty.
      * A dismissed player stays hidden unless its playlist matches an open queue.
      */
     suspend fun initQueue() {
@@ -940,7 +943,7 @@ class MusicService : MediaLibraryService(),
 
             // Read the queues only after pending edits have reached the database.
             queueBoard.value.flushDatabaseWrites()
-            val (readQueues, repairedIds) = database.readQueue(maxQueues)
+            val (readQueues, repairedIds, currentQueueId, firstQueueIndex) = database.readQueue(maxQueues)
             val storedQueues = readQueues.toMutableList()
 
             // Checking and replacing run together on the main thread, where the queues are edited.
@@ -956,27 +959,36 @@ class MusicService : MediaLibraryService(),
                     QueueBoard.writeCount != writeCount -> false
                     else -> {
                         val playerIds = List(player.mediaItemCount) { player.getMediaItemAt(it).mediaId }
-                        val playerQueueId = queueBoard.value.getCurrentQueue()
-                            ?.takeIf { q -> !queueDismissed && q.getCurrentQueueShuffled().map { it.id } == playerIds }
+                        val previousQueue = queueBoard.value.getCurrentQueue()
+                            ?.takeIf { qbInit.value && !queueDismissed }
+                        val playerQueueId = previousQueue
+                            ?.takeIf { q -> q.getCurrentQueueShuffled().map { it.id } == playerIds }
                             ?.id
                         // Keep open queues after stored queues outside the limit.
                         replaceQueueBoard(
                             storedQueues,
                             maxQueues,
                             storedQueuesLoaded = true,
-                            minFirstQueueIndex = storedQueues.firstOrNull()?.index ?: 0,
+                            minFirstQueueIndex = firstQueueIndex,
+                            currentQueueId = currentQueueId,
                         )
                         // Replace the in-memory queues before saving repaired indices, so
                         // later position updates use the same song order.
                         queueBoard.value.saveQueueSongs(repairedIds)
-                        // Refresh the player if reloading removed songs from its active queue.
-                        if (playerQueueId != null) {
-                            val current = queueBoard.value.getCurrentQueue()
-                            if (queueBoard.value.masterQueues.none { it.id == playerQueueId }) {
-                                // The active queue was not reloaded.
-                                // Select another queue or clear the player.
+                        if (previousQueue != null && previousQueue.id != currentQueueId) {
+                            // The current queue lost all its songs.
+                            if (currentQueueId == null) {
+                                closePlayer()
+                                queueBoard.value.saveNoCurrentQueue()
+                            } else if (playerQueueId != null) {
                                 queueBoard.value.setCurrQueue()
-                            } else if (current != null &&
+                            } else {
+                                queueBoard.value.saveCurrentQueueId()
+                            }
+                        } else if (playerQueueId != null) {
+                            // Refresh the player if reloading removed songs from its active queue.
+                            val current = queueBoard.value.getCurrentQueue()
+                            if (current != null &&
                                 current.id == playerQueueId &&
                                 current.getCurrentQueueShuffled().map { it.id } != playerIds
                             ) {
@@ -1002,6 +1014,7 @@ class MusicService : MediaLibraryService(),
         maxQueues,
         queueBoard.value.storedQueuesLoaded,
         queueBoard.value.firstQueueIndex,
+        queueBoard.value.masterQueues.getOrNull(queueBoard.value.getMasterIndex())?.id,
     )
 
     // Main thread only.
@@ -1010,9 +1023,16 @@ class MusicService : MediaLibraryService(),
         maxQueues: Int,
         storedQueuesLoaded: Boolean,
         minFirstQueueIndex: Int = 0,
+        currentQueueId: Long? = null,
     ) {
         queueBoard.value = QueueBoard(
-            queueBoardHost, queueBoard.value.masterQueues, queues, maxQueues, minFirstQueueIndex, storedQueuesLoaded
+            queueBoardHost,
+            queueBoard.value.masterQueues,
+            queues,
+            maxQueues,
+            minFirstQueueIndex,
+            storedQueuesLoaded,
+            currentQueueId = currentQueueId,
         )
         val playerHoldsOpenQueue = queueDismissed && queueBoard.value.selectQueueInPlayer()
         recordCurrentSongPosition()
@@ -1042,6 +1062,37 @@ class MusicService : MediaLibraryService(),
     fun dismissQueue() {
         deInitQueue()
         setQueueDismissed(true)
+    }
+
+    /** Emits when [closePlayer] closes the player. */
+    val playerClosed = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+
+    /**
+     * Closes the player and saves that it is closed.
+     * Main thread only.
+     */
+    fun closePlayer() {
+        // Save the queues while the player still holds the song and its position.
+        dismissQueue()
+        player.clearMediaItems()
+        playerClosed.tryEmit(Unit)
+    }
+
+    /**
+     * Call after the current queue has been removed. Loads the queue that became current,
+     * or closes the player if there is none.
+     * Main thread only.
+     *
+     * @return whether the player was closed
+     */
+    fun onCurrentQueueRemoved(): Boolean {
+        val board = queueBoard.value
+        if (board.getMasterIndex() in board.masterQueues.indices) {
+            board.setCurrQueue()
+            return false
+        }
+        closePlayer()
+        return true
     }
 
     // Main thread only.

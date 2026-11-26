@@ -502,14 +502,22 @@ fun BoxScope.QueueContent(
         }
 
         val index = playerIndexOf(song) ?: return false
+        val queueId = qb.getCurrentQueue()?.id
 
         if (!qb.removeCurrentQueueSong(index)) {
             return false
         }
 
-        player.removeMediaItem(index)
-        removedUids.add(uid)
-        mutableSongs.remove(song)
+        if (qb.masterQueues.none { it.id == queueId }) {
+            // Removing the last song removed the queue.
+            if (playerConnection.service.onCurrentQueueRemoved()) {
+                onTerminate()
+            }
+        } else {
+            player.removeMediaItem(index)
+            removedUids.add(uid)
+            mutableSongs.remove(song)
+        }
         haptic.performHapticFeedback(HapticFeedbackType.Confirm)
 
         return true
@@ -744,13 +752,11 @@ fun BoxScope.QueueContent(
                                         ResizableIconButton(
                                             icon = Icons.Rounded.Close,
                                             onClick = {
-                                                val remainingQueues =
-                                                    qb.deleteQueue(mq)
-                                                if (playingQueue == index) {
-                                                    qb.setCurrQueue()
-                                                }
+                                                val remainingQueues = qb.deleteQueue(mq)
+                                                val closed = (playingQueue == index || remainingQueues < 1) &&
+                                                    playerConnection.service.onCurrentQueueRemoved()
                                                 exitDetachHead()
-                                                if (remainingQueues < 1) {
+                                                if (closed) {
                                                     onTerminate.invoke()
                                                 }
                                             },

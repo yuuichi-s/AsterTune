@@ -426,7 +426,7 @@ class QueueBoardQueueSwitchTest {
     private fun readBack(): QueueBoard {
         val queues = runBlocking {
             board.flushDatabaseWrites()
-            database.readQueue().first
+            database.readQueue().queues
         }
         return QueueBoard(
             FakeQueueBoardHost(database, persistQueues = false),

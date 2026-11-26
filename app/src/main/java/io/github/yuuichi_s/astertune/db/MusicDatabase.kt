@@ -22,6 +22,7 @@ import io.github.yuuichi_s.astertune.db.MusicDatabase.Companion.MUSIC_DATABASE_V
 import io.github.yuuichi_s.astertune.db.entities.AlbumArtistMap
 import io.github.yuuichi_s.astertune.db.entities.AlbumEntity
 import io.github.yuuichi_s.astertune.db.entities.ArtistEntity
+import io.github.yuuichi_s.astertune.db.entities.CurrentQueueEntity
 import io.github.yuuichi_s.astertune.db.entities.Event
 import io.github.yuuichi_s.astertune.db.entities.FormatEntity
 import io.github.yuuichi_s.astertune.db.entities.GenreEntity
@@ -82,7 +83,7 @@ class MusicDatabase(
     fun close() = delegate.close()
 
     companion object {
-        const val MUSIC_DATABASE_VERSION = 21
+        const val MUSIC_DATABASE_VERSION = 22
     }
 }
 
@@ -106,7 +107,8 @@ class MusicDatabase(
         PlayCountEntity::class,
         Event::class,
         RelatedSongMap::class,
-        RecentActivityEntity::class
+        RecentActivityEntity::class,
+        CurrentQueueEntity::class,
     ],
     views = [
         SortedSongArtistMap::class,
@@ -132,6 +134,7 @@ class MusicDatabase(
         AutoMigration(from = 18, to = 19), // Recent activity
         AutoMigration(from = 19, to = 20, spec = Migration19To20::class), // Db optimization, remove totalplaytime, local media fields
         AutoMigration(from = 20, to = 21), // Lyrics provider column
+        AutoMigration(from = 21, to = 22), // Current queue
     ]
 )
 @TypeConverters(Converters::class)
