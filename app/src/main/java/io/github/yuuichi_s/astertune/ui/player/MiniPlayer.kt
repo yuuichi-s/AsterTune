@@ -68,6 +68,7 @@ import androidx.compose.ui.unit.sp
 import androidx.media3.common.C
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.Player.STATE_IDLE
 import androidx.media3.common.Player.STATE_READY
 import coil3.compose.AsyncImage
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
@@ -78,6 +79,7 @@ import io.github.yuuichi_s.astertune.constants.ListThumbnailSize
 import io.github.yuuichi_s.astertune.constants.MiniPlayerHeight
 import io.github.yuuichi_s.astertune.constants.SwipeToSkipKey
 import io.github.yuuichi_s.astertune.constants.ThumbnailCornerRadius
+import io.github.yuuichi_s.astertune.extensions.displayDuration
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.utils.rememberPreference
@@ -155,16 +157,17 @@ fun MiniPlayer(
         mutableLongStateOf(playerConnection.player.currentPosition)
     }
     var duration by rememberSaveable(playbackState) {
-        mutableLongStateOf(playerConnection.player.duration)
+        mutableLongStateOf(playerConnection.player.displayDuration)
     }
 
 
+    // An idle player is polled as well, since moving to another song does not change its state.
     LaunchedEffect(playbackState) {
-        if (playbackState == STATE_READY) {
+        if (playbackState == STATE_READY || playbackState == STATE_IDLE) {
             while (isActive) {
                 delay(500)
                 position = playerConnection.player.currentPosition
-                duration = playerConnection.player.duration
+                duration = playerConnection.player.displayDuration
             }
         }
     }

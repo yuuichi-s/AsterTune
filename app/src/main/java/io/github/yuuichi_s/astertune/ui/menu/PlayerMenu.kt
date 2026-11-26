@@ -92,6 +92,7 @@ import io.github.yuuichi_s.astertune.constants.SleepTimerDefaultMinutesKey
 import io.github.yuuichi_s.astertune.constants.SleepTimerDefaults
 import io.github.yuuichi_s.astertune.constants.SleepTimerFadeDurationKey
 import io.github.yuuichi_s.astertune.constants.SleepTimerFadeKey
+import io.github.yuuichi_s.astertune.extensions.displayDuration
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.playback.queues.YouTubeQueue
 import io.github.yuuichi_s.astertune.ui.component.BigSeekBar
@@ -179,7 +180,7 @@ fun PlayerMenu(
         if (sleepTimerEnabled) {
             while (isActive) {
                 val newSleepTimerTimeLeft = if (playerConnection.service.sleepTimer.pauseWhenSongEnd) {
-                    playerConnection.player.duration - playerConnection.player.currentPosition
+                    playerConnection.player.displayDuration - playerConnection.player.currentPosition
                 } else {
                     playerConnection.service.sleepTimer.triggerTime - System.currentTimeMillis()
                 }

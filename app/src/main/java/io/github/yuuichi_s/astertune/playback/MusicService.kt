@@ -1027,7 +1027,7 @@ class MusicService : MediaLibraryService(),
 
     /**
      * Loads the current queue into an empty player without preparing it, so that the selected
-     * song is shown stopped at its saved position. A dismissed player stays empty.
+     * song is shown stopped at its beginning. A dismissed player stays empty.
      * Main thread only.
      */
     private fun loadCurrentQueueIntoEmptyPlayer() {
@@ -1038,7 +1038,7 @@ class MusicService : MediaLibraryService(),
         // Player listeners run during the call, unless it is made from inside a listener.
         loadingIntoEmptyPlayer = true
         try {
-            queueBoard.value.setCurrQueue(queue)
+            queueBoard.value.setCurrQueue(queue, shouldResume = false)
         } finally {
             loadingIntoEmptyPlayer = false
         }

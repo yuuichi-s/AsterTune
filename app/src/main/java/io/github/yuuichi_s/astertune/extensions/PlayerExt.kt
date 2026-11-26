@@ -92,6 +92,19 @@ fun Player.getCurrentQueueIndex(): Int {
 val Player.currentMetadata: MediaMetadata?
     get() = currentMediaItem?.metadata
 
+/**
+ * Duration of the current item in milliseconds for display, or [C.TIME_UNSET] when unknown.
+ *
+ * An idle player that has not been prepared reports no duration, so the stored duration of the
+ * current song is used instead.
+ */
+val Player.displayDuration: Long
+    get() {
+        val playerDuration = duration
+        if (playerDuration != C.TIME_UNSET || playbackState != Player.STATE_IDLE) return playerDuration
+        return currentMetadata?.duration?.takeIf { it > 0 }?.times(1000L) ?: C.TIME_UNSET
+    }
+
 val Player.mediaItems: List<MediaItem>
     get() = object : AbstractList<MediaItem>() {
         override val size: Int
