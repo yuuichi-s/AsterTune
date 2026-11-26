@@ -55,6 +55,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -154,6 +155,7 @@ import io.github.yuuichi_s.astertune.extensions.supportsWideScreen
 import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
+import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
 import io.github.yuuichi_s.astertune.playback.QueueBoard
@@ -301,19 +303,8 @@ fun PortraitPlayer(
                 verticalPadding = if (swipeToSkip) QueuePeekHeight / 2 else 0.dp,
             )
             val showLyricsOnClick by rememberPreference(ShowLyricsOnClickKey, defaultValue = DEFAULT_SHOW_LYRICS_ON_CLICK)
-            val previousMediaMetadata = if (swipeToSkip && playerConnection.player.hasPreviousMediaItem()) {
-                val previousIndex = playerConnection.player.previousMediaItemIndex
-                playerConnection.player.getMediaItemAt(previousIndex).metadata
-            } else null
-
-
-            val nextMediaMetadata = if (swipeToSkip && playerConnection.player.hasNextMediaItem()) {
-                val nextIndex = playerConnection.player.nextMediaItemIndex
-                playerConnection.player.getMediaItemAt(nextIndex).metadata
-            } else null
-
-            val mediaItems = listOfNotNull(previousMediaMetadata, mediaMetadata, nextMediaMetadata)
-            val currentMediaIndex = mediaItems.indexOf(mediaMetadata)
+            val mediaItems = playerThumbnails(playerConnection.player, mediaMetadata, swipeToSkip)
+            val currentMediaIndex = mediaItems.indexOfFirst { it.isCurrent }
 
 
             var sliderPosition by remember {
@@ -339,10 +330,9 @@ fun PortraitPlayer(
                 LaunchedEffect(itemScrollOffset) {
                     if (!thumbnailLazyGridState.isScrollInProgress || itemScrollOffset != 0) return@LaunchedEffect
 
-                    if (currentItem > currentMediaIndex)
-                        playerConnection.player.seekToNext()
-                    else if (currentItem < currentMediaIndex)
-                        playerConnection.player.seekToPreviousMediaItem()
+                    seekToSwipedThumbnail(
+                        playerConnection.player, thumbnailLazyGridState, currentItem, currentMediaIndex
+                    )
                 }
 
                 LaunchedEffect(mediaMetadata, canSkipPrevious, canSkipNext) {
@@ -378,7 +368,7 @@ fun PortraitPlayer(
                 ) {
                     items(
                         items = mediaItems,
-                        key = { it.id }
+                        key = { it.key }
                     ) {
                         Thumbnail(
                             modifier = Modifier
@@ -386,7 +376,7 @@ fun PortraitPlayer(
                                 .animateContentSize(),
                             sliderPositionProvider = { sliderPosition },
                             showLyricsOnClick = showLyricsOnClick,
-                            customMediaMetadata = it
+                            customMediaMetadata = it.metadata
                         )
                     }
                 }
@@ -441,18 +431,8 @@ fun LandscapePlayer(
 
     val swipeToSkip by rememberPreference(SwipeToSkipKey, defaultValue = DEFAULT_SWIPE_TO_SKIP)
     val showLyricsOnClick by rememberPreference(ShowLyricsOnClickKey, defaultValue = DEFAULT_SHOW_LYRICS_ON_CLICK)
-    val previousMediaMetadata = if (swipeToSkip && playerConnection.player.hasPreviousMediaItem()) {
-        val previousIndex = playerConnection.player.previousMediaItemIndex
-        playerConnection.player.getMediaItemAt(previousIndex).metadata
-    } else null
-
-    val nextMediaMetadata = if (swipeToSkip && playerConnection.player.hasNextMediaItem()) {
-        val nextIndex = playerConnection.player.nextMediaItemIndex
-        playerConnection.player.getMediaItemAt(nextIndex).metadata
-    } else null
-
-    val mediaItems = listOfNotNull(previousMediaMetadata, mediaMetadata, nextMediaMetadata)
-    val currentMediaIndex = mediaItems.indexOf(mediaMetadata)
+    val mediaItems = playerThumbnails(playerConnection.player, mediaMetadata, swipeToSkip)
+    val currentMediaIndex = mediaItems.indexOfFirst { it.isCurrent }
 
 
     val showLyrics by rememberPreference(ShowLyricsKey, defaultValue = false)
@@ -516,10 +496,9 @@ fun LandscapePlayer(
                 LaunchedEffect(itemScrollOffset) {
                     if (!thumbnailLazyGridState.isScrollInProgress || itemScrollOffset != 0) return@LaunchedEffect
 
-                    if (currentItem > currentMediaIndex)
-                        playerConnection.player.seekToNext()
-                    else if (currentItem < currentMediaIndex)
-                        playerConnection.player.seekToPreviousMediaItem()
+                    seekToSwipedThumbnail(
+                        playerConnection.player, thumbnailLazyGridState, currentItem, currentMediaIndex
+                    )
                 }
 
                 LaunchedEffect(mediaMetadata, canSkipPrevious, canSkipNext) {
@@ -555,7 +534,7 @@ fun LandscapePlayer(
                 ) {
                     items(
                         items = mediaItems,
-                        key = { it.id }
+                        key = { it.key }
                     ) {
                         Thumbnail(
                             sliderPositionProvider = { sliderPosition },
@@ -563,7 +542,7 @@ fun LandscapePlayer(
                                 .width(horizontalLazyGridItemWidth)
                                 .animateContentSize(),
                             showLyricsOnClick = showLyricsOnClick,
-                            customMediaMetadata = it,
+                            customMediaMetadata = it.metadata,
                             onArtworkPositioned = queueHintAnchor::onArtworkPositioned
                         )
                     }
@@ -735,6 +714,73 @@ private fun MultiQueueObject.playbackPosition(): Pair<Int, Int>? {
     val song = queue.getOrNull(queuePos) ?: return null
     val index = if (shuffled) song.shuffleIndex else queuePos
     return if (index in queue.indices) index to queue.size else null
+}
+
+/** A jacket in the swipe-to-skip row of the player screen, with its unique key in the row. */
+private class PlayerThumbnail(val metadata: MediaMetadata, val key: String, val isCurrent: Boolean)
+
+/**
+ * Returns the jackets of the previous, current and next songs for the swipe-to-skip row.
+ *
+ * Keys are song IDs, except for songs that appear more than once in the queue, which are keyed by
+ * song ID and position so that a jacket keeps its key when the current song changes. A neighbor
+ * at the current position, as in a one-song queue repeating all, is keyed by its side.
+ */
+private fun playerThumbnails(
+    player: androidx.media3.common.Player,
+    currentMetadata: MediaMetadata?,
+    swipeToSkip: Boolean,
+): List<PlayerThumbnail> {
+    val currentIndex = player.currentMediaItemIndex
+    val previousIndex =
+        if (swipeToSkip && player.hasPreviousMediaItem()) player.previousMediaItemIndex else C.INDEX_UNSET
+    val nextIndex = if (swipeToSkip && player.hasNextMediaItem()) player.nextMediaItemIndex else C.INDEX_UNSET
+    val previous = if (previousIndex != C.INDEX_UNSET) player.getMediaItemAt(previousIndex).metadata else null
+    val next = if (nextIndex != C.INDEX_UNSET) player.getMediaItemAt(nextIndex).metadata else null
+
+    val shownIds = setOfNotNull(previous?.id, currentMetadata?.id, next?.id)
+    val occurrences = mutableMapOf<String, Int>()
+    for (index in 0 until player.mediaItemCount) {
+        val id = player.getMediaItemAt(index).metadata?.id
+        if (id != null && id in shownIds) occurrences[id] = (occurrences[id] ?: 0) + 1
+    }
+
+    fun keyOf(metadata: MediaMetadata, index: Int, side: String?): String = when {
+        side != null && index == currentIndex -> "${metadata.id}#$side"
+        (occurrences[metadata.id] ?: 0) > 1 -> "${metadata.id}@$index"
+        else -> metadata.id
+    }
+
+    return listOfNotNull(
+        previous?.let { PlayerThumbnail(it, keyOf(it, previousIndex, "previous"), isCurrent = false) },
+        currentMetadata?.let { PlayerThumbnail(it, keyOf(it, currentIndex, null), isCurrent = true) },
+        next?.let { PlayerThumbnail(it, keyOf(it, nextIndex, "next"), isCurrent = false) },
+    )
+}
+
+/**
+ * Seeks to the song whose jacket was swiped to at [swipedIndex] of the swipe-to-skip row.
+ * In a one-song queue repeating all, the seek restarts the same song and the row is not rebuilt,
+ * so the row is scrolled back to the current jacket.
+ */
+private suspend fun seekToSwipedThumbnail(
+    player: androidx.media3.common.Player,
+    state: LazyGridState,
+    swipedIndex: Int,
+    currentIndex: Int,
+) {
+    val mediaItemIndex = player.currentMediaItemIndex
+    if (swipedIndex > currentIndex) {
+        player.seekToNext()
+    } else if (swipedIndex < currentIndex) {
+        player.seekToPreviousMediaItem()
+    } else {
+        return
+    }
+
+    if (player.currentMediaItemIndex == mediaItemIndex) {
+        state.scrollToItem(currentIndex)
+    }
 }
 
 /**
