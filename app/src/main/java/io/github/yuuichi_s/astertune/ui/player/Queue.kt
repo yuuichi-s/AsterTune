@@ -1033,6 +1033,28 @@ fun BoxScope.QueueContent(
         }
     }
 
+    // selection header shown under the search bar, acting on the search results only
+    val searchSelectHeader: @Composable () -> Unit = {
+        if (inSelectMode) {
+            Row {
+                SelectHeader(
+                    navController = navController,
+                    selectedItems = selectedItems.mapNotNull { uidHash ->
+                        filteredSongs.find { it.hashCode() == uidHash }
+                    },
+                    totalItemCount = filteredSongs.size,
+                    onSelectAll = {
+                        selectedItems.clear()
+                        selectedItems.addAll(filteredSongs.map { it.hashCode() })
+                    },
+                    onDeselectAll = { selectedItems.clear() },
+                    menuState = menuState,
+                    onDismiss = onExitSelectionMode
+                )
+            }
+        }
+    }
+
 // queue info + player controls
     val bottomNav: @Composable ColumnScope.() -> Unit = {
         if (PLAYER_DEBUG) Log.v("QueueContent", "QC-nav")
@@ -1303,24 +1325,7 @@ fun BoxScope.QueueContent(
                     if (isSearching) {
                         Spacer(Modifier.windowInsetsPadding(InsetsSafeT))
                         searchBar()
-                        if (inSelectMode) {
-                            Row {
-                                SelectHeader(
-                                    navController = navController,
-                                    selectedItems = selectedItems.mapNotNull { uidHash ->
-                                        mutableSongs.find { it.hashCode() == uidHash }
-                                    },
-                                    totalItemCount = mutableSongs.size,
-                                    onSelectAll = {
-                                        selectedItems.clear()
-                                        selectedItems.addAll(mutableSongs.map { it.hashCode() })
-                                    },
-                                    onDeselectAll = { selectedItems.clear() },
-                                    menuState = menuState,
-                                    onDismiss = onExitSelectionMode
-                                )
-                            }
-                        }
+                        searchSelectHeader()
                     } else {
                         queueHeader(Modifier.windowInsetsPadding(insetsSTE))
                         queueList(insetsE.asPaddingValues())
@@ -1354,24 +1359,7 @@ fun BoxScope.QueueContent(
                     if (PLAYER_DEBUG) Log.v("QueueContent", "QC-2.4a")
                     Spacer(Modifier.windowInsetsPadding(InsetsSafeT))
                     searchBar()
-                    if (inSelectMode) {
-                        Row {
-                            SelectHeader(
-                                navController = navController,
-                                selectedItems = selectedItems.mapNotNull { uidHash ->
-                                    filteredSongs.find { it.hashCode() == uidHash }
-                                },
-                                totalItemCount = filteredSongs.size,
-                                onSelectAll = {
-                                    selectedItems.clear()
-                                    selectedItems.addAll(filteredSongs.map { it.hashCode() })
-                                },
-                                onDeselectAll = { selectedItems.clear() },
-                                menuState = menuState,
-                                onDismiss = onExitSelectionMode
-                            )
-                        }
-                    }
+                    searchSelectHeader()
                 }
 
                 AnimatedVisibility(mqExpand && !isSearching) {
