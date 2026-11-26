@@ -675,7 +675,8 @@ class MusicService : MediaLibraryService(),
             // Runs on the calling thread: when that is the main thread, initQueue() replaces the
             // board in place instead of dispatching to the blocked main looper.
             runBlocking {
-                initQueue()
+                // The queue to play replaces the player's songs.
+                initQueue(loadIntoPlayer = false)
             }
         }
 
@@ -897,6 +898,15 @@ class MusicService : MediaLibraryService(),
     // Main thread only.
     private var queueDismissed = false
 
+    // Main thread only. True while loadCurrentQueueIntoEmptyPlayer() loads the queue.
+    private var loadingIntoEmptyPlayer = false
+
+    // Main thread only. ID of the queue loaded by loadCurrentQueueIntoEmptyPlayer(), kept until
+    // playback starts. While set, song transitions from that load or from seeking leave the auto
+    // load check to the start of playback, because songs fetched for an unprepared player are
+    // discarded.
+    private var autoLoadWaitQueueId: Long? = null
+
     // Latest playQueue job
     @Volatile
     private var queueLoadJob: Job? = null
@@ -915,16 +925,21 @@ class MusicService : MediaLibraryService(),
      * Uses stored queues when persistence is enabled, otherwise in-memory queues.
      * Updates the player when songs have been removed from its active queue.
      * A current queue that lost all its songs is handled as in [onCurrentQueueRemoved].
-     * An empty player stays empty.
      * A dismissed player stays hidden unless its playlist matches an open queue.
+     *
+     * @param loadIntoPlayer Whether to load the current queue into an empty player that is not
+     *     dismissed, without starting playback. Otherwise an empty player stays empty.
      */
-    suspend fun initQueue() {
+    suspend fun initQueue(loadIntoPlayer: Boolean = true) {
         if (SERVICE_DEBUG) Log.i(TAG, "+initQueue()")
         val generation = withContext(Dispatchers.Main.immediate) { ++queueInitGeneration }
         val maxQueues = dataStore.get(MaxQueuesKey, 19)
         if (!dataStore.get(PersistentQueueKey, true)) {
             withContext(Dispatchers.Main.immediate) {
-                if (generation == queueInitGeneration) carryOverQueues(maxQueues)
+                if (generation == queueInitGeneration) {
+                    carryOverQueues(maxQueues)
+                    if (loadIntoPlayer) loadCurrentQueueIntoEmptyPlayer()
+                }
             }
             if (SERVICE_DEBUG) Log.i(TAG, "-initQueue()")
             return
@@ -953,6 +968,7 @@ class MusicService : MediaLibraryService(),
                     // Edits made after persistence was turned off are not in the database.
                     !dataStore.get(PersistentQueueKey, true) -> {
                         carryOverQueues(maxQueues)
+                        if (loadIntoPlayer) loadCurrentQueueIntoEmptyPlayer()
                         true
                     }
                     // Queues edited during the read are read again.
@@ -995,6 +1011,7 @@ class MusicService : MediaLibraryService(),
                                 queueBoard.value.setCurrQueue(current)
                             }
                         }
+                        if (loadIntoPlayer) loadCurrentQueueIntoEmptyPlayer()
                         true
                     }
                 }
@@ -1006,6 +1023,25 @@ class MusicService : MediaLibraryService(),
         }
         // Queues kept changing during every read; keep the queues in memory.
         if (SERVICE_DEBUG) Log.w(TAG, "-initQueue(): queues changed during every read, keeping current queues")
+    }
+
+    /**
+     * Loads the current queue into an empty player without preparing it, so that the selected
+     * song is shown stopped at its saved position. A dismissed player stays empty.
+     * Main thread only.
+     */
+    private fun loadCurrentQueueIntoEmptyPlayer() {
+        if (!qbInit.value || queueDismissed || player.mediaItemCount > 0) return
+        val queue = queueBoard.value.getCurrentQueue()
+        if (queue == null || queue.queue.isEmpty()) return
+        autoLoadWaitQueueId = queue.id
+        // Player listeners run during the call, unless it is made from inside a listener.
+        loadingIntoEmptyPlayer = true
+        try {
+            queueBoard.value.setCurrQueue(queue)
+        } finally {
+            loadingIntoEmptyPlayer = false
+        }
     }
 
     // Main thread only.
@@ -1117,6 +1153,7 @@ class MusicService : MediaLibraryService(),
         queueLoadJob = null
         appendLaterJob?.cancel()
         appendLaterJob = null
+        autoLoadWaitQueueId = null
         recordCurrentSongPosition()
         // An uninitialized board may not contain the stored queues, so do not save it.
         if (qbInit.value && dataStore.get(PersistentQueueKey, true)) {
@@ -1593,6 +1630,12 @@ class MusicService : MediaLibraryService(),
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         if (!isPlaying) {
             recordCurrentSongPosition()
+        } else {
+            val waitQueueId = autoLoadWaitQueueId
+            autoLoadWaitQueueId = null
+            if (waitQueueId != null && queueBoard.value.getCurrentQueue()?.id == waitQueueId) {
+                autoLoadMore()
+            }
         }
         super.onIsPlayingChanged(isPlaying)
     }
@@ -1621,32 +1664,14 @@ class MusicService : MediaLibraryService(),
             player.play()
         }
 
-        // Auto load more songs
-        val q = queueBoard.value.getCurrentQueue()
-        val songCount = q?.getSize() ?: -1
-        val playlistId = q?.playlistId
-        if (dataStore.get(AutoLoadMoreKey, true) &&
-            reason != Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT &&
-            player.mediaItemCount - player.currentMediaItemIndex <= 5 &&
-            playlistId != null // aka "hasNext"
+        // Auto load more songs, unless the check waits for playback to start.
+        // Another kind of transition, such as loading another queue, ends the wait.
+        if (autoLoadWaitQueueId == null ||
+            !(loadingIntoEmptyPlayer || reason == MEDIA_ITEM_TRANSITION_REASON_SEEK)
         ) {
-            if (SERVICE_DEBUG) Log.d(TAG, "onMediaItemTransition: Triggering queue auto load more")
-            scope.launch(SilentHandler) {
-                val endpoint = playlistId // playlistId.substringBefore("\n")
-                val continuation = null // playlistId.substringAfter("\n")
-                val yq = YouTubeQueue(WatchEndpoint(endpoint, continuation))
-                val mediaItems = yq.nextPage()
-                if (SERVICE_DEBUG) Log.d(TAG, "onMediaItemTransition: Got ${mediaItems.size} songs from radio")
-                // Appending songs reloads the player, so discard results
-                // if the player was dismissed or a different queue is now current.
-                val current = queueBoard.value.getCurrentQueue()
-                if (queueDismissed || current == null || current.id != q.id) {
-                    return@launch
-                }
-                current.playlistId = mediaItems.takeLast(4).shuffled().first().id // yq.getContinuationEndpoint()
-                if (player.playbackState != STATE_IDLE && songCount > 1) { // initial radio loading is handled by playQueue()
-                    queueBoard.value.enqueueEnd(mediaItems.drop(1))
-                }
+            autoLoadWaitQueueId = null
+            if (reason != Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
+                autoLoadMore()
             }
         }
 
@@ -1671,6 +1696,36 @@ class MusicService : MediaLibraryService(),
         }
 
         updateNotification() // also updates when queue changes
+    }
+
+    /** Fetches more songs for the current queue when at most five songs remain from the current one. */
+    private fun autoLoadMore() {
+        val q = queueBoard.value.getCurrentQueue()
+        val songCount = q?.getSize() ?: -1
+        val playlistId = q?.playlistId
+        if (dataStore.get(AutoLoadMoreKey, true) &&
+            player.mediaItemCount - player.currentMediaItemIndex <= 5 &&
+            playlistId != null // aka "hasNext"
+        ) {
+            if (SERVICE_DEBUG) Log.d(TAG, "autoLoadMore: Triggering queue auto load more")
+            scope.launch(SilentHandler) {
+                val endpoint = playlistId // playlistId.substringBefore("\n")
+                val continuation = null // playlistId.substringAfter("\n")
+                val yq = YouTubeQueue(WatchEndpoint(endpoint, continuation))
+                val mediaItems = yq.nextPage()
+                if (SERVICE_DEBUG) Log.d(TAG, "autoLoadMore: Got ${mediaItems.size} songs from radio")
+                // Appending songs reloads the player, so discard results
+                // if the player was dismissed or a different queue is now current.
+                val current = queueBoard.value.getCurrentQueue()
+                if (queueDismissed || current == null || current.id != q.id) {
+                    return@launch
+                }
+                current.playlistId = mediaItems.takeLast(4).shuffled().first().id // yq.getContinuationEndpoint()
+                if (player.playbackState != STATE_IDLE && songCount > 1) { // initial radio loading is handled by playQueue()
+                    queueBoard.value.enqueueEnd(mediaItems.drop(1))
+                }
+            }
+        }
     }
 
     private fun updateLocalPlayback(mediaItem: MediaItem?, reason: Int, windowSequenceNumber: Long?) {
