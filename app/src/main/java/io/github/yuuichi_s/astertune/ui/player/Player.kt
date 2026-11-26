@@ -122,6 +122,7 @@ import androidx.media3.common.Player.REPEAT_MODE_ALL
 import androidx.media3.common.Player.REPEAT_MODE_OFF
 import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.Player.STATE_ENDED
+import androidx.media3.common.Player.STATE_IDLE
 import androidx.media3.common.Player.STATE_READY
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -149,6 +150,7 @@ import io.github.yuuichi_s.astertune.constants.ShowLyricsKey
 import io.github.yuuichi_s.astertune.constants.ShowLyricsOnClickKey
 import io.github.yuuichi_s.astertune.constants.SleepTimerShowOnPlayerKey
 import io.github.yuuichi_s.astertune.constants.SwipeToSkipKey
+import io.github.yuuichi_s.astertune.extensions.displayDuration
 import io.github.yuuichi_s.astertune.extensions.isPowerSaver
 import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.supportsWideScreen
@@ -871,7 +873,7 @@ fun ActionButtons(
         if (sleepTimerActive) {
             while (isActive) {
                 sleepTimerTimeLeft = if (playerConnection.service.sleepTimer.pauseWhenSongEnd) {
-                    playerConnection.player.duration - playerConnection.player.currentPosition
+                    playerConnection.player.displayDuration - playerConnection.player.currentPosition
                 } else {
                     playerConnection.service.sleepTimer.triggerTime - System.currentTimeMillis()
                 }
@@ -1049,19 +1051,20 @@ fun ControlsContent(
 
     val playbackState by playerConnection.playbackState.collectAsState()
     var duration by rememberSaveable(playbackState) {
-        mutableLongStateOf(playerConnection.player.duration)
+        mutableLongStateOf(playerConnection.player.displayDuration)
     }
 
     var position by remember(playbackState) {
         mutableLongStateOf(playerConnection.player.currentPosition)
     }
 
+    // An idle player is polled as well, since moving to another song does not change its state.
     LaunchedEffect(playbackState) {
-        if (playbackState == STATE_READY) {
+        if (playbackState == STATE_READY || playbackState == STATE_IDLE) {
             while (isActive) {
                 delay(500)
                 position = playerConnection.player.currentPosition
-                duration = playerConnection.player.duration
+                duration = playerConnection.player.displayDuration
             }
         }
     }
