@@ -141,6 +141,7 @@ import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
 import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
+import io.github.yuuichi_s.astertune.playback.MusicService.CurrentQueueSongRemoval
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
 import io.github.yuuichi_s.astertune.ui.component.BottomSheet
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
@@ -473,8 +474,7 @@ fun BoxScope.QueueContent(
             val (from, to) = dragInfo ?: return@LaunchedEffect
             dragInfo = null
             if (from != to) {
-                qb.moveSong(from, to)
-                playerConnection.player.moveMediaItem(from, to)
+                playerConnection.service.moveCurrentQueueSong(from, to)
             }
         }
     }
@@ -496,27 +496,15 @@ fun BoxScope.QueueContent(
             return false
         }
 
-        val player = playerConnection.player
-        if (qb.getCurrentQueue()?.getSize() != player.currentTimeline.windowCount) {
-            return false
-        }
-
         val index = playerIndexOf(song) ?: return false
-        val queueId = qb.getCurrentQueue()?.id
-
-        if (!qb.removeCurrentQueueSong(index)) {
-            return false
-        }
-
-        if (qb.masterQueues.none { it.id == queueId }) {
-            // Removing the last song removed the queue.
-            if (playerConnection.service.onCurrentQueueRemoved()) {
-                onTerminate()
+        when (playerConnection.service.removeCurrentQueueSong(index)) {
+            CurrentQueueSongRemoval.NOT_REMOVED -> return false
+            CurrentQueueSongRemoval.REMOVED -> {
+                removedUids.add(uid)
+                mutableSongs.remove(song)
             }
-        } else {
-            player.removeMediaItem(index)
-            removedUids.add(uid)
-            mutableSongs.remove(song)
+            CurrentQueueSongRemoval.QUEUE_REMOVED -> Unit
+            CurrentQueueSongRemoval.PLAYER_CLOSED -> onTerminate()
         }
         haptic.performHapticFeedback(HapticFeedbackType.Confirm)
 
