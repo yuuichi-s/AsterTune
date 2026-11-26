@@ -39,6 +39,9 @@ import kotlin.random.Random
 /**
  * Multiple queues manager. Methods will not automatically (re)load queues into the player unless
  * otherwise explicitly stated.
+ *
+ * Opens at most [maxQueues] of the given queues, keeping the current queue and the newest
+ * others. The current queue is the one with `currentQueueId`, or the last queue if none matches.
  */
 class QueueBoard(
     private val host: QueueBoardHost,
@@ -48,6 +51,7 @@ class QueueBoard(
     minFirstQueueIndex: Int = 0,
     storedQueuesLoaded: Boolean = false,
     private val random: Random = Random,
+    currentQueueId: Long? = null,
 ) {
     private val TAG = QueueBoard::class.simpleName.toString()
 
@@ -67,11 +71,19 @@ class QueueBoard(
             maxQueues = 1
         }
         val firstOpen = (queues.size - maxQueues).coerceAtLeast(0)
-        firstQueueIndex = maxOf(minFirstQueueIndex, queues.subList(0, firstOpen).maxOfOrNull { it.index + 1 } ?: 0)
-        if (!queues.isEmpty()) {
-            masterQueues.addAll(queues.subList(firstOpen, queues.size))
+        val currentIndex = queues.indexOfFirst { it.id == currentQueueId }
+        // The current queue takes the place of the oldest open queue.
+        val open = if (maxQueues > 0 && currentIndex in 0 until firstOpen) {
+            listOf(queues[currentIndex]) + queues.subList(firstOpen + 1, queues.size)
+        } else {
+            queues.subList(firstOpen, queues.size)
         }
-        masterIndex = masterQueues.size - 1
+
+        val closed = queues.filter { q -> open.none { it === q } }
+        firstQueueIndex = maxOf(minFirstQueueIndex, closed.maxOfOrNull { it.index + 1 } ?: 0)
+        masterQueues.addAll(open)
+        masterIndex = masterQueues.indexOfFirst { it.id == currentQueueId }
+            .takeIf { it >= 0 } ?: (masterQueues.size - 1)
     }
 
     /**
@@ -113,6 +125,7 @@ class QueueBoard(
 
         regenerateIndexes()
         saveAllQueues()
+        saveCurrentQueueId()
     }
 
     /**
@@ -129,7 +142,8 @@ class QueueBoard(
      *
      * Appending loads the destination queue into the player and preserves the selected song
      * unless [shuffled] is true.
-     * Creating a queue at the queue limit removes the first queue from [masterQueues].
+     * Creating a queue at the queue limit removes the oldest queue other than the current one.
+     * If the current queue is the only queue, it is removed and the new queue becomes current.
      *
      * @param title Title used to find an existing queue
      * @param mediaList Songs to add; null entries are omitted from inserted content
@@ -281,8 +295,12 @@ class QueueBoard(
         } else {
             // add entirely new queue
             // Precondition(s): radio queues never include local songs
+            var currentRemoved = false
             if (masterQueues.size >= maxQueues) {
-                deleteQueue(masterQueues.first())
+                val currentId = masterQueues.getOrNull(masterIndex)?.id
+                val oldest = masterQueues.firstOrNull { it.id != currentId } ?: masterQueues.first()
+                currentRemoved = oldest.id == currentId
+                deleteQueue(oldest)
             }
             val q = ArrayList(mediaList.filterNotNull())
             q.fastForEachIndexed { index, s ->
@@ -306,6 +324,10 @@ class QueueBoard(
             }
 
             saveQueueSongs(newQueue)
+            if (currentRemoved && masterIndex !in masterQueues.indices) {
+                masterIndex = masterQueues.indexOf(newQueue)
+                saveCurrentQueueId()
+            }
             return newQueue
         }
     }
@@ -394,7 +416,7 @@ class QueueBoard(
 
 
     /**
-     * Removes song from the queue
+     * Removes song from the queue. Removing the last song deletes the queue as [deleteQueue] does.
      *
      * @param item Queue
      * @param index Song index in playback order
@@ -414,6 +436,10 @@ class QueueBoard(
         } else {
             item.queue.removeAt(index)
             ret = true
+        }
+        if (item.queue.isEmpty()) {
+            deleteQueue(item)
+            return ret
         }
         item.getCurrentQueueShuffled().fastForEachIndexed { index, s -> s.shuffleIndex = index }
 
@@ -438,7 +464,8 @@ class QueueBoard(
     }
 
     /**
-     * Deletes a queue
+     * Deletes a queue. If it is the current queue, the queue above it becomes current, or no
+     * queue if there is none above. Leaves the player unchanged.
      *
      * @param item Queue identifying the target by ID
      * @return Number of remaining queues
@@ -450,6 +477,7 @@ class QueueBoard(
         val matchIndex = masterQueues.indexOfFirst { it.id == item.id }
         val match = masterQueues.getOrNull(matchIndex)
         if (match != null) {
+            val wasCurrent = matchIndex == masterIndex
             masterQueues.removeAt(matchIndex)
             if (masterQueues.isNotEmpty()) {
                 if (matchIndex <= masterIndex) masterIndex -= 1
@@ -457,7 +485,12 @@ class QueueBoard(
                 masterIndex = -1
             }
 
-            writeToDatabase { deleteQueue(match.id) }
+            if (wasCurrent && persistQueues()) {
+                val currentId = masterQueues.getOrNull(masterIndex)?.id
+                writeToDatabase { deleteQueueAndSaveCurrent(match.id, currentId) }
+            } else {
+                writeToDatabase { deleteQueue(match.id) }
+            }
         } else {
             Log.w(TAG, "Cannot find queue to delete: ${item.title}")
         }
@@ -891,6 +924,19 @@ class QueueBoard(
      */
     fun saveCurrentQueue() {
         getCurrentQueue()?.let { saveQueue(it) }
+    }
+
+    /** Saves which queue is current when persistence is enabled. */
+    fun saveCurrentQueueId() {
+        if (!persistQueues()) return
+        val id = masterQueues.getOrNull(masterIndex)?.id
+        writeToDatabase { saveCurrentQueue(id) }
+    }
+
+    /** Saves that there is no current queue when persistence is enabled. */
+    fun saveNoCurrentQueue() {
+        if (!persistQueues()) return
+        writeToDatabase { saveCurrentQueue(null) }
     }
 
     /**
