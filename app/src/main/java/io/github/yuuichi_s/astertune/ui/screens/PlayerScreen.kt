@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -42,8 +41,6 @@ fun PlayerScreen(
     val TAG = "PlayerScreen"
 
     val playerConnection = LocalPlayerConnection.current ?: return
-    val queueBoard by playerConnection.queueBoard.collectAsState()
-
     val playerBackground by rememberEnumPreference(
         key = PlayerBackgroundStyleKey,
         defaultValue = DEFAULT_PLAYER_BACKGROUND
@@ -75,9 +72,9 @@ fun PlayerScreen(
         )
 
         if (usesLandscapePlayer(LocalConfiguration.current, LocalTabMode.current)) {
-            LandscapePlayer(state, navController, queueBoard)
+            LandscapePlayer(state, navController)
         } else {
-            PortraitPlayer(state, navController, queueBoard)
+            PortraitPlayer(state, navController)
         }
     }
 }

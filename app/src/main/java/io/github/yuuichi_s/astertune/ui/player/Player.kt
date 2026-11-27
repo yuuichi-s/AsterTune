@@ -160,7 +160,6 @@ import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
-import io.github.yuuichi_s.astertune.playback.QueueBoard
 import io.github.yuuichi_s.astertune.ui.component.BottomSheet
 import io.github.yuuichi_s.astertune.ui.component.BottomSheetState
 import io.github.yuuichi_s.astertune.ui.component.PlayerSliderTrack
@@ -196,7 +195,7 @@ fun BottomSheetPlayer(
     if (PLAYER_DEBUG) Log.v(TAG, "PLR-1")
 
     val playerConnection = LocalPlayerConnection.current ?: return
-    val queueBoard by playerConnection.service.queueBoard.collectAsState()
+    val queueBoard by playerConnection.queueBoard.collectAsState()
 
     val playerBackground by rememberEnumPreference(
         key = PlayerBackgroundStyleKey,
@@ -247,9 +246,9 @@ fun BottomSheetPlayer(
         if (PLAYER_DEBUG) Log.v(TAG, "PLR-3.0")
 
         if (usesLandscapePlayer(LocalConfiguration.current, LocalTabMode.current)) {
-            LandscapePlayer(state, navController, queueBoard, onCollapse = state::collapseSoft)
+            LandscapePlayer(state, navController, onCollapse = state::collapseSoft)
         } else {
-            PortraitPlayer(state, navController, queueBoard, onCollapse = state::collapseSoft)
+            PortraitPlayer(state, navController, onCollapse = state::collapseSoft)
         }
     }
 }
@@ -259,7 +258,6 @@ fun BottomSheetPlayer(
 fun PortraitPlayer(
     playerSheetState: BottomSheetState,
     navController: NavController,
-    queueBoard: QueueBoard,
     enableQueueSheet: Boolean = true,
     onCollapse: (() -> Unit)? = null,
 ) {
@@ -404,7 +402,6 @@ fun PortraitPlayer(
             playerBottomSheetState = playerSheetState,
             onTerminate = {
                 playerSheetState.dismiss()
-                queueBoard.detachedHead = false
             },
             navController = navController
         )
@@ -416,7 +413,6 @@ fun PortraitPlayer(
 fun LandscapePlayer(
     playerSheetState: BottomSheetState,
     navController: NavController,
-    queueBoard: QueueBoard,
     enableQueueSheet: Boolean = true,
     onCollapse: (() -> Unit)? = null,
 ) {
@@ -603,7 +599,6 @@ fun LandscapePlayer(
             playerBottomSheetState = playerSheetState,
             onTerminate = {
                 playerSheetState.dismiss()
-                queueBoard.detachedHead = false
             },
             navController = navController
         )

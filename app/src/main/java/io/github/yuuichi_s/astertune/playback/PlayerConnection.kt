@@ -57,7 +57,7 @@ class PlayerConnection(
     val TAG = PlayerConnection::class.simpleName.toString()
 
     val service = binder.getService()!!
-    val queueBoard = service.queueBoard
+    val queueBoard = service.queueBoardReader
     val player = service.player
     val scope = binder.viewModelScope
 

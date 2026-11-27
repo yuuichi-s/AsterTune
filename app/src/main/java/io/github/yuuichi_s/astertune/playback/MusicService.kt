@@ -161,6 +161,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -260,7 +261,10 @@ class MusicService : MediaLibraryService(),
     }
 
     val qbInit = MutableStateFlow(false)
-    var queueBoard = MutableStateFlow(QueueBoard(queueBoardHost, maxQueues = 1))
+    private val queueBoard = MutableStateFlow(QueueBoard(queueBoardHost, maxQueues = 1))
+
+    /** Queues for reading. Changes go through the functions of this service. */
+    val queueBoardReader: StateFlow<QueueBoardReader> = queueBoard
     var queuePlaylistId: String? = null
 
     @Inject
@@ -886,6 +890,60 @@ class MusicService : MediaLibraryService(),
             board.setCurrQueue(it)
         }
     }
+
+    /**
+     * Adds songs that a media controller, such as Android Auto, is about to set on the player as
+     * the queue named [title], replacing the songs of a queue with that name, and makes that
+     * queue current. Leaves the player's songs to the caller and matches the player's shuffle
+     * mode to the queue. Main thread only.
+     *
+     * @param startIndex Index of the song to select
+     */
+    suspend fun addControllerQueue(title: String, songs: List<MediaMetadata?>, startIndex: Int) {
+        if (!qbInit.value) {
+            // Selecting a queue saves the queue list, which needs the stored queues loaded.
+            initQueue(loadIntoPlayer = false)
+        }
+        val board = queueBoard.value
+        val queue = board.addQueue(
+            title,
+            songs,
+            shuffled = false,
+            replace = true,
+            delta = false,
+            startIndex = startIndex
+        ) ?: return
+        board.selectQueue(queue)
+        if (player.shuffleModeEnabled != queue.shuffled) {
+            player.shuffleModeEnabled = queue.shuffled
+        }
+    }
+
+    /**
+     * Plays the current queue from its selected song, loading it into an empty player first.
+     * Does nothing while the player is closed. Main thread only.
+     */
+    suspend fun playCurrentQueue() {
+        if (!qbInit.value) {
+            initQueue()
+        }
+        if (queueDismissed) return
+        loadCurrentQueueIfPlayerEmpty()
+        if (player.currentMediaItem == null) return
+        when (player.playbackState) {
+            STATE_IDLE -> player.prepare()
+            Player.STATE_ENDED -> player.seekTo(0L)
+        }
+        player.playWhenReady = true
+    }
+
+    /**
+     * Deletes [queue] as [QueueBoard.deleteQueue] does. Leaves the player unchanged.
+     * Main thread only.
+     *
+     * @return Number of remaining queues
+     */
+    fun deleteQueue(queue: MultiQueueObject): Int = queueBoard.value.deleteQueue(queue)
 
     /**
      * Moves a queue in the queue list. The current queue stays current.

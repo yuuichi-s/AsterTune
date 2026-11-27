@@ -24,6 +24,7 @@ import io.github.yuuichi_s.astertune.extensions.move
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
 import io.github.yuuichi_s.astertune.utils.reportException
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -45,14 +46,14 @@ import kotlin.random.Random
  */
 class QueueBoard(
     private val host: QueueBoardHost,
-    val masterQueues: SnapshotStateList<MultiQueueObject> = mutableStateListOf(),
+    override val masterQueues: SnapshotStateList<MultiQueueObject> = mutableStateListOf(),
     queues: MutableList<MultiQueueObject> = ArrayList(),
     private var maxQueues: Int,
     minFirstQueueIndex: Int = 0,
     storedQueuesLoaded: Boolean = false,
     private val random: Random = Random,
     currentQueueId: Long? = null,
-) {
+) : QueueBoardReader {
     private val TAG = QueueBoard::class.simpleName.toString()
 
     // Whether saves retain other non-empty stored queues.
@@ -60,7 +61,6 @@ class QueueBoard(
         private set
 
     private var masterIndex: Int // current queue index
-    var detachedHead = false
 
     // Base index for renumbering and saving queues.
     val firstQueueIndex: Int
@@ -106,6 +106,14 @@ class QueueBoard(
      * @param item Queue to select
      */
     private fun bubbleUp(item: MultiQueueObject) = bubbleUp(masterQueues.indexOf(item))
+
+    /**
+     * Moves a queue to the end of [masterQueues] and makes it current without loading it into
+     * the player.
+     *
+     * @param item Queue to select
+     */
+    fun selectQueue(item: MultiQueueObject) = bubbleUp(item)
 
     /**
      * Moves a queue to the end of [masterQueues] and selects it.
@@ -692,10 +700,7 @@ class QueueBoard(
      * =================
      */
 
-    /**
-     * Returns an immutable snapshot of the queue list.
-     */
-    fun getAllQueues() = masterQueues.toImmutableList()
+    override fun getAllQueues(): ImmutableList<MultiQueueObject> = masterQueues.toImmutableList()
 
 
     /**
@@ -723,7 +728,7 @@ class QueueBoard(
     }
 
     /** Returns the current queue, or null if its index is invalid. */
-    fun getCurrentQueue(): MultiQueueObject? {
+    override fun getCurrentQueue(): MultiQueueObject? {
         try {
             return masterQueues[masterIndex]
         } catch (e: IndexOutOfBoundsException) {
