@@ -740,7 +740,7 @@ fun BoxScope.QueueContent(
                                         ResizableIconButton(
                                             icon = Icons.Rounded.Close,
                                             onClick = {
-                                                val remainingQueues = qb.deleteQueue(mq)
+                                                val remainingQueues = playerConnection.service.deleteQueue(mq)
                                                 val closed = (playingQueue == index || remainingQueues < 1) &&
                                                     playerConnection.service.onCurrentQueueRemoved()
                                                 exitDetachHead()

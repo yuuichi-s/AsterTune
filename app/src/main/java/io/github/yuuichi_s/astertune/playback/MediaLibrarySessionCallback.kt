@@ -294,6 +294,13 @@ class MediaLibrarySessionCallback @Inject constructor(
         // Play from Android Auto
         Log.d(TAG, "MediaLibrarySessionCallback.onSetMediaItems")
         val defaultResult = MediaItemsWithStartPosition(emptyList(), startIndex, startPositionMs)
+        // Voice requests arrive with an empty media ID and the spoken query.
+        val searchQuery = mediaItems.firstOrNull()
+            ?.takeIf { it.mediaId.isEmpty() }
+            ?.requestMetadata?.searchQuery
+        if (searchQuery != null) {
+            return@future playFromSearch(searchQuery, startPositionMs)
+        }
         val path = mediaItems.firstOrNull()?.mediaId?.split("/")
             ?: return@future defaultResult
         Log.d(TAG, "Path: " + path.joinToString(";"))
@@ -351,14 +358,7 @@ class MediaLibrarySessionCallback @Inject constructor(
             MusicService.SEARCH -> {
                 val songId = path.getOrNull(2) ?: return@future defaultResult
                 val searchQuery = path.getOrNull(1) ?: return@future defaultResult
-                var results = combine(
-                    database.searchSongs(searchQuery),
-                    database.searchArtistSongs(searchQuery),
-                ) { songs, artistSongs ->
-                    (songs + artistSongs).distinctBy { it.id }
-                }
-
-                val items = results.first().map { it.toMediaItem() }
+                val items = searchSongs(searchQuery).map { it.toMediaItem() }
                 val index = items.indexOfFirst { it.mediaId == songId }
                 Triple(items, if (index > 0) index else 0, C.TIME_UNSET)
             }
@@ -367,16 +367,40 @@ class MediaLibrarySessionCallback @Inject constructor(
         }
 
         val queueTitle = context.getString(R.string.android_auto)
-        service.queueBoard.value.addQueue(
-            queueTitle,
-            queue.first.map { it.metadata },
-            shuffled = false,
-            replace = true,
-            delta = false,
-            startIndex = queue.second
-        )
+        service.addControllerQueue(queueTitle, queue.first.map { it.metadata }, queue.second)
         MediaItemsWithStartPosition(queue.first, queue.second, queue.third)
     }
+
+    /**
+     * Plays the songs found for a voice request [query] from the first one. A blank query plays
+     * the current queue instead.
+     *
+     * @throws IgnoredRequestException when the request leaves the player's songs as they are,
+     *     so that the session does not replace them
+     */
+    private suspend fun playFromSearch(query: String, startPositionMs: Long): MediaItemsWithStartPosition {
+        Log.d(TAG, "Play from search: \"$query\"")
+        if (query.isBlank()) {
+            service.playCurrentQueue()
+            throw IgnoredRequestException("Played the current queue")
+        }
+        val items = searchSongs(query).map { it.toMediaItem() }
+        if (items.isEmpty()) {
+            throw IgnoredRequestException("No songs found")
+        }
+        service.addControllerQueue(context.getString(R.string.android_auto), items.map { it.metadata }, 0)
+        return MediaItemsWithStartPosition(items, 0, startPositionMs)
+    }
+
+    /** Songs whose title or artist matches [query], as the search of media controllers shows. */
+    private suspend fun searchSongs(query: String): List<Song> = combine(
+        database.searchSongs(query),
+        database.searchArtistSongs(query),
+    ) { songs, artistSongs ->
+        (songs + artistSongs).distinctBy { it.id }
+    }.first()
+
+    private class IgnoredRequestException(message: String) : Exception(message)
 
     override fun onSearch(
         session: MediaLibrarySession,
@@ -404,14 +428,7 @@ class MediaLibrarySessionCallback @Inject constructor(
             }
 
             try {
-                var results = combine(
-                    database.searchSongs(query),
-                    database.searchArtistSongs(query),
-                ) { songs, artistSongs ->
-                    (songs + artistSongs).distinctBy { it.id }
-                }
-
-                val items = results.first()
+                val items = searchSongs(query)
                     .map {
                         it.toMediaItem(
                             path = "${MusicService.SEARCH}/$query",
