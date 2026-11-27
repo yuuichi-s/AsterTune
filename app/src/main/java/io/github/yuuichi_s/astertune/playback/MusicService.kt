@@ -1127,6 +1127,15 @@ class MusicService : MediaLibraryService(),
     }
 
     /**
+     * Loads the current queue into the player when the player holds no song.
+     * Main thread only.
+     */
+    fun loadCurrentQueueIfPlayerEmpty() {
+        if (player.currentMediaItem != null) return
+        queueBoard.value.setCurrQueue()
+    }
+
+    /**
      * Call after the current queue has been removed. Loads the queue that became current,
      * or closes the player if there is none.
      * Main thread only.
