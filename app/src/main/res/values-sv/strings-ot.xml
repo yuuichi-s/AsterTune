@@ -307,7 +307,7 @@
     <string name="oobe_ad_free_exp_description">Njut av musik utan avbrott</string>
     <string name="oobe_local_music_support">Brett stöd för lokal musik</string>
     <string name="oobe_local_music_support_description">Spela dina musikfiler (t.ex. MP3, OGG och FLAC)</string>
-    <string name="oobe_use_backup">Jag har en säkerhetskopia</string>
+    <string name="oobe_use_backup">Återställ data från säkerhetskopia</string>
     <string name="oobe_interface_subtitle">Anpassa hur AsterTune ser ut och vilket innehåll som visas.</string>
     <string name="oobe_ytm_logon_title">Konto</string>
     <string name="oobe_ytm_logon_subtitle">Logga in på ditt YouTube Music-konto för att synkronisera och komma åt privat kontoinnehåll. Detta är valfritt.</string>
@@ -339,4 +339,5 @@
     <string name="speed_medium">Medel</string>
     <string name="speed_fast">Snabb</string>
     <string name="speed_very_fast">Mycket snabb</string>
+    <string name="oobe_skip_setup">Hoppa över konfigurationen</string>
 </resources>
