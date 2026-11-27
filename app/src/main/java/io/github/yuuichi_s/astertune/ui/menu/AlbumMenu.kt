@@ -67,7 +67,6 @@ fun AlbumMenu(
     val database = LocalDatabase.current
     val downloadUtil = LocalDownloadUtil.current
     val playerConnection = LocalPlayerConnection.current ?: return
-    val queueBoard by playerConnection.queueBoard.collectAsState()
     val isNetworkConnected = LocalNetworkConnected.current
     val scope = rememberCoroutineScope()
     val libraryAlbum by database.album(originalAlbum.id).collectAsState(initial = originalAlbum)
@@ -269,13 +268,7 @@ fun AlbumMenu(
     if (showChooseQueueDialog) {
         AddToQueueDialog(
             onAdd = { queueName ->
-                val q = queueBoard.addQueue(
-                    queueName, songs.map { it.toMediaMetadata() },
-                    forceInsert = true, delta = false
-                )
-                q?.let {
-                    queueBoard.setCurrQueue(it)
-                }
+                playerConnection.service.addToQueueByName(queueName, songs.map { it.toMediaMetadata() })
             },
             onDismiss = {
                 showChooseQueueDialog = false

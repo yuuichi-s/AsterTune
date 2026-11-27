@@ -57,7 +57,6 @@ fun YouTubeAlbumMenu(
     val database = LocalDatabase.current
     val downloadUtil = LocalDownloadUtil.current
     val playerConnection = LocalPlayerConnection.current ?: return
-    val queueBoard by playerConnection.queueBoard.collectAsState()
     val album by database.albumWithSongs(albumItem.id).collectAsState(initial = null)
     val coroutineScope = rememberCoroutineScope()
 
@@ -204,13 +203,7 @@ fun YouTubeAlbumMenu(
         AddToQueueDialog(
             onAdd = { queueName ->
                 album?.songs?.let { song ->
-                    val q = queueBoard.addQueue(
-                        queueName, song.map { it.toMediaMetadata() },
-                        forceInsert = true, delta = false
-                    )
-                    q?.let {
-                        queueBoard.setCurrQueue(it)
-                    }
+                    playerConnection.service.addToQueueByName(queueName, song.map { it.toMediaMetadata() })
                 }
             },
             onDismiss = {
