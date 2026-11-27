@@ -887,6 +887,44 @@ class MusicService : MediaLibraryService(),
         }
     }
 
+    /**
+     * Moves a queue in the queue list. The current queue stays current.
+     * Main thread only.
+     */
+    fun moveQueue(fromIndex: Int, toIndex: Int) {
+        queueBoard.value.move(fromIndex, toIndex)
+    }
+
+    /**
+     * Makes [queue] current and plays it from its selected song.
+     * Main thread only.
+     */
+    fun playQueueFromList(queue: MultiQueueObject?) {
+        queueBoard.value.setCurrQueue(queue)
+        player.prepare() // else cannot click to play after auto-skip onError stop
+        player.playWhenReady = true
+    }
+
+    /**
+     * Selects the song at [index] of [queue] and makes the queue current, starting the song from
+     * the beginning. The caller starts playback.
+     * Main thread only.
+     *
+     * @param index Song index in playback order
+     */
+    fun selectQueueSong(queue: MultiQueueObject?, index: Int) {
+        queue?.setCurrentQueuePos(index)
+        queueBoard.value.setCurrQueue(queue, false)
+    }
+
+    /**
+     * Renames [queue] and saves it.
+     * Main thread only.
+     */
+    fun renameQueue(queue: MultiQueueObject, name: String) {
+        queueBoard.value.renameQueue(queue, name)
+    }
+
     fun triggerShuffle() {
         val oldIndex = player.currentMediaItemIndex
         queueBoard.value.setCurrQueuePosIndex(oldIndex)

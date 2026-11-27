@@ -105,7 +105,6 @@ fun EditQueueDialog(
     onDismiss: () -> Unit,
 ) {
     val playerConnection = LocalPlayerConnection.current?: return
-    val queueBoard by playerConnection.queueBoard.collectAsState()
     TextFieldDialog(
         icon = { Icon(imageVector = Icons.Rounded.Edit, contentDescription = null) },
         title = { Text(text = stringResource(R.string.edit_playlist)) },
@@ -116,7 +115,7 @@ fun EditQueueDialog(
         ),
         onDone = { name ->
             onDismiss()
-            queueBoard.renameQueue(queue, name)
+            playerConnection.service.renameQueue(queue, name)
         }
     )
 }
