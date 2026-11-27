@@ -708,8 +708,8 @@ private fun BoxScope.QueuePosition(topInset: Dp) {
  * unchanged.
  */
 private fun MultiQueueObject.playbackPosition(): Pair<Int, Int>? {
-    val song = queue.getOrNull(queuePos) ?: return null
-    val index = if (shuffled) song.shuffleIndex else queuePos
+    val shufflePos = shuffleOrder.getOrNull(queuePos) ?: return null
+    val index = if (shuffled) shufflePos else queuePos
     return if (index in queue.indices) index to queue.size else null
 }
 

@@ -555,7 +555,11 @@ fun BoxScope.QueueContent(
         if (detachedQueue != null) {
             mutableSongs.apply {
                 clear()
-                addAll(detachedQueue!!.getCurrentQueueShuffled())
+                addAll(
+                    detachedQueue!!.getCurrentQueueShuffled().mapIndexed { index, song ->
+                        song.copy(composeUidWorkaround = index.toDouble())
+                    }
+                )
             }
             detachedQueue?.let {
                 lazySongsListState.scrollToItem(it.getQueuePosShuffled())
@@ -1069,9 +1073,9 @@ fun BoxScope.QueueContent(
                     SelectHeader(
                         navController = navController,
                         selectedItems = selectedItems.mapNotNull { uidHash ->
-                            (detachedQueue?.getCurrentQueueShuffled() ?: mutableSongs).find { it.hashCode() == uidHash }
+                            mutableSongs.find { it.hashCode() == uidHash }
                         },
-                        totalItemCount = (detachedQueue?.getCurrentQueueShuffled() ?: mutableSongs).size,
+                        totalItemCount = mutableSongs.size,
                         onSelectAll = {
                             selectedItems.clear()
                             selectedItems.addAll(mutableSongs.map { it.hashCode() })

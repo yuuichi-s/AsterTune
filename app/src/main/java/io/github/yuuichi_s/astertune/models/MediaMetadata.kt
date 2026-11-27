@@ -30,8 +30,6 @@ data class MediaMetadata(
     val localPath: String? = null,
     val liked: Boolean = false,
     val composeUidWorkaround: Double = Math.random(), // compose will crash without this hax
-
-    var shuffleIndex: Int = -1
 ) : Serializable {
     data class Artist(
         val id: String?,

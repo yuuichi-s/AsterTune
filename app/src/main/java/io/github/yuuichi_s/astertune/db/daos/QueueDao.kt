@@ -125,16 +125,15 @@ interface QueueDao {
         val queue = MultiQueueObject(
             id = q.id,
             title = q.title,
-            queue = stored.songs.mapIndexed { i, it ->
-                val s = it.song.toMediaMetadata()
-                s.shuffleIndex = shuffledIndices?.get(i) ?: it.shuffledIndex
-                s
-            }.toMutableList(),
+            queue = stored.songs.mapTo(ArrayList()) { it.song.toMediaMetadata() },
             shuffled = q.shuffled,
             queuePos = q.queuePos,
             lastSongPos = q.lastSongPos,
             index = q.index,
-            playlistId = q.playlistId
+            playlistId = q.playlistId,
+            shuffleOrder = stored.songs.mapIndexedTo(ArrayList()) { i, it ->
+                shuffledIndices?.get(i) ?: it.shuffledIndex
+            },
         )
         return queue to (repaired != null)
     }

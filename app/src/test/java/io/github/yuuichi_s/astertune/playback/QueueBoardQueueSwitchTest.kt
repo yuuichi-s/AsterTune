@@ -381,7 +381,8 @@ class QueueBoardQueueSwitchTest {
     private fun storedQueue(id: Long, title: String, vararg ids: String, queuePos: Int = 0) = MultiQueueObject(
         id = id,
         title = title,
-        queue = songs(*ids).onEachIndexed { index, s -> s.shuffleIndex = index }.toMutableList(),
+        queue = songs(*ids).toMutableList(),
+        shuffleOrder = ids.indices.toMutableList(),
         queuePos = queuePos,
         lastSongPos = SAVED_POSITION_MS,
         index = id.toInt() - 1,

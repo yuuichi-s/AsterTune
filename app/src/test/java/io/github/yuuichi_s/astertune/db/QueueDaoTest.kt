@@ -121,7 +121,7 @@ class QueueDaoTest {
         assertEquals(7, queue.index)
         assertEquals("playlist", queue.playlistId)
         assertEquals(listOf("song_a", "song_b", "song_c"), queue.queue.map { it.id })
-        assertEquals(listOf(2, 0, 1), queue.queue.map { it.shuffleIndex })
+        assertEquals(listOf(2, 0, 1), queue.shuffleOrder)
         assertEquals(true, queue.shuffled)
         assertEquals(listOf("song_b", "song_c", "song_a"), queue.getCurrentQueueShuffled().map { it.id })
         assertEquals(1, queue.queuePos)
