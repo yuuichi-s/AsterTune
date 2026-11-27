@@ -376,16 +376,6 @@ class QueueBoard(
             q.addSongs(listPos, mediaList, shufflePositions)
         }
 
-        // adding before current playing song requires tracking new index
-        if (q.getQueuePosShuffled() >= listPos) {
-            if (q.shuffled) {
-                val newIndex = q.shuffleOrder[q.queuePos] + mediaList.size
-                q.queuePos = q.queue.indices.first { q.shuffleOrder[it] == newIndex }
-            } else {
-                q.queuePos += mediaList.size
-            }
-        }
-
         setCurrQueue(q, false)
 
         if (saveToDb) {
@@ -415,6 +405,7 @@ class QueueBoard(
         var ret = false
         val currentMediaItemIndex = host.currentMediaItemIndex
         var newQueuePos = item.getQueuePosShuffled()
+        val currentEntry = item.getCurrentEntry()
 
         if (item.shuffled) {
             Log.d(TAG, "Trying remove song at index: $index")
@@ -435,21 +426,23 @@ class QueueBoard(
         }
         item.renumberShuffleOrder()
 
-        // Adjust the selection after removal.
-        if (index < currentMediaItemIndex) {
-            newQueuePos--
-        } else if (index == currentMediaItemIndex) {
-            newQueuePos++
-        } else {
-            // no need to adjust
-        }
+        // Keep the current entry unless it or the playing song was removed.
+        if (index == currentMediaItemIndex || currentEntry !in item.entries) {
+            if (index < currentMediaItemIndex) {
+                newQueuePos--
+            } else if (index == currentMediaItemIndex) {
+                newQueuePos++
+            } else {
+                // no need to adjust
+            }
 
-        if (newQueuePos >= item.getSize()) {
-            newQueuePos = item.getSize() - 1
-        } else if (newQueuePos < 0) {
-            newQueuePos = 0
+            if (newQueuePos >= item.getSize()) {
+                newQueuePos = item.getSize() - 1
+            } else if (newQueuePos < 0) {
+                newQueuePos = 0
+            }
+            item.queuePos = if (item.shuffled) item.indexOfShufflePos(newQueuePos) else newQueuePos
         }
-        item.queuePos = newQueuePos
 
         saveQueueSongs(item)
         return ret
@@ -629,7 +622,7 @@ class QueueBoard(
         getCurrentQueue()?.let { moveSong(it, fromIndex, toIndex) }
 
     /**
-     * Move a song, given a queue.
+     * Move a song, given a queue. The current entry stays current.
      *
      * @param queue Queue to operate on
      * @param fromIndex Song index in playback order
@@ -641,26 +634,8 @@ class QueueBoard(
         fromIndex: Int,
         toIndex: Int,
     ): Int {
-        var newQueuePos = queue.getQueuePosShuffled()
-        val currentMediaItemIndex = host.currentMediaItemIndex
-
-        // update current position only if the move will affect it
-        if (currentMediaItemIndex >= min(fromIndex, toIndex) && currentMediaItemIndex <= max(fromIndex, toIndex)) {
-            if (fromIndex == currentMediaItemIndex) {
-                newQueuePos = toIndex
-            } else if (currentMediaItemIndex == toIndex) {
-                if (currentMediaItemIndex < fromIndex) {
-                    newQueuePos++
-                } else {
-                    newQueuePos--
-                }
-            } else if (toIndex > currentMediaItemIndex) {
-                newQueuePos--
-            } else {
-                newQueuePos++
-            }
-        }
-        queue.queuePos = newQueuePos
+        // An invalid selection turns shuffle off before the move.
+        queue.validateQueuePos()
 
         if (queue.shuffled) {
             queue.moveInShuffleOrder(fromIndex, toIndex)
@@ -672,7 +647,7 @@ class QueueBoard(
         saveQueueSongs(queue)
 
         if (QUEUE_DEBUG)
-            Log.d(TAG, "Moved item from $currentMediaItemIndex to ${queue.queuePos}")
+            Log.d(TAG, "Moved item from $fromIndex to $toIndex")
         return queue.queuePos
     }
 

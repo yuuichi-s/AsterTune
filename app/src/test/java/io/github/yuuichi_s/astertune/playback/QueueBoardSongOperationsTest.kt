@@ -221,6 +221,18 @@ class QueueBoardSongOperationsTest {
         assertEquals("d", q.selectedId())
     }
 
+    @Test
+    fun removeSongWhileShuffledKeepsSelection() {
+        val q = loadQueue(*SHUFFLE_IDS, startIndex = 2)
+        toggleShuffle()
+        val before = q.ids()
+
+        swipeRemove(1)
+
+        assertEquals(before.filterIndexed { i, _ -> i != 1 }, q.ids())
+        assertEquals("c", q.selectedId())
+    }
+
     // moveSong()
 
     @Test
@@ -280,6 +292,18 @@ class QueueBoardSongOperationsTest {
         board.moveSong(4, 3)
 
         assertEquals(listOf("a", "b", "c", "b", "d"), q.ids())
+        assertEquals("c", q.selectedId())
+    }
+
+    @Test
+    fun moveSongWhileShuffledKeepsSelection() {
+        val q = loadQueue(*SHUFFLE_IDS, startIndex = 2)
+        toggleShuffle()
+        val before = q.ids()
+
+        board.moveSong(1, 4)
+
+        assertEquals(before.toMutableList().apply { add(4, removeAt(1)) }, q.ids())
         assertEquals("c", q.selectedId())
     }
 
