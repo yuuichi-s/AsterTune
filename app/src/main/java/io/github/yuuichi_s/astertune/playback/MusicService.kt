@@ -875,6 +875,18 @@ class MusicService : MediaLibraryService(),
         }
     }
 
+    /**
+     * Adds songs to the queue named [queueName], creating it if none matches, and makes that
+     * queue current. Used by the "Add to queue" dialog. Main thread only.
+     */
+    fun addToQueueByName(queueName: String, songs: List<MediaMetadata>) {
+        val board = queueBoard.value
+        val queue = board.addQueue(queueName, songs, forceInsert = true, delta = false)
+        queue?.let {
+            board.setCurrQueue(it)
+        }
+    }
+
     fun triggerShuffle() {
         val oldIndex = player.currentMediaItemIndex
         queueBoard.value.setCurrQueuePosIndex(oldIndex)

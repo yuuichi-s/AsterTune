@@ -134,7 +134,6 @@ fun PlayerMenu(
 
     val playerConnection = LocalPlayerConnection.current ?: return
     val playerVolume = playerConnection.service.playerVolume.collectAsState()
-    val queueBoard by playerConnection.queueBoard.collectAsState()
     val currentFormatState = database.format(mediaMetadata.id).collectAsState(initial = null)
     val currentFormat = currentFormatState.value
     val librarySong by database.song(mediaMetadata.id).collectAsState(initial = null)
@@ -383,15 +382,7 @@ fun PlayerMenu(
     if (showChooseQueueDialog) {
         AddToQueueDialog(
             onAdd = { queueName ->
-                val q = queueBoard.addQueue(
-                    queueName,
-                    listOf(mediaMetadata),
-                    forceInsert = true,
-                    delta = false
-                )
-                q?.let {
-                    queueBoard.setCurrQueue(it)
-                }
+                playerConnection.service.addToQueueByName(queueName, listOf(mediaMetadata))
             },
             onDismiss = {
                 showChooseQueueDialog = false
