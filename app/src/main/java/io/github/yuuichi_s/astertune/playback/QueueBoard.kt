@@ -12,8 +12,6 @@ package io.github.yuuichi_s.astertune.playback
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.util.fastFirst
-import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.media3.common.C
 import io.github.yuuichi_s.astertune.constants.QUEUE_DEBUG
@@ -196,15 +194,12 @@ class QueueBoard(
                 if (QUEUE_DEBUG)
                     Log.d(TAG, "Adding to queue: Replacing all queue items")
 
-                mediaList.fastForEachIndexed { index, s ->
-                    s?.shuffleIndex = index
-                }
-
-                match.replaceAll(mediaList.filterNotNull())
+                val songs = mediaList.withIndex().filter { it.value != null }
+                match.replaceAll(songs.map { it.value!! }, songs.map { it.index })
                 match.queuePos = startIndex
                 if (shuffled) {
                     shuffle(match, false, true)
-                    match.queuePos = match.queue.indexOf(match.queue.find { it.shuffleIndex == 0 })
+                    match.queuePos = match.indexOfShufflePos(0)
                 }
 
                 match.playlistId = continuationEndpoint
@@ -224,7 +219,7 @@ class QueueBoard(
                 }
                 if (shuffled) {
                     shuffle(match, false, true)
-                    match.queuePos = match.queue.indexOf(match.queue.find { it.shuffleIndex == 0 })
+                    match.queuePos = match.indexOfShufflePos(0)
                 }
 
                 match.playlistId = continuationEndpoint
@@ -235,12 +230,9 @@ class QueueBoard(
                 if (QUEUE_DEBUG)
                     Log.d(TAG, "Adding to queue: delta additive")
 
-                mediaList.fastForEachIndexed { index, s ->
-                    s?.shuffleIndex = index
-                }
-
                 // add only the songs that are not already in the queue
-                match.queue.addAll(mediaList.filter { s -> match.queue.none { s?.id == it.id } }.filterNotNull())
+                val added = mediaList.withIndex().filter { (_, s) -> s != null && match.queue.none { s.id == it.id } }
+                match.addSongs(match.getSize(), added.map { it.value!! }, added.map { it.index })
 
                 // find the song in existing queue song, track the index to jump to
                 val findSong = match.queue.firstOrNull { it.id == mediaList[startIndex]?.id }
@@ -249,7 +241,7 @@ class QueueBoard(
                 }
                 if (shuffled) {
                     shuffle(match, false, true)
-                    match.queuePos = match.queue.indexOf(match.queue.find { it.shuffleIndex == 0 })
+                    match.queuePos = match.indexOfShufflePos(0)
                 }
 
                 match.playlistId = continuationEndpoint
@@ -264,14 +256,14 @@ class QueueBoard(
                     addSongsToQueue(anyExts, Int.MAX_VALUE, mediaList.filterNotNull(), saveToDb = false)
                     if (shuffled) {
                         shuffle(anyExts, false, true)
-                        anyExts.queuePos = anyExts.queue.indexOf(anyExts.queue.find { it.shuffleIndex == 0 })
+                        anyExts.queuePos = anyExts.indexOfShufflePos(0)
                         anyExts.playlistId = continuationEndpoint
                     }
                 } else {
                     addSongsToQueue(match, Int.MAX_VALUE, mediaList.filterNotNull(), saveToDb = false)
                     if (shuffled) {
                         shuffle(match, false, true)
-                        match.queuePos = match.queue.indexOf(match.queue.find { it.shuffleIndex == 0 })
+                        match.queuePos = match.indexOfShufflePos(0)
                         match.playlistId = continuationEndpoint
                     }
                 }
@@ -289,7 +281,7 @@ class QueueBoard(
                 addSongsToQueue(match, Int.MAX_VALUE, mediaList.filterNotNull(), saveToDb = false)
                 if (shuffled) {
                     shuffle(match, false, true)
-                    match.queuePos = match.queue.indexOf(match.queue.find { it.shuffleIndex == 0 })
+                    match.queuePos = match.indexOfShufflePos(0)
                 }
 
                 match.title = "${match.title} +\u200B"
@@ -311,9 +303,6 @@ class QueueBoard(
                 deleteQueue(oldest)
             }
             val q = ArrayList(mediaList.filterNotNull())
-            q.fastForEachIndexed { index, s ->
-                s?.shuffleIndex = index
-            }
 
             val newQueue = MultiQueueObject(
                 QueueEntity.generateQueueId(),
@@ -328,7 +317,7 @@ class QueueBoard(
             masterQueues.add(newQueue)
             if (shuffled) {
                 shuffle(masterQueues.size - 1, false, true)
-                newQueue.queuePos = newQueue.queue.indexOf(newQueue.queue.find { it.shuffleIndex == 0 })
+                newQueue.queuePos = newQueue.indexOfShufflePos(0)
             }
 
             saveQueueSongs(newQueue)
@@ -376,29 +365,22 @@ class QueueBoard(
 
         // assign new indexes to items affected by inserted items
         if (q.shuffled) {
-            val songsAfter = q.getCurrentQueueShuffled()
-            songsAfter.subList(listPos, songsAfter.size).forEach {
-                it.shuffleIndex += mediaList.size
-            }
+            q.shiftShuffleOrderFrom(listPos, mediaList.size)
         }
 
         // add new items
-        mediaList.fastForEachIndexed { index, s ->
-            s.shuffleIndex = listPos + index
-        }
-
+        val shufflePositions = List(mediaList.size) { listPos + it }
         if (q.shuffled) {
-            q.queue.addAll(mediaList)
+            q.addSongs(q.getSize(), mediaList, shufflePositions)
         } else {
-            q.queue.addAll(listPos, mediaList)
+            q.addSongs(listPos, mediaList, shufflePositions)
         }
 
         // adding before current playing song requires tracking new index
         if (q.getQueuePosShuffled() >= listPos) {
             if (q.shuffled) {
-                // shuffle index current song + add size
-                val newIndex = q.queue[q.queuePos].shuffleIndex + mediaList.size
-                q.queuePos = q.queue.indexOf(q.queue.fastFirst { it.shuffleIndex == newIndex })
+                val newIndex = q.shuffleOrder[q.queuePos] + mediaList.size
+                q.queuePos = q.queue.indices.first { q.shuffleOrder[it] == newIndex }
             } else {
                 q.queuePos += mediaList.size
             }
@@ -436,20 +418,22 @@ class QueueBoard(
 
         if (item.shuffled) {
             Log.d(TAG, "Trying remove song at index: $index")
-            val s = item.queue.find { it.shuffleIndex == index }
-            if (s != null) {
-                ret = item.queue.remove(s)
+            val pos = item.indexOfShufflePos(index)
+            if (pos >= 0) {
+                val s = item.queue[pos]
+                item.removeSongAt(pos)
+                ret = true
                 Log.d(TAG, "Removing song: ${s.title}, $ret")
             }
         } else {
-            item.queue.removeAt(index)
+            item.removeSongAt(index)
             ret = true
         }
         if (item.queue.isEmpty()) {
             deleteQueue(item)
             return ret
         }
-        item.getCurrentQueueShuffled().fastForEachIndexed { index, s -> s.shuffleIndex = index }
+        item.renumberShuffleOrder()
 
         // Adjust the selection after removal.
         if (index < currentMediaItemIndex) {
@@ -576,18 +560,22 @@ class QueueBoard(
         if (QUEUE_DEBUG)
             Log.d(TAG, "Shuffling queue ${item.title}")
 
-        val currentSong = item.queue[item.queuePos]
+        val currentPos = item.queuePos
+        if (currentPos !in item.queue.indices) {
+            throw IndexOutOfBoundsException("Index $currentPos out of bounds for length ${item.queue.size}")
+        }
 
         // shuffle & push the current song to top if requested to
-        shuffleInPlace(item.queue, random)
+        shuffleInPlace(item, random)
         if (preserveCurrent) {
-            val s2 = item.queue.find { it.shuffleIndex == 0 }
-            if (s2 != null && currentSong != s2) {
-                currentSong.shuffleIndex = s2.shuffleIndex.also { s2.shuffleIndex = currentSong.shuffleIndex }
+            val firstPos = item.indexOfShufflePos(0)
+            if (firstPos >= 0 && firstPos != currentPos) {
+                item.shuffleOrder[firstPos] = item.shuffleOrder[currentPos]
+                item.shuffleOrder[currentPos] = 0
             }
-            item.queuePos = item.queue.indexOf(currentSong)
+            item.queuePos = currentPos
         } else {
-            item.queuePos = item.queue.indexOf(item.queue.fastFirstOrNull { it.shuffleIndex == 0 })
+            item.queuePos = item.indexOfShufflePos(0)
             item.lastSongPos = C.TIME_UNSET
         }
 
@@ -653,7 +641,6 @@ class QueueBoard(
         fromIndex: Int,
         toIndex: Int,
     ): Int {
-        val items = queue.getCurrentQueueShuffled()
         var newQueuePos = queue.getQueuePosShuffled()
         val currentMediaItemIndex = host.currentMediaItemIndex
 
@@ -676,15 +663,11 @@ class QueueBoard(
         queue.queuePos = newQueuePos
 
         if (queue.shuffled) {
-            items.move(fromIndex, toIndex)
-            items.fastForEachIndexed { index, s ->
-                // items is a copy of queue.queue, assume all objects will exist *once* only
-                queue.queue.find { it == s }?.shuffleIndex = index
-            }
+            queue.moveInShuffleOrder(fromIndex, toIndex)
         } else {
-            queue.queue.move(fromIndex, toIndex)
+            queue.moveSong(fromIndex, toIndex)
         }
-        queue.getCurrentQueueShuffled().fastForEachIndexed { index, s -> s.shuffleIndex = index }
+        queue.renumberShuffleOrder()
 
         saveQueueSongs(queue)
 
@@ -899,12 +882,13 @@ class QueueBoard(
         // Copy the queue now: it keeps changing on the main thread while the write is pending.
         val queue = mq.toQueueEntity()
         val songs = mq.queue.toList()
+        val shuffleOrder = mq.shuffleOrder.toList()
         val songMaps = songs.mapIndexed { index, song ->
             QueueSongMap(
                 queueId = mq.id,
                 songId = song.id,
                 index = index.toLong(),
-                shuffledIndex = song.shuffleIndex.toLong()
+                shuffledIndex = shuffleOrder[index].toLong()
             )
         }
         writeToDatabase { saveQueue(queue, songs, songMaps) }
@@ -969,11 +953,11 @@ class QueueBoard(
             SupervisorJob() + databaseWriter + CoroutineExceptionHandler { _, e -> reportException(e) }
         )
 
-        fun shuffleInPlace(list: List<MediaMetadata>, random: Random = Random) {
-            val rng = (0..(list.size - 1)).shuffled(random)
+        private fun shuffleInPlace(q: MultiQueueObject, random: Random) {
+            val rng = (0..(q.getSize() - 1)).shuffled(random)
 
-            list.forEachIndexed { index, s ->
-                s.shuffleIndex = rng[index]
+            rng.forEachIndexed { index, pos ->
+                q.shuffleOrder[index] = pos
             }
         }
     }
