@@ -9,8 +9,10 @@ import io.github.yuuichi_s.astertune.extensions.move
 
 /**
  * @param title Queue title (and UID)
- * @param queue List of media items
- * @param shuffleOrder Playback position of each song of [queue] when shuffled
+ * @param entries Songs of the queue
+ * @param currentEntryId Entry ID of the current song, or null when [queuePos] points at no entry
+ * @param outsideQueuePos Value last set to [queuePos], returned while it points at no entry
+ * @param shuffleOrder Playback position of each entry of [entries] when shuffled
  */
 data class MultiQueueObject(
     val id: Long,
@@ -19,17 +21,71 @@ data class MultiQueueObject(
      * The order of songs are dynamic. This should not be accessed from outside QueueBoard.
      * Change it only through the functions of this class, which update [shuffleOrder] together.
      */
-    val queue: MutableList<MediaMetadata>,
+    val entries: MutableList<QueueEntry>,
     var shuffled: Boolean = false,
-    var queuePos: Int = -1, // position of current song
+    private var currentEntryId: Long? = null,
+    private var outsideQueuePos: Int = -1,
     var lastSongPos: Long = C.TIME_UNSET,
     var index: Int, // order of queue
     /**
      * Song id to start watch endpoint
      */
     var playlistId: String? = null,
-    val shuffleOrder: MutableList<Int> = MutableList(queue.size) { it },
+    val shuffleOrder: MutableList<Int> = MutableList(entries.size) { it },
 ) {
+    /**
+     * Creates a queue with a new entry for each song of [queue].
+     *
+     * @param queuePos Index of the current song in [queue]
+     */
+    constructor(
+        id: Long,
+        title: String,
+        queue: List<MediaMetadata>,
+        shuffled: Boolean = false,
+        queuePos: Int = -1,
+        lastSongPos: Long = C.TIME_UNSET,
+        index: Int,
+        playlistId: String? = null,
+        shuffleOrder: MutableList<Int> = MutableList(queue.size) { it },
+    ) : this(
+        id = id,
+        title = title,
+        entries = queue.mapTo(ArrayList()) { QueueEntry(it) },
+        shuffled = shuffled,
+        lastSongPos = lastSongPos,
+        index = index,
+        playlistId = playlistId,
+        shuffleOrder = shuffleOrder,
+    ) {
+        this.queuePos = queuePos
+    }
+
+    /** Songs of [entries], in the same order. */
+    val queue: List<MediaMetadata> = object : AbstractList<MediaMetadata>() {
+        override val size get() = entries.size
+        override fun get(index: Int) = entries[index].song
+    }
+
+    private var cachedQueuePos = -1
+
+    /**
+     * Index of the current song in [entries]. Setting it makes the entry at that index current,
+     * which stays current when entries are added, removed, or moved.
+     */
+    var queuePos: Int
+        get() {
+            val entryId = currentEntryId ?: return outsideQueuePos
+            if (entries.getOrNull(cachedQueuePos)?.entryId != entryId) {
+                cachedQueuePos = entries.indexOfFirst { it.entryId == entryId }
+            }
+            return cachedQueuePos
+        }
+        set(value) {
+            currentEntryId = entries.getOrNull(value)?.entryId
+            outsideQueuePos = value
+            cachedQueuePos = value
+        }
 
     private fun playbackOrder(): List<Int> =
         if (shuffled) queue.indices.sortedBy { shuffleOrder[it] } else queue.indices.toList()
@@ -43,7 +99,7 @@ data class MultiQueueObject(
         return if (shuffled) {
             playbackOrder().mapTo(ArrayList()) { queue[it] }
         } else {
-            queue
+            queue.toMutableList()
         }
     }
 
@@ -54,6 +110,9 @@ data class MultiQueueObject(
         validateQueuePos()
         return queue[queuePos]
     }
+
+    /** Returns the current entry, or null if [queuePos] points at no entry. */
+    fun getCurrentEntry(): QueueEntry? = entries.getOrNull(queuePos)
 
     /**
      * Retrieve a song given a song ID. Returns null if no song is found
@@ -127,18 +186,19 @@ data class MultiQueueObject(
         setShuffleOrder(order)
     }
 
+    /** Inserts a new entry for each of [songs] at [index]. */
     fun addSongs(index: Int, songs: List<MediaMetadata>, shufflePositions: List<Int>) {
-        queue.addAll(index, songs)
+        entries.addAll(index, songs.map { QueueEntry(it) })
         shuffleOrder.addAll(index, shufflePositions)
     }
 
     fun removeSongAt(index: Int) {
-        queue.removeAt(index)
+        entries.removeAt(index)
         shuffleOrder.removeAt(index)
     }
 
     fun moveSong(from: Int, to: Int) {
-        queue.move(from, to)
+        entries.move(from, to)
         shuffleOrder.move(from, to)
     }
 
@@ -148,18 +208,18 @@ data class MultiQueueObject(
      * @return Duration in seconds
      */
     fun getDuration(): Int {
-        return queue.fastSumBy {
-            it.duration // seconds
+        return entries.fastSumBy {
+            it.song.duration // seconds
         }
     }
 
     /**
      * Get the length of the queue
      */
-    fun getSize() = queue.size
+    fun getSize() = entries.size
 
     fun replaceAll(mediaList: List<MediaMetadata>, shufflePositions: List<Int>) {
-        queue.clear()
+        entries.clear()
         shuffleOrder.clear()
         addSongs(0, mediaList, shufflePositions)
     }
