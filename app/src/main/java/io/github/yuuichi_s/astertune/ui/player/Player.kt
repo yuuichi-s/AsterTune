@@ -390,7 +390,7 @@ fun PortraitPlayer(
             }
         }
 
-        ControlsContent(playerSheetState, queueSheetState, navController, queueBoard)
+        ControlsContent(playerSheetState, queueSheetState, navController)
 
 
         Spacer(Modifier.height(24.dp))
@@ -559,7 +559,7 @@ fun LandscapePlayer(
         val artworkHidden = !isArtworkShown(showLyrics, error)
         Layout(
             content = {
-                ControlsContent(playerSheetState, queueSheetState, navController, queueBoard)
+                ControlsContent(playerSheetState, queueSheetState, navController)
                 if (showQueueHint) {
                     LandscapeQueueHint(queueSheetState)
                 }
@@ -1005,7 +1005,6 @@ fun ControlsContent(
     playerSheetState: BottomSheetState,
     queueSheetState: BottomSheetState,
     navController: NavController,
-    queueBoard: QueueBoard,
 ) {
     val TAG = "ControlsContent()"
     if (PLAYER_DEBUG) Log.v(TAG, "PLR-CC-1")
@@ -1248,7 +1247,7 @@ fun ControlsContent(
                         color = skipButtonColor,
                         onClick = {
                             if (playerConnection.player.currentMediaItem == null) {
-                                queueBoard.setCurrQueue()
+                                playerConnection.service.loadCurrentQueueIfPlayerEmpty()
                             }
                             playerConnection.player.seekToPrevious()
                             haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
@@ -1282,7 +1281,7 @@ fun ControlsContent(
                         .background(buttonContainerColor)
                         .clickable {
                             if (playerConnection.player.currentMediaItem == null) {
-                                queueBoard.setCurrQueue()
+                                playerConnection.service.loadCurrentQueueIfPlayerEmpty()
                                 playerConnection.player.togglePlayPause()
                             } else if (playbackState == STATE_ENDED) {
                                 playerConnection.player.seekTo(0, 0)
