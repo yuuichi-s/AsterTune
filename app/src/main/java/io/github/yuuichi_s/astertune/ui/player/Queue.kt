@@ -532,7 +532,7 @@ fun BoxScope.QueueContent(
     LaunchedEffect(reorderableStateEx.isAnyItemDragging) {
         if (!reorderableStateEx.isAnyItemDragging) {
             dragInfoEx?.let { (from, to) ->
-                qb.move(from, to)
+                playerConnection.service.moveQueue(from, to)
                 dragInfoEx = null
             }
         }
@@ -710,7 +710,7 @@ fun BoxScope.QueueContent(
                                             exitDetachHead()
                                         } else {
                                             detachedHead = true
-                                            isSearching = false // no searching in detach mode
+                                            isSearching = false
                                             detachedQueue = mq
                                             onExitSelectionMode()
                                         }
@@ -798,27 +798,29 @@ fun BoxScope.QueueContent(
                 )
             }
 
-            // play the detached queue
-            if (detachedHead) {
-                ResizableIconButton(
-                    icon = Icons.Rounded.PlayArrow,
-                    onClick = {
-                        coroutineScope.launch(Dispatchers.Main) {
-                            // change to this queue, seek to the item clicked on
-                            qb.setCurrQueue(detachedQueue)
-                            playerConnection.player.prepare() // else cannot click to play after auto-skip onError stop
-                            playerConnection.player.playWhenReady = true
-                            exitDetachHead()
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // play the detached queue
+                if (detachedHead) {
+                    ResizableIconButton(
+                        icon = Icons.Rounded.PlayArrow,
+                        onClick = {
+                            coroutineScope.launch(Dispatchers.Main) {
+                                playerConnection.service.playQueueFromList(detachedQueue)
+                                exitDetachHead()
+                            }
                         }
-                    }
-                )
-            } else if (!isSearching) {
-                ResizableIconButton(
-                    icon = Icons.Rounded.Search,
-                    onClick = {
-                        isSearching = true
-                    }
-                )
+                    )
+                }
+                if (!isSearching) {
+                    ResizableIconButton(
+                        icon = Icons.Rounded.Search,
+                        onClick = {
+                            isSearching = true
+                        }
+                    )
+                }
             }
         }
     }
@@ -922,8 +924,7 @@ fun BoxScope.QueueContent(
                                             } else {
                                                 coroutineScope.launch(Dispatchers.Main) {
                                                     if (detachedHead) {
-                                                        detachedQueue?.setCurrentQueuePos(index)
-                                                        qb.setCurrQueue(detachedQueue, false)
+                                                        playerConnection.service.selectQueueSong(detachedQueue, queueIndex)
                                                     } else {
                                                         val playerIndex = playerIndexOf(window) ?: return@launch
                                                         if (playerIndex == currentWindowIndex) {
@@ -981,7 +982,7 @@ fun BoxScope.QueueContent(
         ) {
             IconButton(
                 onClick = {
-                    if (isSearching && !detachedHead) {
+                    if (isSearching) {
                         isSearching = false
                         query = TextFieldValue()
                     } else {
