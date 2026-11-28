@@ -324,16 +324,8 @@ fun PortraitPlayer(
                 )
             } else {
                 val thumbnailLazyGridState = rememberLazyGridState()
-                val currentItem by remember { derivedStateOf { thumbnailLazyGridState.firstVisibleItemIndex } }
-                val itemScrollOffset by remember { derivedStateOf { thumbnailLazyGridState.firstVisibleItemScrollOffset } }
 
-                LaunchedEffect(itemScrollOffset) {
-                    if (!thumbnailLazyGridState.isScrollInProgress || itemScrollOffset != 0) return@LaunchedEffect
-
-                    seekToSwipedThumbnail(
-                        playerConnection.player, thumbnailLazyGridState, currentItem, currentMediaIndex
-                    )
-                }
+                SeekToSwipedThumbnailEffect(playerConnection.player, thumbnailLazyGridState, currentMediaIndex)
 
                 LaunchedEffect(mediaMetadata, canSkipPrevious, canSkipNext) {
                     // When the media item changes, scroll to it
@@ -488,16 +480,8 @@ fun LandscapePlayer(
                 )
             } else {
                 val thumbnailLazyGridState = rememberLazyGridState()
-                val currentItem by remember { derivedStateOf { thumbnailLazyGridState.firstVisibleItemIndex } }
-                val itemScrollOffset by remember { derivedStateOf { thumbnailLazyGridState.firstVisibleItemScrollOffset } }
 
-                LaunchedEffect(itemScrollOffset) {
-                    if (!thumbnailLazyGridState.isScrollInProgress || itemScrollOffset != 0) return@LaunchedEffect
-
-                    seekToSwipedThumbnail(
-                        playerConnection.player, thumbnailLazyGridState, currentItem, currentMediaIndex
-                    )
-                }
+                SeekToSwipedThumbnailEffect(playerConnection.player, thumbnailLazyGridState, currentMediaIndex)
 
                 LaunchedEffect(mediaMetadata, canSkipPrevious, canSkipNext) {
                     // When the media item changes, scroll to it
@@ -753,6 +737,39 @@ private fun playerThumbnails(
         currentMetadata?.let { PlayerThumbnail(it, keyOf(it, currentIndex, null), isCurrent = true) },
         next?.let { PlayerThumbnail(it, keyOf(it, nextIndex, "next"), isCurrent = false) },
     )
+}
+
+/**
+ * Seeks to the song whose jacket a scroll of the swipe-to-skip row lines up.
+ *
+ * A scroll can end just short of a jacket and line it up only afterwards, so a jacket that lines up
+ * after a scroll that ended between two jackets is also sought to.
+ */
+@Composable
+private fun SeekToSwipedThumbnailEffect(
+    player: androidx.media3.common.Player,
+    state: LazyGridState,
+    currentMediaIndex: Int,
+) {
+    val currentItem by remember { derivedStateOf { state.firstVisibleItemIndex } }
+    val itemScrollOffset by remember { derivedStateOf { state.firstVisibleItemScrollOffset } }
+    var scrolledBetweenJackets by remember { mutableStateOf(false) }
+
+    LaunchedEffect(itemScrollOffset) {
+        if (itemScrollOffset != 0) {
+            if (state.isScrollInProgress) {
+                scrolledBetweenJackets = true
+            }
+            return@LaunchedEffect
+        }
+
+        if (!state.isScrollInProgress && !scrolledBetweenJackets) {
+            return@LaunchedEffect
+        }
+
+        scrolledBetweenJackets = false
+        seekToSwipedThumbnail(player, state, currentItem, currentMediaIndex)
+    }
 }
 
 /**
