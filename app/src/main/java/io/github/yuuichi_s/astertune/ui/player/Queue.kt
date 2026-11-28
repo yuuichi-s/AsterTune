@@ -112,7 +112,6 @@ import androidx.media3.common.Player.REPEAT_MODE_ALL
 import androidx.media3.common.Player.REPEAT_MODE_OFF
 import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.Player.STATE_ENDED
-import androidx.media3.common.Timeline
 import androidx.navigation.NavController
 import io.github.yuuichi_s.astertune.LocalMenuState
 import io.github.yuuichi_s.astertune.LocalPlayerAwareWindowInsets
@@ -136,11 +135,12 @@ import io.github.yuuichi_s.astertune.constants.SeekIncrementKey
 import io.github.yuuichi_s.astertune.constants.ShowQueueTitleKey
 import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.move
+import io.github.yuuichi_s.astertune.extensions.queueEntry
 import io.github.yuuichi_s.astertune.extensions.togglePlayPause
 import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
 import io.github.yuuichi_s.astertune.extensions.usesLandscapePlayer
-import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
+import io.github.yuuichi_s.astertune.models.QueueEntry
 import io.github.yuuichi_s.astertune.playback.MusicService.CurrentQueueSongRemoval
 import io.github.yuuichi_s.astertune.playback.PlayerConnection
 import io.github.yuuichi_s.astertune.ui.component.BottomSheet
@@ -355,9 +355,8 @@ fun BoxScope.QueueContent(
     /**
      * SONG LIST
      */
-    val mutableSongs = remember { mutableStateListOf<MediaMetadata>() }
-    val songUids = remember { HashMap<MediaMetadata, Any>() }
-    val removedUids = remember { HashSet<Any>() }
+    val mutableSongs = remember { mutableStateListOf<QueueEntry>() }
+    val removedEntryIds = remember { HashSet<Long>() }
     var lastHandledQueueId by remember { mutableStateOf<Long?>(null) }
     val lazySongsListState = rememberLazyListState()
 
@@ -365,7 +364,7 @@ fun BoxScope.QueueContent(
     var inSelectMode by remember {
         mutableStateOf(false)
     }
-    val selectedItems = remember { mutableStateListOf<Int>() }
+    val selectedItems = remember { mutableStateListOf<Long>() }
     val onExitSelectionMode = {
         inSelectMode = false
         selectedItems.clear()
@@ -384,9 +383,9 @@ fun BoxScope.QueueContent(
             if (searchQuery.text.isEmpty()) {
                 mutableSongs.toList()
             } else {
-                mutableSongs.filter { song ->
-                    song.title.contains(searchQuery.text, ignoreCase = true)
-                            || song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
+                mutableSongs.filter { entry ->
+                    entry.song.title.contains(searchQuery.text, ignoreCase = true)
+                            || entry.song.artists.fastAny { it.name.contains(searchQuery.text, ignoreCase = true) }
                 }
             }
         }
@@ -420,7 +419,7 @@ fun BoxScope.QueueContent(
     var dragInfo by remember {
         mutableStateOf<Pair<Int, Int>?>(null)
     }
-    val dragStartSongs = remember { mutableListOf<MediaMetadata>() }
+    val dragStartSongs = remember { mutableListOf<QueueEntry>() }
     val reorderableState = rememberReorderableLazyListState(
         lazyListState = lazySongsListState,
         scrollThresholdPadding = WindowInsets.systemBars.add(
@@ -473,35 +472,24 @@ fun BoxScope.QueueContent(
         if (!reorderableState.isAnyItemDragging) {
             val (from, to) = dragInfo ?: return@LaunchedEffect
             dragInfo = null
-            if (from != to) {
-                playerConnection.service.moveCurrentQueueSong(from, to)
+            val entry = mutableSongs.getOrNull(to)
+            if (from != to && entry != null) {
+                playerConnection.service.moveCurrentQueueSong(entry.entryId, to)
             }
         }
     }
 
-    fun playerIndexOf(song: MediaMetadata): Int? {
-        val uid = songUids[song] ?: return null
-        val timeline = playerConnection.player.currentTimeline
-        val window = Timeline.Window()
-
-        return (0 until timeline.windowCount).firstOrNull {
-            timeline.getWindow(it, window).uid == uid
-        }
-    }
-
-    fun removeSwipedSong(song: MediaMetadata): Boolean {
-        val uid = songUids[song] ?: return false
-        if (uid in removedUids) return true
+    fun removeSwipedSong(entry: QueueEntry): Boolean {
+        if (entry.entryId in removedEntryIds) return true
         if (lockQueue || inSelectMode || detachedHead || dragInfo != null || reorderableState.isAnyItemDragging) {
             return false
         }
 
-        val index = playerIndexOf(song) ?: return false
-        when (playerConnection.service.removeCurrentQueueSong(index)) {
+        when (playerConnection.service.removeCurrentQueueSong(entry.entryId)) {
             CurrentQueueSongRemoval.NOT_REMOVED -> return false
             CurrentQueueSongRemoval.REMOVED -> {
-                removedUids.add(uid)
-                mutableSongs.remove(song)
+                removedEntryIds.add(entry.entryId)
+                mutableSongs.remove(entry)
             }
             CurrentQueueSongRemoval.QUEUE_REMOVED -> Unit
             CurrentQueueSongRemoval.PLAYER_CLOSED -> onTerminate()
@@ -550,16 +538,11 @@ fun BoxScope.QueueContent(
     }
 
     LaunchedEffect(queueWindows, detachedQueue) {
-        songUids.clear()
-        removedUids.clear()
+        removedEntryIds.clear()
         if (detachedQueue != null) {
             mutableSongs.apply {
                 clear()
-                addAll(
-                    detachedQueue!!.getCurrentQueueShuffled().mapIndexed { index, song ->
-                        song.copy(composeUidWorkaround = index.toDouble())
-                    }
-                )
+                addAll(detachedQueue!!.getCurrentEntriesShuffled())
             }
             detachedQueue?.let {
                 lazySongsListState.scrollToItem(it.getQueuePosShuffled())
@@ -571,8 +554,8 @@ fun BoxScope.QueueContent(
             return@LaunchedEffect
         }
 
-        val newSongs = queueWindows.mapIndexedNotNull { index, w ->
-            w.mediaItem.metadata?.copy(composeUidWorkaround = index.toDouble())?.also { songUids[it] = w.uid }
+        val newSongs = queueWindows.mapNotNull { w ->
+            w.mediaItem.queueEntry ?: w.mediaItem.metadata?.let { QueueEntry(it) }
         }
 
         // Appending can refresh the existing entries first. Preserve selection and scroll
@@ -584,7 +567,7 @@ fun BoxScope.QueueContent(
                 mutableSongs.isNotEmpty() &&
                 newSongs.size >= mutableSongs.size &&
                 mutableSongs.indices.all { index ->
-                    mutableSongs[index].id == newSongs[index].id
+                    mutableSongs[index].song.id == newSongs[index].song.id
                 }
         if (canPreserveSelectionAndScroll) {
             mutableSongs.indices.forEach { i ->
@@ -850,12 +833,12 @@ fun BoxScope.QueueContent(
                 val thumbnailSize = (ListThumbnailSize.value * density.density).roundToInt()
                 itemsIndexed(
                     items = if (isSearching) filteredSongs else mutableSongs,
-                    key = { _, item -> item.hashCode() },
+                    key = { _, item -> item.entryId },
                     contentType = { _, _ -> CONTENT_TYPE_SONG }
                 ) { index, window ->
                     ReorderableItem(
                         state = reorderableState,
-                        key = window.hashCode()
+                        key = window.entryId
                     ) {
                         val dismissState = rememberSwipeToDismissBoxState(
                             positionalThreshold = { totalDistance ->
@@ -866,9 +849,9 @@ fun BoxScope.QueueContent(
                         val onCheckedChange: (Boolean) -> Unit = {
                             haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
                             if (it) {
-                                selectedItems.add(window.hashCode())
+                                selectedItems.add(window.entryId)
                             } else {
-                                selectedItems.remove(window.hashCode())
+                                selectedItems.remove(window.entryId)
                             }
                         }
 
@@ -876,13 +859,13 @@ fun BoxScope.QueueContent(
 
                         val content = @Composable {
                             MediaMetadataListItem(
-                                mediaMetadata = window,
+                                mediaMetadata = window.song,
                                 isActive = (queueIndex == currentWindowIndex && !detachedHead) || queueIndex == detachedQueue?.getQueuePosShuffled(),
                                 isPlaying = isPlaying && !detachedHead,
                                 trailingContent = {
                                     if (inSelectMode) {
                                         Checkbox(
-                                            checked = window.hashCode() in selectedItems,
+                                            checked = window.entryId in selectedItems,
                                             onCheckedChange = onCheckedChange
                                         )
                                     } else {
@@ -890,7 +873,7 @@ fun BoxScope.QueueContent(
                                             onClick = {
                                                 menuState.show {
                                                     PlayerMenu(
-                                                        mediaMetadata = window,
+                                                        mediaMetadata = window.song,
                                                         navController = navController,
                                                         playerBottomSheetState = playerState,
                                                         onDismiss = {
@@ -917,20 +900,20 @@ fun BoxScope.QueueContent(
                                         }
                                     }
                                 },
-                                isSelected = inSelectMode && window.hashCode() in selectedItems,
+                                isSelected = inSelectMode && window.entryId in selectedItems,
                                 preferredSize = thumbnailSize,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .combinedClickable(
                                         onClick = {
                                             if (inSelectMode) {
-                                                onCheckedChange(window.hashCode() !in selectedItems)
+                                                onCheckedChange(window.entryId !in selectedItems)
                                             } else {
                                                 coroutineScope.launch(Dispatchers.Main) {
                                                     if (detachedHead) {
                                                         playerConnection.service.selectQueueSong(detachedQueue, queueIndex)
                                                     } else {
-                                                        val playerIndex = playerIndexOf(window) ?: return@launch
+                                                        val playerIndex = playerConnection.service.playerIndexOfEntry(window.entryId) ?: return@launch
                                                         if (playerIndex == currentWindowIndex) {
                                                             playerConnection.player.togglePlayPause()
                                                             return@launch
@@ -946,7 +929,7 @@ fun BoxScope.QueueContent(
                                         onLongClick = {
                                             if (!inSelectMode) {
                                                 inSelectMode = true
-                                                selectedItems.add(window.hashCode())
+                                                selectedItems.add(window.entryId)
                                             }
                                         }
                                     )
@@ -1032,13 +1015,13 @@ fun BoxScope.QueueContent(
             Row {
                 SelectHeader(
                     navController = navController,
-                    selectedItems = selectedItems.mapNotNull { uidHash ->
-                        filteredSongs.find { it.hashCode() == uidHash }
+                    selectedItems = selectedItems.mapNotNull { entryId ->
+                        filteredSongs.find { it.entryId == entryId }?.song
                     },
                     totalItemCount = filteredSongs.size,
                     onSelectAll = {
                         selectedItems.clear()
-                        selectedItems.addAll(filteredSongs.map { it.hashCode() })
+                        selectedItems.addAll(filteredSongs.map { it.entryId })
                     },
                     onDeselectAll = { selectedItems.clear() },
                     menuState = menuState,
@@ -1072,13 +1055,13 @@ fun BoxScope.QueueContent(
                 if (inSelectMode && !isSearching) {
                     SelectHeader(
                         navController = navController,
-                        selectedItems = selectedItems.mapNotNull { uidHash ->
-                            mutableSongs.find { it.hashCode() == uidHash }
+                        selectedItems = selectedItems.mapNotNull { entryId ->
+                            mutableSongs.find { it.entryId == entryId }?.song
                         },
                         totalItemCount = mutableSongs.size,
                         onSelectAll = {
                             selectedItems.clear()
-                            selectedItems.addAll(mutableSongs.map { it.hashCode() })
+                            selectedItems.addAll(mutableSongs.map { it.entryId })
                         },
                         onDeselectAll = { selectedItems.clear() },
                         menuState = menuState,
