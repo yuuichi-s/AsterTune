@@ -1,14 +1,11 @@
 package io.github.yuuichi_s.astertune.ui.player
 
-import androidx.media3.common.C
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Thresholds of [resolveMiniPlayerSwipeDirection] and the target guard [canSeekToMiniPlayerSwipeTarget].
+ * Thresholds of [resolveMiniPlayerSwipeDirection].
  *
  * Every value is a pixel value at the density given by [Thresholds], mirroring the conversion the
  * composable does before calling the function.
@@ -110,21 +107,5 @@ class MiniPlayerSwipeTest {
             MiniPlayerSwipeDirection.NEXT,
             resolve(distancePx = -30f * 3f, velocityPxPerSecond = -3000f, thresholds = xxhdpi),
         )
-    }
-
-    @Test
-    fun unsetTargetIndex_cannotSeek() {
-        assertFalse(canSeekToMiniPlayerSwipeTarget(targetIndex = C.INDEX_UNSET, currentIndex = 0))
-    }
-
-    @Test
-    fun targetIndexEqualToCurrent_cannotSeek() {
-        assertFalse(canSeekToMiniPlayerSwipeTarget(targetIndex = 2, currentIndex = 2))
-    }
-
-    @Test
-    fun differentTargetIndex_canSeek() {
-        assertTrue(canSeekToMiniPlayerSwipeTarget(targetIndex = 3, currentIndex = 2))
-        assertTrue(canSeekToMiniPlayerSwipeTarget(targetIndex = 0, currentIndex = 4))
     }
 }

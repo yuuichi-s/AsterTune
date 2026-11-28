@@ -65,7 +65,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.media3.common.C
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.Player.STATE_IDLE
@@ -125,10 +124,6 @@ internal fun resolveMiniPlayerSwipeDirection(
 
     return if (distancePx < 0f) MiniPlayerSwipeDirection.NEXT else MiniPlayerSwipeDirection.PREVIOUS
 }
-
-/** Whether [targetIndex] refers to a song other than the one at [currentIndex]. */
-internal fun canSeekToMiniPlayerSwipeTarget(targetIndex: Int, currentIndex: Int): Boolean =
-    targetIndex != C.INDEX_UNSET && targetIndex != currentIndex
 
 @Composable
 fun MiniPlayer(
@@ -215,21 +210,13 @@ fun MiniPlayer(
                             val player = playerConnection.player
                             when (direction) {
                                 MiniPlayerSwipeDirection.NEXT ->
-                                    if (canSeekToMiniPlayerSwipeTarget(
-                                            player.nextMediaItemIndex,
-                                            player.currentMediaItemIndex
-                                        )
-                                    ) {
+                                    if (player.hasNextMediaItem()) {
                                         haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                                         player.seekToNext()
                                     }
 
                                 MiniPlayerSwipeDirection.PREVIOUS ->
-                                    if (canSeekToMiniPlayerSwipeTarget(
-                                            player.previousMediaItemIndex,
-                                            player.currentMediaItemIndex
-                                        )
-                                    ) {
+                                    if (player.hasPreviousMediaItem()) {
                                         haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                                         player.seekToPreviousMediaItem()
                                     }
