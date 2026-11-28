@@ -1333,9 +1333,11 @@ fun BoxScope.QueueContent(
                         .windowInsetsPadding(InsetsSafeT)
                 ) {
                     if (PLAYER_DEBUG) Log.v("QueueContent", "QC-2.4a")
-                    Spacer(Modifier.windowInsetsPadding(InsetsSafeT))
-                    searchBar()
-                    searchSelectHeader()
+                    Column {
+                        Spacer(Modifier.windowInsetsPadding(InsetsSafeT))
+                        searchBar()
+                        searchSelectHeader()
+                    }
                 }
 
                 AnimatedVisibility(mqExpand && !isSearching) {
