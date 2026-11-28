@@ -29,6 +29,7 @@ import io.github.yuuichi_s.astertune.extensions.metadata
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.extensions.toggleRepeatMode
 import io.github.yuuichi_s.astertune.extensions.toggleShuffleMode
+import io.github.yuuichi_s.astertune.models.MultiQueueObject
 import io.github.yuuichi_s.astertune.utils.reportException
 import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
@@ -42,6 +43,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.guava.future
 import kotlinx.coroutines.plus
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MediaLibrarySessionCallback @Inject constructor(
@@ -111,6 +113,15 @@ class MediaLibrarySessionCallback @Inject constructor(
                 "queuePosShuffled = ${q.getQueuePosShuffled()}, lastSongPos = ${q.lastSongPos},")
 
        if (isForPlayback) {
+           // Play the open queue, so that the player's items carry its entries.
+           val openQueue = withContext(Dispatchers.Main) { service.resumptionQueue(q.id) }
+           if (openQueue != null) {
+               return@future MediaItemsWithStartPosition(
+                   openQueue.toMediaItems(),
+                   openQueue.getQueuePosShuffled(),
+                   openQueue.lastSongPos
+               )
+           }
            return@future MediaItemsWithStartPosition(
                q.getCurrentQueueShuffled().map { it.toMediaItem() },
                q.getQueuePosShuffled(),
@@ -367,9 +378,11 @@ class MediaLibrarySessionCallback @Inject constructor(
         }
 
         val queueTitle = context.getString(R.string.android_auto)
-        service.addControllerQueue(queueTitle, queue.first.map { it.metadata }, queue.second)
-        MediaItemsWithStartPosition(queue.first, queue.second, queue.third)
+        val added = service.addControllerQueue(queueTitle, queue.first.map { it.metadata }, queue.second)
+        MediaItemsWithStartPosition(added?.toMediaItems() ?: queue.first, queue.second, queue.third)
     }
+
+    private fun MultiQueueObject.toMediaItems() = getCurrentEntriesShuffled().map { it.toMediaItem() }
 
     /**
      * Plays the songs found for a voice request [query] from the first one. A blank query plays
@@ -388,8 +401,8 @@ class MediaLibrarySessionCallback @Inject constructor(
         if (items.isEmpty()) {
             throw IgnoredRequestException("No songs found")
         }
-        service.addControllerQueue(context.getString(R.string.android_auto), items.map { it.metadata }, 0)
-        return MediaItemsWithStartPosition(items, 0, startPositionMs)
+        val added = service.addControllerQueue(context.getString(R.string.android_auto), items.map { it.metadata }, 0)
+        return MediaItemsWithStartPosition(added?.toMediaItems() ?: items, 0, startPositionMs)
     }
 
     /** Songs whose title or artist matches [query], as the search of media controllers shows. */

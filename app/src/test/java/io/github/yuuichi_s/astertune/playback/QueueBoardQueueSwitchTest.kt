@@ -14,6 +14,7 @@ import io.github.yuuichi_s.astertune.db.MusicDatabase
 import io.github.yuuichi_s.astertune.db.createEmptyTestDatabase
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
+import io.github.yuuichi_s.astertune.models.QueueEntry
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -163,7 +164,7 @@ class QueueBoardQueueSwitchTest {
     @Test
     fun selectQueueInPlayerSelectsQueueHoldingPlayerSongs() {
         board = storedBoard(storedQueue(1, "A", "a", "b"), storedQueue(2, "B", "c", "d"))
-        host.setMediaItems(songs("a", "b"))
+        host.setMediaItems(songs("a", "b").map { QueueEntry(it) })
         host.calls.clear()
 
         assertTrue(board.selectQueueInPlayer())
@@ -177,7 +178,7 @@ class QueueBoardQueueSwitchTest {
     fun selectQueueInPlayerPrefersCurrentQueue() {
         board = storedBoard(storedQueue(1, "A", "a", "b"), storedQueue(2, "B", "a", "b"))
         board.move(1, 0)
-        host.setMediaItems(songs("a", "b"))
+        host.setMediaItems(songs("a", "b").map { QueueEntry(it) })
 
         assertTrue(board.selectQueueInPlayer())
 
@@ -188,7 +189,7 @@ class QueueBoardQueueSwitchTest {
     @Test
     fun selectQueueInPlayerKeepsSelectionWithoutMatch() {
         board = storedBoard(storedQueue(1, "A", "a", "b"), storedQueue(2, "B", "c", "d"))
-        host.setMediaItems(songs("a", "c"))
+        host.setMediaItems(songs("a", "c").map { QueueEntry(it) })
 
         assertFalse(board.selectQueueInPlayer())
 

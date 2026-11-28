@@ -103,6 +103,9 @@ data class MultiQueueObject(
         }
     }
 
+    /** Returns [entries] in playback order. */
+    fun getCurrentEntriesShuffled(): List<QueueEntry> = playbackOrder().map { entries[it] }
+
     /**
      * Retrieve the song at current position in the queue
      */

@@ -9,13 +9,13 @@
 package io.github.yuuichi_s.astertune.playback
 
 import io.github.yuuichi_s.astertune.db.MusicDatabase
-import io.github.yuuichi_s.astertune.models.MediaMetadata
+import io.github.yuuichi_s.astertune.models.QueueEntry
 
 /**
  * Player, settings, and database used by [QueueBoard].
  *
  * Player members follow the semantics of the same-named
- * [androidx.media3.common.Player] members, with songs given as [MediaMetadata].
+ * [androidx.media3.common.Player] members, with songs given as [QueueEntry].
  */
 interface QueueBoardHost {
     val mediaItemCount: Int
@@ -29,11 +29,11 @@ interface QueueBoardHost {
 
     var shuffleModeEnabled: Boolean
 
-    fun setMediaItems(songs: List<MediaMetadata>)
-    fun setMediaItems(songs: List<MediaMetadata>, startIndex: Int, startPositionMs: Long)
-    fun addMediaItems(songs: List<MediaMetadata>)
+    fun setMediaItems(entries: List<QueueEntry>)
+    fun setMediaItems(entries: List<QueueEntry>, startIndex: Int, startPositionMs: Long)
+    fun addMediaItems(entries: List<QueueEntry>)
     fun removeMediaItems(fromIndex: Int, toIndex: Int)
-    fun replaceMediaItems(fromIndex: Int, toIndex: Int, songs: List<MediaMetadata>)
+    fun replaceMediaItems(fromIndex: Int, toIndex: Int, entries: List<QueueEntry>)
 
     /** Called after a queue has been loaded into the player. Main thread only. */
     fun onQueueLoaded()

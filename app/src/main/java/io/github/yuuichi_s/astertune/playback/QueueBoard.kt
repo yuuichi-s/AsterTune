@@ -766,16 +766,16 @@ class QueueBoard(
         val realQueuePos = item.queuePos
         masterIndex = masterQueues.indexOf(item)
 
-        val mediaItems: MutableList<MediaMetadata> = item.getCurrentQueueShuffled()
+        val mediaItems = item.getCurrentEntriesShuffled()
 
         Log.d(
             TAG, "Setting current queue. in bounds: ${queuePos >= 0 && queuePos < mediaItems.size}, " +
                     "queuePos: $queuePos, real queuePos: ${realQueuePos}, lastSongPos: $lastSongPos" +
-                    "ids: ${host.currentSongId}, ${mediaItems[queuePos].id}"
+                    "ids: ${host.currentSongId}, ${mediaItems[queuePos].song.id}"
         )
         // Keep the playing item when it matches the target song.
         val seamlessSupported = (queuePos < mediaItems.size)
-                && host.currentSongId == mediaItems[queuePos].id
+                && host.currentSongId == mediaItems[queuePos].song.id
         if (seamlessSupported) {
             Log.d(TAG, "Trying seamless queue switch. Is first song?: ${queuePos == 0}")
             val playerIndex = host.currentMediaItemIndex
@@ -799,6 +799,9 @@ class QueueBoard(
                     queuePos + 1, Int.MAX_VALUE,
                     mediaItems.subList(queuePos + 1, mediaItems.size))
             }
+            // Give the kept item this queue's entry. ExoPlayer updates an item with the same URI
+            // without interrupting playback.
+            host.replaceMediaItems(queuePos, queuePos + 1, mediaItems.subList(queuePos, queuePos + 1))
         } else {
             Log.d(TAG, "Seamless is not supported. Loading songs in directly")
             host.setMediaItems(mediaItems, queuePos, lastSongPos)

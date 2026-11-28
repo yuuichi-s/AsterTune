@@ -5,11 +5,18 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata.MEDIA_TYPE_MUSIC
 import io.github.yuuichi_s.astertune.db.entities.Song
 import io.github.yuuichi_s.astertune.models.MediaMetadata
+import io.github.yuuichi_s.astertune.models.QueueEntry
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import com.zionhuang.innertube.models.SongItem
 
 val MediaItem.metadata: MediaMetadata?
-    get() = localConfiguration?.tag as? MediaMetadata
+    get() = when (val tag = localConfiguration?.tag) {
+        is QueueEntry -> tag.song
+        else -> tag as? MediaMetadata
+    }
+
+val MediaItem.queueEntry: QueueEntry?
+    get() = localConfiguration?.tag as? QueueEntry
 
 fun Song.toMediaItem() = MediaItem.Builder()
     .setMediaId(song.id)
@@ -45,11 +52,15 @@ fun SongItem.toMediaItem() = MediaItem.Builder()
     )
     .build()
 
-fun MediaMetadata.toMediaItem() = MediaItem.Builder()
+fun MediaMetadata.toMediaItem() = toMediaItem(tag = this)
+
+fun QueueEntry.toMediaItem() = song.toMediaItem(tag = this)
+
+private fun MediaMetadata.toMediaItem(tag: Any) = MediaItem.Builder()
     .setMediaId(id)
     .setUri(id)
     .setCustomCacheKey(id)
-    .setTag(this)
+    .setTag(tag)
     .setMediaMetadata(
         androidx.media3.common.MediaMetadata.Builder()
             .setTitle(title)

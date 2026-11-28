@@ -9,7 +9,7 @@
 package io.github.yuuichi_s.astertune.playback
 
 import io.github.yuuichi_s.astertune.db.MusicDatabase
-import io.github.yuuichi_s.astertune.models.MediaMetadata
+import io.github.yuuichi_s.astertune.models.QueueEntry
 
 /**
  * [QueueBoardHost] for tests. Keeps the player's playlist and current item as
@@ -23,18 +23,18 @@ class FakeQueueBoardHost(
 
     val calls = mutableListOf<Call>()
 
-    private val songs = mutableListOf<MediaMetadata>()
+    private val songs = mutableListOf<QueueEntry>()
 
     /** Song IDs in the player's playlist. */
-    val songIds get() = songs.map { it.id }
+    val songIds get() = songs.map { it.song.id }
 
     override val mediaItemCount get() = songs.size
     override var currentMediaItemIndex = 0
         private set
 
-    override fun getMediaItemIdAt(index: Int) = songs[index].id
+    override fun getMediaItemIdAt(index: Int) = songs[index].song.id
 
-    override val currentSongId get() = songs.getOrNull(currentMediaItemIndex)?.id
+    override val currentSongId get() = songs.getOrNull(currentMediaItemIndex)?.song?.id
 
     override var shuffleModeEnabled = false
         set(value) {
@@ -42,23 +42,23 @@ class FakeQueueBoardHost(
             field = value
         }
 
-    override fun setMediaItems(songs: List<MediaMetadata>) {
-        calls += Call("setMediaItems", listOf(songs.map { it.id }))
-        this.songs.clear()
-        this.songs.addAll(songs)
+    override fun setMediaItems(entries: List<QueueEntry>) {
+        calls += Call("setMediaItems", listOf(entries.map { it.song.id }))
+        songs.clear()
+        songs.addAll(entries)
         currentMediaItemIndex = 0
     }
 
-    override fun setMediaItems(songs: List<MediaMetadata>, startIndex: Int, startPositionMs: Long) {
-        calls += Call("setMediaItems", listOf(songs.map { it.id }, startIndex, startPositionMs))
-        this.songs.clear()
-        this.songs.addAll(songs)
+    override fun setMediaItems(entries: List<QueueEntry>, startIndex: Int, startPositionMs: Long) {
+        calls += Call("setMediaItems", listOf(entries.map { it.song.id }, startIndex, startPositionMs))
+        songs.clear()
+        songs.addAll(entries)
         currentMediaItemIndex = startIndex
     }
 
-    override fun addMediaItems(songs: List<MediaMetadata>) {
-        calls += Call("addMediaItems", listOf(songs.map { it.id }))
-        this.songs.addAll(songs)
+    override fun addMediaItems(entries: List<QueueEntry>) {
+        calls += Call("addMediaItems", listOf(entries.map { it.song.id }))
+        songs.addAll(entries)
     }
 
     override fun removeMediaItems(fromIndex: Int, toIndex: Int) {
@@ -66,9 +66,9 @@ class FakeQueueBoardHost(
         replace(fromIndex, toIndex, emptyList())
     }
 
-    override fun replaceMediaItems(fromIndex: Int, toIndex: Int, songs: List<MediaMetadata>) {
-        calls += Call("replaceMediaItems", listOf(fromIndex, toIndex, songs.map { it.id }))
-        replace(fromIndex, toIndex, songs)
+    override fun replaceMediaItems(fromIndex: Int, toIndex: Int, entries: List<QueueEntry>) {
+        calls += Call("replaceMediaItems", listOf(fromIndex, toIndex, entries.map { it.song.id }))
+        replace(fromIndex, toIndex, entries)
     }
 
     /**
@@ -84,7 +84,7 @@ class FakeQueueBoardHost(
     }
 
     /** Replaces the items in [fromIndex, toIndex), clamping [toIndex] to the playlist size. */
-    private fun replace(fromIndex: Int, toIndex: Int, newSongs: List<MediaMetadata>) {
+    private fun replace(fromIndex: Int, toIndex: Int, newSongs: List<QueueEntry>) {
         val end = minOf(toIndex, songs.size)
         val removed = end - fromIndex
         repeat(removed) { songs.removeAt(fromIndex) }

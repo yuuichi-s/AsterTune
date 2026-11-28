@@ -123,6 +123,7 @@ import io.github.yuuichi_s.astertune.extensions.collectLatest
 import io.github.yuuichi_s.astertune.extensions.currentMetadata
 import io.github.yuuichi_s.astertune.extensions.findNextMediaItemById
 import io.github.yuuichi_s.astertune.extensions.metadata
+import io.github.yuuichi_s.astertune.extensions.queueEntry
 import io.github.yuuichi_s.astertune.extensions.setOffloadEnabled
 import io.github.yuuichi_s.astertune.extensions.toMediaItem
 import io.github.yuuichi_s.astertune.lyrics.LyricsFetchRole
@@ -130,6 +131,7 @@ import io.github.yuuichi_s.astertune.lyrics.LyricsHelper
 import io.github.yuuichi_s.astertune.models.HybridCacheDataSinkFactory
 import io.github.yuuichi_s.astertune.models.MediaMetadata
 import io.github.yuuichi_s.astertune.models.MultiQueueObject
+import io.github.yuuichi_s.astertune.models.QueueEntry
 import io.github.yuuichi_s.astertune.models.toMediaMetadata
 import io.github.yuuichi_s.astertune.playback.audio.LoudnessMeasurement
 import io.github.yuuichi_s.astertune.playback.audio.LoudnessTracker
@@ -240,20 +242,20 @@ class MusicService : MediaLibraryService(),
                 player.shuffleModeEnabled = value
             }
 
-        override fun setMediaItems(songs: List<MediaMetadata>) =
-            player.setMediaItems(songs.map { it.toMediaItem() })
+        override fun setMediaItems(entries: List<QueueEntry>) =
+            player.setMediaItems(entries.map { it.toMediaItem() })
 
-        override fun setMediaItems(songs: List<MediaMetadata>, startIndex: Int, startPositionMs: Long) =
-            player.setMediaItems(songs.map { it.toMediaItem() }, startIndex, startPositionMs)
+        override fun setMediaItems(entries: List<QueueEntry>, startIndex: Int, startPositionMs: Long) =
+            player.setMediaItems(entries.map { it.toMediaItem() }, startIndex, startPositionMs)
 
-        override fun addMediaItems(songs: List<MediaMetadata>) =
-            player.addMediaItems(songs.map { it.toMediaItem() })
+        override fun addMediaItems(entries: List<QueueEntry>) =
+            player.addMediaItems(entries.map { it.toMediaItem() })
 
         override fun removeMediaItems(fromIndex: Int, toIndex: Int) =
             player.removeMediaItems(fromIndex, toIndex)
 
-        override fun replaceMediaItems(fromIndex: Int, toIndex: Int, songs: List<MediaMetadata>) =
-            player.replaceMediaItems(fromIndex, toIndex, songs.map { it.toMediaItem() })
+        override fun replaceMediaItems(fromIndex: Int, toIndex: Int, entries: List<QueueEntry>) =
+            player.replaceMediaItems(fromIndex, toIndex, entries.map { it.toMediaItem() })
 
         override fun onQueueLoaded() = this@MusicService.onQueueLoaded()
         override fun persistQueues() = dataStore.get(PersistentQueueKey, true)
@@ -898,8 +900,9 @@ class MusicService : MediaLibraryService(),
      * mode to the queue. Main thread only.
      *
      * @param startIndex Index of the song to select
+     * @return The queue, or null if [songs] has no song
      */
-    suspend fun addControllerQueue(title: String, songs: List<MediaMetadata?>, startIndex: Int) {
+    suspend fun addControllerQueue(title: String, songs: List<MediaMetadata?>, startIndex: Int): MultiQueueObject? {
         if (!qbInit.value) {
             // Selecting a queue saves the queue list, which needs the stored queues loaded.
             initQueue(loadIntoPlayer = false)
@@ -912,11 +915,23 @@ class MusicService : MediaLibraryService(),
             replace = true,
             delta = false,
             startIndex = startIndex
-        ) ?: return
+        ) ?: return null
         board.selectQueue(queue)
         if (player.shuffleModeEnabled != queue.shuffled) {
             player.shuffleModeEnabled = queue.shuffled
         }
+        return queue
+    }
+
+    /**
+     * Loads the queues if needed and returns the open queue with [queueId], or null if none is
+     * open. Main thread only.
+     */
+    suspend fun resumptionQueue(queueId: Long): MultiQueueObject? {
+        if (!qbInit.value) {
+            initQueue(loadIntoPlayer = false)
+        }
+        return queueBoard.value.masterQueues.firstOrNull { it.id == queueId }
     }
 
     /**
@@ -1110,12 +1125,9 @@ class MusicService : MediaLibraryService(),
                                 queueBoard.value.saveCurrentQueueId()
                             }
                         } else if (playerQueueId != null) {
-                            // Refresh the player if reloading removed songs from its active queue.
+                            // Load the reloaded queue, which has new entries and may have lost songs.
                             val current = queueBoard.value.getCurrentQueue()
-                            if (current != null &&
-                                current.id == playerQueueId &&
-                                current.getCurrentQueueShuffled().map { it.id } != playerIds
-                            ) {
+                            if (current != null && current.id == playerQueueId) {
                                 queueBoard.value.setCurrQueue(current)
                             }
                         }
@@ -1186,6 +1198,11 @@ class MusicService : MediaLibraryService(),
             setQueueDismissed(false)
         }
         qbInit.value = true
+        if (playerHoldsOpenQueue) {
+            // Load the new queue's entries, selecting the player's current song to keep it playing.
+            queueBoard.value.setCurrQueuePosIndex(player.currentMediaItemIndex)
+            queueBoard.value.setCurrQueue()
+        }
     }
 
     /**
@@ -1248,14 +1265,22 @@ class MusicService : MediaLibraryService(),
         return true
     }
 
+    /** Index of the player's item made from the entry [entryId], or null. Main thread only. */
+    fun playerIndexOfEntry(entryId: Long): Int? =
+        (0 until player.mediaItemCount).firstOrNull {
+            player.getMediaItemAt(it).queueEntry?.entryId == entryId
+        }
+
     /**
-     * Moves a song of the current queue and the player's media item together.
+     * Moves a song of the current queue and the player's media item together. Does nothing when
+     * the player holds no item of the entry.
      * Main thread only.
      *
-     * @param fromIndex Song index in playback order
+     * @param entryId Entry ID of the song to move
      * @param toIndex Destination index in playback order
      */
-    fun moveCurrentQueueSong(fromIndex: Int, toIndex: Int) {
+    fun moveCurrentQueueSong(entryId: Long, toIndex: Int) {
+        val fromIndex = playerIndexOfEntry(entryId) ?: return
         queueBoard.value.moveSong(fromIndex, toIndex)
         player.moveMediaItem(fromIndex, toIndex)
     }
@@ -1276,17 +1301,19 @@ class MusicService : MediaLibraryService(),
 
     /**
      * Removes a song of the current queue and the player's media item together. Does nothing
-     * when the current queue and the player hold different numbers of songs.
+     * when the current queue and the player hold different numbers of songs, or when the player
+     * holds no item of the entry.
      * Removing the last song removes the queue and is handled as in [onCurrentQueueRemoved].
      * Main thread only.
      *
-     * @param index Song index in playback order
+     * @param entryId Entry ID of the song to remove
      */
-    fun removeCurrentQueueSong(index: Int): CurrentQueueSongRemoval {
+    fun removeCurrentQueueSong(entryId: Long): CurrentQueueSongRemoval {
         val board = queueBoard.value
         if (board.getCurrentQueue()?.getSize() != player.currentTimeline.windowCount) {
             return CurrentQueueSongRemoval.NOT_REMOVED
         }
+        val index = playerIndexOfEntry(entryId) ?: return CurrentQueueSongRemoval.NOT_REMOVED
         val queueId = board.getCurrentQueue()?.id
         if (!board.removeCurrentQueueSong(index)) {
             return CurrentQueueSongRemoval.NOT_REMOVED
